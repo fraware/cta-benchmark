@@ -1,1 +1,59 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are stated in the provided Rust reference implementation (the placeholder {{rust_reference}} contains no visible assertions/comments here)."},{"kind":"functional_spec","lean_statement":"True","nl_gloss":"The Rust reference implementation content was not provided (it is shown as a placeholder {{rust_reference}}). Without the actual code, the computed function and its correctness properties cannot be derived."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (arr : Array Int) (target : Int), True",
+      "nl_gloss": "No explicit precondition is asserted by the implementation. The only required property for correctness is that the input slice is sorted nondecreasing, but the code itself does not enforce it."
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (arr : Array Int) (target : Int), (∀ i j : Fin arr.length, i.1 ≤ j.1 → arr[i] ≤ arr[j]) → True",
+      "nl_gloss": "Assume the array is sorted in nondecreasing order (monotone): for any indices i ≤ j, arr[i] ≤ arr[j]."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "∀ (arr : Array Int) (target : Int), (binarySearchSpec arr target) ↔ (∃ i : Fin arr.length, arr[i] = target)",
+      "nl_gloss": "Define the intended specification: the target is present iff there exists an index i within bounds such that arr[i] = target."
+    },
+    {
+      "kind": "loop_invariant",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (lo hi : Nat),\n  lo ≤ hi ∧ hi ≤ arr.length →\n  (∀ k : Fin arr.length, k.1 < lo → arr[k] < target) ∧\n  (∀ k : Fin arr.length, k.1 ≥ hi → arr[k] ≥ target)",
+      "nl_gloss": "Maintain the standard binary-search invariant: all indices strictly below lo cannot contain the target (their values are < target), and all indices at or above hi cannot contain the target (their values are ≥ target)."
+    },
+    {
+      "kind": "invariant_initialization",
+      "lean_statement": "∀ (arr : Array Int) (target : Int),\n  (∀ i j : Fin arr.length, i.1 ≤ j.1 → arr[i] ≤ arr[j]) →\n  let lo := 0; let hi := arr.length;\n  lo ≤ hi ∧ hi ≤ arr.length ∧\n  (∀ k : Fin arr.length, k.1 < lo → arr[k] < target) ∧\n  (∀ k : Fin arr.length, k.1 ≥ hi → arr[k] ≥ target)",
+      "nl_gloss": "Show the invariant holds at loop start: lo = 0 and hi = arr.length. The left side is vacuous; the right side is vacuous because there are no indices ≥ arr.length."
+    },
+    {
+      "kind": "invariant_preservation",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (lo hi : Nat),\n  (∀ i j : Fin arr.length, i.1 ≤ j.1 → arr[i] ≤ arr[j]) →\n  lo ≤ hi ∧ hi ≤ arr.length →\n  (∀ k : Fin arr.length, k.1 < lo → arr[k] < target) ∧\n  (∀ k : Fin arr.length, k.1 ≥ hi → arr[k] ≥ target) →\n  (let mid := lo + (hi - lo) / 2;\n   arr[mid] < target →\n     let lo' := mid + 1; let hi' := hi;\n     lo' ≤ hi' ∧ hi' ≤ arr.length ∧\n     (∀ k : Fin arr.length, k.1 < lo' → arr[k] < target) ∧\n     (∀ k : Fin arr.length, k.1 ≥ hi' → arr[k] ≥ target)) ∧\n  (let mid := lo + (hi - lo) / 2;\n   arr[mid] ≥ target →\n     let lo' := lo; let hi' := mid;\n     lo' ≤ hi' ∧ hi' ≤ arr.length ∧\n     (∀ k : Fin arr.length, k.1 < lo' → arr[k] < target) ∧\n     (∀ k : Fin arr.length, k.1 ≥ hi' → arr[k] ≥ target))",
+      "nl_gloss": "Prove the invariant is preserved across each branch of the loop. If arr[mid] < target, move lo to mid+1; otherwise move hi to mid. Sortedness is used to justify the value bounds for the discarded region."
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "∀ (arr : Array Int) (target : Int),\n  ∀ (lo hi : Nat), lo ≤ hi → hi ≤ arr.length →\n  (let mid := lo + (hi - lo) / 2;\n   (arr[mid] < target → lo' = mid + 1 ∧ hi' = hi ∧ hi' - lo' < hi - lo) ∧\n   (arr[mid] ≥ target → lo' = lo ∧ hi' = mid ∧ hi' - lo' < hi - lo))",
+      "nl_gloss": "Show the loop variant (hi - lo) strictly decreases on each iteration, ensuring termination."
+    },
+    {
+      "kind": "soundness_found",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (i : Nat),\n  i < arr.length →\n  (binarySearchResult arr target = some i) →\n  arr[i] = target",
+      "nl_gloss": "If the algorithm returns Some(i), then i is within bounds and arr[i] equals the target."
+    },
+    {
+      "kind": "soundness_not_found",
+      "lean_statement": "∀ (arr : Array Int) (target : Int),\n  (binarySearchResult arr target = none) →\n  ¬ (∃ i : Fin arr.length, arr[i] = target)",
+      "nl_gloss": "If the algorithm returns None, then there is no index i in bounds with arr[i] = target."
+    },
+    {
+      "kind": "completeness",
+      "lean_statement": "∀ (arr : Array Int) (target : Int),\n  (∀ i j : Fin arr.length, i.1 ≤ j.1 → arr[i] ≤ arr[j]) →\n  (∃ i : Fin arr.length, arr[i] = target) →\n  (binarySearchResult arr target ≠ none)",
+      "nl_gloss": "Assuming sortedness, if the target exists in the array, the algorithm must eventually return Some(i) for some matching index (any matching index is acceptable)."
+    },
+    {
+      "kind": "index_bounds",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (res : Option Nat),\n  binarySearchResult arr target = res →\n  (res = none ∨ (∃ i : Nat, res = some i ∧ i < arr.length))",
+      "nl_gloss": "The returned index (when present) is always within array bounds."
+    }
+  ]
+}

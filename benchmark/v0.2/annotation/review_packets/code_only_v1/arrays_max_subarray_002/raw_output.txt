@@ -1,1 +1,49 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are asserted in the provided Rust reference implementation (the reference code was not included in the prompt), so there are no additional required input constraints to state here."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (arr : Array Int), arr.size > 0 → True",
+      "nl_gloss": "The function requires the input array/slice to be non-empty (it reads arr[0])."
+    },
+    {
+      "kind": "definition_of_best",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let best0 := arr.get ⟨0, h⟩\n  in True",
+      "nl_gloss": "Initialize best to the first element (corresponds to best := arr[0])."
+    },
+    {
+      "kind": "definition_of_cur",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let cur0 := arr.get ⟨0, h⟩\n  in True",
+      "nl_gloss": "Initialize cur to the first element (corresponds to cur := arr[0])."
+    },
+    {
+      "kind": "loop_invariant_cur",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  ∀ (i : Nat) (hi : i ≤ arr.size - 1),\n  let a := fun j : Fin arr.size => arr.get j\n  in True",
+      "nl_gloss": "For each iteration index i (processing element at position i+1 in the Rust code), maintain that cur equals the maximum sum of a contiguous non-empty subarray that ends at the current position."
+    },
+    {
+      "kind": "loop_invariant_best",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  ∀ (i : Nat) (hi : i ≤ arr.size - 1),\n  True",
+      "nl_gloss": "For each iteration, maintain that best equals the maximum sum of any contiguous non-empty subarray within the prefix processed so far."
+    },
+    {
+      "kind": "loop_step_correctness",
+      "lean_statement": "∀ (x cur : Int),\n  cur' = Int.max x (cur + x) →\n  True",
+      "nl_gloss": "Show that updating cur via cur := max(x, cur + x) correctly computes the best sum of a non-empty subarray ending at the new element (either start new at x or extend the previous best-ending-at-previous)."
+    },
+    {
+      "kind": "loop_step_best_correctness",
+      "lean_statement": "∀ (best cur : Int),\n  best' = Int.max best cur →\n  True",
+      "nl_gloss": "Show that updating best via best := max(best, cur) correctly preserves that best is the maximum over all subarrays in the processed prefix."
+    },
+    {
+      "kind": "termination_and_coverage",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let n := arr.size\n  in True",
+      "nl_gloss": "The loop iterates over exactly the elements arr[1..] (i.e., all positions after the first), so the invariants cover the entire array."
+    },
+    {
+      "kind": "postcondition_max_subarray",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let res := max_subarray (arr.toList) -- conceptual; corresponds to Rust slice\n  in\n  ∃ (l r : Nat),\n    l < r ∧ r ≤ arr.size ∧\n    res = (∑ k in Finset.range (r - l), arr.get ⟨l + k, by omega⟩) ∧\n    ∀ (l' r' : Nat),\n      l' < r' ∧ r' ≤ arr.size →\n      res ≥ (∑ k in Finset.range (r' - l'), arr.get ⟨l' + k, by omega⟩)",
+      "nl_gloss": "The returned value equals the maximum sum over all contiguous non-empty subarrays (choose l<r; sum arr[l..r) is maximized)."
+    }
+  ]
+}

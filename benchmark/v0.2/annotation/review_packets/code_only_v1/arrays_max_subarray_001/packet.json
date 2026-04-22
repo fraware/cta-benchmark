@@ -5,7 +5,7 @@
   "domain": "arrays",
   "difficulty": "medium",
   "instance_path": "benchmark/v0.2/instances/arrays/arrays_max_subarray_001",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_full_001/generated/code_only_v1/arrays_max_subarray_001.json",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001/generated/code_only_v1/arrays_max_subarray_001.json",
   "informal_statement": {
     "text": "Given a non-empty slice of integers, return the maximum sum over all contiguous non-empty subslices.",
     "preconditions": [
@@ -97,8 +97,64 @@
     {
       "index": 0,
       "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination.",
+      "lean_statement": "∀ (arr : Array Int), arr.length > 0 → True",
+      "nl_gloss": "The function requires the input array/slice to be non-empty (it reads arr[0]).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet a0 := arr.get ⟨0, h⟩;\nlet best0 : Int := a0;\nlet cur0 : Int := a0;\nTrue",
+      "nl_gloss": "At the start, both `best` and `cur` are initialized to the first element.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n∀ (i : Fin n) (hi : i.1 ≥ 1),\n-- interpret i as having processed elements up to index i-1\nlet processed := i.1;\n-- cur after processing indices [0, processed-1]\n-- equals the maximum sum of a non-empty contiguous subarray ending at index processed-1\nTrue",
+      "nl_gloss": "After processing up to index `processed-1`, `cur` equals the maximum sum over all non-empty contiguous subarrays that end exactly at `processed-1`.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n∀ (i : Fin n) (hi : i.1 ≥ 1),\nlet processed := i.1;\n-- best after processing indices [0, processed-1]\n-- equals the maximum sum of a non-empty contiguous subarray within [0, processed-1]\nTrue",
+      "nl_gloss": "After processing up to index `processed-1`, `best` equals the maximum sum over all non-empty contiguous subarrays fully contained in the prefix [0, processed-1].",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n∀ (k : Fin n) (hk : k.1 ≥ 1),\n-- let x be the next element at index k\nlet x := arr.get k;\n-- assuming invariants hold before processing x,\n-- show the updates\n-- cur' = max(x, cur + x)\n-- best' = max(best, cur')\n-- preserve the invariant meanings\nTrue",
+      "nl_gloss": "The update formulas for `cur` and `best` preserve the intended meanings of the invariants when extending the processed prefix by one element.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n-- the loop iterates over indices 1..n-1 exactly once\nTrue",
+      "nl_gloss": "The loop processes exactly the elements after the first, so the invariants at the end refer to the full array.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n-- after the loop, best equals the maximum sum of a non-empty contiguous subarray of the whole array\nTrue",
+      "nl_gloss": "After processing all elements, `best` equals the maximum sum over all non-empty contiguous subarrays of the entire input.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nmax_subarray_spec arr = max_subarray_impl arr h",
+      "nl_gloss": "The returned value from the implementation equals the formal specification: the maximum-sum contiguous non-empty subarray (Kadane’s algorithm).",
       "linked_semantic_units": [],
       "raw_source": "model"
     }

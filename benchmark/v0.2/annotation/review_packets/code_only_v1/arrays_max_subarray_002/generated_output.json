@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
   "system_id": "code_only_v1",
   "instance_id": "arrays_max_subarray_002",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 3008,
-    "prompt_tokens": 115,
-    "completion_tokens": 63
+    "latency_ms": 8389,
+    "prompt_tokens": 254,
+    "completion_tokens": 953
   },
   "raw_output_path": "generated/code_only_v1/raw/arrays_max_subarray_002.txt",
   "parse_status": {
@@ -18,11 +18,59 @@
   "normalized_obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are asserted in the provided Rust reference implementation (the reference code was not included in the prompt), so there are no additional required input constraints to state here.",
+      "lean_statement": "∀ (arr : Array Int), arr.size > 0 → True",
+      "nl_gloss": "The function requires the input array/slice to be non-empty (it reads arr[0]).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let best0 := arr.get ⟨0, h⟩\n  in True",
+      "nl_gloss": "Initialize best to the first element (corresponds to best := arr[0]).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let cur0 := arr.get ⟨0, h⟩\n  in True",
+      "nl_gloss": "Initialize cur to the first element (corresponds to cur := arr[0]).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  ∀ (i : Nat) (hi : i ≤ arr.size - 1),\n  let a := fun j : Fin arr.size => arr.get j\n  in True",
+      "nl_gloss": "For each iteration index i (processing element at position i+1 in the Rust code), maintain that cur equals the maximum sum of a contiguous non-empty subarray that ends at the current position.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  ∀ (i : Nat) (hi : i ≤ arr.size - 1),\n  True",
+      "nl_gloss": "For each iteration, maintain that best equals the maximum sum of any contiguous non-empty subarray within the prefix processed so far.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (x cur : Int),\n  cur' = Int.max x (cur + x) →\n  True",
+      "nl_gloss": "Show that updating cur via cur := max(x, cur + x) correctly computes the best sum of a non-empty subarray ending at the new element (either start new at x or extend the previous best-ending-at-previous).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (best cur : Int),\n  best' = Int.max best cur →\n  True",
+      "nl_gloss": "Show that updating best via best := max(best, cur) correctly preserves that best is the maximum over all subarrays in the processed prefix.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let n := arr.size\n  in True",
+      "nl_gloss": "The loop iterates over exactly the elements arr[1..] (i.e., all positions after the first), so the invariants cover the entire array.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let res := max_subarray (arr.toList) -- conceptual; corresponds to Rust slice\n  in\n  ∃ (l r : Nat),\n    l < r ∧ r ≤ arr.size ∧\n    res = (∑ k in Finset.range (r - l), arr.get ⟨l + k, by omega⟩) ∧\n    ∀ (l' r' : Nat),\n      l' < r' ∧ r' ≤ arr.size →\n      res ≥ (∑ k in Finset.range (r' - l'), arr.get ⟨l' + k, by omega⟩)",
+      "nl_gloss": "The returned value equals the maximum sum over all contiguous non-empty subarrays (choose l<r; sum arr[l..r) is maximized).",
       "linked_semantic_units": []
     }
   ],
-  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
-  "seed": 1
+  "prompt_hash": "sha256:51cfdd6a328f5061f75481ee105a3ea9fa380079aeeb150a082d164da8709f79",
+  "seed": 0
 }

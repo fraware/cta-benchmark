@@ -5,7 +5,7 @@
   "domain": "greedy",
   "difficulty": "easy",
   "instance_path": "benchmark/v0.2/instances/greedy/greedy_coin_change_canonical_001",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_full_001/generated/code_only_v1/greedy_coin_change_canonical_001.json",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001/generated/code_only_v1/greedy_coin_change_canonical_001.json",
   "informal_statement": {
     "text": "Given a sorted-ascending slice of positive integer coin denominations that forms a canonical system (greedy is optimal), and a non-negative target amount, return a vector `counts` of the same length as the denominations such that `sum(counts[i] * denoms[i]) == amount` and `sum(counts)` is the minimum possible over all such vectors.",
     "preconditions": [
@@ -110,16 +110,80 @@
     {
       "index": 0,
       "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the placeholder {{rust_reference}} contains no visible assertions/comments here).",
+      "lean_statement": "denoms.Sorted (· ≤ ·) ∧ denoms.length > 0 ∧ denoms[0] = 1",
+      "nl_gloss": "The denomination list is sorted strictly ascending and starts with 1 (as required by the implementation’s intended canonical greedy behavior).",
       "linked_semantic_units": [],
       "raw_source": "model"
     },
     {
       "index": 1,
+      "kind": "precondition",
+      "lean_statement": "∀ i j : Fin denoms.length, i < j → denoms[i] < denoms[j]",
+      "nl_gloss": "Strictly increasing denominations (no duplicates), matching the stated precondition.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "precondition",
+      "lean_statement": "∀ i : Fin denoms.length, denoms[i] ≠ 0",
+      "nl_gloss": "Denominations are nonzero; the code has a branch for d = 0, but the stated precondition is that the system is a proper denomination system.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "precondition",
+      "lean_statement": "amount ≥ 0",
+      "nl_gloss": "Amount is nonnegative (trivially true for u32, but included as stated).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
       "kind": "unknown",
+      "lean_statement": "let counts := coin_change_canonical denoms amount; ∀ i : Fin denoms.length, 0 ≤ counts[i]",
+      "nl_gloss": "All returned counts are valid natural coin counts (nonnegative).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "invariant",
+      "lean_statement": "let counts := coin_change_canonical denoms amount; ∀ i : Fin denoms.length, counts[i] * denoms[i] ≤ amount",
+      "nl_gloss": "Each computed coin contribution does not exceed the original amount (follows from division and subtraction).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "invariant",
+      "lean_statement": "∃ remaining : Nat, remaining = amount - ∑ i : Fin denoms.length, counts[i] * denoms[i]",
+      "nl_gloss": "There exists a remaining amount after taking the computed coins; the algorithm maintains remaining by subtracting counts[i]*d.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "amount = ∑ i : Fin denoms.length, (coin_value i) * counts[i] + remaining ∧ remaining = 0",
+      "nl_gloss": "For the canonical greedy system, the greedy decomposition exactly sums to the target amount (no leftover).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "optimality",
+      "lean_statement": "(canonical denoms) → (∀ alt : Fin denoms.length → Nat, (∑ i, alt i * denoms[i]) = amount → (∑ i, alt i) ≥ (∑ i, counts i))",
+      "nl_gloss": "If the denomination system is canonical (greedy is optimal), then the greedy decomposition uses the minimum number of coins among all decompositions that sum to the amount.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 9,
+      "kind": "termination",
       "lean_statement": "True",
-      "nl_gloss": "The Rust reference implementation content was not provided (it is shown as a placeholder {{rust_reference}}). Without the actual code, the computed function and its correctness properties cannot be derived.",
+      "nl_gloss": "The loop iterates over a finite range (reverse over indices), so it terminates.",
       "linked_semantic_units": [],
       "raw_source": "model"
     }

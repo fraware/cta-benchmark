@@ -70,6 +70,16 @@ pub fn normalize_response(raw: &str) -> (Vec<GeneratedObligation>, ParseStatus) 
         }
     }
 
+    if out.is_empty() {
+        return (
+            Vec::new(),
+            ParseStatus::err(
+                "empty_obligations",
+                "parsed JSON contained no obligations (empty list, invalid entries, or scraped fragment)",
+            ),
+        );
+    }
+
     (out, ParseStatus::ok())
 }
 
@@ -263,6 +273,14 @@ Let me know if you need changes."#;
         let (obs, st) = normalize_response("   ");
         assert!(obs.is_empty());
         assert_eq!(st.error_class.as_deref(), Some("empty_output"));
+    }
+
+    #[test]
+    fn empty_obligations_list_errors() {
+        let (obs, st) = normalize_response(r#"{"obligations":[]}"#);
+        assert!(obs.is_empty());
+        assert!(!st.ok);
+        assert_eq!(st.error_class.as_deref(), Some("empty_obligations"));
     }
 
     #[test]

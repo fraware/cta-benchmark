@@ -1,1 +1,39 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are stated in the provided Rust reference implementation (the snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination."},{"kind":"functional_spec","lean_statement":"True","nl_gloss":"The Rust reference implementation is not provided in the prompt (the placeholder {{rust_reference}} is not expanded), so the exact computed function cannot be derived. Once the actual Rust code is available, this obligation should state the precise mathematical specification of the algorithm’s output."},{"kind":"invariant_or_progress","lean_statement":"True","nl_gloss":"The specific loop/recursion invariants and progress measures depend on the actual Rust code. After the Rust code is provided, this obligation should capture the key invariant(s) maintained throughout the computation and/or a termination measure."},{"kind":"correctness","lean_statement":"True","nl_gloss":"The correctness proof obligation should connect the implementation’s final state to the functional specification (e.g., that the returned value equals the mathematically defined result). This requires the actual Rust code to identify the algorithm and its intended output."},{"kind":"edge_cases","lean_statement":"True","nl_gloss":"Any handling of edge cases (empty inputs, boundary indices, overflow behavior, etc.) must be reflected as proof obligations. This also requires the actual Rust code to determine what cases are covered and what assumptions are made."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (a b : List Int), True",
+      "nl_gloss": "No explicit preconditions are required by the implementation; it works for any input lists."
+    },
+    {
+      "kind": "definition_of_dp_table",
+      "lean_statement": "let m := a.length; let n := b.length; ∃ (dp : Fin (m+1) → Fin (n+1) → Nat),\n  (∀ i : Fin (m+1), dp i ⟨0, by simp⟩ = 0) ∧\n  (∀ j : Fin (n+1), dp ⟨0, by simp⟩ j = 0) ∧\n  (∀ i : Fin m, ∀ j : Fin n,\n    dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩ =\n      if a.get ⟨i.1, i.2⟩ = b.get ⟨j.1, j.2⟩ then\n        dp ⟨i.1, i.2⟩ ⟨j.1, j.2⟩ + 1\n      else\n        Nat.max (dp ⟨i.1, i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩)\n                 (dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1, j.2⟩))",
+      "nl_gloss": "Model the DP table computed by the nested loops: dp[0][*]=0, dp[*][0]=0, and the recurrence for dp[i+1][j+1] matches the Rust code."
+    },
+    {
+      "kind": "bounds_and_indexing_safety",
+      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ i : Fin m, ∀ j : Fin n,\n    (a.get ⟨i.1, i.2⟩) = a.get ⟨i.1, i.2⟩ ∧ (b.get ⟨j.1, j.2⟩) = b.get ⟨j.1, j.2⟩",
+      "nl_gloss": "The recurrence only accesses a[i-1] and b[j-1] for i∈1..m and j∈1..n; in Lean this corresponds to safe indexing via Fin."
+    },
+    {
+      "kind": "dp_correctness_characterization",
+      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ (dp : Fin (m+1) → Fin (n+1) → Nat),\n    (∀ i, dp i ⟨0, by simp⟩ = 0) →\n    (∀ j, dp ⟨0, by simp⟩ j = 0) →\n    (∀ i : Fin m, ∀ j : Fin n,\n      dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩ =\n        if a.get ⟨i.1, i.2⟩ = b.get ⟨j.1, j.2⟩ then\n          dp ⟨i.1, i.2⟩ ⟨j.1, j.2⟩ + 1\n        else\n          Nat.max (dp ⟨i.1, i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩)\n                   (dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1, j.2⟩)) →\n    (∀ i : Fin (m+1), ∀ j : Fin (n+1),\n      dp i j = lcsLen (a.take i.1) (b.take j.1))",
+      "nl_gloss": "Prove the DP table entry dp[i][j] equals the length of the longest common subsequence of the prefixes a[0..i) and b[0..j). (Here lcsLen is the standard LCS length function in Lean.)"
+    },
+    {
+      "kind": "final_result_matches_dp",
+      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ (dp : Fin (m+1) → Fin (n+1) → Nat),\n    dp ⟨m, by simp⟩ ⟨n, by simp⟩ = lcsLen a b",
+      "nl_gloss": "The function returns dp[m][n], so the returned value equals the LCS length of the full lists."
+    },
+    {
+      "kind": "soundness_of_recurrence_step",
+      "lean_statement": "∀ (a b : List Int) (i j : Nat),\n  i ≤ a.length → j ≤ b.length →\n  let ai := a.get ⟨i-1, by omega⟩; let bj := b.get ⟨j-1, by omega⟩;\n  (ai = bj →\n    lcsLen (a.take i) (b.take j) = lcsLen (a.take (i-1)) (b.take (j-1)) + 1) ∧\n  (ai ≠ bj →\n    lcsLen (a.take i) (b.take j) =\n      Nat.max (lcsLen (a.take (i-1)) (b.take j)) (lcsLen (a.take i) (b.take (j-1))))",
+      "nl_gloss": "Justify the two cases in the recurrence: if the last elements of the prefixes match, LCS length increases by 1; otherwise it is the max of dropping one side."
+    },
+    {
+      "kind": "termination_and_totality",
+      "lean_statement": "∀ (a b : List Int), True",
+      "nl_gloss": "The nested loops iterate over finite ranges 1..=m and 1..=n, so the computation is total."
+    }
+  ]
+}

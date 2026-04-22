@@ -3,42 +3,52 @@
     {
       "kind": "precondition",
       "lean_statement": "weights.length = values.length",
-      "nl_gloss": "The implementation asserts that `weights.len() == values.len()`. Any correctness statement assumes this alignment."
+      "nl_gloss": "The implementation asserts that `weights.len() == values.len()`, so the proof context must assume the lengths match."
     },
     {
       "kind": "definition",
-      "lean_statement": "def knapsack01_spec (weights values : List Nat) (capacity : Nat) : Nat :=\n  Finset.univ.image (fun S : Finset (Fin weights.length) =>\n    let totalW := (S.sum (fun i => weights.get i.1))\n    let totalV := (S.sum (fun i => values.get i.1))\n    if totalW ≤ capacity then totalV else 0) |> Finset.sup (by simp)",
-      "nl_gloss": "Define the intended result as the maximum total value among all subsets of items whose total weight is ≤ capacity."
+      "lean_statement": "let cap : Nat := capacity.toNat\nlet dp0 : List Nat := List.replicate (cap+1) 0",
+      "nl_gloss": "Define the capacity as a natural number and the initial DP table as an array of length `cap+1` filled with 0."
     },
     {
-      "kind": "invariant",
-      "lean_statement": "let cap := capacity.toNat\nlet dp0 : Array Nat := Array.mk (cap+1) 0\n-- Invariant after processing first i items:\n-- for all c ≤ cap, dp[c] equals the optimum value using items {0,...,i-1} with total weight ≤ c.\n∀ (i : Nat) (c : Nat), c ≤ cap →\n  dp_i[c] =\n    (Finset.sup (by\n      -- supremum over subsets of {0,...,i-1} with weight ≤ c\n      simp))",
-      "nl_gloss": "State the core DP invariant: after processing i items, dp[c] stores the maximum value achievable with total weight ≤ c using only the first i items."
+      "kind": "bounds",
+      "lean_statement": "∀ c : Nat, c ≤ cap → (dp[c] : Nat) is well-defined during the algorithm",
+      "nl_gloss": "Show that all DP accesses `dp[c]` and `dp[c-w]` are within bounds whenever they occur (using the loop invariants and the check `w ≤ cap`)."
+    },
+    {
+      "kind": "loop_invariant",
+      "lean_statement": "For each outer iteration index i (0 ≤ i ≤ n), there exists a function best_i : Fin (cap+1) → Nat such that for all c ≤ cap, dp[c] = best_i ⟨c, _⟩, where best_i c equals the maximum total value achievable using items from indices < i with total weight ≤ c.",
+      "nl_gloss": "State the main correctness invariant: after processing the first `i` items, `dp[c]` stores the optimal value for capacity `c` using only those items."
     },
     {
       "kind": "transition_correctness",
-      "lean_statement": "Assuming the invariant holds for i items, let w := weights[i], v := values[i], and w ≤ cap.\nThen for all c ≤ cap:\n  dp_{i+1}[c] =\n    if c < w then dp_i[c]\n    else max (dp_i[c]) (dp_i[c - w] + v)",
-      "nl_gloss": "Prove the update rule matches 0/1 knapsack: either do not take item i (value dp_i[c]) or take it (value dp_i[c-w]+v), and choose the maximum. For c<w, taking is impossible."
+      "lean_statement": "Assuming the invariant holds for i, after processing item i with weight w and value v (and skipping if w > cap), the update for each c ≤ cap satisfies:\n`dp_new[c] = max dp_old[c] (dp_old[c - w] + v)` for c ≥ w, and `dp_new[c] = dp_old[c]` for c < w.",
+      "nl_gloss": "Prove that the inner reverse loop implements the 0/1 knapsack recurrence for each capacity: either do not take the item (keep old value) or take it (add value to the best for remaining capacity)."
     },
     {
-      "kind": "loop_order_0_1",
-      "lean_statement": "For the inner loop iterating c in decreasing order from w to cap, the update to dp[c] uses dp[c-w] from the previous outer iteration (i.e., before item i is considered), not a value updated earlier in the same outer iteration.\nFormally: during processing item i, for any c with w ≤ c ≤ cap, the value read at dp[c-w] equals dp_i[c-w].",
-      "nl_gloss": "Justify that iterating `for c in (w..=cap).rev()` enforces the 0/1 constraint (each item used at most once) when using a 1-D rolling array."
+      "kind": "reverse_loop_uses_previous_row",
+      "lean_statement": "Because the inner loop iterates `c` in decreasing order from `w` to `cap`, for each c ≥ w the expression `dp[c - w]` used to compute `cand` refers to the dp state before updating capacity c (i.e., it corresponds to `dp_old[c - w]`).",
+      "nl_gloss": "Justify why the 1-D rolling array is correct: iterating capacities in reverse prevents using the same item multiple times."
     },
     {
-      "kind": "skip_when_too_heavy",
-      "lean_statement": "If w > cap then the outer iteration leaves dp unchanged, and the invariant for i+1 items follows from the invariant for i items.\n∀ c ≤ cap, dp_{i+1}[c] = dp_i[c].",
-      "nl_gloss": "When an item’s weight exceeds capacity, the code continues without updating dp; correctness must reflect that such an item cannot be part of any feasible subset."
+      "kind": "skip_when_weight_too_large",
+      "lean_statement": "If w > cap then for all c ≤ cap, dp_new[c] = dp_old[c].",
+      "nl_gloss": "When an item’s weight exceeds the capacity, the code continues without changing the DP table; prove the DP remains unchanged."
     },
     {
-      "kind": "initialization",
-      "lean_statement": "Before processing any items (i=0), for all c ≤ cap, dp_0[c] = 0, which equals the optimum value using the empty subset with weight ≤ c.",
-      "nl_gloss": "The dp array is initialized to zeros, representing that with no items the best achievable value is 0 for any capacity."
+      "kind": "initialization_correct",
+      "lean_statement": "For i = 0, for all c ≤ cap, dp[c] = 0, which equals the maximum value achievable using no items with total weight ≤ c.",
+      "nl_gloss": "Show the base case: with zero items, the best value is 0 for any capacity."
     },
     {
       "kind": "finalization",
-      "lean_statement": "After processing all n = weights.length items, dp_n[cap] equals the optimum value among all subsets of items with total weight ≤ cap.\nTherefore knapsack_01 weights values capacity = dp_n[cap] = knapsack01_spec weights values capacity.",
-      "nl_gloss": "Conclude that the returned value dp[capacity] matches the specification: the maximum total value over all subsets whose total weight does not exceed capacity."
+      "lean_statement": "Let n := weights.length. After the outer loop completes, for all c ≤ cap, dp[c] equals the maximum total value achievable using items with indices < n and total weight ≤ c.",
+      "nl_gloss": "Conclude the invariant at i = n: the DP table represents the optimal values for all capacities after considering all items."
+    },
+    {
+      "kind": "result_spec",
+      "lean_statement": "dp[cap] = maxValue (subsets of {0..n-1} with totalWeight ≤ cap) (sum of corresponding values), and the function returns dp[cap].",
+      "nl_gloss": "The function returns `dp[cap]`, so prove that this equals the maximum total value over all subsets whose total weight is at most `capacity`."
     }
   ]
 }

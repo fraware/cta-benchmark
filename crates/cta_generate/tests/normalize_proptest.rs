@@ -92,7 +92,7 @@ proptest! {
     #[test]
     fn canonical_object_form_always_parses(
         kind in prop::sample::select(ALLOWED_KINDS.to_vec()),
-        n in 0usize..6,
+        n in 1usize..7,
     ) {
         let items: Vec<String> = (0..n)
             .map(|i| format!(

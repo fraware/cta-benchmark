@@ -5,3 +5,4 @@
 # It is recommended to check this file in to source control so that
 # everyone who runs the test benefits from these saved cases.
 cc 1e4d2a8b171d1a40e42a05011d4a0bbe484f4c6fdb5e17ef77acbc0fc42142b1 # shrinks to prefix = "[", suffix = ""
+cc e5e0e411aa087360afa0bc1d6ca0db504d1f2fff99beecea2551d097ee073b5c # shrinks to kind = "_", statement = "[]", gloss = "\0", conf = None

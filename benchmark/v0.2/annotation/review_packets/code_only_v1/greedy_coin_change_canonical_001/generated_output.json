@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
   "system_id": "code_only_v1",
   "instance_id": "greedy_coin_change_canonical_001",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 1519,
-    "prompt_tokens": 115,
-    "completion_tokens": 105
+    "latency_ms": 5550,
+    "prompt_tokens": 318,
+    "completion_tokens": 592
   },
   "raw_output_path": "generated/code_only_v1/raw/greedy_coin_change_canonical_001.txt",
   "parse_status": {
@@ -18,17 +18,65 @@
   "normalized_obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the placeholder {{rust_reference}} contains no visible assertions/comments here).",
+      "lean_statement": "denoms.Sorted (· ≤ ·) ∧ denoms.length > 0 ∧ denoms[0] = 1",
+      "nl_gloss": "The denomination list is sorted strictly ascending and starts with 1 (as required by the implementation’s intended canonical greedy behavior).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ i j : Fin denoms.length, i < j → denoms[i] < denoms[j]",
+      "nl_gloss": "Strictly increasing denominations (no duplicates), matching the stated precondition.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ i : Fin denoms.length, denoms[i] ≠ 0",
+      "nl_gloss": "Denominations are nonzero; the code has a branch for d = 0, but the stated precondition is that the system is a proper denomination system.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "amount ≥ 0",
+      "nl_gloss": "Amount is nonnegative (trivially true for u32, but included as stated).",
       "linked_semantic_units": []
     },
     {
       "kind": "unknown",
+      "lean_statement": "let counts := coin_change_canonical denoms amount; ∀ i : Fin denoms.length, 0 ≤ counts[i]",
+      "nl_gloss": "All returned counts are valid natural coin counts (nonnegative).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "let counts := coin_change_canonical denoms amount; ∀ i : Fin denoms.length, counts[i] * denoms[i] ≤ amount",
+      "nl_gloss": "Each computed coin contribution does not exceed the original amount (follows from division and subtraction).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "∃ remaining : Nat, remaining = amount - ∑ i : Fin denoms.length, counts[i] * denoms[i]",
+      "nl_gloss": "There exists a remaining amount after taking the computed coins; the algorithm maintains remaining by subtracting counts[i]*d.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "amount = ∑ i : Fin denoms.length, (coin_value i) * counts[i] + remaining ∧ remaining = 0",
+      "nl_gloss": "For the canonical greedy system, the greedy decomposition exactly sums to the target amount (no leftover).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "(canonical denoms) → (∀ alt : Fin denoms.length → Nat, (∑ i, alt i * denoms[i]) = amount → (∑ i, alt i) ≥ (∑ i, counts i))",
+      "nl_gloss": "If the denomination system is canonical (greedy is optimal), then the greedy decomposition uses the minimum number of coins among all decompositions that sum to the amount.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
       "lean_statement": "True",
-      "nl_gloss": "The Rust reference implementation content was not provided (it is shown as a placeholder {{rust_reference}}). Without the actual code, the computed function and its correctness properties cannot be derived.",
+      "nl_gloss": "The loop iterates over a finite range (reverse over indices), so it terminates.",
       "linked_semantic_units": []
     }
   ],
-  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
-  "seed": 1
+  "prompt_hash": "sha256:d2cbc0391e1d68399367eeeb52ee0fcef6641a5919ab2a951351b128220743d5",
+  "seed": 0
 }

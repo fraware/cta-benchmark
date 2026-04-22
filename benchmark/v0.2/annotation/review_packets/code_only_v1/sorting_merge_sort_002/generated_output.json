@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
   "system_id": "code_only_v1",
   "instance_id": "sorting_merge_sort_002",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 4777,
-    "prompt_tokens": 115,
-    "completion_tokens": 356
+    "latency_ms": 5443,
+    "prompt_tokens": 368,
+    "completion_tokens": 544
   },
   "raw_output_path": "generated/code_only_v1/raw/sorting_merge_sort_002.txt",
   "parse_status": {
@@ -18,41 +18,65 @@
   "normalized_obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are asserted in the provided Rust reference (the reference implementation text was not included), so there are no additional required input constraints beyond well-typedness.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "True",
-      "nl_gloss": "The Rust reference implementation was not provided (the placeholder `{{rust_reference}}` was not replaced), so the exact computed function cannot be derived. Once the actual Rust code is available, this obligation should state the precise mathematical specification of the algorithm’s output.",
+      "lean_statement": "∀ (arr : List Int), True",
+      "nl_gloss": "No explicit preconditions are required by the implementation; merge_sort is defined for all input lists/arrays.",
       "linked_semantic_units": []
     },
     {
       "kind": "termination",
-      "lean_statement": "True",
-      "nl_gloss": "No termination argument can be stated without the actual Rust code. After the Rust code is provided, this obligation should prove that the algorithm terminates (e.g., via a decreasing measure for loops/recursion).",
+      "lean_statement": "∀ (arr : List Int), WellFounded (measure (fun l => l.length)) (fun l => if l.length ≤ 1 then [] else [l.take (l.length/2), l.drop (l.length/2)])",
+      "nl_gloss": "The recursive calls in merge_sort strictly decrease the input length (split into two smaller halves), ensuring termination.",
       "linked_semantic_units": []
     },
     {
       "kind": "unknown",
-      "lean_statement": "True",
-      "nl_gloss": "No partial-correctness property can be stated without the actual Rust code. After the Rust code is provided, this obligation should prove that the returned value satisfies the specification (e.g., invariants maintained by loops and correctness of the final result).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "invariant",
-      "lean_statement": "True",
-      "nl_gloss": "No loop/recursion invariants can be extracted without the actual Rust code. After the Rust code is provided, this obligation should capture the key invariants that make the algorithm correct.",
+      "lean_statement": "∀ (left right : List Int), Sorted (merge left right)",
+      "nl_gloss": "The merge procedure outputs a sorted list when given two sorted input lists.",
       "linked_semantic_units": []
     },
     {
       "kind": "unknown",
-      "lean_statement": "True",
-      "nl_gloss": "Edge-case behavior (empty inputs, boundary indices, etc.) cannot be determined without the actual Rust code. After the Rust code is provided, this obligation should cover the boundary cases consistent with the implementation.",
+      "lean_statement": "∀ (left right : List Int), Permutation (merge left right) (left ++ right)",
+      "nl_gloss": "The merge procedure outputs a permutation of the concatenation of its inputs (it only reorders elements, does not create or drop elements).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (left right : List Int), Sorted left → Sorted right → StableMerge left right (merge left right)",
+      "nl_gloss": "Stability: when elements are equal, merge takes from the left first (because it uses <=), preserving relative order of equal elements across left/right.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (left right : List Int), (merge left right).length = left.length + right.length",
+      "nl_gloss": "The merged output length equals the sum of input lengths (elements are neither lost nor duplicated).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : List Int), Sorted (merge_sort arr)",
+      "nl_gloss": "merge_sort returns a sorted list.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : List Int), Permutation (merge_sort arr) arr",
+      "nl_gloss": "merge_sort returns a permutation of the input (same multiset of elements).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : List Int), StableSort merge_sort arr",
+      "nl_gloss": "Stability of merge_sort: because it uses a stable merge at each step, the overall sort is stable.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : List Int), (merge_sort arr).length = arr.length",
+      "nl_gloss": "merge_sort preserves length (no elements are added or removed).",
       "linked_semantic_units": []
     }
   ],
-  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
-  "seed": 1
+  "prompt_hash": "sha256:ddaf2edacac034226a2a1756f39804dd426a1ee054f5d87312d985e4b4a8ca2c",
+  "seed": 0
 }

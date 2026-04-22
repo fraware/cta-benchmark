@@ -1,1 +1,54 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are stated in the provided Rust reference implementation (the snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ t : Tree, ∀ p q : Int, (∃ x : Int, x = p ∧ x ∈ bstKeys t) ∧ (∃ y : Int, y = q ∧ y ∈ bstKeys t) → True",
+      "nl_gloss": "The implementation assumes both keys p and q are present in the BST. Model this as a precondition that p and q occur among the keys of the tree."
+    },
+    {
+      "kind": "definition_of_bounds",
+      "lean_statement": "let lo : Int := min p q; let hi : Int := max p q; in lo ≤ hi ∧ (lo = p ∨ lo = q) ∧ (hi = p ∨ hi = q)",
+      "nl_gloss": "The code normalizes the inputs by setting lo=min(p,q) and hi=max(p,q), ensuring lo ≤ hi and that lo/hi are exactly the two input keys."
+    },
+    {
+      "kind": "termination_variant",
+      "lean_statement": "∀ (t : Tree) (p q : Int), ∃ v : Nat, v = size t ∧ (∀ cur : Tree, cur ≠ Nil → (next cur) has size < size cur) → (loop terminates)",
+      "nl_gloss": "When the search moves left or right, it strictly decreases the remaining subtree size, so the loop terminates (cannot continue indefinitely)."
+    },
+    {
+      "kind": "search_invariant",
+      "lean_statement": "let lo := min p q; let hi := max p q; in ∀ cur : Tree, cur ≠ Nil → (p ∈ bstKeys cur ∧ q ∈ bstKeys cur) → (lo ≤ keyOfLCA cur p q ∧ keyOfLCA cur p q ≤ hi)",
+      "nl_gloss": "Maintain that the true LCA key (in the current subtree) lies within the current bounds [lo, hi]. The algorithm only narrows by moving to the side consistent with BST ordering."
+    },
+    {
+      "kind": "bst_property_used",
+      "lean_statement": "∀ l : Tree, ∀ k : Int, ∀ r : Tree, bst l → bst r → (∀ x ∈ bstKeys l, x < k) → (∀ y ∈ bstKeys r, k < y) → bst (Node l k r)",
+      "nl_gloss": "Assume the tree is a BST: all keys in the left subtree are < node key and all keys in the right subtree are > node key. This justifies the branch conditions hi < k and lo > k."
+    },
+    {
+      "kind": "correctness_left_branch",
+      "lean_statement": "∀ cur : Tree, cur = Node left k right → hi < k → (p ∈ bstKeys cur ∧ q ∈ bstKeys cur) → (p ∈ bstKeys left ∧ q ∈ bstKeys left) ∧ lcaKey left p q = lcaKey cur p q",
+      "nl_gloss": "If hi < k, then both p and q must lie in the left subtree (by BST ordering), and the LCA in the left subtree is the same as the LCA in the current tree."
+    },
+    {
+      "kind": "correctness_right_branch",
+      "lean_statement": "∀ cur : Tree, cur = Node left k right → lo > k → (p ∈ bstKeys cur ∧ q ∈ bstKeys cur) → (p ∈ bstKeys right ∧ q ∈ bstKeys right) ∧ lcaKey right p q = lcaKey cur p q",
+      "nl_gloss": "If lo > k, then both p and q must lie in the right subtree, and the LCA in the right subtree equals the LCA in the current tree."
+    },
+    {
+      "kind": "correctness_hit_case",
+      "lean_statement": "∀ cur : Tree, cur = Node left k right → lo ≤ k ∧ hi ≥ k → (p ∈ bstKeys cur ∧ q ∈ bstKeys cur) → (k = lcaKey cur p q)",
+      "nl_gloss": "When the bounds straddle the current node key (lo ≤ k ≤ hi), the algorithm returns k. Under BST ordering and presence of both keys, this node key is exactly the LCA."
+    },
+    {
+      "kind": "none_case_impossible_under_precondition",
+      "lean_statement": "∀ t : Tree, ∀ p q : Int, (p ∈ bstKeys t ∧ q ∈ bstKeys t) → lca_bst t p q ≠ None",
+      "nl_gloss": "Given the precondition that both keys are present, the loop should never reach Nil; therefore the function cannot return None."
+    },
+    {
+      "kind": "overall_spec",
+      "lean_statement": "∀ t : Tree, ∀ p q : Int, bst t → (p ∈ bstKeys t ∧ q ∈ bstKeys t) → ∃! a : Int, lca_bst t p q = Some a ∧ a = lcaKey t p q",
+      "nl_gloss": "Putting everything together: for a BST where both keys are present, lca_bst returns Some a, and that a is the (unique) lowest common ancestor key of p and q in the tree."
+    }
+  ]
+}

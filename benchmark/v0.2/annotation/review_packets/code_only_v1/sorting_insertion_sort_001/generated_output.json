@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
   "system_id": "code_only_v1",
   "instance_id": "sorting_insertion_sort_001",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 5095,
-    "prompt_tokens": 115,
-    "completion_tokens": 471
+    "latency_ms": 6951,
+    "prompt_tokens": 204,
+    "completion_tokens": 893
   },
   "raw_output_path": "generated/code_only_v1/raw/sorting_insertion_sort_001.txt",
   "parse_status": {
@@ -18,53 +18,53 @@
   "normalized_obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference (the placeholder {{rust_reference}} contains no visible assertions/comments here). If the actual code includes preconditions (e.g., bounds on indices, non-emptiness, sortedness), they should be captured as separate obligations.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (input : α), let out := impl input; spec input out",
-      "nl_gloss": "State the core functional specification: for every input, the implementation’s output equals the mathematically defined result of the classical algorithm task described by the reference implementation.",
+      "lean_statement": "∀ (arr : Array Int), True",
+      "nl_gloss": "No explicit preconditions are required by the implementation; it works for any mutable slice/array of i32 (Lean Int).",
       "linked_semantic_units": []
     },
     {
       "kind": "termination",
-      "lean_statement": "termination_of_impl : ∀ (input : α), (impl input) terminates",
-      "nl_gloss": "Prove the implementation terminates (e.g., loop bounds decrease or recursion is well-founded), matching the control structure in the Rust code.",
+      "lean_statement": "∀ (arr : Array Int) (i : Nat), i < arr.size → (let j0 := i; ∃ j, j ≤ j0 ∧ (j = 0 ∨ ¬(arr.get! (j-1) > arr.get! j)))",
+      "nl_gloss": "The inner while-loop terminates because j decreases strictly on each swap and is bounded below by 0.",
       "linked_semantic_units": []
     },
     {
       "kind": "unknown",
-      "lean_statement": "∀ (input : α), safe_indexing_of_impl input",
-      "nl_gloss": "Prove that all array/vector indexing operations in the implementation are within bounds for all inputs satisfying the preconditions.",
+      "lean_statement": "∀ (arr : Array Int) (i : Nat), i ≤ arr.size →\n  let a := arr in\n  (Sorted (a.subarray 0 i)) ∧ (Permutation a (a))",
+      "nl_gloss": "After completing the outer loop for index i (i.e., before processing i), the prefix arr[0..i) is sorted in ascending order. The algorithm only swaps elements, so the multiset of elements is preserved (permutation).",
       "linked_semantic_units": []
     },
     {
       "kind": "unknown",
-      "lean_statement": "∀ (input : α), invariant holds at loop/recursion start for input",
-      "nl_gloss": "For each loop/recursive function, provide the invariant and prove it holds initially.",
+      "lean_statement": "∀ (arr : Array Int) (i j : Nat), i < arr.size → j ≤ i →\n  (Permutation arr arr) ∧\n  (Sorted (arr.subarray 0 j)) ∧\n  (∀ k, k < j → arr[k] ≤ arr[j])",
+      "nl_gloss": "During the inner while-loop for a fixed i, the portion before j remains sorted, and all elements in that prefix are ≤ the current element at position j. Swaps only move the current element left while maintaining these properties.",
       "linked_semantic_units": []
     },
     {
       "kind": "unknown",
-      "lean_statement": "∀ (input : α), ∀ state, invariant state → invariant (step state)",
-      "nl_gloss": "For each loop/recursive function, prove the invariant is preserved by each iteration/recursive step.",
+      "lean_statement": "∀ (arr : Array Int) (i j : Nat), i < arr.size → j > 0 → j ≤ i →\n  arr[j-1] > arr[j] →\n  (let arr' := arr.swap (j-1) j in\n   Sorted (arr'.subarray 0 (j-1)) ∧\n   (∀ k, k < (j-1) → arr'[k] ≤ arr'[j-1]) ∧\n   Permutation arr arr')",
+      "nl_gloss": "If the while-condition holds (arr[j-1] > arr[j]), swapping positions j-1 and j preserves the sortedness of the already-processed prefix and maintains the relationship needed for the current element to continue moving left.",
       "linked_semantic_units": []
     },
     {
       "kind": "unknown",
-      "lean_statement": "∀ (input : α), invariant at exit → postcondition input (output)",
-      "nl_gloss": "At loop/recursion exit, use the invariant (plus the negation of the loop condition) to derive the required postcondition.",
+      "lean_statement": "∀ (arr : Array Int),\n  let a0 := arr in\n  insertion_sort a0;\n  Sorted a0",
+      "nl_gloss": "After the algorithm finishes, the entire array is sorted in ascending order.",
       "linked_semantic_units": []
     },
     {
       "kind": "unknown",
-      "lean_statement": "∀ (input : α), edge_case_conditions input → spec input (impl input)",
-      "nl_gloss": "Prove correctness for boundary/edge cases explicitly handled by the code (e.g., empty input, singleton input, special-case branches).",
+      "lean_statement": "∀ (arr : Array Int),\n  let a0 := arr in\n  insertion_sort a0;\n  Permutation a0 arr",
+      "nl_gloss": "After the algorithm finishes, the output array is a permutation of the input array (it only uses swaps, so it preserves the multiset of elements).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int),\n  let a0 := arr in\n  insertion_sort a0;\n  (Sorted a0) ∧ (Permutation a0 arr) →\n  a0 = sort arr",
+      "nl_gloss": "Combining sortedness and permutation characterizes the result as the standard sorted version of the input (i.e., insertion sort computes the ascending sort).",
       "linked_semantic_units": []
     }
   ],
-  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
-  "seed": 1
+  "prompt_hash": "sha256:f8152e5d24808c5c9c8a7bad0e4ecd5a9e9036d096b3f9ae0a52609bca8da219",
+  "seed": 0
 }

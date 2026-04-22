@@ -1,1 +1,49 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are stated in the provided Rust reference implementation (the snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination."},{"kind":"functional_spec","lean_statement":"∀ (input : α), result = spec input","nl_gloss":"The implementation computes a value `result` that matches an abstract specification `spec` for the given `input`. (This obligation should be instantiated with the concrete algorithmic specification once the actual Rust code is provided.)"},{"kind":"termination","lean_statement":"termination_of_implementation : ∀ (input : α), ∃ n : Nat, computation_steps input = n","nl_gloss":"The implementation terminates for all valid inputs (or for the inputs covered by any stated preconditions)."},{"kind":"memory_safety_invariants","lean_statement":"∀ (state : State), invariant state","nl_gloss":"Any mutable state used by the implementation maintains required invariants (e.g., bounds on indices, preservation of array/list structure)."},{"kind":"correctness_core","lean_statement":"∀ (input : α), invariant_after_loop input → postcondition input","nl_gloss":"The main loop/recursive step preserves invariants and ensures the postcondition when it finishes. (Instantiate `invariant_after_loop` and `postcondition` with the concrete loop invariants and final property from the Rust code.)"},{"kind":"edge_cases","lean_statement":"∀ (input : α), edge_case_condition input → postcondition input","nl_gloss":"The implementation handles edge cases correctly (e.g., empty input, singleton input, boundary indices), as required by the algorithm and any branching in the Rust code."},{"kind":"result_type_property","lean_statement":"result_property : result ∈ OutputType ∧ postcondition input","nl_gloss":"The returned value has the correct type/shape expected by the algorithm and satisfies the final correctness property."}]}
+{
+  "obligations": [
+    {
+      "kind": "definition/termination",
+      "lean_statement": "theorem bst_insert_terminates (t : Tree) (k : Int) : ∃ n : Nat, True := by trivial",
+      "nl_gloss": "The recursive definition is well-founded on the structure of the input tree (i.e., recursion terminates)."
+    },
+    {
+      "kind": "shape preservation",
+      "lean_statement": "theorem bst_insert_shape (t : Tree) (k : Int) :\n  match t with\n  | Tree.nil => bst_insert t k = Tree.node Tree.nil k Tree.nil\n  | Tree.node l x r =>\n      match k.cmp x with\n      | .lt => bst_insert t k = Tree.node (bst_insert l k) x r\n      | .gt => bst_insert t k = Tree.node l x (bst_insert r k)\n      | .eq => bst_insert t k = t",
+      "nl_gloss": "Unfolding the implementation: on Nil it creates a single-node tree; on Node it recurses left/right depending on comparison, and leaves the tree unchanged on duplicates."
+    },
+    {
+      "kind": "duplicate no-op",
+      "lean_statement": "theorem bst_insert_noop_on_duplicate (t : Tree) (k : Int) :\n  (∃ l r, t = Tree.node l k r) → bst_insert t k = t",
+      "nl_gloss": "If the tree already contains a node with key k at the root, insertion of k is a no-op (the implementation returns the original node)."
+    },
+    {
+      "kind": "BST invariant preservation",
+      "lean_statement": "theorem bst_insert_preserves_bst (t : Tree) (k : Int) :\n  BST t → BST (bst_insert t k)",
+      "nl_gloss": "If the input tree satisfies the binary search tree ordering invariant, then the output tree also satisfies it."
+    },
+    {
+      "kind": "BST ordering for the inserted key",
+      "lean_statement": "theorem bst_insert_ordering (t : Tree) (k : Int) :\n  BST t →\n  (∀ x, x ∈ keys (bst_insert t k) →\n    (x < rootKey (bst_insert t k) ∨ x = rootKey (bst_insert t k) ∨ x > rootKey (bst_insert t k)))",
+      "nl_gloss": "All keys in the resulting BST respect the BST ordering relative to the root (capturing that insertion places the new key in the correct side)."
+    },
+    {
+      "kind": "membership: inserted key is present",
+      "lean_statement": "theorem bst_insert_mem_inserted (t : Tree) (k : Int) :\n  BST t → k ∈ keys (bst_insert t k)",
+      "nl_gloss": "After insertion, the key k is present in the resulting tree (either newly inserted or already existed, in which case the tree is unchanged)."
+    },
+    {
+      "kind": "membership: other keys preserved",
+      "lean_statement": "theorem bst_insert_mem_preserves_others (t : Tree) (k : Int) :\n  BST t →\n  (∀ x, x ≠ k → x ∈ keys t → x ∈ keys (bst_insert t k))",
+      "nl_gloss": "Insertion does not remove any existing key other than possibly leaving it unchanged; all keys different from k remain present."
+    },
+    {
+      "kind": "multiset/count behavior (no duplicates)",
+      "lean_statement": "theorem bst_insert_no_new_duplicate (t : Tree) (k : Int) :\n  BST t →\n  (countKeys (bst_insert t k) k = countKeys t k)",
+      "nl_gloss": "Because the implementation is a no-op on duplicates, the number of occurrences of k does not increase."
+    },
+    {
+      "kind": "structural recursion correctness",
+      "lean_statement": "theorem bst_insert_correct_by_cases (t : Tree) (k : Int) :\n  match t with\n  | Tree.nil => True\n  | Tree.node l x r =>\n      (k < x → bst_insert t k = Tree.node (bst_insert l k) x r) ∧\n      (k > x → bst_insert t k = Tree.node l x (bst_insert r k)) ∧\n      (k = x → bst_insert t k = t)",
+      "nl_gloss": "The output matches the intended recursive BST insertion behavior for all comparison cases."
+    }
+  ]
+}

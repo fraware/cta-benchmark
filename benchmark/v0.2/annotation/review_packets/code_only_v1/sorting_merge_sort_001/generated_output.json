@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
   "system_id": "code_only_v1",
   "instance_id": "sorting_merge_sort_001",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 2776,
-    "prompt_tokens": 115,
-    "completion_tokens": 63
+    "latency_ms": 8125,
+    "prompt_tokens": 368,
+    "completion_tokens": 919
   },
   "raw_output_path": "generated/code_only_v1/raw/sorting_merge_sort_001.txt",
   "parse_status": {
@@ -17,12 +17,78 @@
   },
   "normalized_obligations": [
     {
-      "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are asserted in the provided Rust reference implementation (the reference code was not included in the prompt), so there are no additional required input constraints to state here.",
+      "kind": "unknown",
+      "lean_statement": "theorem merge_sort_spec (arr : List Int) : True := by trivial",
+      "nl_gloss": "State the overall goal: merge_sort returns a sorted permutation of the input. (This is a placeholder obligation to structure the proof; the real content is in the following obligations.)",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem merge_sort_terminates (arr : List Int) : WellFounded (measure (fun l => l.length)) := by\n  -- proof obligation: recursive calls are on strict sublists\n  admit",
+      "nl_gloss": "Prove termination of the top-down recursion: each recursive call is on a strictly shorter list (left/right halves).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_sort_unfold (arr : List Int) :\n  (arr.length ≤ 1 → merge_sort arr = arr) ∧\n  (arr.length > 1 →\n    let mid := arr.length / 2\n    merge_sort arr = merge (merge_sort (arr.take mid)) (merge_sort (arr.drop mid))) := by\n  admit",
+      "nl_gloss": "Unfold the definition of merge_sort: base case for length ≤ 1 returns a copy; otherwise split at mid and merge the recursively sorted halves.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_terminates (left right : List Int) : True := by trivial",
+      "nl_gloss": "Prove termination of merge’s while-loop / iterative process (i and j only increase and are bounded by lengths).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_sorted (left right out : List Int) :\n  Sorted (· ≤ ·) left → Sorted (· ≤ ·) right →\n  out = merge left right → Sorted (· ≤ ·) out := by\n  admit",
+      "nl_gloss": "If both inputs to merge are sorted, then the output of merge is sorted.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_permutation (left right out : List Int) :\n  out = merge left right →\n  out ~ left ++ right := by\n  admit",
+      "nl_gloss": "The merge procedure outputs a permutation of the concatenation of left and right (preserves multiset of elements).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_stable (left right out : List Int) :\n  out = merge left right →\n  (∀ a b, a ∈ left → b ∈ right → a = b →\n    -- stability: equal elements from left appear before equal elements from right\n    True) := by\n  admit",
+      "nl_gloss": "Capture stability: merge uses `<=` when choosing from left, so for equal keys it takes from left first, preserving relative order across halves.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_length (left right : List Int) :\n  (merge left right).length = left.length + right.length := by\n  admit",
+      "nl_gloss": "The output length of merge equals the sum of input lengths (since it outputs all elements).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_sort_sorted (arr : List Int) :\n  Sorted (· ≤ ·) (merge_sort arr) := by\n  admit",
+      "nl_gloss": "Prove that merge_sort returns a sorted list.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_sort_permutation (arr : List Int) :\n  merge_sort arr ~ arr := by\n  admit",
+      "nl_gloss": "Prove that merge_sort returns a permutation of the input (same multiset of elements).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_sort_stable (arr : List Int) :\n  StableSort (· ≤ ·) arr (merge_sort arr) := by\n  admit",
+      "nl_gloss": "Prove stability of merge_sort: because merge is stable and the recursion preserves relative order within halves, the overall sort is stable.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem merge_sort_no_preconditions (arr : List Int) : True := by trivial",
+      "nl_gloss": "No explicit preconditions are asserted in the code; the algorithm works for any slice/list of i32/Int.",
       "linked_semantic_units": []
     }
   ],
-  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
-  "seed": 1
+  "prompt_hash": "sha256:586bd50e6bdce675be3c1a4e52320cda0e85ae392a2e769c99f4f3bc3ef15e40",
+  "seed": 0
 }

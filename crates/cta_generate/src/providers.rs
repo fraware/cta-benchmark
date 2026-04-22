@@ -459,6 +459,12 @@ mod tests {
         assert_eq!(resp.tokens, Some((12, 34)));
         assert_eq!(resp.latency_ms, 77);
         assert!(resp.raw.contains("obligations"));
+        assert!(!resp.parse_status.ok);
+        assert_eq!(
+            resp.parse_status.error_class.as_deref(),
+            Some("empty_obligations")
+        );
+        assert!(resp.obligations.is_empty());
     }
 
     #[test]

@@ -5,7 +5,7 @@
   "domain": "sorting",
   "difficulty": "easy",
   "instance_path": "benchmark/v0.2/instances/sorting/sorting_insertion_sort_002",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_full_001/generated/code_only_v1/sorting_insertion_sort_002.json",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001/generated/code_only_v1/sorting_insertion_sort_002.json",
   "informal_statement": {
     "text": "Sort a mutable slice of integers in nondecreasing order using insertion sort. The function mutates its input in place and returns nothing.",
     "preconditions": [],
@@ -77,40 +77,72 @@
     {
       "index": 0,
       "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the code snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination.",
+      "lean_statement": "∀ (arr : Array Int), True",
+      "nl_gloss": "No explicit precondition is required beyond having a mutable slice/array; the algorithm works for any length (including 0 and 1).",
       "linked_semantic_units": [],
       "raw_source": "model"
     },
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "True",
-      "nl_gloss": "The Rust reference implementation is not provided in the prompt (the placeholder {{rust_reference}} is not expanded), so the exact computed function cannot be derived. Once the actual Rust code is available, this obligation should state the precise mathematical specification of the output.",
+      "lean_statement": "∀ (arr : Array Int) (i : Nat), i < arr.size → (i = 0 ∨ i > 0) → True",
+      "nl_gloss": "The outer loop iterates i from 1 to arr.len-1, so any access to arr[i] and arr[j-1] is within bounds when the loop conditions hold.",
       "linked_semantic_units": [],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "invariant",
-      "lean_statement": "True",
-      "nl_gloss": "The specific loop/recursion invariants cannot be determined without the actual Rust code. After the Rust code is provided, this obligation should capture the key invariant(s) maintained throughout the algorithm.",
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (i : Nat), i ≤ arr.size →\n  let arr' := (insertion_sort_prefix arr i) in\n  Sorted (arr'.toList) ∧ Permutation arr.toList arr'.toList",
+      "nl_gloss": "After processing indices up to i (i.e., after the outer loop has completed for all k < i), the prefix arr[0..i) is sorted in ascending order, and the multiset of elements in the whole array is unchanged (only swaps occur).",
       "linked_semantic_units": [],
       "raw_source": "model"
     },
     {
       "index": 3,
-      "kind": "termination",
-      "lean_statement": "True",
-      "nl_gloss": "Termination arguments depend on the concrete control flow (loops/recursion) in the Rust code. With the actual implementation, this obligation should prove that the algorithm terminates (e.g., via a decreasing measure).",
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (i j : Nat),\n  i < arr.size → j ≤ i →\n  let arr0 := arr in\n  let arr1 := (insertion_sort_inner_step arr0 i j) in\n  (Permutation arr0.toList arr1.toList) ∧\n  (Sorted ( (arr1.toList).take i )) ∧\n  (∀ k < j, arr1[k] ≤ arr1[k+1])",
+      "nl_gloss": "During the inner while-loop for a fixed i, with current index j, the elements outside the moving window are unchanged up to permutation, and the portion before j remains sorted; the swap step preserves the multiset and moves arr[j] left while maintaining sortedness of the already-processed prefix.",
       "linked_semantic_units": [],
       "raw_source": "model"
     },
     {
       "index": 4,
       "kind": "unknown",
-      "lean_statement": "True",
-      "nl_gloss": "Correctness proof obligations (e.g., that the final result satisfies the functional specification) depend on the algorithm’s details. With the actual Rust code, this obligation should connect the maintained invariants to the postcondition.",
+      "lean_statement": "∀ (arr : Array Int) (i j : Nat), i < arr.size → j ≤ i →\n  (j > 0 ∧ arr[j-1] > arr[j]) →\n  (j-1) < j",
+      "nl_gloss": "The inner loop decreases j by 1 each iteration, so it terminates.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int), True",
+      "nl_gloss": "The outer loop iterates over a finite range i = 1..arr.len-1, so it terminates.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int),\n  let arr' := insertion_sort arr in\n  Permutation arr.toList arr'.toList",
+      "nl_gloss": "Because the implementation only uses swaps, the output array is a permutation of the input (same elements with the same multiplicities).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int),\n  let arr' := insertion_sort arr in\n  Sorted (arr'.toList)",
+      "nl_gloss": "After completion, the entire array is sorted in ascending order.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int), True",
+      "nl_gloss": "No stability property is required or claimed by the implementation; it performs swaps, so only sortedness and permutation are proven.",
       "linked_semantic_units": [],
       "raw_source": "model"
     }

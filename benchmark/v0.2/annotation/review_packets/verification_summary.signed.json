@@ -1,13 +1,13 @@
 {
   "signature": {
     "algorithm": "sha256",
-    "value": "d49047fe5e4869b7b2a3f48198b3be1944533dd640f404b9750d92cad70c7a0a"
+    "value": "88dae5f801a094acae32405e42a3894c58f7eda81b10d1fe3de2aee21f5a4cc7"
   },
   "verification": {
     "benchmark_version": "v0.2",
     "packets_root": "benchmark/v0.2/annotation/review_packets",
     "schema_path": "schemas/review_packet.schema.json",
-    "generated_at": "2026-04-22T22:30:55.3100859Z",
+    "generated_at": "2026-04-22T22:42:31.3228231Z",
     "total_packets": 93,
     "passed_packets": 93,
     "failed_packets": 0,
@@ -16,145 +16,145 @@
         "instance_id": "arrays_binary_search_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_binary_search_001/packet.json",
-        "sha256": "43c482fa79b86386277bdda7908bd7fe18ff05f1938950831351559b5d9c2a03"
+        "sha256": "4806ef755c9dc2d1137a1b5ece494f09bbaed53dc442b2deb498986c20386e43"
       },
       {
         "instance_id": "arrays_binary_search_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_binary_search_002/packet.json",
-        "sha256": "b7c98eed605cc49e33dffab97efc00142731e2e5b92fb2f154b0bed920c64dd1"
+        "sha256": "84c30656b22eaa366ec3f86cce26e94e2908e54df211790f295a047ed830a45b"
       },
       {
         "instance_id": "arrays_max_subarray_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_001/packet.json",
-        "sha256": "0e0959ab687f5edc82a6c68f0a44ff0b6cf73082aefe381e40062af515ce0fb4"
+        "sha256": "933814f507b7d65d22085a3b152a422f95b7d9916cb5cbd8ab12ff257e184243"
       },
       {
         "instance_id": "arrays_max_subarray_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_002/packet.json",
-        "sha256": "2b00f7b0f8fd94bd08b286b968f1764446e8ccd80e4c98cec35ebaccea383ab6"
+        "sha256": "7febf9e2741e1cffbd325f37c2a4b5beae47b8cc7a5ac37eadc095812434afc0"
       },
       {
         "instance_id": "dp_knapsack_01_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_001/packet.json",
-        "sha256": "e7755854fd6cdcf276a76873568ac80d3e44fc6af35a9dc09d09e64490c6f568"
+        "sha256": "a428fe30730d006c58f957f39a4ebbeab7ae7c48e3982ba1369921a50c2dd8d4"
       },
       {
         "instance_id": "dp_knapsack_01_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_002/packet.json",
-        "sha256": "41fa7ab74c3c72e3be1e7c0fc37551b9523fe05ba962733df321bed1b3b8c5c9"
+        "sha256": "9c2f9ac77523fc897da22ed3b3f72a2da0992a6d5b5f69f73fe3d347c8c88d3e"
       },
       {
         "instance_id": "dp_longest_common_subsequence_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_longest_common_subsequence_001/packet.json",
-        "sha256": "55cdeaeec665460cbd69f9f6c3bbf8b38ba3d3e5f9cdec108c9c0e9d390c9295"
+        "sha256": "4c5a3043b4241ac67cd724a928ea2d81bb089efaf755e4c5629e4737d952f7e6"
       },
       {
         "instance_id": "dp_longest_common_subsequence_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_longest_common_subsequence_002/packet.json",
-        "sha256": "af4166917c27c52d3fd8106a172c0c18c205a2ffbd59d4de3abdd913502d57dc"
+        "sha256": "4dd93c3fb9e7d6622aabbfff29cff293f46d143f0b2978aae05d4d77024eade4"
       },
       {
         "instance_id": "graph_bfs_shortest_path_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_bfs_shortest_path_001/packet.json",
-        "sha256": "71b9235a7b1b2f978578678dbd14dd00fc587d7d2104aec3167b1bf4fc359358"
+        "sha256": "98d225d24350ec529f48f3ea8259fe930d7e8e03b38288479d5d60ff11d4ce58"
       },
       {
         "instance_id": "graph_bfs_shortest_path_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_bfs_shortest_path_002/packet.json",
-        "sha256": "180260c2a73bccf2e8b189a9691d1c845b09b734c6851d76abf4009ab16fabd0"
+        "sha256": "d1eee0a9647b1eec35db40b962be335326d93a44ec867f2e0d8730367f8346d3"
       },
       {
         "instance_id": "graph_dijkstra_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_001/packet.json",
-        "sha256": "f336c805c9900342ab326e7a6cff6798d171531bda6ac2d30ebe1e284f3c83af"
+        "sha256": "80bf09d8b86a140f1f166209a85c70da4b6764982ac1effdb93ba8d51f97698c"
       },
       {
         "instance_id": "graph_dijkstra_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_002/packet.json",
-        "sha256": "d0e1569f480a3e88d0a4fcabde03a025066fc3029c7814a81c283e83ced3de75"
+        "sha256": "08cb02268f3919d0a351b71f92996ee97ec0749e1c6ef8a343068eef5a80b947"
       },
       {
         "instance_id": "greedy_coin_change_canonical_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_coin_change_canonical_001/packet.json",
-        "sha256": "1f737409427c3c9d50f348294a83a4de017e71d278c47311955650e4ee027758"
+        "sha256": "c7dde1b4ede472629af1fc3ce6a1a971417d61c8942e5cfb6c32d8cf880bd99b"
       },
       {
         "instance_id": "greedy_coin_change_canonical_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_coin_change_canonical_002/packet.json",
-        "sha256": "d5fa11939e425be313e9cc1ec759499fdbc626f10426f4519634c2cfb40f5a98"
+        "sha256": "0709a5ca3854726eeb258fd011370ff123f693e31bc2aa91e8afaf72a4675362"
       },
       {
         "instance_id": "greedy_interval_scheduling_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_001/packet.json",
-        "sha256": "808d3025aa4b1676a1b6611d6c323e3cd7291904f0f8e3da1150ed598ca99ac2"
+        "sha256": "c209dc0f3c69d046b16795b1a5a841d193acaebf4213c7919a79c2be9be01a61"
       },
       {
         "instance_id": "greedy_interval_scheduling_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_002/packet.json",
-        "sha256": "b97fd473a56c09349c5a1992a91ff411b0d83d79297dba6475cc347a9ee7269f"
+        "sha256": "d35fffcb7351eaa4598fe68b752f2dec9b4067345777a2bd3d538e9b3d2f25b0"
       },
       {
         "instance_id": "sorting_insertion_sort_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_001/packet.json",
-        "sha256": "2592c9f8fac30fd89cc35881e2e547a32cc042b3122527a0e1239638d7e00acf"
+        "sha256": "dba2ddbc71a854f7b26bad5f817eacdad5a04c05d55ac744968eb6f69f3b92c9"
       },
       {
         "instance_id": "sorting_insertion_sort_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/packet.json",
-        "sha256": "1eeabe7cb03d6589945107a9a61edcb10f81b43870f52aa42722387dddb83a47"
+        "sha256": "e190d95965c5221de64e8b9345cad2421f90b376adda77ed035770db265f1766"
       },
       {
         "instance_id": "sorting_merge_sort_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_merge_sort_001/packet.json",
-        "sha256": "3173713fac640fbbb15a3368d43db2827c48b9ad20ec8b73f9aa11764e5e68d4"
+        "sha256": "96e89d6d31410b22bbc187f60211a8118ecd2af1ac313a2f72c3dc5ae2b56766"
       },
       {
         "instance_id": "sorting_merge_sort_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_merge_sort_002/packet.json",
-        "sha256": "70866694093cdf65fab7d98248a38c8f3c0733adaa89c203d0f1a33879ed7844"
+        "sha256": "2c6e8f50d0c8ad24b64b2ff7125df93cc862976d969c2b1e46b9a01893bd5def"
       },
       {
         "instance_id": "trees_bst_insert_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_bst_insert_001/packet.json",
-        "sha256": "63a7e718721be66577d26e6f736ba862ca4129006edb541f7a92147c783d1ce4"
+        "sha256": "bcada24a35a31ee1b1bb9054a5f73c27ce3991d2dec0d7267502dbcf36e34ba3"
       },
       {
         "instance_id": "trees_bst_insert_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_bst_insert_002/packet.json",
-        "sha256": "b0a222c334c7581bb68f4e7d24734d327d80591595966fedb92f7dbee5566176"
+        "sha256": "00953b957f09dbeba25d7e2bd0d1a8f7ff7dd3cebb42dd042e3c04dbaf909ff5"
       },
       {
         "instance_id": "trees_lowest_common_ancestor_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_lowest_common_ancestor_001/packet.json",
-        "sha256": "9a1ec4f0084c89bf1c41100bd203630e0cd6b684afe9e96429c5c7d9e13d6814"
+        "sha256": "800c2ab9709242ec1ba8e2ce29e42ce0f9777eba877ed74bed129c098be33cc1"
       },
       {
         "instance_id": "trees_lowest_common_ancestor_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_lowest_common_ancestor_002/packet.json",
-        "sha256": "2f5d0fd423c606a501bbcbf5795d4101947037ad77f35873a89fc9b0af1d8dc5"
+        "sha256": "1f786f3c3c44fce490138a564ecc8b03b380ccc02050c04010b31fa4718e9402"
       },
       {
         "instance_id": "arrays_binary_search_001",

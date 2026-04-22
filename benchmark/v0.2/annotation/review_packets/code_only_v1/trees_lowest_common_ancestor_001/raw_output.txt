@@ -1,1 +1,54 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are stated in the provided Rust reference implementation (the snippet placeholder contains no code to extract requirements from)."},{"kind":"functional_spec","lean_statement":"True","nl_gloss":"The Rust reference implementation content was not provided (it appears as a placeholder `{{rust_reference}}`), so the exact computed function cannot be derived. This obligation represents the need to state the intended input/output relation once the actual code is available."},{"kind":"termination","lean_statement":"True","nl_gloss":"No termination argument can be extracted without the actual Rust code. This obligation represents proving that the algorithm terminates (e.g., via structural recursion or a decreasing measure) once the code is known."},{"kind":"correctness_invariant","lean_statement":"True","nl_gloss":"No loop/recursion invariants can be extracted without the actual Rust code. This obligation represents identifying and proving the key invariant(s) that imply correctness."},{"kind":"postcondition","lean_statement":"True","nl_gloss":"No postcondition can be extracted without the actual Rust code. This obligation represents proving that the returned result satisfies the specification derived from the algorithm once the code is available."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (tree : Tree) (p q : Int),\n  (∃ t : Tree, t = tree) → True",
+      "nl_gloss": "No explicit precondition is asserted in the code, but the module comment states: both keys are present in the tree. We will capture this as a separate correctness obligation below."
+    },
+    {
+      "kind": "key-ordering",
+      "lean_statement": "let lo : Int := if p ≤ q then p else q\nlet hi : Int := if p ≤ q then q else p\nin lo ≤ hi ∧ (lo = min p q) ∧ (hi = max p q)",
+      "nl_gloss": "The implementation normalizes the inputs so that lo = min(p,q) and hi = max(p,q), ensuring lo ≤ hi."
+    },
+    {
+      "kind": "bst_property_needed",
+      "lean_statement": "∀ (tree : Tree),\n  BST tree →\n  ∀ (x : Int),\n    x ∈ keys tree →\n    (match tree with\n     | Nil => False\n     | Node l k r =>\n         (x = k ∨ (x < k ∧ x ∈ keys l) ∨ (x > k ∧ x ∈ keys r)))",
+      "nl_gloss": "To justify the branch decisions (go left if hi < k, go right if lo > k), we need the tree to satisfy the BST ordering: all keys in the left subtree are < k and all keys in the right subtree are > k."
+    },
+    {
+      "kind": "search-invariant",
+      "lean_statement": "∀ (tree : Tree) (p q : Int),\n  let lo := min p q\n  let hi := max p q\n  in\n  ∀ (cur : Tree),\n    cur ∈ subtree tree →\n    (p ∈ keys cur ∧ q ∈ keys cur) →\n    (match cur with\n     | Nil => False\n     | Node left k right =>\n         (if hi < k then (p ∈ keys left ∧ q ∈ keys left)\n          else if lo > k then (p ∈ keys right ∧ q ∈ keys right)\n          else (lo ≤ k ∧ k ≤ hi)))",
+      "nl_gloss": "At each step, assuming both keys are still in the current subtree, the BST property implies: if hi < k then both keys must be in the left subtree; if lo > k then both keys must be in the right subtree; otherwise k lies between lo and hi."
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "∀ (tree : Tree) (p q : Int),\n  let lo := min p q\n  let hi := max p q\n  in\n  ∀ (cur : Tree),\n    cur ∈ subtree tree →\n    (∃ n : Nat,\n      runSteps tree p q n = Some (lca_bst tree p q))",
+      "nl_gloss": "The loop terminates by descending the tree: each iteration moves to a strict subtree (left or right) and eventually reaches Nil or returns Some(k)."
+    },
+    {
+      "kind": "soundness (returned key is a common ancestor)",
+      "lean_statement": "∀ (tree : Tree) (p q : Int) (r : Int),\n  BST tree →\n  lca_bst tree p q = some r →\n  r ∈ keys tree ∧\n  (r isAncestorOf tree p) ∧\n  (r isAncestorOf tree q)",
+      "nl_gloss": "If the function returns Some r, then r is a key in the tree and is an ancestor of both p and q."
+    },
+    {
+      "kind": "completeness (if both keys exist, it returns Some)",
+      "lean_statement": "∀ (tree : Tree) (p q : Int),\n  BST tree →\n  p ∈ keys tree →\n  q ∈ keys tree →\n  ∃ r : Int, lca_bst tree p q = some r",
+      "nl_gloss": "Under the documented assumption that both keys are present in the BST, the search will not fall off the tree and will return Some."
+    },
+    {
+      "kind": "minimality (returned key is the lowest common ancestor)",
+      "lean_statement": "∀ (tree : Tree) (p q r : Int),\n  BST tree →\n  lca_bst tree p q = some r →\n  (r isAncestorOf tree p ∧ r isAncestorOf tree q) ∧\n  ∀ (s : Int),\n    s ≠ r →\n    (s isAncestorOf tree p ∧ s isAncestorOf tree q) →\n    (depth tree s < depth tree r)",
+      "nl_gloss": "The returned key r is the lowest (deepest) node that is a common ancestor of p and q."
+    },
+    {
+      "kind": "branch correctness (when it returns Some k, k lies between lo and hi)",
+      "lean_statement": "∀ (tree : Tree) (p q : Int) (k : Int),\n  BST tree →\n  lca_bst tree p q = some k →\n  min p q ≤ k ∧ k ≤ max p q",
+      "nl_gloss": "Because the algorithm returns when lo ≤ k ≤ hi at some node, the returned key must lie between the two query keys."
+    },
+    {
+      "kind": "Nil behavior",
+      "lean_statement": "∀ (p q : Int),\n  lca_bst Nil p q = none",
+      "nl_gloss": "If the tree is empty, the function returns None."
+    }
+  ]
+}

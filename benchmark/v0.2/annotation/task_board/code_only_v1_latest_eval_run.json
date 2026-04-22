@@ -1,0 +1,7 @@
+{
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "pairs_file": "benchmark/v0.2/annotation/task_board/code_only_v1_eval_packet_pairs.json",
+  "split": "benchmark/v0.2/splits/eval.json",
+  "provider": "openai",
+  "note": "Canonical eval-wide code_only_v1 generation for review packet refresh; run_id is chosen to sort after prior smoke run ids under annotate build-review-packets resolution (reverse lexicographic among runs/*_eval_* matching the system id)."
+}

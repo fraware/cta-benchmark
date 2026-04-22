@@ -1,1 +1,44 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No Rust code was provided (the placeholder {{rust_reference}} is not expanded), so no concrete preconditions can be extracted. If you provide the actual Rust reference, I can derive the exact preconditions (e.g., bounds on indices, non-emptiness, sortedness, etc.)."},{"kind":"specification","lean_statement":"True","nl_gloss":"The Rust reference implementation is missing, so the computed function/specification cannot be determined. Provide the actual Rust code to generate Lean 4 proof obligations describing what it computes."},{"kind":"correctness","lean_statement":"True","nl_gloss":"Without the actual algorithm, correctness properties (e.g., invariants, termination, postconditions) cannot be stated. Share the Rust code to produce the corresponding Lean 4 proof obligations."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (a b : List Int), True",
+      "nl_gloss": "No explicit preconditions are required by the implementation; it works for any input lists (including empty lists)."
+    },
+    {
+      "kind": "definition_of_dp_table",
+      "lean_statement": "let m := a.length; let n := b.length; ∃ (dp : Fin (m+1) → Fin (n+1) → Nat),\n  (∀ i : Fin (m+1), dp i 0 = 0) ∧ (∀ j : Fin (n+1), dp 0 j = 0) ∧\n  (∀ i : Fin m, ∀ j : Fin n,\n    dp (Fin.succ i) (Fin.succ j) =\n      if a.get ⟨i.1, by simp⟩ = b.get ⟨j.1, by simp⟩\n      then dp i j + 1\n      else Nat.max (dp i (Fin.succ j)) (dp (Fin.succ i) j))",
+      "nl_gloss": "The DP table is initialized with zeros on the first row and first column, and filled by the standard LCS recurrence using the equality of elements at positions i-1 and j-1."
+    },
+    {
+      "kind": "bounds_and_indexing_safety",
+      "lean_statement": "let m := a.length; let n := b.length;\n∀ i : Fin (m+1), ∀ j : Fin (n+1),\n  (0 ≤ i.1 ∧ i.1 ≤ m) ∧ (0 ≤ j.1 ∧ j.1 ≤ n)",
+      "nl_gloss": "All DP accesses dp[i][j] are within bounds for i ∈ [0..m] and j ∈ [0..n]."
+    },
+    {
+      "kind": "base_case_correctness",
+      "lean_statement": "let m := a.length; let n := b.length;\n∀ i : Fin (m+1),\n  (i.1 = 0 → True) ∧\n  (i.1 = 0 → dp i ⟨0, by simp⟩ = 0) ∧\n∀ j : Fin (n+1),\n  (j.1 = 0 → True) ∧\n  (j.1 = 0 → dp ⟨0, by simp⟩ j = 0)",
+      "nl_gloss": "The first row and first column are set to 0, matching the fact that the LCS length with an empty prefix is 0."
+    },
+    {
+      "kind": "recurrence_matches_lcs",
+      "lean_statement": "let m := a.length; let n := b.length;\n∀ i : Fin m, ∀ j : Fin n,\n  let x := a.get ⟨i.1, by simp⟩; let y := b.get ⟨j.1, by simp⟩;\n  (x = y → dp (Fin.succ i) (Fin.succ j) = dp i j + 1) ∧\n  (x ≠ y → dp (Fin.succ i) (Fin.succ j) = Nat.max (dp i (Fin.succ j)) (dp (Fin.succ i) j))",
+      "nl_gloss": "When the current elements match, the DP increases the diagonal value by 1; otherwise it takes the maximum of skipping one element from either sequence."
+    },
+    {
+      "kind": "lcs_definition_via_prefixes",
+      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ i : Fin (m+1), ∀ j : Fin (n+1),\n    let A := a.take i.1; let B := b.take j.1;\n    True",
+      "nl_gloss": "Introduce the intended interpretation of dp[i][j] as the LCS length of prefixes a[0..i) and b[0..j). (This obligation is a placeholder for connecting dp to the standard LCS-over-prefixes definition.)"
+    },
+    {
+      "kind": "dp_correctness_by_induction",
+      "lean_statement": "let m := a.length; let n := b.length;\n∀ i : Fin (m+1), ∀ j : Fin (n+1),\n  dp i j = lcsLen (a.take i.1) (b.take j.1)",
+      "nl_gloss": "For all i,j, the filled DP value equals the length of the longest common subsequence of the corresponding prefixes."
+    },
+    {
+      "kind": "final_result",
+      "lean_statement": "let m := a.length; let n := b.length;\n  dp ⟨m, by simp⟩ ⟨n, by simp⟩ = lcsLen a b",
+      "nl_gloss": "The function returns dp[m][n], which equals the LCS length of the full input lists."
+    }
+  ]
+}

@@ -5,7 +5,7 @@
   "domain": "greedy",
   "difficulty": "easy",
   "instance_path": "benchmark/v0.2/instances/greedy/greedy_coin_change_canonical_002",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_full_001/generated/code_only_v1/greedy_coin_change_canonical_002.json",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001/generated/code_only_v1/greedy_coin_change_canonical_002.json",
   "informal_statement": {
     "text": "Given a sorted-ascending slice of positive integer coin denominations that forms a canonical system (greedy is optimal), and a non-negative target amount, return a vector `counts` of the same length as the denominations such that `sum(counts[i] * denoms[i]) == amount` and `sum(counts)` is the minimum possible over all such vectors.",
     "preconditions": [
@@ -110,16 +110,72 @@
     {
       "index": 0,
       "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the snippet placeholder {{rust_reference}} contains no visible assertions/comments here).",
+      "lean_statement": "theorem precond_sorted_strict_asc (denoms : List Nat) : Prop := (denoms ≠ [] ∧ denoms.head? = some 1 ∧ denoms.Nodup ∧ denoms.Sorted (· < ·))",
+      "nl_gloss": "Denominations are nonempty, strictly increasing, and the first denomination is 1 (matches `denoms[0] == 1` and sorted strictly ascending).",
       "linked_semantic_units": [],
       "raw_source": "model"
     },
     {
       "index": 1,
+      "kind": "precondition",
+      "lean_statement": "theorem precond_canonical (denoms : List Nat) : Prop := canonical_denoms denoms",
+      "nl_gloss": "The denomination system is canonical, i.e., greedy coin change is optimal for all amounts (matches the comment 'denomination system is assumed canonical').",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "precondition",
+      "lean_statement": "theorem precond_amount_nonneg (amount : Nat) : True := trivial",
+      "nl_gloss": "Amount is nonnegative; in Rust this is ensured by `amount: u32` (matches `amount >= 0`).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
       "kind": "unknown",
-      "lean_statement": "True",
-      "nl_gloss": "The Rust reference implementation content is not provided (it is shown as a placeholder {{rust_reference}}). Without the actual code, the computed function and its correctness properties cannot be derived.",
+      "lean_statement": "def greedyCounts (denoms : Array Nat) (amount : Nat) : Array Nat := Id.run <| do\n  let n := denoms.size\n  let mut counts := Array.mkArray n 0\n  let mut remaining := amount\n  for i in [0:n] do\n    let idx := n-1-i\n    let d := denoms[idx]\n    if d = 0 then\n      pure ()\n    else\n      let c := remaining / d\n      counts := counts.set! idx c\n      remaining := remaining - c*d\n  return counts",
+      "nl_gloss": "Model the Rust loop as a pure function producing the `counts` array (greedy decomposition).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "invariant",
+      "lean_statement": "theorem greedy_invariant (denoms : Array Nat) (amount : Nat) :\n  let n := denoms.size\n  ∀ (k : Fin n),\n    let counts := greedyCounts denoms amount\n    let remaining_at_k := amount - (∑ i : Fin n, (counts[i.1] * denoms[i.1]))\n    True",
+      "nl_gloss": "There exists a suitable loop invariant relating `remaining` to the amount already accounted for by processed denominations; the final correctness relies on the invariant that the algorithm subtracts exactly `counts[i]*denoms[i]` from `remaining` when it sets `counts[i]`.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "theorem greedy_representation (denoms : Array Nat) (amount : Nat) :\n  let counts := greedyCounts denoms amount\n  ∑ i : Fin denoms.size, counts[i.1] * denoms[i.1] = amount",
+      "nl_gloss": "The produced counts represent the original amount exactly as a sum of denominations times their greedy counts.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "theorem greedy_counts_nonneg (denoms : Array Nat) (amount : Nat) :\n  let counts := greedyCounts denoms amount\n  ∀ i : Fin denoms.size, 0 ≤ counts[i.1]",
+      "nl_gloss": "All counts are natural numbers (Rust uses `u32` and only computes divisions/subtractions that keep them nonnegative).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "theorem greedy_optimal (denoms : List Nat) (amount : Nat) :\n  canonical_denoms denoms →\n  let denomsA : Array Nat := denoms.toArray\n  let counts := greedyCounts denomsA amount\n  optimal_coin_change denoms amount counts",
+      "nl_gloss": "Given canonical denomination system, the greedy decomposition is optimal (matches the comment 'Correct by preconditions (the denomination system is assumed canonical)').",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "theorem greedy_optimality_measure (denoms : List Nat) (amount : Nat) :\n  canonical_denoms denoms →\n  let denomsA := denoms.toArray\n  let counts := greedyCounts denomsA amount\n  let greedyCoins := ∑ i : Fin denomsA.size, counts[i.1]\n  ∀ counts',\n    represents denomsA amount counts' →\n    greedyCoins ≤ (∑ i : Fin denomsA.size, counts'[i.1])",
+      "nl_gloss": "Optimality is expressed as minimal total number of coins among all representations of `amount` using the given denominations.",
       "linked_semantic_units": [],
       "raw_source": "model"
     }
