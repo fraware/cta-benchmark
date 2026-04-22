@@ -1,7 +1,7 @@
 {
   "schema_version": "schema_v1",
   "experiment_id": "benchmark_v1",
-  "benchmark_version": "v0.1",
+  "benchmark_version": "v0.2",
   "split": "eval",
   "systems": [
     "text_only_v1",
@@ -18,6 +18,7 @@
     "temperature": 0.0,
     "max_tokens": 2048
   },
-  "annotation_pack": "benchmark/v0.1/annotation/adjudicated_subset/pack.json",
-  "notes": "Full benchmark eval. Three seeds per (system, provider, instance) triple. Results feed paper-ready tables and figures."
+  "annotation_pack": "benchmark/v0.2/annotation/adjudicated_subset/pack.json",
+  "require_full_annotation_coverage": true,
+  "notes": "Paper benchmark eval on v0.2. Three seeds per (system, provider, instance) triple. Requires full annotation-pack coverage."
 }

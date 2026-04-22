@@ -1,6 +1,6 @@
 {
   "name": "openai",
-  "model": "gpt-5.4-medium",
+  "model": "gpt-5.4-nano",
   "endpoint": "https://api.openai.com/v1/chat/completions",
   "auth_env": "OPENAI_API_KEY",
   "request_defaults": {

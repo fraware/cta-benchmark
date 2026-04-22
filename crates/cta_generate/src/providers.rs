@@ -169,16 +169,23 @@ impl OpenAiProvider {
     /// HTTP integration.
     #[must_use]
     pub fn build_request_body(&self, req: &ProviderRequest) -> serde_json::Value {
-        serde_json::json!({
+        let mut body = serde_json::json!({
             "model": self.config.model,
             "messages": [
                 { "role": "user", "content": req.prompt }
             ],
             "temperature": req.temperature,
-            "max_tokens": req.max_tokens,
             "seed": req.seed,
             "response_format": { "type": "json_object" }
-        })
+        });
+        // Newer GPT-5-family chat models expect `max_completion_tokens`
+        // rather than `max_tokens`.
+        if self.config.model.starts_with("gpt-5") {
+            body["max_completion_tokens"] = serde_json::json!(req.max_tokens);
+        } else {
+            body["max_tokens"] = serde_json::json!(req.max_tokens);
+        }
+        body
     }
 }
 

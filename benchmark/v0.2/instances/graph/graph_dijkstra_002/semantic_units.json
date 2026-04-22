@@ -1,0 +1,46 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "graph_dijkstra_002",
+  "benchmark_version": "v0.2",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: every edge's endpoints lie in [0, n) and every weight is non-negative.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU2",
+      "description": "Size: the returned dist vector has length n.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU3",
+      "description": "Source: dist[source] == Some(0).",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU4",
+      "description": "Achievability: if dist[v] == Some(d), there exists a path from source to v with total weight d.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU5",
+      "description": "Optimality: if dist[v] == Some(d), no path from source to v has total weight less than d.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only a weaker existence claim",
+        "asserting only on the shortest-path tree edges"
+      ]
+    },
+    {
+      "id": "SU6",
+      "description": "Unreachability: if dist[v] == None, there is no path from source to v.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU7",
+      "description": "Termination on every valid input.",
+      "criticality": "supporting"
+    }
+  ]
+}

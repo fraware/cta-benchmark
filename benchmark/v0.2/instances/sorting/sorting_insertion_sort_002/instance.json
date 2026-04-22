@@ -1,0 +1,41 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "sorting_insertion_sort_002",
+  "title": "Insertion sort on integer slices",
+  "domain": "sorting",
+  "difficulty": "easy",
+  "benchmark_version": "v0.2",
+  "informal_statement": {
+    "text": "Sort a mutable slice of integers in nondecreasing order using insertion sort. The function mutates its input in place and returns nothing.",
+    "preconditions": [],
+    "required_properties": [
+      "the resulting slice is sorted in nondecreasing order",
+      "the resulting slice is a permutation of the original slice",
+      "the function terminates on every input"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice",
+      "already-sorted slice",
+      "reverse-sorted slice",
+      "slice with duplicates",
+      "slice with all equal elements"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/sorting/sorting_insertion_sort_002/reference.rs",
+    "entry_fn": "insertion_sort"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/sorting/sorting_insertion_sort_002/scaffold.lean",
+    "namespace": "CTA.Benchmark.Sorting.InsertionSort002",
+    "reference_obligations_path": "instances/sorting/sorting_insertion_sort_002/reference_obligations.json",
+    "semantic_units_path": "instances/sorting/sorting_insertion_sort_002/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/sorting/sorting_insertion_sort_002/harness.json"
+  }
+}

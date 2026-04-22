@@ -2,8 +2,10 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result};
 use clap::Args;
-use cta_benchmark::load_benchmark;
-use cta_core::BenchmarkVersion;
+use cta_benchmark::{
+    load_benchmark, load_experiment_summaries, load_manifest, load_splits, validate_release,
+};
+use cta_core::{BenchmarkVersion, MetricsVersion, RubricVersion};
 use cta_schema::{SchemaName, SchemaRegistry};
 use walkdir::WalkDir;
 
@@ -66,6 +68,15 @@ pub struct BenchmarkArgs {
     /// Benchmark version, e.g. `v0.1`.
     #[arg(long, default_value = "v0.1", value_parser = crate::parse_bench_version)]
     pub version: BenchmarkVersion,
+    /// Also run release-coherence checks (splits/manifest/experiments).
+    #[arg(long, default_value_t = false)]
+    pub release: bool,
+    /// Rubric version used when recomputing the manifest during `--release`.
+    #[arg(long, default_value = "rubric_v1")]
+    pub rubric: String,
+    /// Metrics version used when recomputing the manifest during `--release`.
+    #[arg(long, default_value = cta_metrics::METRICS_VERSION)]
+    pub metrics: String,
 }
 
 pub fn benchmark(workspace: &Path, args: BenchmarkArgs) -> Result<()> {
@@ -120,6 +131,47 @@ pub fn benchmark(workspace: &Path, args: BenchmarkArgs) -> Result<()> {
     if failures > 0 {
         anyhow::bail!("{failures} validation failure(s)");
     }
+
+    if args.release {
+        let splits = load_splits(&bench_root, &args.version)
+            .with_context(|| format!("loading splits under {}", bench_root.display()))?;
+        let manifest = load_manifest(&bench_root)
+            .with_context(|| format!("loading manifest under {}", bench_root.display()))?;
+        let (experiments, parse_issues) = load_experiment_summaries(workspace)
+            .with_context(|| "loading experiment configs under configs/experiments/")?;
+        let rubric = RubricVersion::new(args.rubric.clone())
+            .map_err(|e| anyhow::anyhow!("invalid rubric version: {e}"))?;
+        let metrics = MetricsVersion::new(args.metrics.clone())
+            .map_err(|e| anyhow::anyhow!("invalid metrics version: {e}"))?;
+        let ctx = cta_benchmark::ReleaseCheckContext {
+            workspace_root: workspace,
+            benchmark: &bench,
+            splits: &splits,
+            manifest: manifest.as_ref(),
+            experiments: &experiments,
+            rubric_version: &rubric,
+            metrics_version: &metrics,
+        };
+        let release_report = validate_release(&ctx);
+        let mut release_issues = parse_issues;
+        release_issues.extend(release_report.issues.into_iter());
+        if !release_issues.is_empty() {
+            for issue in &release_issues {
+                eprintln!(
+                    "[{}] {} {}: {}",
+                    issue.severity, issue.code, issue.instance_id, issue.message
+                );
+            }
+        }
+        let release_errors = release_issues
+            .iter()
+            .filter(|i| i.severity == cta_benchmark::LintSeverity::Error)
+            .count();
+        if release_errors > 0 {
+            anyhow::bail!("{release_errors} release validation error(s)");
+        }
+    }
+
     println!(
         "ok: validated {} instance(s) under {}",
         bench.len(),

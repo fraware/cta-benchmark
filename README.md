@@ -21,7 +21,7 @@ theorem proving." It is a benchmark and baseline system for generating Lean
 obligations from text plus code, then measuring elaboration, semantic
 faithfulness, code consistency, vacuity, and proof utility.
 
-## Non-goals (v0.1)
+## Non-goals
 
 - No general-purpose IDE plugin
 - No attempt to verify arbitrary unsafe Rust
@@ -41,7 +41,8 @@ cta-benchmark/
 ├── configs/                # Versioned providers / prompts / experiments / metrics
 ├── schemas/                # JSON schemas (authoritative)
 ├── benchmark/
-│   └── v0.1/               # Versioned benchmark artifacts (immutable)
+│   ├── v0.1/               # Pilot benchmark artifacts (immutable)
+│   └── v0.2/               # Paper-track benchmark artifacts (in progress)
 ├── lean/                   # Lean 4 project (scaffolds, generated, proofs)
 ├── crates/                 # Rust crates (see below)
 ├── runs/                   # Immutable per-run output directories
@@ -89,41 +90,42 @@ cargo test --workspace --doc
 ```bash
 # Schema + benchmark validation
 cargo run -p cta_cli -- validate schemas
-cargo run -p cta_cli -- validate benchmark --version v0.1
+cargo run -p cta_cli -- validate benchmark --version v0.2
+cargo run -p cta_cli -- validate benchmark --version v0.2 --release
 cargo run -p cta_cli -- validate file --schema run_manifest --path runs/<run_id>/run_manifest.json
 
 # Benchmark loader / linter / manifest / summary
-cargo run -p cta_cli -- benchmark lint     --version v0.1
-cargo run -p cta_cli -- benchmark stats    --version v0.1
-cargo run -p cta_cli -- benchmark manifest --version v0.1
+cargo run -p cta_cli -- benchmark lint     --version v0.2
+cargo run -p cta_cli -- benchmark stats    --version v0.2
+cargo run -p cta_cli -- benchmark manifest --version v0.2
 
 # Semantic extractors and per-instance diagnostics
-cargo run -p cta_cli -- extract rust-summary --instance arrays_binary_search_001 --version v0.1
-cargo run -p cta_cli -- behavior check       --instance arrays_binary_search_001 --version v0.1
-cargo run -p cta_cli -- lean check           --file benchmark/v0.1/instances/arrays/arrays_binary_search_001/scaffold.lean
+cargo run -p cta_cli -- extract rust-summary --instance arrays_binary_search_001 --version v0.2
+cargo run -p cta_cli -- behavior check       --instance arrays_binary_search_001 --version v0.2
+cargo run -p cta_cli -- lean check           --file benchmark/v0.2/instances/arrays/arrays_binary_search_001/scaffold.lean
 
 # Single-system generation (stub provider is offline and deterministic)
 cargo run -p cta_cli -- generate \
-  --version v0.1 --split dev --system full_method_v1 \
+  --version v0.2 --split dev --system full_method_v1 \
   --provider configs/providers/local_stub.json
 
 # Annotation pack (reads benchmark/<v>/annotation/adjudicated_subset by default).
 # Add --from-benchmark to write the canonical release-grade pack back into
 # the benchmark tree (benchmark/<v>/annotation/adjudicated_subset/pack.json).
-cargo run -p cta_cli -- annotate pack --version v0.1 --policy prefer-adjudicator
-cargo run -p cta_cli -- annotate pack --version v0.1 --from-benchmark
+cargo run -p cta_cli -- annotate pack --version v0.2 --policy prefer-adjudicator
+cargo run -p cta_cli -- annotate pack --version v0.2 --from-benchmark
 
 # Metrics + reports for a single run directory. Use the benchmark-local
 # pack for paper-reportable numbers; the runs/annotation_packs/ copy is
 # only for ad-hoc adjudication sessions.
 cargo run -p cta_cli -- metrics compute \
   --run <run_id> \
-  --annotations benchmark/v0.1/annotation/adjudicated_subset/pack.json
+  --annotations benchmark/v0.2/annotation/adjudicated_subset/pack.json
 cargo run -p cta_cli -- reports build --run <run_id>
 
 # Config-driven experiment orchestration
 cargo run -p cta_cli -- experiment --config configs/experiments/pilot_v1.json --dry-run
-cargo run -p cta_cli -- experiment --config configs/experiments/pilot_v1.json
+cargo run -p cta_cli -- experiment --config configs/experiments/benchmark_v1_openai_only.json
 ```
 
 ### Lean
@@ -149,6 +151,12 @@ duplicate of `eval`. Adjudicated gold annotations currently cover a
 3-instance subset (one per representative domain) and will expand with
 subsequent releases; paper numbers are only reportable on
 `(instance, system)` pairs present in the pack.
+
+`v0.2` is the paper-track release scaffold. It enforces held-out evaluation
+in release validation (disjoint `dev`/`eval`, `eval` size >= 24 for
+paper-claim eligibility), full annotation coverage for experiments that opt
+into `require_full_annotation_coverage`, and a two-reviewer gold-audit
+signoff file under `benchmark/v0.2/audit/gold_signoff.json`.
 
 Released benchmark instances are **never mutated in place**. Add a new
 version instead. The benchmark linter additionally enforces byte-identity
@@ -178,7 +186,8 @@ Every push runs:
 - `cargo test --workspace --all-targets`
 - `cargo test --workspace --doc`
 - `cta validate schemas`
-- `cta validate benchmark --version v0.1`
+- `cta validate benchmark --version v0.1 --release` (pilot checks)
+- `cta validate benchmark --version v0.2 --release` (paper-track checks)
 - `cta experiment --config configs/experiments/pilot_v1.json --dry-run` and
   the full run against the stub provider, with schema validation of every
   emitted `run_manifest.json` and `results_bundle.json`.
@@ -200,6 +209,7 @@ obligations.
 - `docs/annotation_manual.md` — rubric, adjudication, calibration
 - `docs/evaluation_contract.md` — metric definitions, acceptance criteria
 - `docs/release_process.md` — how to freeze / bump versions
+- `docs/paper_readiness.md` — paper-track release gates and run protocol
 - `SECURITY.md` — reporting vulnerabilities and supply-chain posture
 - `CONTRIBUTING.md` — development loop, coding conventions, PR checklist
 

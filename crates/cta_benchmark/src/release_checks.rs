@@ -45,6 +45,12 @@ pub struct ExperimentConfigSummary {
     pub systems: Vec<String>,
     /// Workspace-relative provider config paths.
     pub providers: Vec<String>,
+    /// Optional workspace-relative annotation pack path.
+    pub annotation_pack: Option<String>,
+    /// If true, release validation requires full (instance, system) coverage
+    /// in the annotation pack for the experiment split.
+    #[serde(default)]
+    pub require_full_annotation_coverage: bool,
     /// Source file path, for reporting.
     #[serde(skip, default)]
     pub source_path: PathBuf,
@@ -86,9 +92,15 @@ pub fn validate_release(ctx: &ReleaseCheckContext<'_>) -> LintReport {
         .map(|(id, _)| id.as_str().to_string())
         .collect();
 
-    check_splits(ctx.splits, &instance_ids, &mut issues);
+    check_splits(
+        ctx.splits,
+        &instance_ids,
+        ctx.benchmark.version.as_str(),
+        &mut issues,
+    );
     check_manifest(ctx, &instance_ids, &mut issues);
     check_experiments(ctx, &mut issues);
+    check_gold_audit_signoff(ctx, &mut issues);
 
     LintReport { issues }
 }
@@ -96,8 +108,10 @@ pub fn validate_release(ctx: &ReleaseCheckContext<'_>) -> LintReport {
 fn check_splits(
     splits: &BTreeMap<SplitName, Split>,
     instance_ids: &BTreeSet<String>,
+    benchmark_version: &str,
     issues: &mut Vec<LintIssue>,
 ) {
+    let is_pilot = benchmark_version == "v0.1";
     for name in SplitName::REQUIRED {
         if !splits.contains_key(name) {
             issues.push(LintIssue {
@@ -154,6 +168,66 @@ fn check_splits(
                 code: "SPLIT_EMPTY_EVAL",
                 message: "eval split is empty; a released benchmark must have a non-empty eval"
                     .to_string(),
+                path: Some(eval.source_path.clone()),
+            });
+        }
+        if !is_pilot && eval.len() < 24 {
+            issues.push(LintIssue {
+                instance_id: "<global>".to_string(),
+                severity: LintSeverity::Error,
+                code: "SPLIT_EVAL_TOO_SMALL",
+                message: format!(
+                    "eval split has {} instance(s); non-pilot paper releases require at least 24",
+                    eval.len()
+                ),
+                path: Some(eval.source_path.clone()),
+            });
+        }
+    }
+
+    if let (Some(dev), Some(eval)) = (splits.get(&SplitName::Dev), splits.get(&SplitName::Eval)) {
+        let dev_ids: BTreeSet<&str> = dev.instance_ids.iter().map(|id| id.as_str()).collect();
+        let eval_ids: BTreeSet<&str> = eval.instance_ids.iter().map(|id| id.as_str()).collect();
+        let overlap = dev_ids.intersection(&eval_ids).count();
+        let is_identical = dev_ids == eval_ids;
+        // v0.1 is explicitly a pilot release where dev/eval duplication is
+        // permitted. For later releases, identical splits are treated as an
+        // error to enforce held-out evaluation.
+        if is_identical {
+            issues.push(LintIssue {
+                instance_id: "<global>".to_string(),
+                severity: if is_pilot {
+                    LintSeverity::Warning
+                } else {
+                    LintSeverity::Error
+                },
+                code: "SPLIT_DEV_EVAL_IDENTICAL",
+                message: if is_pilot {
+                    "dev and eval contain identical instance sets; allowed for pilot v0.1 only"
+                        .to_string()
+                } else {
+                    "dev and eval contain identical instance sets; non-pilot releases require held-out eval"
+                        .to_string()
+                },
+                path: Some(eval.source_path.clone()),
+            });
+        } else if overlap > 0 {
+            issues.push(LintIssue {
+                instance_id: "<global>".to_string(),
+                severity: if is_pilot {
+                    LintSeverity::Warning
+                } else {
+                    LintSeverity::Error
+                },
+                code: "SPLIT_DEV_EVAL_OVERLAP",
+                message: format!(
+                    "dev/eval overlap on {overlap} instance(s){}",
+                    if is_pilot {
+                        "; allowed for pilot but paper releases should be disjoint"
+                    } else {
+                        "; non-pilot paper releases require disjoint held-out eval"
+                    }
+                ),
                 path: Some(eval.source_path.clone()),
             });
         }
@@ -253,6 +327,9 @@ fn check_manifest(
 
 fn check_experiments(ctx: &ReleaseCheckContext<'_>, issues: &mut Vec<LintIssue>) {
     for exp in ctx.experiments {
+        if exp.benchmark_version != ctx.benchmark.version {
+            continue;
+        }
         let Some(name) = SplitName::parse(&exp.split) else {
             issues.push(LintIssue {
                 instance_id: "<global>".to_string(),
@@ -331,7 +408,185 @@ fn check_experiments(ctx: &ReleaseCheckContext<'_>, issues: &mut Vec<LintIssue>)
                 });
             }
         }
+
+        if exp.require_full_annotation_coverage {
+            let Some(pack_path) = &exp.annotation_pack else {
+                issues.push(LintIssue {
+                    instance_id: "<global>".to_string(),
+                    severity: LintSeverity::Error,
+                    code: "EXPERIMENT_ANNOTATION_PACK_REQUIRED",
+                    message: format!(
+                        "experiment '{}' requires full annotation coverage but does not set annotation_pack",
+                        exp.experiment_id
+                    ),
+                    path: Some(exp.source_path.clone()),
+                });
+                continue;
+            };
+            let pack_abs = ctx.workspace_root.join(pack_path);
+            if !pack_abs.is_file() {
+                issues.push(LintIssue {
+                    instance_id: "<global>".to_string(),
+                    severity: LintSeverity::Error,
+                    code: "EXPERIMENT_REFERENCES_MISSING_ANNOTATION_PACK",
+                    message: format!(
+                        "experiment '{exp}' references annotation pack '{pack}' but {abs} is missing",
+                        exp = exp.experiment_id,
+                        pack = pack_path,
+                        abs = pack_abs.display(),
+                    ),
+                    path: Some(exp.source_path.clone()),
+                });
+                continue;
+            }
+            let Some(split_name) = SplitName::parse(&exp.split) else {
+                continue;
+            };
+            let Some(target_split) = ctx.splits.get(&split_name) else {
+                continue;
+            };
+            let required_pairs: BTreeSet<(String, String)> = target_split
+                .instance_ids
+                .iter()
+                .flat_map(|iid| {
+                    exp.systems
+                        .iter()
+                        .map(move |sys| (iid.as_str().to_string(), sys.to_string()))
+                })
+                .collect();
+            match load_annotation_pairs(&pack_abs) {
+                Ok(available_pairs) => {
+                    let missing: Vec<_> = required_pairs
+                        .difference(&available_pairs)
+                        .take(20)
+                        .cloned()
+                        .collect();
+                    if !missing.is_empty() {
+                        issues.push(LintIssue {
+                            instance_id: "<global>".to_string(),
+                            severity: LintSeverity::Error,
+                            code: "EXPERIMENT_ANNOTATION_COVERAGE_MISSING",
+                            message: format!(
+                                "experiment '{}' annotation pack '{}' is missing {} required (instance,system) pair(s); first missing={missing:?}",
+                                exp.experiment_id,
+                                pack_path,
+                                required_pairs.len().saturating_sub(available_pairs.len())
+                            ),
+                            path: Some(exp.source_path.clone()),
+                        });
+                    }
+                }
+                Err(e) => {
+                    issues.push(LintIssue {
+                        instance_id: "<global>".to_string(),
+                        severity: LintSeverity::Error,
+                        code: "EXPERIMENT_ANNOTATION_PACK_INVALID",
+                        message: format!(
+                            "experiment '{}' annotation pack '{}' could not be parsed: {e}",
+                            exp.experiment_id, pack_path
+                        ),
+                        path: Some(exp.source_path.clone()),
+                    });
+                }
+            }
+        }
     }
+}
+
+#[derive(Debug, Deserialize)]
+struct GoldAuditSignoff {
+    pub benchmark_version: String,
+    pub primary_reviewer: String,
+    pub secondary_reviewer: String,
+    pub approved: bool,
+}
+
+fn check_gold_audit_signoff(ctx: &ReleaseCheckContext<'_>, issues: &mut Vec<LintIssue>) {
+    if ctx.benchmark.version.as_str() == "v0.1" {
+        return;
+    }
+    let signoff_path = ctx
+        .benchmark
+        .root
+        .join("audit")
+        .join("gold_signoff.json");
+    if !signoff_path.is_file() {
+        issues.push(LintIssue {
+            instance_id: "<global>".to_string(),
+            severity: LintSeverity::Error,
+            code: "GOLD_AUDIT_SIGNOFF_MISSING",
+            message: format!(
+                "missing second-reviewer gold audit signoff at {}",
+                signoff_path.display()
+            ),
+            path: Some(signoff_path),
+        });
+        return;
+    }
+    let raw = match std::fs::read_to_string(&signoff_path) {
+        Ok(s) => s,
+        Err(e) => {
+            issues.push(LintIssue {
+                instance_id: "<global>".to_string(),
+                severity: LintSeverity::Error,
+                code: "GOLD_AUDIT_SIGNOFF_INVALID",
+                message: format!("failed to read {}: {e}", signoff_path.display()),
+                path: Some(signoff_path.clone()),
+            });
+            return;
+        }
+    };
+    let signoff: GoldAuditSignoff = match serde_json::from_str(&raw) {
+        Ok(s) => s,
+        Err(e) => {
+            issues.push(LintIssue {
+                instance_id: "<global>".to_string(),
+                severity: LintSeverity::Error,
+                code: "GOLD_AUDIT_SIGNOFF_INVALID",
+                message: format!("failed to parse {}: {e}", signoff_path.display()),
+                path: Some(signoff_path.clone()),
+            });
+            return;
+        }
+    };
+    if signoff.benchmark_version != ctx.benchmark.version.as_str()
+        || signoff.primary_reviewer.trim().is_empty()
+        || signoff.secondary_reviewer.trim().is_empty()
+        || !signoff.approved
+    {
+        issues.push(LintIssue {
+            instance_id: "<global>".to_string(),
+            severity: LintSeverity::Error,
+            code: "GOLD_AUDIT_SIGNOFF_INVALID",
+            message: "gold audit signoff must match benchmark version, name two reviewers, and set approved=true"
+                .to_string(),
+            path: Some(signoff_path),
+        });
+    }
+}
+
+fn load_annotation_pairs(
+    path: &Path,
+) -> Result<BTreeSet<(String, String)>, Box<dyn std::error::Error + Send + Sync>> {
+    let raw = std::fs::read_to_string(path)?;
+    let value: serde_json::Value = serde_json::from_str(&raw)?;
+    let records = value
+        .get("records")
+        .and_then(|v| v.as_array())
+        .ok_or("missing records array")?;
+    let mut out: BTreeSet<(String, String)> = BTreeSet::new();
+    for rec in records {
+        let iid = rec
+            .get("instance_id")
+            .and_then(|v| v.as_str())
+            .ok_or("record missing instance_id")?;
+        let sid = rec
+            .get("system_id")
+            .and_then(|v| v.as_str())
+            .ok_or("record missing system_id")?;
+        out.insert((iid.to_string(), sid.to_string()));
+    }
+    Ok(out)
 }
 
 /// Parse every `configs/experiments/*.json` under a workspace root into

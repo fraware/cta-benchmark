@@ -1,0 +1,23 @@
+{
+  "schema_version": "schema_v1",
+  "experiment_id": "benchmark_v1_openai_only_v1",
+  "benchmark_version": "v0.2",
+  "split": "eval",
+  "systems": [
+    "text_only_v1",
+    "code_only_v1",
+    "naive_concat_v1",
+    "full_method_v1"
+  ],
+  "providers": [
+    "configs/providers/openai.json"
+  ],
+  "seeds": [1, 2, 3],
+  "generation_parameters": {
+    "temperature": 0.0,
+    "max_tokens": 2048
+  },
+  "annotation_pack": "benchmark/v0.2/annotation/adjudicated_subset/pack.json",
+  "require_full_annotation_coverage": true,
+  "notes": "OpenAI-only benchmark campaign while Anthropic credentials are unavailable."
+}

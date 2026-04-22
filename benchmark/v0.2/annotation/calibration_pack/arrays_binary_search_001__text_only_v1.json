@@ -1,0 +1,43 @@
+{
+  "schema_version": "schema_v1",
+  "rubric_version": "rubric_v1",
+  "instance_id": "arrays_binary_search_001",
+  "system_id": "text_only_v1",
+  "annotator_id": "adjudicator",
+  "set_level_scores": {
+    "semantic_faithfulness": 0.67,
+    "code_consistency": 1.0,
+    "vacuity_rate": 0.0,
+    "proof_utility": 0.5
+  },
+  "critical_unit_coverage": {
+    "covered": ["SU1", "SU2"],
+    "missed": ["SU3"]
+  },
+  "generated_obligations": [
+    {
+      "obligation_index": 0,
+      "faithfulness_label": "faithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": ["SU1"],
+      "notes": "Sortedness precondition captured exactly; matches reference post-condition."
+    },
+    {
+      "obligation_index": 1,
+      "faithfulness_label": "faithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": ["SU2"]
+    },
+    {
+      "obligation_index": 2,
+      "faithfulness_label": "partial",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": [],
+      "notes": "States a weak monotonicity hint but omits the index-bounds clause."
+    }
+  ],
+  "annotator_notes": "Use this exemplar to calibrate on `partial` vs `faithful`: the generator hints at the right property but leaves preconditions implicit. SU3 (None-branch postcondition) is genuinely missed."
+}

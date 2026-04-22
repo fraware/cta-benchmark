@@ -1,0 +1,20 @@
+{
+  "schema_version": "schema_v1",
+  "harness_type": "reference_relational",
+  "seed": 2026,
+  "num_trials": 100,
+  "input_generator": {
+    "kind": "random_dag",
+    "min_n": 1,
+    "max_n": 16,
+    "edge_density": 0.35,
+    "weight_range": [0, 50]
+  },
+  "oracle_checks": [
+    "length_equals_n",
+    "source_distance_is_zero",
+    "distances_agree_with_brute_force_bellman_ford",
+    "none_iff_unreachable"
+  ],
+  "timeout_ms": 4000
+}

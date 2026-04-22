@@ -1,0 +1,31 @@
+{
+    "schema_version":  "schema_v1",
+    "benchmark_version":  "v0.2",
+    "split":  "eval",
+    "instance_ids":  [
+                         "arrays_binary_search_001",
+                         "arrays_binary_search_002",
+                         "arrays_max_subarray_001",
+                         "arrays_max_subarray_002",
+                         "dp_knapsack_01_001",
+                         "dp_knapsack_01_002",
+                         "dp_longest_common_subsequence_001",
+                         "dp_longest_common_subsequence_002",
+                         "graph_bfs_shortest_path_001",
+                         "graph_bfs_shortest_path_002",
+                         "graph_dijkstra_001",
+                         "graph_dijkstra_002",
+                         "greedy_coin_change_canonical_001",
+                         "greedy_coin_change_canonical_002",
+                         "greedy_interval_scheduling_001",
+                         "greedy_interval_scheduling_002",
+                         "sorting_insertion_sort_001",
+                         "sorting_insertion_sort_002",
+                         "sorting_merge_sort_001",
+                         "sorting_merge_sort_002",
+                         "trees_bst_insert_001",
+                         "trees_bst_insert_002",
+                         "trees_lowest_common_ancestor_001",
+                         "trees_lowest_common_ancestor_002"
+                     ]
+}

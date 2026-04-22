@@ -45,7 +45,7 @@ jobs:
         run: cargo run -p cta_cli --quiet -- validate schemas
 
       - name: cta validate benchmark v0.1
-        run: cargo run -p cta_cli --quiet -- validate benchmark --version v0.1
+        run: cargo run -p cta_cli --quiet -- validate benchmark --version v0.1 --release
 
       - name: cta experiment dry-run (pilot_v1)
         run: cargo run -p cta_cli --quiet -- experiment --config configs/experiments/pilot_v1.json --dry-run

@@ -5,8 +5,9 @@ Obligation Generation from Rust Reference Code".
 
 ## Contributions
 
-1. A versioned benchmark (`v0.1`) of 12 classical algorithm tasks across
-   six domains (arrays, sorting, graph, greedy, DP, trees), each with
+1. A versioned benchmark: pilot `v0.1` (12 tasks) and paper-track `v0.2`
+   (24 eval tasks) across six domains (arrays, sorting, graph, greedy, DP,
+   trees), each with
    decomposed semantic units, gold reference obligations, a deterministic
    behavioral harness, a Lean scaffold with byte-identity enforced
    between the instance-local copy and the canonical

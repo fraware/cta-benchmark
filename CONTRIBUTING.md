@@ -37,7 +37,8 @@ cargo test --workspace --doc
 
 # 3. schema + benchmark validation
 cargo run -p cta_cli -- validate schemas
-cargo run -p cta_cli -- validate benchmark --version v0.1
+cargo run -p cta_cli -- validate benchmark --version v0.1 --release
+cargo run -p cta_cli -- validate benchmark --version v0.2 --release
 
 # 4. end-to-end experiment smoke test (stub provider, offline)
 cargo run -p cta_cli -- experiment --config configs/experiments/pilot_v1.json --dry-run

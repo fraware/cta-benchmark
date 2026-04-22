@@ -6,7 +6,7 @@ version, and regenerate paper reports.
 ## Freezing `v0.1`
 
 1. Confirm every instance under `benchmark/v0.1/instances/**` passes:
-   - `cta validate benchmark --version v0.1`
+   - `cta validate benchmark --version v0.1 --release`
    - `cta benchmark lint --version v0.1`
 2. Regenerate the benchmark manifest:
    `cta benchmark manifest --version v0.1`.
@@ -24,6 +24,12 @@ version, and regenerate paper reports.
    `splits/*.json`.
 3. Apply changes only within `benchmark/v0.2/`.
 4. Repeat the freeze process for `v0.2`.
+
+Paper-track note: from `v0.2` onward, release validation also enforces
+held-out evaluation (`dev`/`eval` disjoint, `eval` >= 24), full annotation
+coverage for any experiment that sets
+`require_full_annotation_coverage: true`, and a two-reviewer gold audit
+signoff (`benchmark/<version>/audit/gold_signoff.json`).
 
 Rule: never reuse an `instance_id` across versions with different
 semantic content. If an instance changes meaning, give it a new id and

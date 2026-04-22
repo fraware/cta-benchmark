@@ -19,10 +19,11 @@ End-to-end CLI orchestration is additionally exercised by
 `.github/workflows/ci.yml`:
 
 1. `cta validate schemas`
-2. `cta validate benchmark --version v0.1`
-3. `cta experiment --config configs/experiments/pilot_v1.json --dry-run`
-4. `cta experiment --config configs/experiments/pilot_v1.json`
-5. `cta validate file --schema {run_manifest, results_bundle} --path <...>`
+2. `cta validate benchmark --version v0.1 --release`
+3. `cta validate benchmark --version v0.2 --release`
+4. `cta experiment --config configs/experiments/pilot_v1.json --dry-run`
+5. `cta experiment --config configs/experiments/pilot_v1.json`
+6. `cta validate file --schema {run_manifest, results_bundle} --path <...>`
 
 No integration test reaches the network; every provider call goes
 through `StubProvider`, and `OpenAiProvider` / `AnthropicProvider` are

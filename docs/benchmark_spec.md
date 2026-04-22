@@ -60,6 +60,10 @@ Each benchmark version ships the following JSON files under `splits/`:
 For `v0.1` (the pilot release), `dev.json` and `eval.json` both cover all
 12 pilot instances, and `challenge.json` is absent.
 
+For paper-track releases (`v0.2+`), release validation enforces stricter
+policy: `eval` must contain at least 24 instances and `dev`/`eval` must be
+disjoint. See `docs/paper_readiness.md`.
+
 ## Release / versioning
 
 - Every benchmark artifact (`v0.1`, `v0.2`, …) is **immutable once
