@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzz_live_api_001",
   "system_id": "code_only_v1",
   "instance_id": "graph_dijkstra_001",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 1728,
-    "prompt_tokens": 115,
-    "completion_tokens": 64
+    "latency_ms": 13710,
+    "prompt_tokens": 506,
+    "completion_tokens": 1777
   },
   "raw_output_path": "generated/code_only_v1/raw/graph_dijkstra_001.txt",
   "parse_status": {
@@ -18,11 +18,65 @@
   "normalized_obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "True",
-      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the code snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination.",
+      "lean_statement": "theorem dijkstra_preconditions (n source : Nat) (edges : List Edge) :\n  (source < n) ∧ (∀ e ∈ edges, e.src < n ∧ e.dst < n) := by\n  -- proof obligation: the implementation indexes adjacency[e.src], adjacency[e.dst], and dist[source]\n  -- so these bounds must hold for the code to be well-defined.\n  admit",
+      "nl_gloss": "All vertex indices used by the algorithm are within bounds: source < n and for every edge, src and dst are < n. This is required because the code indexes adjacency and dist by these values.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def adjacency (n : Nat) (edges : List Edge) : Fin n → List (Fin n × Nat) :=\n  fun u => edges.filterMap (fun e => if e.src = u.1 then some (⟨e.dst, by omega⟩, e.weight) else none)\n\n-- obligation: adjacency corresponds to the Rust adjacency construction\n-- (push (dst, weight) into adjacency[src]).\n\ntheorem adjacency_correct (n : Nat) (edges : List Edge) (u : Fin n) :\n  adjacency n edges u =\n    (edges.filterMap (fun e => if e.src = u.1 then some (⟨e.dst, by omega⟩, e.weight) else none)) := by\n  rfl",
+      "nl_gloss": "The Lean model of the adjacency list matches the Rust construction: for each edge (src,dst,weight), it is added to adjacency[src] as (dst,weight).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "theorem dist_soundness_invariant\n  (n source : Nat) (edges : List Edge)\n  (dist : Fin n → Option Nat)\n  (heap : List (Nat × Fin n)) :\n  -- Invariant: whenever dist[v] = some d, there exists a path from source to v of total weight d.\n  (∀ v, dist v = some d → ∃ p : List (Fin n),\n    p ≠ [] ∧ p.head? = some source ∧ p.getLast? = some v ∧\n    path_weight edges p = d) := by\n  admit",
+      "nl_gloss": "Whenever the algorithm has dist[v] = Some(d), d is the weight of some directed path from source to v (so dist values are always realizable).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "theorem heap_key_upper_bound\n  (n source : Nat) (edges : List Edge)\n  (dist : Fin n → Option Nat)\n  (heap : List (Nat × Fin n)) :\n  -- Invariant: every (d,u) in the heap satisfies d ≥ dist[u] when dist[u] is defined.\n  (∀ d u, (d,u) ∈ heap → dist u = none ∨ dist u = some d' → d ≥ d') := by\n  admit",
+      "nl_gloss": "For any entry (d,u) present in the priority queue, d is not smaller than the current best known distance dist[u] (when dist[u] is defined). This matches the fact that the code only pushes nd when it improves dist[v].",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "theorem pop_stale_check_correct\n  (n source : Nat) (dist : Fin n → Option Nat)\n  (d : Nat) (u : Fin n) :\n  -- If the popped key d is stale (d ≠ dist[u]), then relaxing from u does not change dist.\n  dist u = some d' → d ≠ d' →\n  (relax_from_u edges dist u d = dist) := by\n  admit",
+      "nl_gloss": "The guard `if Some(d) != dist[u] { continue; }` ensures that when a heap entry is stale, the algorithm performs no relaxations that could change dist.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "theorem relaxation_improves\n  (n source : Nat) (edges : List Edge)\n  (dist : Fin n → Option Nat)\n  (u v : Fin n) (w : Nat) (d : Nat) :\n  -- If dist[u] = some d and there is an edge u→v of weight w,\n  -- then after considering it, dist[v] becomes some (d+w) iff it improves.\n  dist u = some d → edge_exists edges u v w →\n  let dist' := relax_edge edges dist u v w d\n  in\n  (dist' v = some (d+w) ∧ (dist v = none ∨ d+w < the (dist v))) ∨\n  (dist' = dist) := by\n  admit",
+      "nl_gloss": "Each relaxation step updates dist[v] to nd = d+w exactly when nd is better than the current dist[v] (or dist[v] was None), matching the match cases in the Rust code.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem dijkstra_terminates\n  (n source : Nat) (edges : List Edge) :\n  True := by\n  -- proof obligation: show the while-loop terminates.\n  -- Typically: dist values only decrease finitely often (over Nat/u64) and each improvement pushes a finite number of heap entries.\n  admit",
+      "nl_gloss": "The algorithm’s main loop terminates. A typical argument is that each time dist[v] is improved, it strictly decreases the numeric value stored for v, and there can only be finitely many improvements.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "def shortestDist (n : Nat) (source : Fin n) (edges : List Edge) : Fin n → Option Nat :=\n  fun v =>\n    if ∃ d, d = shortest_path_weight edges source v then some d else none\n\n-- Main correctness: returned dist equals shortest path distances.\n\ntheorem dijkstra_correct\n  (n : Nat) (source : Fin n) (edges : List Edge) :\n  let dist := dijkstra n source.1 edges\n  in\n  ∀ v : Fin n,\n    dist v.1 = shortestDist n source edges v := by\n  admit",
+      "nl_gloss": "For every vertex v, the returned dist[v] is Some(d) where d is the weight of the shortest path from source to v, and None iff v is unreachable.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem dijkstra_unreachable_none\n  (n : Nat) (source : Fin n) (edges : List Edge) (v : Fin n) :\n  (¬ ∃ d, shortest_path_exists edges source v) →\n  (dijkstra n source.1 edges).get v.1 = none := by\n  admit",
+      "nl_gloss": "If there is no path from source to v, then the algorithm returns None for v.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem dijkstra_reachable_some\n  (n : Nat) (source : Fin n) (edges : List Edge) (v : Fin n) :\n  (∃ d, shortest_path_exists_with_weight edges source v d) →\n  (∃ d', (dijkstra n source.1 edges).get v.1 = some d' ∧ d' = d) := by\n  admit",
+      "nl_gloss": "If v is reachable from source, then the algorithm returns Some(d) where d equals the shortest path distance.",
       "linked_semantic_units": []
     }
   ],
-  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
-  "seed": 1
+  "prompt_hash": "sha256:98b89ca500ef8f1d2da97a39a2a72225939481ad649ccf0cfd20071211c3c111",
+  "seed": 0
 }

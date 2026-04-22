@@ -1,13 +1,13 @@
 {
   "signature": {
     "algorithm": "sha256",
-    "value": "abc6195e37577c7c95dc5308328323c28c43fcfc0fa74572e9c517130cb3c1d7"
+    "value": "d49047fe5e4869b7b2a3f48198b3be1944533dd640f404b9750d92cad70c7a0a"
   },
   "verification": {
     "benchmark_version": "v0.2",
     "packets_root": "benchmark/v0.2/annotation/review_packets",
     "schema_path": "schemas/review_packet.schema.json",
-    "generated_at": "2026-04-22T14:14:42.6669217Z",
+    "generated_at": "2026-04-22T22:30:55.3100859Z",
     "total_packets": 93,
     "passed_packets": 93,
     "failed_packets": 0,
@@ -22,7 +22,7 @@
         "instance_id": "arrays_binary_search_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_binary_search_002/packet.json",
-        "sha256": "b26680cbfb5ca65fd91c9d2bb575fb89afa86c0164a8c5ed899e4bba6f8f1e1b"
+        "sha256": "b7c98eed605cc49e33dffab97efc00142731e2e5b92fb2f154b0bed920c64dd1"
       },
       {
         "instance_id": "arrays_max_subarray_001",
@@ -40,7 +40,7 @@
         "instance_id": "dp_knapsack_01_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_001/packet.json",
-        "sha256": "4b423e8232d46bfe477bfc8a489262850c385bf7da30e7db9868256222eb5301"
+        "sha256": "e7755854fd6cdcf276a76873568ac80d3e44fc6af35a9dc09d09e64490c6f568"
       },
       {
         "instance_id": "dp_knapsack_01_002",
@@ -76,7 +76,7 @@
         "instance_id": "graph_dijkstra_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_001/packet.json",
-        "sha256": "91b7595c6b2c526506246d27a84ec658b33e91455174f0d18ca1654af62d434c"
+        "sha256": "f336c805c9900342ab326e7a6cff6798d171531bda6ac2d30ebe1e284f3c83af"
       },
       {
         "instance_id": "graph_dijkstra_002",
@@ -100,7 +100,7 @@
         "instance_id": "greedy_interval_scheduling_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_001/packet.json",
-        "sha256": "d464a0a6b6e84deb3875101069c66826687d8afc58b206d61f83035cbae725c6"
+        "sha256": "808d3025aa4b1676a1b6611d6c323e3cd7291904f0f8e3da1150ed598ca99ac2"
       },
       {
         "instance_id": "greedy_interval_scheduling_002",
@@ -136,7 +136,7 @@
         "instance_id": "trees_bst_insert_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_bst_insert_001/packet.json",
-        "sha256": "a0553d41eb06e459d17be1bcc24b24cb909d656a5fdb1a66110e83ffab08b8ce"
+        "sha256": "63a7e718721be66577d26e6f736ba862ca4129006edb541f7a92147c783d1ce4"
       },
       {
         "instance_id": "trees_bst_insert_002",

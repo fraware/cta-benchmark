@@ -1,1 +1,74 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are stated in the provided Rust reference implementation (the code snippet placeholder contains no assertions or documented requirements)."},{"kind":"functional_spec","lean_statement":"True","nl_gloss":"The Rust reference implementation content was not provided (it appears as a placeholder `{{rust_reference}}`), so the exact computed function cannot be derived. Provide the actual Rust code to generate precise Lean 4 proof obligations describing its output and correctness."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (arr : Array Int) (target : Int), True",
+      "nl_gloss": "No explicit precondition is asserted by the implementation. The only required property for correctness is that the input slice is sorted nondecreasing, which will be captured in later obligations."
+    },
+    {
+      "kind": "sortedness_assumption",
+      "lean_statement": "∀ (arr : Array Int), (∀ i j : Fin arr.length, i ≤ j → arr[i] ≤ arr[j]) → True",
+      "nl_gloss": "Assume the array is sorted in nondecreasing order: for any indices i ≤ j, arr[i] ≤ arr[j]."
+    },
+    {
+      "kind": "bounds_invariant",
+      "lean_statement": "∀ (arr : Array Int) (target : Int), ∀ (lo hi : Nat), lo ≤ hi ∧ hi ≤ arr.length → True",
+      "nl_gloss": "During the loop, maintain index bounds: 0 ≤ lo ≤ hi ≤ arr.length."
+    },
+    {
+      "kind": "loop_invariant_exclusion_left",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (lo hi : Nat), lo ≤ hi → hi ≤ arr.length → (∀ k : Fin lo, arr[k] < target) → True",
+      "nl_gloss": "Loop invariant: all indices strictly less than lo cannot contain the target (their values are < target)."
+    },
+    {
+      "kind": "loop_invariant_exclusion_right",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (lo hi : Nat), lo ≤ hi → hi ≤ arr.length → (∀ k : Fin (arr.length - hi), arr[⟨hi + k.1, by omega⟩] > target) → True",
+      "nl_gloss": "Loop invariant: all indices ≥ hi cannot contain the target (their values are > target)."
+    },
+    {
+      "kind": "initialization",
+      "lean_statement": "∀ (arr : Array Int) (target : Int), (∀ i j : Fin arr.length, i ≤ j → arr[i] ≤ arr[j]) → (let lo := 0; let hi := arr.length; (lo ≤ hi) ∧ (hi ≤ arr.length) ∧ (∀ k : Fin lo, arr[k] < target) ∧ (∀ k : Fin (arr.length - hi), arr[⟨hi + k.1, by omega⟩] > target))",
+      "nl_gloss": "At loop start, lo = 0 and hi = arr.length. The exclusion invariants hold vacuously."
+    },
+    {
+      "kind": "mid_definition_and_bounds",
+      "lean_statement": "∀ (lo hi : Nat) (arr : Array Int), lo < hi → let mid := lo + (hi - lo) / 2; lo ≤ mid ∧ mid < hi",
+      "nl_gloss": "When lo < hi, the computed mid lies within [lo, hi) so arr[mid] is a valid access and the search interval shrinks correctly."
+    },
+    {
+      "kind": "preservation_when_found",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (lo hi mid : Nat), lo ≤ mid ∧ mid < hi → arr[mid] = target → True",
+      "nl_gloss": "If arr[mid] = target, the algorithm returns Some(mid). This obligation is a trivial correctness step for the found case."
+    },
+    {
+      "kind": "preservation_when_arr_mid_lt_target",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (lo hi mid : Nat), lo ≤ mid ∧ mid < hi → arr[mid] < target → (∀ k : Fin lo, arr[k] < target) → (∀ k : Fin (arr.length - hi), arr[⟨hi + k.1, by omega⟩] > target) → let lo' := mid + 1; let hi' := hi; (lo' ≤ hi') ∧ (∀ k : Fin lo', arr[k] < target) ∧ (∀ k : Fin (arr.length - hi'), arr[⟨hi' + k.1, by omega⟩] > target)",
+      "nl_gloss": "If arr[mid] < target, update lo := mid+1. The left exclusion invariant strengthens to include mid, and the right exclusion invariant remains unchanged."
+    },
+    {
+      "kind": "preservation_when_arr_mid_gt_target",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (lo hi mid : Nat), lo ≤ mid ∧ mid < hi → arr[mid] > target → (∀ k : Fin lo, arr[k] < target) → (∀ k : Fin (arr.length - hi), arr[⟨hi + k.1, by omega⟩] > target) → let lo' := lo; let hi' := mid; (lo' ≤ hi') ∧ (∀ k : Fin lo', arr[k] < target) ∧ (∀ k : Fin (arr.length - hi'), arr[⟨hi' + k.1, by omega⟩] > target)",
+      "nl_gloss": "If arr[mid] > target, update hi := mid. The right exclusion invariant strengthens to include mid, and the left exclusion invariant remains unchanged."
+    },
+    {
+      "kind": "termination_measure",
+      "lean_statement": "∀ (arr : Array Int) (target : Int), ∀ (lo hi : Nat), lo ≤ hi → (hi - lo) decreases strictly on each loop iteration when lo < hi",
+      "nl_gloss": "Prove termination: the interval length (hi - lo) strictly decreases each iteration, so the loop eventually reaches lo = hi."
+    },
+    {
+      "kind": "soundness_found_some",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (i : Nat), (∀ i' j' : Fin arr.length, i' ≤ j' → arr[i'] ≤ arr[j']) → (binary_search arr target = some i) → i < arr.length ∧ arr[i] = target",
+      "nl_gloss": "If the function returns Some(i), then i is within bounds and arr[i] equals target."
+    },
+    {
+      "kind": "completeness_none_implies_not_mem",
+      "lean_statement": "∀ (arr : Array Int) (target : Int), (∀ i j : Fin arr.length, i ≤ j → arr[i] ≤ arr[j]) → (binary_search arr target = none) → (∀ k : Fin arr.length, arr[k] ≠ target)",
+      "nl_gloss": "If the function returns None, then the target does not occur anywhere in the array."
+    },
+    {
+      "kind": "completeness_some_implies_mem",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (i : Nat), (∀ i' j' : Fin arr.length, i' ≤ j' → arr[i'] ≤ arr[j']) → (binary_search arr target = some i) → (∃ k : Fin arr.length, k.1 = i ∧ arr[k] = target)",
+      "nl_gloss": "If the function returns Some(i), then there exists an index in the array where the value equals target (i.e., membership)."
+    }
+  ]
+}

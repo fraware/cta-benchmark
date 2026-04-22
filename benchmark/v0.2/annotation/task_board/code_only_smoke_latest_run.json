@@ -1,0 +1,6 @@
+{
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzz_live_api_001",
+  "pairs_file": "benchmark/v0.2/annotation/task_board/code_only_smoke_pairs.json",
+  "provider": "openai",
+  "note": "annotate build-review-packets binds the latest matching runs/*_eval_* directory per (instance_id, system_id) using reverse lexicographic run_id order; this run supersedes stub-only run_2026_04_22_code_only_v1_eval_zzz_packet_regen_001 for the five smoke instances."
+}

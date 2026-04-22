@@ -1,1 +1,44 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are stated in the provided Rust reference implementation (the snippet placeholder contains no code to extract assertions or documented requirements from)."},{"kind":"functional_spec","lean_statement":"True","nl_gloss":"The Rust reference implementation content is not provided (it is shown as a placeholder `{{rust_reference}}`), so a precise functional specification of what it computes cannot be derived."},{"kind":"correctness","lean_statement":"True","nl_gloss":"Because the actual algorithm code is missing, the specific correctness properties (e.g., invariants, postconditions, and proof obligations) cannot be determined."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "weights.length = values.length",
+      "nl_gloss": "The implementation asserts that `weights.len() == values.len()`. Any correctness statement assumes this alignment."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def knapsack01_spec (weights values : List Nat) (capacity : Nat) : Nat :=\n  Finset.univ.image (fun S : Finset (Fin weights.length) =>\n    let totalW := (S.sum (fun i => weights.get i.1))\n    let totalV := (S.sum (fun i => values.get i.1))\n    if totalW ≤ capacity then totalV else 0) |> Finset.sup (by simp)",
+      "nl_gloss": "Define the intended result as the maximum total value among all subsets of items whose total weight is ≤ capacity."
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "let cap := capacity.toNat\nlet dp0 : Array Nat := Array.mk (cap+1) 0\n-- Invariant after processing first i items:\n-- for all c ≤ cap, dp[c] equals the optimum value using items {0,...,i-1} with total weight ≤ c.\n∀ (i : Nat) (c : Nat), c ≤ cap →\n  dp_i[c] =\n    (Finset.sup (by\n      -- supremum over subsets of {0,...,i-1} with weight ≤ c\n      simp))",
+      "nl_gloss": "State the core DP invariant: after processing i items, dp[c] stores the maximum value achievable with total weight ≤ c using only the first i items."
+    },
+    {
+      "kind": "transition_correctness",
+      "lean_statement": "Assuming the invariant holds for i items, let w := weights[i], v := values[i], and w ≤ cap.\nThen for all c ≤ cap:\n  dp_{i+1}[c] =\n    if c < w then dp_i[c]\n    else max (dp_i[c]) (dp_i[c - w] + v)",
+      "nl_gloss": "Prove the update rule matches 0/1 knapsack: either do not take item i (value dp_i[c]) or take it (value dp_i[c-w]+v), and choose the maximum. For c<w, taking is impossible."
+    },
+    {
+      "kind": "loop_order_0_1",
+      "lean_statement": "For the inner loop iterating c in decreasing order from w to cap, the update to dp[c] uses dp[c-w] from the previous outer iteration (i.e., before item i is considered), not a value updated earlier in the same outer iteration.\nFormally: during processing item i, for any c with w ≤ c ≤ cap, the value read at dp[c-w] equals dp_i[c-w].",
+      "nl_gloss": "Justify that iterating `for c in (w..=cap).rev()` enforces the 0/1 constraint (each item used at most once) when using a 1-D rolling array."
+    },
+    {
+      "kind": "skip_when_too_heavy",
+      "lean_statement": "If w > cap then the outer iteration leaves dp unchanged, and the invariant for i+1 items follows from the invariant for i items.\n∀ c ≤ cap, dp_{i+1}[c] = dp_i[c].",
+      "nl_gloss": "When an item’s weight exceeds capacity, the code continues without updating dp; correctness must reflect that such an item cannot be part of any feasible subset."
+    },
+    {
+      "kind": "initialization",
+      "lean_statement": "Before processing any items (i=0), for all c ≤ cap, dp_0[c] = 0, which equals the optimum value using the empty subset with weight ≤ c.",
+      "nl_gloss": "The dp array is initialized to zeros, representing that with no items the best achievable value is 0 for any capacity."
+    },
+    {
+      "kind": "finalization",
+      "lean_statement": "After processing all n = weights.length items, dp_n[cap] equals the optimum value among all subsets of items with total weight ≤ cap.\nTherefore knapsack_01 weights values capacity = dp_n[cap] = knapsack01_spec weights values capacity.",
+      "nl_gloss": "Conclude that the returned value dp[capacity] matches the specification: the maximum total value over all subsets whose total weight does not exceed capacity."
+    }
+  ]
+}

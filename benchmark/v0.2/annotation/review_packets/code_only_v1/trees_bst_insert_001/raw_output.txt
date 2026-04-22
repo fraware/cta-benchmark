@@ -1,1 +1,54 @@
-{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are stated in the provided Rust reference implementation (the code snippet placeholder contains no visible assertions or documented requirements)."},{"kind":"functional_spec","lean_statement":"True","nl_gloss":"The Rust reference implementation content was not provided (it appears as a placeholder `{{rust_reference}}`), so the exact computed function cannot be derived. This obligation will be replaced once the actual Rust code is available."},{"kind":"termination","lean_statement":"True","nl_gloss":"No termination argument can be derived without the actual Rust code. This obligation will be replaced once the loop/recursion structure is known."},{"kind":"correctness_invariant","lean_statement":"True","nl_gloss":"No loop/recursion invariants can be stated without the actual Rust code. This obligation will be replaced once the code is available."},{"kind":"postcondition","lean_statement":"True","nl_gloss":"No postcondition can be stated without the actual Rust code. This obligation will be replaced once the code is available."}]}
+{
+  "obligations": [
+    {
+      "kind": "definition",
+      "lean_statement": "inductive Tree : Type\n| Nil : Tree\n| Node : Tree → Int → Tree → Tree",
+      "nl_gloss": "Define the same tree datatype as in the Rust implementation (Nil or Node(left, key, right))."
+    },
+    {
+      "kind": "function_spec",
+      "lean_statement": "def bstInsert : Tree → Int → Tree\n| Tree.Nil, key => Tree.Node Tree.Nil key Tree.Nil\n| Tree.Node left k right, key =>\n    if key < k then Tree.Node (bstInsert left key) k right\n    else if k < key then Tree.Node left k (bstInsert right key)\n    else Tree.Node left k right",
+      "nl_gloss": "State the Lean definition of bst insertion matching the Rust pattern matching and the three-way comparison (less, greater, equal)."
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem bstInsert_terminates (t : Tree) (key : Int) : True := by trivial",
+      "nl_gloss": "The recursive calls are on strict subtrees (left or right), so the function is well-founded/terminates. (In Lean, this is typically discharged by using a structurally recursive definition; here we record the obligation as a placeholder.)"
+    },
+    {
+      "kind": "base_case_correctness",
+      "lean_statement": "∀ key : Int,\n  bstInsert Tree.Nil key = Tree.Node Tree.Nil key Tree.Nil",
+      "nl_gloss": "When inserting into an empty tree, the result is a single-node BST containing the key."
+    },
+    {
+      "kind": "less_than_case_correctness",
+      "lean_statement": "∀ left right : Tree, ∀ k key : Int,\n  key < k →\n  bstInsert (Tree.Node left k right) key = Tree.Node (bstInsert left key) k right",
+      "nl_gloss": "If the inserted key is less than the current node key, insertion recurses into the left subtree and leaves the right subtree unchanged."
+    },
+    {
+      "kind": "greater_than_case_correctness",
+      "lean_statement": "∀ left right : Tree, ∀ k key : Int,\n  k < key →\n  bstInsert (Tree.Node left k right) key = Tree.Node left k (bstInsert right key)",
+      "nl_gloss": "If the inserted key is greater than the current node key, insertion recurses into the right subtree and leaves the left subtree unchanged."
+    },
+    {
+      "kind": "duplicate_noop_case_correctness",
+      "lean_statement": "∀ left right : Tree, ∀ k key : Int,\n  ¬(key < k) → ¬(k < key) →\n  bstInsert (Tree.Node left k right) key = Tree.Node left k right",
+      "nl_gloss": "If the inserted key equals the current node key (i.e., neither less nor greater), insertion is a no-op: the tree is unchanged."
+    },
+    {
+      "kind": "bst_property_preservation",
+      "lean_statement": "def BST : Tree → Prop\n| Tree.Nil => True\n| Tree.Node left k right =>\n    BST left ∧ BST right ∧\n    (∀ x, x ∈ keys left → x < k) ∧\n    (∀ x, x ∈ keys right → k < x)\n\n-- obligation (assuming a standard BST predicate over Int keys)\n∀ t key, BST t → BST (bstInsert t key)",
+      "nl_gloss": "If the input tree is a binary search tree, then the output of bst insertion is also a BST."
+    },
+    {
+      "kind": "multiset_keys_behavior",
+      "lean_statement": "def keys : Tree → Set Int\n| Tree.Nil => ∅\n| Tree.Node left k right => keys left ∪ {k} ∪ keys right\n\n∀ t key,\n  keys (bstInsert t key) =\n    if key ∈ keys t then keys t else keys t ∪ {key}",
+      "nl_gloss": "The set of keys in the tree is unchanged on duplicates; otherwise the inserted key is added."
+    },
+    {
+      "kind": "structural_change_characterization",
+      "lean_statement": "∀ t key,\n  (key ∈ keys t) → bstInsert t key = t",
+      "nl_gloss": "If the key already exists in the tree, insertion returns the original tree (immutable no-op on duplicates)."
+    }
+  ]
+}
