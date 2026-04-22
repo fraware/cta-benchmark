@@ -136,6 +136,13 @@ cargo run -p cta_cli -- annotate sync-review-packets \
   --from benchmark/v0.2/annotation/review_packets \
   --out benchmark/v0.2/annotation/adjudicated_subset
 
+# Strict review-packet audit gate (schema + integrity + signed summary)
+cargo run -p cta_cli -- annotate verify-review-packets \
+  --benchmark-version v0.2 \
+  --packets-root benchmark/v0.2/annotation/review_packets \
+  --schema schemas/review_packet.schema.json \
+  --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json
+
 # Metrics + reports for a single run directory. Use the benchmark-local
 # pack for paper-reportable numbers; the runs/annotation_packs/ copy is
 # only for ad-hoc adjudication sessions.
@@ -157,6 +164,7 @@ cargo run -p cta_cli -- reports package \
   --canonical-run-ids <run_id_1>,<run_id_2>,...
 
 # End-to-end fail-fast paper-track orchestrator
+# (plan -> batches -> coverage -> validate --release -> verify-review-packets -> package)
 cargo run -p cta_cli -- benchmark paper-orchestrate \
   --benchmark-version v0.2 \
   --canonical-run-ids <run_id_1>,<run_id_2>,...

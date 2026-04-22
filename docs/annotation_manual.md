@@ -93,6 +93,8 @@ For paper-track batches, use this command sequence:
 4. Rebuild pack and coverage summary:
    - `cta annotate pack --version v0.2 --from-benchmark`
    - `cta annotate coverage --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --pack benchmark/v0.2/annotation/adjudicated_subset/pack.json --out benchmark/v0.2/annotation/adjudicated_subset`
+5. Enforce review-packet audit gate before packaging:
+   - `cta annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
 
 ## Hygiene
 

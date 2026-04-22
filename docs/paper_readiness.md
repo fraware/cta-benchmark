@@ -116,6 +116,7 @@ Then validate the batch and refresh release gates:
 
 1. `powershell -NoProfile -File scripts/validate_annotation_batch.ps1 -Version v0.2 -BatchCsv <batch_csv>`
 2. `powershell -NoProfile -File scripts/paper_release_loop.ps1 -Version v0.2 -ExperimentConfig configs/experiments/benchmark_v1_openai_only.json`
+3. `cargo run -p cta_cli -- annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
 
 ## Gold-audit workbook
 
@@ -141,3 +142,6 @@ cargo run -p cta_cli -- reports package \
 ```
 
 This materializes `reports/paper_v0.2/` and writes `paper_summary.json`.
+
+If you use `benchmark paper-orchestrate`, the review-packet verification gate
+is enforced automatically before packaging.
