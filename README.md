@@ -115,6 +115,27 @@ cargo run -p cta_cli -- generate \
 cargo run -p cta_cli -- annotate pack --version v0.2 --policy prefer-adjudicator
 cargo run -p cta_cli -- annotate pack --version v0.2 --from-benchmark
 
+# Annotation closure planning / batching / coverage
+cargo run -p cta_cli -- annotate plan \
+  --benchmark-version v0.2 \
+  --experiment-config configs/experiments/benchmark_v1.json \
+  --out benchmark/v0.2/annotation/task_board
+cargo run -p cta_cli -- annotate batches \
+  --benchmark-version v0.2 \
+  --missing-pairs benchmark/v0.2/annotation/task_board/missing_pairs.json \
+  --out benchmark/v0.2/annotation/task_board/batches
+cargo run -p cta_cli -- annotate coverage \
+  --benchmark-version v0.2 \
+  --experiment-config configs/experiments/benchmark_v1.json \
+  --pack benchmark/v0.2/annotation/adjudicated_subset/pack.json \
+  --out benchmark/v0.2/annotation/adjudicated_subset
+
+# Sync adjudicator records from review packets into the canonical subset
+cargo run -p cta_cli -- annotate sync-review-packets \
+  --benchmark-version v0.2 \
+  --from benchmark/v0.2/annotation/review_packets \
+  --out benchmark/v0.2/annotation/adjudicated_subset
+
 # Metrics + reports for a single run directory. Use the benchmark-local
 # pack for paper-reportable numbers; the runs/annotation_packs/ copy is
 # only for ad-hoc adjudication sessions.
@@ -126,6 +147,19 @@ cargo run -p cta_cli -- reports build --run <run_id>
 # Config-driven experiment orchestration
 cargo run -p cta_cli -- experiment --config configs/experiments/pilot_v1.json --dry-run
 cargo run -p cta_cli -- experiment --config configs/experiments/benchmark_v1_openai_only.json
+
+# Gold-audit workbook generation for v0.2 eval instances
+cargo run -p cta_cli -- benchmark audit-workbook --version v0.2
+
+# Paper artifact package from canonical run ids
+cargo run -p cta_cli -- reports package \
+  --benchmark-version v0.2 \
+  --canonical-run-ids <run_id_1>,<run_id_2>,...
+
+# End-to-end fail-fast paper-track orchestrator
+cargo run -p cta_cli -- benchmark paper-orchestrate \
+  --benchmark-version v0.2 \
+  --canonical-run-ids <run_id_1>,<run_id_2>,...
 ```
 
 ### Lean
@@ -176,6 +210,9 @@ The generation pipeline is build-pure: no network calls happen during
 issue HTTP requests at runtime, and only when their respective credential
 environment variables are present; otherwise they refuse to run and surface
 a typed `GenerateError::Provider`.
+
+`cta` auto-loads `<workspace>/.env` on startup, so local provider credentials
+can be set once in the repo root for interactive runs.
 
 ## Quality gates
 

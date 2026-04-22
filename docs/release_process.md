@@ -31,9 +31,40 @@ coverage for any experiment that sets
 `require_full_annotation_coverage: true`, and a two-reviewer gold audit
 signoff (`benchmark/<version>/audit/gold_signoff.json`).
 
+`v0.2/dev.json` is intentionally empty at this stage. Policy rationale:
+for paper-track readiness we block on held-out `eval` quality first
+(coverage + signoff + provider runs) and avoid mixing prompt-tuning
+diagnostics into release gating. If a future cycle reintroduces active
+dev-tuning, populate `dev.json` with non-overlapping instances and keep
+`eval` disjoint.
+
 Rule: never reuse an `instance_id` across versions with different
 semantic content. If an instance changes meaning, give it a new id and
 increment the 3-digit suffix (e.g. `arrays_binary_search_002`).
+
+## Paper-track closure flow (`v0.2`)
+
+Use this sequence as the authoritative release path:
+
+1. Initialize and track annotation queue:
+   - `cta annotate plan --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --out benchmark/v0.2/annotation/task_board/`
+   - `cta annotate batches --benchmark-version v0.2 --missing-pairs benchmark/v0.2/annotation/task_board/missing_pairs.json --out benchmark/v0.2/annotation/task_board/batches/`
+2. Sync adjudicator outputs and rebuild coverage:
+   - `cta annotate sync-review-packets --benchmark-version v0.2 --from benchmark/v0.2/annotation/review_packets --out benchmark/v0.2/annotation/adjudicated_subset/`
+   - `cta annotate pack --version v0.2 --from-benchmark`
+   - `cta annotate coverage --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --pack benchmark/v0.2/annotation/adjudicated_subset/pack.json --out benchmark/v0.2/annotation/adjudicated_subset/`
+3. Prepare audit workbook and collect human signoff:
+   - `cta benchmark audit-workbook --version v0.2`
+   - update `benchmark/v0.2/audit/gold_signoff.json` with real reviewer names and `approved: true`
+4. Run release gate:
+   - `cta validate benchmark --version v0.2 --release`
+5. Run experiment and package paper artifacts:
+   - `cta experiment --config configs/experiments/benchmark_v1.json`
+   - `cta reports package --benchmark-version v0.2 --canonical-run-ids <run_id_1>,<run_id_2>,...`
+
+For automation, the fail-fast orchestrator chains these gates:
+
+`cta benchmark paper-orchestrate --benchmark-version v0.2 --canonical-run-ids <run_ids>`
 
 ## Schema evolution
 

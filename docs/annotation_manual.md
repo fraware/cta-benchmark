@@ -80,6 +80,20 @@ Whenever two annotators disagree:
   for the inter-annotator agreement metrics emitted by
   `cta metrics compute --raw-annotations <dir>`.
 
+## Operational workflow (`v0.2`)
+
+For paper-track batches, use this command sequence:
+
+1. Initialize queue and batches:
+   - `cta annotate plan --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --out benchmark/v0.2/annotation/task_board`
+   - `cta annotate batches --benchmark-version v0.2 --missing-pairs benchmark/v0.2/annotation/task_board/missing_pairs.json --out benchmark/v0.2/annotation/task_board/batches`
+2. Complete dual annotation + adjudication in review packets.
+3. Sync adjudicator outputs into canonical subset:
+   - `cta annotate sync-review-packets --benchmark-version v0.2 --from benchmark/v0.2/annotation/review_packets --out benchmark/v0.2/annotation/adjudicated_subset`
+4. Rebuild pack and coverage summary:
+   - `cta annotate pack --version v0.2 --from-benchmark`
+   - `cta annotate coverage --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --pack benchmark/v0.2/annotation/adjudicated_subset/pack.json --out benchmark/v0.2/annotation/adjudicated_subset`
+
 ## Hygiene
 
 - Never edit a previously submitted annotation. Submit a new one.

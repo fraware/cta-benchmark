@@ -23,3 +23,11 @@ Rules:
 - `annotator_id` must be `"adjudicator"` for every record in this
   subset; the unadjudicated raw annotations live in the per-version raw
   directory and must not be placed here.
+
+Operational notes:
+
+- To sync adjudicator files from review packets into this tree, use:
+  `cta annotate sync-review-packets --benchmark-version v0.2 --from benchmark/v0.2/annotation/review_packets --out benchmark/v0.2/annotation/adjudicated_subset`
+- Root metadata files (`pack.json`, `coverage_summary.json`, `manifest.json`)
+  may coexist with the per-system annotation directories. `cta annotate pack`
+  ingests only the per-system annotation JSON files.

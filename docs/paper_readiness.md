@@ -47,8 +47,8 @@ This encodes the two-person mathematical signoff requirement.
 Run at least one full paper-track experiment with real providers after
 annotation coverage is complete.
 
-1. Export provider credentials (for example `OPENAI_API_KEY`,
-   `ANTHROPIC_API_KEY`) in CI or a secure runner.
+1. Set provider credentials (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`) in the
+   secure environment. For local runs, `cta` auto-loads `<workspace>/.env`.
 2. Run:
    - `cta validate benchmark --version v0.2 --release`
    - `cta experiment --config configs/experiments/benchmark_v1.json`
@@ -65,9 +65,12 @@ If step 2 cannot run due credentials/network, the release is not paper-ready.
 
 ## Annotation burn-down loop (operational)
 
-Use the generated deterministic batches under
-`reports/openai_campaign_2026_04_22/annotation_batches/` and run this loop
-after each completed batch:
+Use the deterministic task-board outputs and strict per-system batches:
+
+- `cta annotate plan --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --out benchmark/v0.2/annotation/task_board/`
+- `cta annotate batches --benchmark-version v0.2 --missing-pairs benchmark/v0.2/annotation/task_board/missing_pairs.json --out benchmark/v0.2/annotation/task_board/batches/`
+
+After each completed human-review batch:
 
 ```bash
 powershell -NoProfile -File scripts/paper_release_loop.ps1 -Version v0.2 -ExperimentConfig configs/experiments/benchmark_v1_openai_only.json
@@ -99,12 +102,42 @@ a packet checklist under:
 
 `benchmark/v0.2/annotation/review_packets/<batch_id>/...`
 
-After adjudicated files are copied into
-`benchmark/v0.2/annotation/adjudicated_subset/<system>/<instance>.json`,
-validate the batch:
+After adjudicated files are finalized in review packets, sync them into the
+canonical adjudicated subset:
 
 ```bash
-powershell -NoProfile -File scripts/validate_annotation_batch.ps1 -Version v0.2 -BatchCsv reports/openai_campaign_2026_04_22/annotation_batches/batch_01.csv
+cargo run -p cta_cli -- annotate sync-review-packets \
+  --benchmark-version v0.2 \
+  --from benchmark/v0.2/annotation/review_packets \
+  --out benchmark/v0.2/annotation/adjudicated_subset
 ```
 
-Then run the release loop to refresh burn-down and gate status.
+Then validate the batch and refresh release gates:
+
+1. `powershell -NoProfile -File scripts/validate_annotation_batch.ps1 -Version v0.2 -BatchCsv <batch_csv>`
+2. `powershell -NoProfile -File scripts/paper_release_loop.ps1 -Version v0.2 -ExperimentConfig configs/experiments/benchmark_v1_openai_only.json`
+
+## Gold-audit workbook
+
+Generate paper-track workbook CSVs directly from eval split:
+
+```bash
+cargo run -p cta_cli -- benchmark audit-workbook --version v0.2
+```
+
+This writes:
+
+- `benchmark/v0.2/audit/evidence/per_instance_audit.csv`
+- `benchmark/v0.2/audit/evidence/obligation_audit.csv`
+
+## Paper packaging
+
+After release validation is green and canonical run ids are selected:
+
+```bash
+cargo run -p cta_cli -- reports package \
+  --benchmark-version v0.2 \
+  --canonical-run-ids <run_id_1>,<run_id_2>,...
+```
+
+This materializes `reports/paper_v0.2/` and writes `paper_summary.json`.

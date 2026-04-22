@@ -40,6 +40,13 @@ cargo run -p cta_cli -- validate schemas
 cargo run -p cta_cli -- validate benchmark --version v0.1 --release
 cargo run -p cta_cli -- validate benchmark --version v0.2 --release
 
+# 3b. paper-track annotation/packaging flow (v0.2)
+cargo run -p cta_cli -- annotate plan --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --out benchmark/v0.2/annotation/task_board
+cargo run -p cta_cli -- annotate batches --benchmark-version v0.2 --missing-pairs benchmark/v0.2/annotation/task_board/missing_pairs.json --out benchmark/v0.2/annotation/task_board/batches
+cargo run -p cta_cli -- annotate coverage --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --pack benchmark/v0.2/annotation/adjudicated_subset/pack.json --out benchmark/v0.2/annotation/adjudicated_subset
+cargo run -p cta_cli -- benchmark audit-workbook --version v0.2
+cargo run -p cta_cli -- reports package --benchmark-version v0.2 --canonical-run-ids <run_ids>
+
 # 4. end-to-end experiment smoke test (stub provider, offline)
 cargo run -p cta_cli -- experiment --config configs/experiments/pilot_v1.json --dry-run
 
@@ -65,6 +72,9 @@ cargo audit --deny warnings
 - **Tracing, not `println!`.** Use the `tracing` crate for any output
   from library code; CLI commands may `println!` for human-facing
   summaries.
+- **Never commit secrets.** Provider credentials are loaded from
+  `<workspace>/.env` at CLI startup for local runs; `.env` is private and
+  must not be committed.
 
 ## Adding a benchmark instance
 
