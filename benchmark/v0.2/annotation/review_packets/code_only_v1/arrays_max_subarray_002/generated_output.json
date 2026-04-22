@@ -1,0 +1,28 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "system_id": "code_only_v1",
+  "instance_id": "arrays_max_subarray_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 3008,
+    "prompt_tokens": 115,
+    "completion_tokens": 63
+  },
+  "raw_output_path": "generated/code_only_v1/raw/arrays_max_subarray_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "True",
+      "nl_gloss": "No explicit preconditions are asserted in the provided Rust reference implementation (the reference code was not included in the prompt), so there are no additional required input constraints to state here.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
+  "seed": 1
+}

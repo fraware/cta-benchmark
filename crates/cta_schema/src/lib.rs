@@ -77,6 +77,8 @@ pub enum SchemaName {
     BenchmarkManifest,
     /// `experiment.schema.json`
     Experiment,
+    /// `review_packet.schema.json`
+    ReviewPacket,
 }
 
 impl SchemaName {
@@ -94,6 +96,7 @@ impl SchemaName {
             SchemaName::Harness => "harness.schema.json",
             SchemaName::BenchmarkManifest => "benchmark_manifest.schema.json",
             SchemaName::Experiment => "experiment.schema.json",
+            SchemaName::ReviewPacket => "review_packet.schema.json",
         }
     }
 
@@ -109,6 +112,7 @@ impl SchemaName {
         SchemaName::Harness,
         SchemaName::BenchmarkManifest,
         SchemaName::Experiment,
+        SchemaName::ReviewPacket,
     ];
 
     /// Parse a [`SchemaName`] from its CLI-friendly lowercase identifier.
@@ -127,6 +131,7 @@ impl SchemaName {
             "harness" => Some(Self::Harness),
             "benchmark_manifest" | "benchmark-manifest" => Some(Self::BenchmarkManifest),
             "experiment" => Some(Self::Experiment),
+            "review_packet" | "review-packet" | "reviewpacket" => Some(Self::ReviewPacket),
             _ => None,
         }
     }

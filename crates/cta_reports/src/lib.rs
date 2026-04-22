@@ -151,7 +151,9 @@ pub fn results_markdown(system_id: &str, bundle: &ResultsBundle) -> String {
     );
     s.push('\n');
     s.push_str("## Per-instance\n\n");
-    s.push_str("| instance | elab | n | faith-score | ff | fp | vac | cons | inc | na | cov/tot |\n");
+    s.push_str(
+        "| instance | elab | n | faith-score | ff | fp | vac | cons | inc | na | cov/tot |\n",
+    );
     s.push_str("|---|---|---|---|---|---|---|---|---|---|---|\n");
     for r in &bundle.instance_results {
         let _ = writeln!(

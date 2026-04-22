@@ -1,0 +1,76 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "trees_bst_insert_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4514,
+    "prompt_tokens": 178,
+    "completion_tokens": 621
+  },
+  "raw_output_path": "generated/text_only_v1/raw/trees_bst_insert_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "def insert (k : Int) : BST → BST := by\n  -- intended: standard BST insertion using BST ordering\n  admit",
+      "nl_gloss": "Define the insertion function that returns a new BST for a given key.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ t : BST, BSTInv t → SortedInorderStrict t",
+      "nl_gloss": "Assume the input BST has strictly ascending in-order traversal.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST, BSTInv t → BSTInv (insert k t)",
+      "nl_gloss": "Inserting a key into a valid BST yields a valid BST.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST, BSTInv t → Inorder (insert k t) = (if Mem k t then Inorder t else Inorder t ++ [k])",
+      "nl_gloss": "The in-order traversal of the result equals the original traversal if k is already present; otherwise it is the original traversal with k inserted.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST, BSTInv t → Mem k t → insert k t = t",
+      "nl_gloss": "If the key already exists in the tree, insertion returns the tree unchanged.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST, BSTInv t → ¬ Mem k t → Mem k (insert k t)",
+      "nl_gloss": "If the key is not present, insertion adds a node containing the key.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST, BSTInv t → Mem k t → Count k (Inorder (insert k t)) = Count k (Inorder t)",
+      "nl_gloss": "If k is already present, the number of occurrences of k in the in-order traversal does not change.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST, BSTInv t → SortedInorderStrict (insert k t)",
+      "nl_gloss": "The resulting tree still has strictly ascending in-order traversal.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST, BSTInv t → (∀ x, Mem x t ↔ Mem x (insert k t)) → Mem k t → insert k t = t",
+      "nl_gloss": "If the key is already present and no other keys change membership, the resulting tree is identical to the input.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:2fa08bf168c8848449409321c404fea26f479d409d7d20c5cc2879cdfc3b7a9d",
+  "seed": 3
+}

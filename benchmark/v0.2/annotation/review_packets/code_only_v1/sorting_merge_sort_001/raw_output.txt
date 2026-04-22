@@ -1,0 +1,1 @@
+{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are asserted in the provided Rust reference implementation (the reference code was not included in the prompt), so there are no additional required input constraints to state here."}]}

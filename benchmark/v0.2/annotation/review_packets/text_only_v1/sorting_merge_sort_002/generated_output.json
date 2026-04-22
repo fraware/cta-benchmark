@@ -1,0 +1,58 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "sorting_merge_sort_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 3417,
+    "prompt_tokens": 146,
+    "completion_tokens": 425
+  },
+  "raw_output_path": "generated/text_only_v1/raw/sorting_merge_sort_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_sort (xs : List Int) : True := by trivial",
+      "nl_gloss": "Introduce the specification context for sorting a list of integers.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int), ∃ (ys : Vector Int xs.length), True",
+      "nl_gloss": "The result is a vector of integers whose length matches the input length.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int) (ys : Vector Int xs.length), ys.length = xs.length",
+      "nl_gloss": "The output vector has the same length as the input slice.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int) (ys : Vector Int xs.length), (∀ i j : Fin xs.length, i ≤ j → ys[i] ≤ ys[j]) → True",
+      "nl_gloss": "The output is in nondecreasing order (indices respect ≤).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int) (ys : Vector Int xs.length), (ys.toList ~ xs) → True",
+      "nl_gloss": "The output contains exactly the same multiset of elements as the input (permutation).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int), ∃ (ys : Vector Int xs.length), (∀ i j : Fin xs.length, i ≤ j → ys[i] ≤ ys[j]) ∧ (ys.toList ~ xs)",
+      "nl_gloss": "There exists an output vector of the same length that is nondecreasing and is a permutation of the input.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:60e54d08f80626e2c590c637983dd70e82eca8536bb3752a4843fc747878ff2f",
+  "seed": 3
+}

@@ -1,0 +1,124 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "sorting_insertion_sort_001",
+  "system_id": "full_method_v1",
+  "domain": "sorting",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.2/instances/sorting/sorting_insertion_sort_001",
+  "generated_output_path": "runs/run_2026_04_22_full_method_v1_eval_full_001/generated/full_method_v1/sorting_insertion_sort_001.json",
+  "informal_statement": {
+    "text": "Sort a mutable slice of integers in nondecreasing order using insertion sort. The function mutates its input in place and returns nothing.",
+    "preconditions": [],
+    "required_properties": [
+      "the resulting slice is sorted in nondecreasing order",
+      "the resulting slice is a permutation of the original slice",
+      "the function terminates on every input"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice",
+      "already-sorted slice",
+      "reverse-sorted slice",
+      "slice with duplicates",
+      "slice with all equal elements"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Sortedness: the output list is sorted in nondecreasing order.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU2",
+      "description": "Permutation: the output is a permutation of the input (every element preserved, counts preserved).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting set equality without counting duplicates",
+        "asserting length preservation only"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Termination on every input.",
+      "criticality": "supporting"
+    },
+    {
+      "id": "SU4",
+      "description": "Stability is NOT required and should not be asserted.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), SortedLE (insertionSort xs)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), Sorted (insertionSort xs)",
+      "nl_gloss": "For every input list xs, the output of insertionSort is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), IsPerm xs (insertionSort xs)",
+      "nl_gloss": "For every input list xs, the output is a permutation of xs (same multiset of elements, including duplicates).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "termination",
+      "lean_statement": "∀ (xs : Arr), ∃ ys : Arr, ys = insertionSort xs",
+      "nl_gloss": "For every input xs, insertionSort produces some output list (i.e., it terminates / is defined on all inputs).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_insertion_sort_001/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_insertion_sort_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_insertion_sort_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_insertion_sort_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_insertion_sort_001/rust_summary.json"
+  }
+}

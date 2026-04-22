@@ -1,0 +1,52 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "arrays_max_subarray_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 12133,
+    "prompt_tokens": 143,
+    "completion_tokens": 1179
+  },
+  "raw_output_path": "generated/text_only_v1/raw/arrays_max_subarray_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "def maxContigSubsliceSum (xs : List Int) : Int :=\n  if h : xs ≠ [] then\n    let subs := { ys : List Int // ∃ i j, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i) };\n    Finset.univ.image (fun p => p.1.sum) |>.max' (by\n      have : (∃ ys : List Int, ys ∈ subs) := by\n        rcases List.exists_ne_nil_iff.1 (by simpa [h]) with ⟨y, hy⟩\n        refine ⟨[y], ?_⟩\n        rcases List.length_pos_iff.1 (by simpa [List.length_eq_zero_iff] using h) with ⟨_⟩\n        -- witness indices i=0, j=1\n        refine ⟨0, 1, by decide, by decide, by\n          simpa [List.length] using (Nat.succ_le_iff.2 (Nat.zero_le _))⟩\n        simp)\n  else 0",
+      "nl_gloss": "Define the intended function as the maximum sum among all contiguous non-empty subslices of a non-empty list of integers (and return 0 for the empty case).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem exists_contig_nonempty_subslice {xs : List Int} (h : xs ≠ []) :\n  ∃ ys : List Int, ys ≠ [] ∧ ∃ i j : Nat, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i) := by\n  rcases List.exists_ne_nil_iff.1 h with ⟨y, hy⟩\n  -- choose i=0, j=1\n  refine ⟨[y], by simp, ?_⟩\n  refine ⟨0, 1, by decide, by decide, ?_⟩\n  simpa [List.length_eq_zero_iff] using (Nat.succ_le_iff.2 (Nat.zero_le _))",
+      "nl_gloss": "For any non-empty input slice, there exists at least one contiguous non-empty subslice (e.g. taking the first element).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSubsliceSum_upper_bound {xs : List Int} (h : xs ≠ []) :\n  ∀ ys : List Int,\n    (∃ i j : Nat, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i)) →\n    ys.sum ≤ maxContigSubsliceSum xs := by\n  intro ys hys\n  -- show ys.sum is among the candidates and thus ≤ the max\n  -- (proof uses the definition via max over the candidate set)\n  admit",
+      "nl_gloss": "The returned value is at least the sum of every contiguous non-empty subslice.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSubsliceSum_attains {xs : List Int} (h : xs ≠ []) :\n  ∃ ys : List Int,\n    (∃ i j : Nat, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i)) ∧\n    maxContigSubsliceSum xs = ys.sum := by\n  -- since the candidate set is nonempty and finite, the max is achieved\n  admit",
+      "nl_gloss": "There exists a contiguous non-empty subslice whose sum equals the returned maximum.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSubsliceSum_spec {xs : List Int} (h : xs ≠ []) :\n  maxContigSubsliceSum xs =\n    (Finset.univ.image (fun p : { ys : List Int // ∃ i j, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i) } => p.1.sum)).max' (by\n      -- nonempty witness from exists_contig_nonempty_subslice\n      rcases exists_contig_nonempty_subslice (xs:=xs) h with ⟨ys, ys_ne, i, j, hi, hij, hj, rfl⟩\n      refine ⟨⟨ys, ?_⟩, ?_⟩\n      · exact ⟨i, j, hi, hij, hj, rfl⟩\n      · simp)\n  := by\n  -- unfold the definition and simplify\n  simp [maxContigSubsliceSum, h]",
+      "nl_gloss": "The function equals the maximum of the sums of all contiguous non-empty subslices (for non-empty inputs).",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:3b98846f5d91ad14aa2ad4a0495fec8c93778f589bb12e1b439c63748165a242",
+  "seed": 3
+}

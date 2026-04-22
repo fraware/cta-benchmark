@@ -1,0 +1,183 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "greedy_coin_change_canonical_002",
+  "system_id": "text_only_v1",
+  "domain": "greedy",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.2/instances/greedy/greedy_coin_change_canonical_002",
+  "generated_output_path": "runs/run_2026_04_22_text_only_v1_eval_003/generated/text_only_v1/greedy_coin_change_canonical_002.json",
+  "informal_statement": {
+    "text": "Given a sorted-ascending slice of positive integer coin denominations that forms a canonical system (greedy is optimal), and a non-negative target amount, return a vector `counts` of the same length as the denominations such that `sum(counts[i] * denoms[i]) == amount` and `sum(counts)` is the minimum possible over all such vectors.",
+    "preconditions": [
+      "denoms is sorted strictly ascending",
+      "denoms[0] == 1",
+      "every denomination is a positive integer",
+      "the denomination system is canonical (greedy yields the optimum)",
+      "amount >= 0"
+    ],
+    "required_properties": [
+      "counts has the same length as denoms",
+      "sum over i of counts[i] * denoms[i] equals amount",
+      "sum of counts is minimum over all valid decompositions",
+      "every counts[i] is non-negative"
+    ],
+    "edge_cases": [
+      "amount == 0 (all zero counts)",
+      "amount exactly equal to a denomination",
+      "amount smaller than the second-smallest denomination",
+      "very large amount requiring many units of the penny",
+      "denoms of length 1 ([1])"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Canonicality precondition: the denomination system must be canonical (greedy yields the optimal count).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the canonicality precondition",
+        "assuming greedy is always optimal for any denomination system"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Alignment: the output counts vector has the same length as denoms.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "returning a variable-length vector",
+        "dropping trailing zero entries"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Decomposition: sum(counts[i] * denoms[i]) equals amount.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating sum(counts) = amount instead of the weighted sum"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Optimality: sum(counts) is minimal among all valid decompositions.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only feasibility; admits the zero-count no-op on amount=0 but not in general"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Non-negativity: every count entry is non-negative.",
+      "criticality": "supporting"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (denoms : Denoms) (amt : Nat), (coinChangeCanonical denoms amt).length = denoms.length",
+      "nl_gloss": "The returned counts vector aligns with the denomination vector.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (denoms : Denoms) (amt : Nat), Decomposes denoms (coinChangeCanonical denoms amt) amt",
+      "nl_gloss": "The returned counts decompose the target amount.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "∀ (denoms : Denoms) (amt : Nat) (alt : Counts), Canonical denoms → Decomposes denoms alt amt → (coinChangeCanonical denoms amt).sum ≤ alt.sum",
+      "nl_gloss": "When the denomination system is canonical, the greedy count sum is at most any competing valid decomposition's sum.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "∀ (denoms : Array ℕ) (hpos : ∀ i, i < denoms.size → denoms[i] > 0) (htsorted : denoms.Sorted (· ≤ ·)) (amount : ℕ), amount ≥ 0",
+      "nl_gloss": "Assume denominations are positive and sorted ascending; amount is a non-negative natural number.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount; counts.size = denoms.size",
+      "nl_gloss": "The returned vector counts has the same length as the denominations array.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount; ∑ i in Finset.range denoms.size, (counts[i] * denoms[i]) = amount",
+      "nl_gloss": "The counts produced by the algorithm realize the target amount exactly as a weighted sum of denominations.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount; ∀ i : Fin denoms.size, counts[i] ≥ 0",
+      "nl_gloss": "Each count is a non-negative integer (automatic for ℕ, but stated as an obligation).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount;\n  let obj (v : Fin denoms.size → ℕ) : ℕ := ∑ i in Finset.range denoms.size, v ⟨i, by simp⟩;\n  obj counts = ∑ i in Finset.range denoms.size, counts ⟨i, by simp⟩",
+      "nl_gloss": "The objective being minimized is the total number of coins, i.e., the sum of all counts.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount;\n  let obj (v : Fin denoms.size → ℕ) : ℕ := ∑ i in Finset.range denoms.size, v ⟨i, by simp⟩;\n  ∀ v : Fin denoms.size → ℕ,\n    (∑ i in Finset.range denoms.size, (v ⟨i, by simp⟩ * denoms[i])) = amount →\n    obj counts ≤ obj v",
+      "nl_gloss": "Among all vectors of non-negative counts that sum to the target amount, the returned counts have minimum total number of coins.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "canonicalSystem denoms →\n  (∀ amount : ℕ,\n    let counts := greedyCounts denoms amount;\n    ∀ v : Fin denoms.size → ℕ,\n      (∑ i in Finset.range denoms.size, (v ⟨i, by simp⟩ * denoms[i])) = amount →\n      (∑ i in Finset.range denoms.size, counts ⟨i, by simp⟩) ≤ (∑ i in Finset.range denoms.size, v ⟨i, by simp⟩))",
+      "nl_gloss": "Use the assumption that the denomination system is canonical (greedy is optimal) to justify the minimality property for all non-negative target amounts.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/greedy_coin_change_canonical_002/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/greedy_coin_change_canonical_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/greedy_coin_change_canonical_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/greedy_coin_change_canonical_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/greedy_coin_change_canonical_002/rust_summary.json"
+  }
+}

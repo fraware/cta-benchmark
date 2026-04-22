@@ -1,0 +1,42 @@
+[
+  {
+    "instance_id": "arrays_binary_search_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "arrays_max_subarray_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "sorting_insertion_sort_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "sorting_merge_sort_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "dp_knapsack_01_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "trees_bst_insert_001",
+    "system_id": "text_only_v1"
+  }
+]

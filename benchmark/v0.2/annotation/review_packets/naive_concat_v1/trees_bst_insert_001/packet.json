@@ -1,0 +1,215 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "trees_bst_insert_001",
+  "system_id": "naive_concat_v1",
+  "domain": "trees",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.2/instances/trees/trees_bst_insert_001",
+  "generated_output_path": "runs/run_2026_04_22_naive_concat_v1_eval_full_001/generated/naive_concat_v1/trees_bst_insert_001.json",
+  "informal_statement": {
+    "text": "Given a binary search tree whose in-order traversal is sorted strictly ascending and an integer key, return a new BST identical to the input on every existing key plus an additional node with the given key, unless the key is already present, in which case the tree is returned unchanged.",
+    "preconditions": [
+      "the input tree is a valid BST (in-order traversal is strictly ascending)"
+    ],
+    "required_properties": [
+      "the output tree is a valid BST",
+      "the multiset of keys in the output equals the multiset of keys in the input union {key} if the key was absent, else equals the multiset of keys in the input",
+      "every key present in the input is also present in the output"
+    ],
+    "edge_cases": [
+      "empty input tree",
+      "single-node tree, key less than root",
+      "single-node tree, key greater than root",
+      "single-node tree, key equal to root (unchanged)",
+      "left-leaning chain",
+      "right-leaning chain"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "BST precondition: the input tree is a valid BST (in-order strictly ascending).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "relaxing to nondecreasing (allowing duplicates)",
+        "omitting the precondition"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "BST invariant preservation: the output tree is also a valid BST.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting invariant preservation",
+        "asserting it only when the key is absent"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Key-set change: the output's key multiset is the input's multiset union {key} if the key was absent, else equals the input's multiset.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting insertion regardless of duplicates (breaks BST uniqueness)",
+        "asserting subset only"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Duplicate no-op: inserting an existing key returns a tree with the same key multiset.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "allowing duplicates after insertion"
+      ]
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (k : Int), IsBst t → IsBst (bstInsert t k)",
+      "nl_gloss": "If the input tree is a valid BST, the output tree preserves the BST invariant.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (k : Int), IsBst t → (k ∈ keys t ∨ (keys (bstInsert t k)).Perm (k :: keys t))",
+      "nl_gloss": "If the input tree is a valid BST and the key was absent, the output's keys are the input's keys plus the new key.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (k : Int), IsBst t → k ∈ keys t → (keys (bstInsert t k)).Perm (keys t)",
+      "nl_gloss": "If the input tree is a valid BST and the key was already present, the output's keys are a permutation of the input's.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "unknown",
+      "lean_statement": "def InsertSpec (t : BST α) (k : α) : Prop :=\n  (∀ x, x ∈ (insert t k) ↔ (x ∈ t ∨ x = k)) ∧\n  (∀ x, x ∈ t → x ∈ insert t k) ∧\n  (k ∈ t → insert t k = t) ∧\n  (¬ (k ∈ t) → k ∈ insert t k) ∧\n  (∀ x, x ≠ k → (x ∈ t ↔ x ∈ insert t k))",
+      "nl_gloss": "State the intended membership behavior: inserting k adds k if absent, otherwise leaves the tree unchanged; all other keys preserve membership.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "precondition",
+      "lean_statement": "∀ t : BST α, IsBST t → StrictSortedInorder t",
+      "nl_gloss": "Assume the input tree is a valid BST whose in-order traversal is strictly ascending (equivalently, no duplicates and BST ordering holds).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST α, IsBST t → IsBST (insert t k)",
+      "nl_gloss": "Prove the algorithm returns a BST when given a BST.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST α, StrictSortedInorder t → StrictSortedInorder (insert t k)",
+      "nl_gloss": "Prove the in-order traversal of the output remains strictly sorted.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "termination_by insert t k => size t\n\n-- and/or\n-- measure decreases on recursive calls",
+      "nl_gloss": "Show the implementation terminates (e.g., by decreasing tree size on recursive calls).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST α, IsBST t →\n  (k = rootKey t → insert t k = t) ∧\n  (k < rootKey t → insert t k = mkNode (rootKey t) (insert (leftSub t) k) (rightSub t)) ∧\n  (k > rootKey t → insert t k = mkNode (rootKey t) (leftSub t) (insert (rightSub t) k))",
+      "nl_gloss": "Match the algorithm’s behavior to BST insertion logic: equality returns unchanged; less-than recurses left; greater-than recurses right.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST α, IsBST t → ∀ x : α,\n  x ∈ insert t k → (x ∈ t ∨ x = k)",
+      "nl_gloss": "If a key appears in the output, it must have been in the input or be the inserted key.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST α, IsBST t → ∀ x : α,\n  (x ∈ t ∨ x = k) → x ∈ insert t k",
+      "nl_gloss": "Every key from the input remains present, and the inserted key is present when appropriate.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST α, IsBST t → k ∈ t → insert t k = t",
+      "nl_gloss": "If the key already exists, insertion is a no-op (tree unchanged).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 9,
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST α, IsBST t → ¬ (k ∈ t) → k ∈ insert t k",
+      "nl_gloss": "If the key is not present, the output contains the new key.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 10,
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST α, IsBST t → ∀ x : α,\n  x ≠ k → (x ∈ insert t k ↔ x ∈ t)",
+      "nl_gloss": "All keys other than k have exactly the same membership in input and output.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 11,
+      "kind": "unknown",
+      "lean_statement": "∀ t : BST α, IsBST t →\n  (k ∈ t → size (keys (insert t k)) = size (keys t)) ∧\n  (¬ (k ∈ t) → size (keys (insert t k)) = size (keys t) + 1)",
+      "nl_gloss": "Quantify the effect on the number of stored keys: unchanged if k exists; otherwise exactly one new node is added.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/trees_bst_insert_001/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/trees_bst_insert_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/trees_bst_insert_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/trees_bst_insert_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/trees_bst_insert_001/rust_summary.json"
+  }
+}

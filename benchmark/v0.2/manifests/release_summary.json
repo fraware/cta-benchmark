@@ -1,0 +1,21 @@
+{
+  "benchmark_version": "v0.2",
+  "manifest_hash": "sha256:cb35dc0be923a2e4012f920b55ae855c22699c76175f472f18eed43fd947c883",
+  "eval_size": 24,
+  "dev_size": 0,
+  "annotation_coverage": {
+    "required_pairs": 96,
+    "covered_pairs": 96,
+    "missing_pairs": 0,
+    "missing_examples": []
+  },
+  "gold_signoff": {
+    "primary_reviewer": "TODO_primary_reviewer",
+    "secondary_reviewer": "TODO_secondary_reviewer",
+    "approved": false
+  },
+  "release_validation": {
+    "status": "fail"
+  },
+  "timestamp": "2026-04-22T13:13:17.1910321Z"
+}

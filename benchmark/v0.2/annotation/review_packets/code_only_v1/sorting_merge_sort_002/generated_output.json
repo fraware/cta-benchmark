@@ -1,0 +1,58 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "system_id": "code_only_v1",
+  "instance_id": "sorting_merge_sort_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4777,
+    "prompt_tokens": 115,
+    "completion_tokens": 356
+  },
+  "raw_output_path": "generated/code_only_v1/raw/sorting_merge_sort_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "True",
+      "nl_gloss": "No explicit preconditions are asserted in the provided Rust reference (the reference implementation text was not included), so there are no additional required input constraints beyond well-typedness.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "The Rust reference implementation was not provided (the placeholder `{{rust_reference}}` was not replaced), so the exact computed function cannot be derived. Once the actual Rust code is available, this obligation should state the precise mathematical specification of the algorithm’s output.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "True",
+      "nl_gloss": "No termination argument can be stated without the actual Rust code. After the Rust code is provided, this obligation should prove that the algorithm terminates (e.g., via a decreasing measure for loops/recursion).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "No partial-correctness property can be stated without the actual Rust code. After the Rust code is provided, this obligation should prove that the returned value satisfies the specification (e.g., invariants maintained by loops and correctness of the final result).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "True",
+      "nl_gloss": "No loop/recursion invariants can be extracted without the actual Rust code. After the Rust code is provided, this obligation should capture the key invariants that make the algorithm correct.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "Edge-case behavior (empty inputs, boundary indices, etc.) cannot be determined without the actual Rust code. After the Rust code is provided, this obligation should cover the boundary cases consistent with the implementation.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
+  "seed": 1
+}

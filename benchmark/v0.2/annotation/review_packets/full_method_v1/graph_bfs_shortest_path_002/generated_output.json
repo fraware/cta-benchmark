@@ -1,0 +1,67 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "graph_bfs_shortest_path_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 8123,
+    "prompt_tokens": 1083,
+    "completion_tokens": 875
+  },
+  "raw_output_path": "generated/full_method_v1/raw/graph_bfs_shortest_path_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU1_length (adj : Adj) (source : Nat) : (bfsShortestPath adj source).length = adj.length := by\n  -- proof obligation\n  admit",
+      "nl_gloss": "The returned distance table has the same length as the adjacency list (aligned with the number of vertices).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU2_source_anchor (adj : Adj) (source : Nat) :\n  (bfsShortestPath adj source).get? source = some (some 0) := by\n  -- proof obligation\n  admit",
+      "nl_gloss": "The distance from the source to itself is exactly 0 edges.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU3_reachability_witness (adj : Adj) (source v k : Nat) :\n  (bfsShortestPath adj source).get? v = some (some k) →\n    ∃ path : List Nat,\n      path.length = k + 1 ∧\n      path.get? 0 = some source ∧\n      path.get? (k) = some v ∧\n      (∀ i : Nat, i < k →\n        match path.get? i, path.get? (i+1) with\n        | some a, some b => b ∈ (adj.get? a).getD []\n        | _, _ => False) := by\n  -- proof obligation\n  admit",
+      "nl_gloss": "If dist[v] = Some(k), then there exists a directed path from source to v using exactly k edges (k+1 vertices).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.55
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU4_minimality (adj : Adj) (source v k : Nat) :\n  (bfsShortestPath adj source).get? v = some (some k) →\n    ¬ (∃ path : List Nat,\n        path.length = (k) ∧\n        path.get? 0 = some source ∧\n        path.get? (k-1) = some v ∧\n        (∀ i : Nat, i + 1 < k →\n          match path.get? i, path.get? (i+1) with\n          | some a, some b => b ∈ (adj.get? a).getD []\n          | _, _ => False)) := by\n  -- proof obligation\n  admit",
+      "nl_gloss": "If dist[v] = Some(k), then there is no directed path from source to v using fewer than k edges.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.5
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU5_unreachability_iff (adj : Adj) (source v : Nat) :\n  (bfsShortestPath adj source).get? v = some none ↔\n    ¬ (∃ k : Nat, (bfsShortestPath adj source).get? v = some (some k)) := by\n  -- proof obligation\n  admit",
+      "nl_gloss": "dist[v] = None exactly when there is no k such that dist[v] = Some(k).",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.8
+    }
+  ],
+  "prompt_hash": "sha256:7f1b14243564760cd2b74209f2faedc979422e6f0a3e88d2f0d937cd423f179b",
+  "seed": 1
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_naive_concat_v1_eval_full_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "sorting_insertion_sort_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 9012,
+    "prompt_tokens": 136,
+    "completion_tokens": 1031
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/sorting_insertion_sort_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (a : Array Int) (n : Nat), n = a.size → True",
+      "nl_gloss": "The function is called with a mutable slice backed by an array of integers; no additional numeric preconditions are required.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "∃ (measure : Nat), (∀ state, step state decreases measure) → FunctionTerminates",
+      "nl_gloss": "The insertion-sort loop(s) terminate (e.g., by a decreasing measure such as the index of the outer loop and/or the inner loop).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (a₀ : Array Int) (a₁ : Array Int), runInsertionSort a₀ = a₁ → (∀ i, i < a₀.size → True) ∧ a₁.size = a₀.size",
+      "nl_gloss": "The algorithm only permutes elements within the slice; it does not change the length of the slice.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (a₀ a₁ : Array Int), runInsertionSort a₀ = a₁ → Multiset.of (a₁.toList) = Multiset.of (a₀.toList)",
+      "nl_gloss": "Insertion sort preserves the multiset of elements: the output is a permutation of the input.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (i : Nat), 0 ≤ i ∧ i ≤ a.size → (afterOuterLoop i) → Sorted (fun j => a[j]) (lo := 0) (hi := i)",
+      "nl_gloss": "After processing the first i elements (outer loop), the prefix [0, i) is sorted in nondecreasing order.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (a₀ : Array Int) (a : Array Int) (i : Nat), afterOuterLoop i → Multiset.of (a.toList.take i) = Multiset.of (a₀.toList.take i)",
+      "nl_gloss": "During the outer loop, the elements in the processed prefix are a permutation of the corresponding original prefix.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (i j : Nat), afterInnerLoop i j → (Sorted (fun k => a[k]) (lo := j+1) (hi := i+1)) ∧ (∀ k, j+1 ≤ k ∧ k ≤ i → a[k] ≥ a[j])",
+      "nl_gloss": "While inserting the element at position i into the sorted prefix, the portion to the right of the current hole remains sorted, and elements are shifted appropriately.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (a₀ a : Array Int) (i j : Nat), afterInnerLoop i j → Multiset.of (a.toList.take (i+1)) = Multiset.of (a₀.toList.take (i+1))",
+      "nl_gloss": "The inner loop preserves the multiset of the elements within the range affected by insertion (up to i).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (i j : Nat), afterInnerLoop i j → j ≤ i ∧ j < a.size",
+      "nl_gloss": "Index variables used by the inner loop stay within valid bounds of the slice.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (a₀ a₁ : Array Int), runInsertionSort a₀ = a₁ → Sorted (fun i => a₁[i]) (lo := 0) (hi := a₁.size)",
+      "nl_gloss": "After completion, the entire slice is sorted in nondecreasing order.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (a₀ a₁ : Array Int), runInsertionSort a₀ = a₁ → Multiset.of (a₁.toList) = Multiset.of (a₀.toList)",
+      "nl_gloss": "After completion, the output is a permutation of the input (no elements lost or created).",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:51884a2051e5031b7790be1f8336fb9d979b0de50f77bd26b3fcbeaafb2877b2",
+  "seed": 1
+}

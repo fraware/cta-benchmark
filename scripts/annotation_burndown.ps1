@@ -75,6 +75,7 @@ $outDir = Join-Path $root "reports/openai_campaign_2026_04_22"
 if (!(Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir | Out-Null }
 $jsonOut = Join-Path $outDir "annotation_burndown.json"
 $csvOut = Join-Path $outDir "annotation_burndown_batches.csv"
+$coverageSummaryOut = Join-Path $adjudicatedRoot "coverage_summary.json"
 
 $report = [pscustomobject]@{
   generated_at = (Get-Date).ToUniversalTime().ToString("o")
@@ -89,12 +90,24 @@ $report = [pscustomobject]@{
   first_missing = @($missing | Select-Object -First 20)
 }
 
+$summary = [pscustomobject]@{
+  generated_at = (Get-Date).ToUniversalTime().ToString("o")
+  benchmark_version = $Version
+  experiment_config = $ExperimentConfig
+  split = $exp.split
+  required_pairs = $required.Count
+  covered_pairs = $covered.Count
+  missing_pairs = $missing.Count
+}
+
 $report | ConvertTo-Json -Depth 8 | Set-Content $jsonOut
 $batchRows | Export-Csv -NoTypeInformation -Path $csvOut
+$summary | ConvertTo-Json -Depth 4 | Set-Content $coverageSummaryOut
 
 Write-Host "Coverage: $($covered.Count)/$($required.Count) (missing=$($missing.Count))"
 Write-Host "Wrote: $jsonOut"
 Write-Host "Wrote: $csvOut"
+Write-Host "Wrote: $coverageSummaryOut"
 Write-Host ""
 Write-Host "Next gate check:"
 Write-Host "cargo run -p cta_cli --quiet -- validate benchmark --version $Version --release"

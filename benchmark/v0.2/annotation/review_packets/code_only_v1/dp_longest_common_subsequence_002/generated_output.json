@@ -1,0 +1,52 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "system_id": "code_only_v1",
+  "instance_id": "dp_longest_common_subsequence_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 3075,
+    "prompt_tokens": 115,
+    "completion_tokens": 309
+  },
+  "raw_output_path": "generated/code_only_v1/raw/dp_longest_common_subsequence_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "True",
+      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "The Rust reference implementation is not provided in the prompt (the placeholder {{rust_reference}} is not expanded), so the exact computed function cannot be derived. Once the actual Rust code is available, this obligation should state the precise mathematical specification of the algorithm’s output.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "The specific loop/recursion invariants and progress measures depend on the actual Rust code. After the Rust code is provided, this obligation should capture the key invariant(s) maintained throughout the computation and/or a termination measure.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "The correctness proof obligation should connect the implementation’s final state to the functional specification (e.g., that the returned value equals the mathematically defined result). This requires the actual Rust code to identify the algorithm and its intended output.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "Any handling of edge cases (empty inputs, boundary indices, overflow behavior, etc.) must be reflected as proof obligations. This also requires the actual Rust code to determine what cases are covered and what assumptions are made.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
+  "seed": 1
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "system_id": "code_only_v1",
+  "instance_id": "trees_bst_insert_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 3611,
+    "prompt_tokens": 115,
+    "completion_tokens": 417
+  },
+  "raw_output_path": "generated/code_only_v1/raw/trees_bst_insert_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "True",
+      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), result = spec input",
+      "nl_gloss": "The implementation computes a value `result` that matches an abstract specification `spec` for the given `input`. (This obligation should be instantiated with the concrete algorithmic specification once the actual Rust code is provided.)",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "termination_of_implementation : ∀ (input : α), ∃ n : Nat, computation_steps input = n",
+      "nl_gloss": "The implementation terminates for all valid inputs (or for the inputs covered by any stated preconditions).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (state : State), invariant state",
+      "nl_gloss": "Any mutable state used by the implementation maintains required invariants (e.g., bounds on indices, preservation of array/list structure).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), invariant_after_loop input → postcondition input",
+      "nl_gloss": "The main loop/recursive step preserves invariants and ensures the postcondition when it finishes. (Instantiate `invariant_after_loop` and `postcondition` with the concrete loop invariants and final property from the Rust code.)",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), edge_case_condition input → postcondition input",
+      "nl_gloss": "The implementation handles edge cases correctly (e.g., empty input, singleton input, boundary indices), as required by the algorithm and any branching in the Rust code.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "result_property : result ∈ OutputType ∧ postcondition input",
+      "nl_gloss": "The returned value has the correct type/shape expected by the algorithm and satisfies the final correctness property.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
+  "seed": 1
+}

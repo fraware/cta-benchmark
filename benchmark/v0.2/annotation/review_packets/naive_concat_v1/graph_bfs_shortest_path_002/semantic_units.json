@@ -1,0 +1,51 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "graph_bfs_shortest_path_002",
+  "benchmark_version": "v0.2",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "Length invariant: dist has length n, equal to the number of vertices.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the length constraint",
+        "stating an upper bound instead of equality"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Source anchor: dist[source] = Some(0).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "forgetting to anchor the source distance",
+        "allowing dist[source] = Some(k) for k > 0"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Reachability witness: if dist[v] = Some(k), there is a directed path from source to v using exactly k edges.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the existential witness",
+        "stating the weaker 'v is reachable' without length"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Minimality: if dist[v] = Some(k), no path uses fewer than k edges.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "confusing the minimal and any-path formulations"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Unreachability: dist[v] = None iff no path exists from source to v.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "only stating one direction of the iff",
+        "conflating 'no path' with 'path of length > bound'"
+      ]
+    }
+  ]
+}

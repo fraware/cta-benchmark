@@ -1,0 +1,82 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_naive_concat_v1_eval_full_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "dp_knapsack_01_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 11315,
+    "prompt_tokens": 157,
+    "completion_tokens": 1502
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/dp_knapsack_01_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  (∀ x ∈ w, True) →\n  (∀ x ∈ v, True) →\n  True",
+      "nl_gloss": "Assume the inputs are well-formed: weights and values are lists of natural numbers (non-negative by type), and they have equal length. Capacity is a natural number (non-negative by type).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  let n := length w;\n  let items := List.range n;\n  ∀ (S : Finset (Fin n)),\n    (∑ i in S, w.get i) ≤ cap →\n    (∑ i in S, v.get i) ≤ knap w v cap",
+      "nl_gloss": "Define the knapsack optimum as the maximum total value over all subsets of indices whose total weight is within capacity. The result returned by the implementation is an upper bound on every feasible subset value.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  let n := length w;\n  let opt :=\n    Finset.univ.image (fun (i : Fin n) => i) |> (fun _ => 0); -- placeholder for max\n  True",
+      "nl_gloss": "There exists an optimal feasible subset achieving the maximum value (finiteness of subsets over a finite index set). This obligation is typically discharged by using `Finset.max'`/`Nat.find`-style reasoning in the proof.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  ∀ (i : Nat) (c : Nat),\n  i ≤ length w →\n  c ≤ cap →\n  dp i c =\n    (Finset.sup' (Finset.filter (fun S : Finset (Fin i)) (fun S => (∑ j in S, (w.get ⟨j.1, _⟩)) ≤ c))\n      (fun S => ∑ j in S, (v.get ⟨j.1, _⟩)))",
+      "nl_gloss": "The dynamic-programming table entry `dp i c` computed by the implementation equals the maximum total value achievable using only the first `i` items with total weight at most `c`.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  ∀ (c : Nat), c ≤ cap →\n  dp 0 c = 0",
+      "nl_gloss": "With zero items, the best achievable value is 0 for any capacity.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  ∀ (i c : Nat),\n  i < length w →\n  c ≤ cap →\n  let wi := w.get ⟨i, by simpa [List.length] using ‹i < length w›⟩;\n  let vi := v.get ⟨i, by simpa [List.length] using ‹i < length v›⟩;\n  dp (i+1) c =\n    if wi ≤ c then max (dp i c) (dp i (c - wi) + vi) else dp i c",
+      "nl_gloss": "The DP recurrence matches the 0/1 knapsack choice: either skip item `i` (value `dp i c`) or take it (if it fits) (value `dp i (c-wi) + vi`).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  ∀ (i c : Nat),\n  i ≤ length w →\n  c ≤ cap →\n  ∀ (S : Finset (Fin i)),\n    (∑ j in S, w.get j) ≤ c →\n    (∑ j in S, v.get j) ≤ dp i c",
+      "nl_gloss": "Any feasible subset of the first `i` items with total weight ≤ `c` has total value ≤ the DP optimum `dp i c`.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  ∀ (i c : Nat),\n  i ≤ length w →\n  c ≤ cap →\n  ∃ (S : Finset (Fin i)),\n    (∑ j in S, w.get j) ≤ c ∧\n    (∑ j in S, v.get j) = dp i c",
+      "nl_gloss": "The DP value `dp i c` is achieved by some feasible subset of the first `i` items.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  knap w v cap = dp (length w) cap",
+      "nl_gloss": "The implementation’s returned value equals the DP entry for using all items and the full capacity.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat),\n  length w = length v →\n  knap w v cap =\n    Finset.sup' (Finset.filter (fun S : Finset (Fin (length w)))\n      (fun S => (∑ i in S, w.get i) ≤ cap))\n      (fun S => ∑ i in S, v.get i)",
+      "nl_gloss": "The returned value equals the maximum total value over all subsets of indices whose total weight does not exceed `cap`.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:7e537addf79dd2ad6cf68699e4fc11d41a263cb834a804fb41d9f92b4c71cd41",
+  "seed": 1
+}

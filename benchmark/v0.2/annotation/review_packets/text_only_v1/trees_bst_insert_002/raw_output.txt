@@ -1,0 +1,49 @@
+{
+  "obligations": [
+    {
+      "kind": "definition",
+      "lean_statement": "def insert (k : Int) : BST → BST := by\n  -- intended: standard BST insertion using BST ordering\n  admit",
+      "nl_gloss": "Define the insertion function that returns a new BST for a given key."
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ t : BST, BSTInv t → SortedInorderStrict t",
+      "nl_gloss": "Assume the input BST has strictly ascending in-order traversal."
+    },
+    {
+      "kind": "preservation",
+      "lean_statement": "∀ t : BST, BSTInv t → BSTInv (insert k t)",
+      "nl_gloss": "Inserting a key into a valid BST yields a valid BST."
+    },
+    {
+      "kind": "inorder_characterization",
+      "lean_statement": "∀ t : BST, BSTInv t → Inorder (insert k t) = (if Mem k t then Inorder t else Inorder t ++ [k])",
+      "nl_gloss": "The in-order traversal of the result equals the original traversal if k is already present; otherwise it is the original traversal with k inserted."
+    },
+    {
+      "kind": "membership_existing_key",
+      "lean_statement": "∀ t : BST, BSTInv t → Mem k t → insert k t = t",
+      "nl_gloss": "If the key already exists in the tree, insertion returns the tree unchanged."
+    },
+    {
+      "kind": "membership_new_key",
+      "lean_statement": "∀ t : BST, BSTInv t → ¬ Mem k t → Mem k (insert k t)",
+      "nl_gloss": "If the key is not present, insertion adds a node containing the key."
+    },
+    {
+      "kind": "no_duplicate_on_existing",
+      "lean_statement": "∀ t : BST, BSTInv t → Mem k t → Count k (Inorder (insert k t)) = Count k (Inorder t)",
+      "nl_gloss": "If k is already present, the number of occurrences of k in the in-order traversal does not change."
+    },
+    {
+      "kind": "order_preservation",
+      "lean_statement": "∀ t : BST, BSTInv t → SortedInorderStrict (insert k t)",
+      "nl_gloss": "The resulting tree still has strictly ascending in-order traversal."
+    },
+    {
+      "kind": "structural_identity_on_existing",
+      "lean_statement": "∀ t : BST, BSTInv t → (∀ x, Mem x t ↔ Mem x (insert k t)) → Mem k t → insert k t = t",
+      "nl_gloss": "If the key is already present and no other keys change membership, the resulting tree is identical to the input."
+    }
+  ]
+}

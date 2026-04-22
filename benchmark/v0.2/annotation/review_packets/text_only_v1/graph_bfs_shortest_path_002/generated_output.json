@@ -1,0 +1,58 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "graph_bfs_shortest_path_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 6162,
+    "prompt_tokens": 176,
+    "completion_tokens": 763
+  },
+  "raw_output_path": "generated/text_only_v1/raw/graph_bfs_shortest_path_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (adj : Fin n → List (Fin n)) (s : Fin n),\n  let dist := bfsDist adj s\n  dist.length = n",
+      "nl_gloss": "The returned distance vector has length n (one entry per vertex).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (adj : Fin n → List (Fin n)) (s : Fin n) (v : Fin n),\n  let dist := bfsDist adj s\n  dist[v].isSome ∨ dist[v].isNone",
+      "nl_gloss": "For every vertex v, the algorithm returns either Some(k) or None at dist[v].",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (adj : Fin n → List (Fin n)) (s v : Fin n),\n  let dist := bfsDist adj s\n  (∃ k : Nat, shortestPathEdges adj s v = some k) →\n    ∃ k : Nat, dist[v] = some k ∧ k = shortestPathEdges adj s v |> Option.get (by simp [shortestPathEdges])",
+      "nl_gloss": "If v is reachable and the shortest path uses k edges, then dist[v] is Some(k).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (adj : Fin n → List (Fin n)) (s v : Fin n),\n  let dist := bfsDist adj s\n  ∀ k : Nat,\n    dist[v] = some k →\n      (∃ path : List (Fin n),\n        path.head? = some s ∧ path.last? = some v ∧\n        pathEdges adj path ∧ path.length - 1 = k) ∧\n      (∀ k' : Nat,\n        (∃ path' : List (Fin n),\n          path'.head? = some s ∧ path'.last? = some v ∧\n          pathEdges adj path' ∧ path'.length - 1 = k') → k ≤ k')",
+      "nl_gloss": "If dist[v] = Some(k), then there exists a path from s to v using exactly k edges, and no path uses fewer than k edges.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (adj : Fin n → List (Fin n)) (s v : Fin n),\n  let dist := bfsDist adj s\n  (¬ ∃ k : Nat, shortestPathEdges adj s v = some k) →\n    dist[v] = none",
+      "nl_gloss": "If there is no path from s to v, then dist[v] is None.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (adj : Fin n → List (Fin n)) (s : Fin n),\n  let dist := bfsDist adj s\n  dist[s] = some 0",
+      "nl_gloss": "The distance from the source to itself is Some(0).",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:2c860acec75ce756a16b1650f1d5148a2a820a0c142831dc0f0d3087daffda90",
+  "seed": 3
+}

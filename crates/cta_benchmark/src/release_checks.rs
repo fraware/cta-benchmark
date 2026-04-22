@@ -305,9 +305,7 @@ fn check_manifest(
                     message: format!(
                         "manifest content_hash={} does not match recomputed={}; regenerate with \
                          `cta benchmark manifest --version {}`",
-                        manifest.content_hash,
-                        fresh.content_hash,
-                        manifest.benchmark_version,
+                        manifest.content_hash, fresh.content_hash, manifest.benchmark_version,
                     ),
                     path: None,
                 });
@@ -505,11 +503,7 @@ fn check_gold_audit_signoff(ctx: &ReleaseCheckContext<'_>, issues: &mut Vec<Lint
     if ctx.benchmark.version.as_str() == "v0.1" {
         return;
     }
-    let signoff_path = ctx
-        .benchmark
-        .root
-        .join("audit")
-        .join("gold_signoff.json");
+    let signoff_path = ctx.benchmark.root.join("audit").join("gold_signoff.json");
     if !signoff_path.is_file() {
         issues.push(LintIssue {
             instance_id: "<global>".to_string(),
@@ -687,10 +681,7 @@ mod tests {
             schema_version: "schema_v1".to_string(),
             benchmark_version: BenchmarkVersion::new("v0.1").unwrap(),
             split: name,
-            instance_ids: ids
-                .iter()
-                .map(|s| InstanceId::new(*s).unwrap())
-                .collect(),
+            instance_ids: ids.iter().map(|s| InstanceId::new(*s).unwrap()).collect(),
             source_path: PathBuf::from(format!("splits/{}.json", name.as_str())),
         }
     }
@@ -716,10 +707,7 @@ mod tests {
             metrics_version: &metrics,
         };
         let report = validate_release(&ctx);
-        assert!(report
-            .issues
-            .iter()
-            .any(|i| i.code == "SPLIT_EMPTY_EVAL"));
+        assert!(report.issues.iter().any(|i| i.code == "SPLIT_EMPTY_EVAL"));
     }
 
     #[test]
@@ -730,7 +718,10 @@ mod tests {
             SplitName::Dev,
             split(SplitName::Dev, &["arrays_binary_search_001"]),
         );
-        splits.insert(SplitName::Eval, split(SplitName::Eval, &["sorting_merge_sort_001"]));
+        splits.insert(
+            SplitName::Eval,
+            split(SplitName::Eval, &["sorting_merge_sort_001"]),
+        );
         let rubric = RubricVersion::new("rubric_v1").unwrap();
         let metrics = MetricsVersion::new("metrics_v2").unwrap();
         let ctx = ReleaseCheckContext {
@@ -753,10 +744,7 @@ mod tests {
     fn missing_manifest_is_error() {
         let bench = empty_benchmark();
         let mut splits = BTreeMap::new();
-        splits.insert(
-            SplitName::Dev,
-            split(SplitName::Dev, &[]),
-        );
+        splits.insert(SplitName::Dev, split(SplitName::Dev, &[]));
         splits.insert(SplitName::Eval, split(SplitName::Eval, &[]));
         let rubric = RubricVersion::new("rubric_v1").unwrap();
         let metrics = MetricsVersion::new("metrics_v2").unwrap();

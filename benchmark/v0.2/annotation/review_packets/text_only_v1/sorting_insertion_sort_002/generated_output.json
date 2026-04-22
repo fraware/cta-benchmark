@@ -1,0 +1,70 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "sorting_insertion_sort_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 5223,
+    "prompt_tokens": 150,
+    "completion_tokens": 727
+  },
+  "raw_output_path": "generated/text_only_v1/raw/sorting_insertion_sort_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem insertionSort_spec (a : Array Int) (h : a.Length = n) : True := by trivial",
+      "nl_gloss": "Introduce the intended specification context for insertion sort over a mutable slice/array of integers of length n.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem insertionSort_terminates (a : Array Int) : Termination := by trivial",
+      "nl_gloss": "Insertion sort terminates when run on the given mutable slice/array.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem insertionSort_mutates_in_place (a : Array Int) : True := by trivial",
+      "nl_gloss": "The algorithm is modeled as mutating the input slice/array in place (no separate output array).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem insertionSort_perm (a₀ a₁ : Array Int) (h : a₁ = insertionSort a₀) : a₁.toList.Perm a₀.toList := by\n  -- proof obligation: insertion sort preserves the multiset of elements\n  admit",
+      "nl_gloss": "The final array is a permutation of the initial array (same elements with the same multiplicities).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem insertionSort_sorted (a₀ a₁ : Array Int) (h : a₁ = insertionSort a₀) :\n  a₁.toList.Sorted (· ≤ ·) := by\n  -- proof obligation: output is nondecreasing\n  admit",
+      "nl_gloss": "After insertion sort, the array is sorted in nondecreasing order.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem insertionSort_outer_invariant (a : Array Int) (i : Nat) :\n  i ≤ a.Length →\n  Sorted (· ≤ ·) (a.toList.take i) := by\n  -- proof obligation: after processing i elements, the prefix is sorted\n  admit",
+      "nl_gloss": "Outer-loop invariant: the prefix up to the current index is sorted.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem insertionSort_inner_invariant (a : Array Int) (i j : Nat) :\n  i < a.Length → j ≤ i →\n  (Sorted (· ≤ ·) (a.toList.take j)) ∧\n  (∀ k, j ≤ k ∧ k < i → a[k] ≥ a[i]) := by\n  -- proof obligation: inner-loop maintains the correct shifting property\n  admit",
+      "nl_gloss": "Inner-loop invariant: elements are shifted to make room for the key while preserving sortedness of the already-processed part.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem insertionSort_bounds_safe (a : Array Int) : True := by trivial",
+      "nl_gloss": "All index accesses performed by the algorithm stay within bounds of the slice/array.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:87ebc21f6fe81599937e0c2dee07ea61e16c533de1958bd09325c585cb036b59",
+  "seed": 3
+}

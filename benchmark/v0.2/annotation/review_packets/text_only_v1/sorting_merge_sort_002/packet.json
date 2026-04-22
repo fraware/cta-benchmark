@@ -1,0 +1,163 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "sorting_merge_sort_002",
+  "system_id": "text_only_v1",
+  "domain": "sorting",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.2/instances/sorting/sorting_merge_sort_002",
+  "generated_output_path": "runs/run_2026_04_22_text_only_v1_eval_003/generated/text_only_v1/sorting_merge_sort_002.json",
+  "informal_statement": {
+    "text": "Given a slice of integers, return a new vector containing the same multiset of elements in nondecreasing order.",
+    "preconditions": [
+      "the input is a slice of i32 values of any length"
+    ],
+    "required_properties": [
+      "the output length equals the input length",
+      "the output is sorted in nondecreasing order",
+      "the output is a permutation of the input (same multiset of elements)"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice",
+      "already-sorted slice",
+      "reverse-sorted slice",
+      "slice with duplicates",
+      "slice of length that is a power of two",
+      "slice of length that is not a power of two"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Length preservation: the output has the same length as the input.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only a length bound instead of equality"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Sortedness: the output is sorted in nondecreasing order.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting strict ordering",
+        "omitting the sortedness condition entirely"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Permutation: the output is a permutation of the input (equal multiset of elements).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting set-equality instead of multiset-equality",
+        "asserting subset relationships only"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Stability is NOT required by the spec.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr), (mergeSort arr).length = arr.length",
+      "nl_gloss": "The output length equals the input length.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr), SortedLE (mergeSort arr)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr), (mergeSort arr).Perm arr",
+      "nl_gloss": "The output is a permutation of the input.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "unknown",
+      "lean_statement": "theorem spec_sort (xs : List Int) : True := by trivial",
+      "nl_gloss": "Introduce the specification context for sorting a list of integers.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int), ∃ (ys : Vector Int xs.length), True",
+      "nl_gloss": "The result is a vector of integers whose length matches the input length.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int) (ys : Vector Int xs.length), ys.length = xs.length",
+      "nl_gloss": "The output vector has the same length as the input slice.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int) (ys : Vector Int xs.length), (∀ i j : Fin xs.length, i ≤ j → ys[i] ≤ ys[j]) → True",
+      "nl_gloss": "The output is in nondecreasing order (indices respect ≤).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int) (ys : Vector Int xs.length), (ys.toList ~ xs) → True",
+      "nl_gloss": "The output contains exactly the same multiset of elements as the input (permutation).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "∀ (xs : List Int), ∃ (ys : Vector Int xs.length), (∀ i j : Fin xs.length, i ≤ j → ys[i] ≤ ys[j]) ∧ (ys.toList ~ xs)",
+      "nl_gloss": "There exists an output vector of the same length that is nondecreasing and is a permutation of the input.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/sorting_merge_sort_002/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/sorting_merge_sort_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/sorting_merge_sort_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/sorting_merge_sort_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/sorting_merge_sort_002/rust_summary.json"
+  }
+}

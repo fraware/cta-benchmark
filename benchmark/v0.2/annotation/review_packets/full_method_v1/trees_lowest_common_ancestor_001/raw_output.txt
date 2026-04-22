@@ -1,0 +1,59 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_BST_precondition (t : Tree) : IsBst t → True := by intro h; trivial",
+      "nl_gloss": "Assume the input tree satisfies the BST invariant (in-order traversal is strictly ascending).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.35
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU2_presence_precondition (t : Tree) (p q : Int) : HasKey t p → HasKey t q → True := by intro hp hq; trivial",
+      "nl_gloss": "Assume both query keys p and q are present in the tree.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.35
+    },
+    {
+      "kind": "soundness (some result)",
+      "lean_statement": "theorem SU3_ancestor_property_some {t : Tree} {p q : Int} (hp : HasKey t p) (hq : HasKey t q) : ∃ r : Int, lcaBst t p q = some r := by\n  -- Reference model is assumed to return a key when both keys are present.\n  -- This obligation captures that the algorithm does not return None under SU2.\n  admit",
+      "nl_gloss": "When both keys are present, the reference model returns some key r (not None).",
+      "linked_semantic_units": [
+        "SU2",
+        "SU3"
+      ],
+      "confidence": 0.55
+    },
+    {
+      "kind": "ancestor property",
+      "lean_statement": "theorem SU3_ancestor_property {t : Tree} {p q r : Int} (hp : HasKey t p) (hq : HasKey t q)\n    (hr : lcaBst t p q = some r) : IsSubtree (node nil r nil) t → True := by\n  intro _; trivial",
+      "nl_gloss": "The returned key r corresponds to a node in the tree (so both keys can be in its subtree).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.25
+    },
+    {
+      "kind": "lowest (no proper descendant contains both keys)",
+      "lean_statement": "theorem SU4_lowest {t : Tree} {p q r : Int} (hp : HasKey t p) (hq : HasKey t q)\n    (hr : lcaBst t p q = some r) :\n    ∀ d : Tree, IsProperSubtree d t → True := by\n  intro d hd; trivial",
+      "nl_gloss": "No proper descendant of the returned node contains both keys (lowest common ancestor semantics).",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.2
+    },
+    {
+      "kind": "key equality case",
+      "lean_statement": "theorem SU5_key_equality {t : Tree} (p : Int) (hp : HasKey t p) :\n    lcaBst t p p = some p := by\n  -- When p == q, the lowest node having both keys is that same key.\n  admit",
+      "nl_gloss": "If p = q and p is present, the returned key is exactly p.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.6
+    }
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "greedy_interval_scheduling_002",
+  "system_id": "naive_concat_v1",
+  "domain": "greedy",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.2/instances/greedy/greedy_interval_scheduling_002",
+  "generated_output_path": "runs/run_2026_04_22_naive_concat_v1_eval_full_001/generated/naive_concat_v1/greedy_interval_scheduling_002.json",
+  "informal_statement": {
+    "text": "Given a slice of closed-open intervals [start, end), return the maximum number of mutually non-overlapping intervals selectable from the input.",
+    "preconditions": [
+      "for every input interval, start < end"
+    ],
+    "required_properties": [
+      "the returned count equals the size of some subset of pairwise non-overlapping intervals from the input",
+      "no subset of pairwise non-overlapping intervals from the input is strictly larger than the returned count",
+      "intervals sharing only an endpoint (interval i ends where interval j starts) are considered non-overlapping"
+    ],
+    "edge_cases": [
+      "empty input (result is 0)",
+      "all intervals mutually disjoint (result equals len)",
+      "all intervals overlap a common point (result is 1)",
+      "intervals touching at a single endpoint",
+      "many duplicate intervals"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: every interval satisfies start < stop.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "allowing start == stop (empty intervals)",
+        "omitting the precondition entirely"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Feasibility: the returned count is witnessed by some subset of the input that is pairwise non-overlapping.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only an upper bound",
+        "confusing index selections with value selections"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Optimality: no pairwise non-overlapping subset of the input is strictly larger than the returned count.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only feasibility (admits the trivial return 0)"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Endpoint convention: two intervals that share only an endpoint are non-overlapping.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "using strict inequality instead of non-strict at the boundary"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Empty input: the result is 0 when the input is empty.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (ivs : Intervals), (∀ i ∈ ivs, i.start < i.stop) → ∃ (sel : List Nat), Feasible ivs sel ∧ sel.length = intervalScheduling ivs",
+      "nl_gloss": "When every input interval has strictly positive length, there exists a feasible selection whose size equals the returned count.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (ivs : Intervals) (sel : List Nat), (∀ i ∈ ivs, i.start < i.stop) → Feasible ivs sel → sel.length ≤ intervalScheduling ivs",
+      "nl_gloss": "When every input interval has strictly positive length, no feasible selection is strictly larger than the returned count.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "∀ (a b : Interval), a.stop = b.start → NonOverlap a b",
+      "nl_gloss": "Intervals touching at a single endpoint are non-overlapping.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "unknown",
+      "lean_statement": "theorem spec_max_nonoverlap (intervals : List (Nat × Nat)) (start end : Nat) : True",
+      "nl_gloss": "State the overall problem: from a list of closed-open intervals [s,e) represented as (s,e), compute the maximum size of a subset of pairwise non-overlapping intervals.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "def Interval := Nat × Nat\n\ndef nonoverlap (a b : Interval) : Prop := let (s1,e1) := a; let (s2,e2) := b; e1 ≤ s2 ∨ e2 ≤ s1\n\ndef compatible_set (xs : List Interval) : Prop := ∀ i j, i < xs.length → j < xs.length → i ≠ j → nonoverlap (xs.get ⟨i, ‹_›⟩) (xs.get ⟨j, ‹_›⟩)",
+      "nl_gloss": "Define what it means for two intervals to be mutually non-overlapping (closed-open semantics) and what it means for a set/list of intervals to be pairwise non-overlapping.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "def feasible (xs : List Interval) (input : List Interval) : Prop := xs.Nodup ∧ xs ⊆ input ∧ compatible_set xs",
+      "nl_gloss": "Define feasibility of a chosen subset: it is a subset of the input, has no duplicates, and is pairwise non-overlapping.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "def opt_value (input : List Interval) : Nat := Nat.findGreatest (fun k => ∃ xs, feasible xs input ∧ xs.length = k) (by decide)",
+      "nl_gloss": "Define the optimal value as the maximum cardinality among all feasible subsets of the input.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "theorem impl_returns_value (input : List Interval) : ∃ k, k = {{rust_reference_result}} ∧ k = opt_value input",
+      "nl_gloss": "Connect the Rust reference implementation’s returned value to the abstract optimal value (i.e., the implementation computes the optimum).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "theorem impl_produces_feasible_subset (input : List Interval) : ∃ xs, feasible xs input ∧ xs.length = {{rust_reference_result}}",
+      "nl_gloss": "Show that the algorithm’s constructed/implicit selection corresponds to some feasible subset whose size equals the returned maximum.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "theorem impl_is_upper_bound (input : List Interval) : ∀ xs, feasible xs input → xs.length ≤ {{rust_reference_result}}",
+      "nl_gloss": "Prove optimality: no feasible subset can be larger than the algorithm’s returned value.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "theorem impl_is_lower_bound (input : List Interval) : ∃ xs, feasible xs input ∧ xs.length = {{rust_reference_result}}",
+      "nl_gloss": "Prove attainability: there exists a feasible subset of exactly the size returned by the algorithm.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "theorem greedy_choice_property (input : List Interval) : True",
+      "nl_gloss": "Capture the key greedy-choice property used by the classical interval scheduling algorithm (typically: choosing an interval with earliest finishing time can be extended to an optimal solution).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 9,
+      "kind": "unknown",
+      "lean_statement": "theorem exchange_argument (input : List Interval) : True",
+      "nl_gloss": "Provide an exchange argument: any optimal solution can be transformed to include the greedy-selected interval without decreasing the number of intervals.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 10,
+      "kind": "unknown",
+      "lean_statement": "theorem sort_by_end_correct (input : List Interval) : True",
+      "nl_gloss": "If the implementation sorts intervals by end time, prove that the sorting preserves the multiset of intervals and that the greedy step uses the correct order.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 11,
+      "kind": "unknown",
+      "lean_statement": "theorem selected_intervals_nonoverlap (input : List Interval) : compatible_set ({{rust_reference_selected_list}})",
+      "nl_gloss": "Prove that the intervals selected by the algorithm are pairwise non-overlapping under closed-open semantics.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 12,
+      "kind": "unknown",
+      "lean_statement": "theorem closed_open_semantics (s1 e1 s2 e2 : Nat) : e1 = s2 → ¬ (¬ nonoverlap (s1,e1) (s2,e2))",
+      "nl_gloss": "Ensure correctness of overlap definition for closed-open intervals: touching at a point (end = start) is allowed (non-overlapping).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 13,
+      "kind": "termination",
+      "lean_statement": "theorem impl_terminates (input : List Interval) : True",
+      "nl_gloss": "Show the Rust reference implementation terminates (e.g., by structural recursion over the input list).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 14,
+      "kind": "unknown",
+      "lean_statement": "theorem impl_total (input : List Interval) : ∃ k, k = {{rust_reference_result}}",
+      "nl_gloss": "Show the implementation is total on all inputs (returns a Nat value for any input list).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/greedy_interval_scheduling_002/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/greedy_interval_scheduling_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/greedy_interval_scheduling_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/greedy_interval_scheduling_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/greedy_interval_scheduling_002/rust_summary.json"
+  }
+}

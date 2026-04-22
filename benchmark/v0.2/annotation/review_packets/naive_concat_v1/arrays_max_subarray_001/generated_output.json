@@ -1,0 +1,88 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_naive_concat_v1_eval_full_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "arrays_max_subarray_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 6804,
+    "prompt_tokens": 129,
+    "completion_tokens": 970
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/arrays_max_subarray_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem precond_nonempty {a : Array Int} (h : a.size > 0) : True",
+      "nl_gloss": "Assume the input slice/array is non-empty (size > 0), matching the task requirement that the slice is non-empty.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def maxContigSum (xs : List Int) : Int := by\n  -- maximum over all contiguous non-empty sublists\n  -- (formalized using a fold over all start/end indices or all sublists with proofs of contiguity)\n  admit",
+      "nl_gloss": "Define the mathematical specification: the maximum sum among all contiguous non-empty sublists of the input list.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def rust_impl_result (xs : List Int) : Int := by\n  -- model the Rust reference implementation as a pure function on lists\n  admit",
+      "nl_gloss": "Define a pure Lean function that corresponds to the Rust reference implementation’s computed result.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem rust_impl_total (xs : List Int) : ∃ r : Int, rust_impl_result xs = r",
+      "nl_gloss": "The reference implementation is total on non-empty inputs (i.e., it produces an integer result without getting stuck).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem rust_impl_correct_spec {xs : List Int} (h : xs ≠ []) : rust_impl_result xs = maxContigSum xs",
+      "nl_gloss": "The value computed by the Rust implementation equals the specification: the maximum sum over all contiguous non-empty subslices.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSum_is_upper_bound {xs : List Int} (h : xs ≠ []) :\n  ∀ (i j : Nat), i < j ∧ j ≤ xs.length →\n    let sub := xs.drop i |>.take (j - i) in\n    sum sub ≤ maxContigSum xs",
+      "nl_gloss": "For every contiguous non-empty subarray (defined by indices i<j), its sum is ≤ the computed maximum.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSum_attained {xs : List Int} (h : xs ≠ []) :\n  ∃ (i j : Nat), i < j ∧ j ≤ xs.length ∧\n    let sub := xs.drop i |>.take (j - i) in\n    sum sub = maxContigSum xs",
+      "nl_gloss": "There exists at least one contiguous non-empty subarray whose sum equals the maximum.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSum_nonempty {xs : List Int} (h : xs ≠ []) :\n  ∃ (i j : Nat), i < j ∧ j ≤ xs.length",
+      "nl_gloss": "Because the input is non-empty, there exists at least one contiguous non-empty subarray to take a maximum over.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem sum_drop_take_matches_subarray {xs : List Int} (i j : Nat)\n  (hi : i < j) (hj : j ≤ xs.length) :\n  sum (xs.drop i |>.take (j - i)) = sum (subarray xs i j)",
+      "nl_gloss": "Ensure the Lean definition of the subarray sum used in the specification matches the intended contiguous subarray notion (drop/take vs an explicit subarray function).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem kadane_invariant {xs : List Int} (h : xs ≠ []) :\n  -- If the implementation is modeled as Kadane’s algorithm,\n  -- prove the key invariant relating the running variables to\n  -- best prefix/suffix sums over processed elements.\n  admit",
+      "nl_gloss": "Prove the core loop invariant of the algorithm: the maintained running values correspond to the best (maximum) sums of contiguous subarrays ending at the current position (and/or the best overall so far).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem rust_impl_final_uses_invariant {xs : List Int} (h : xs ≠ []) :\n  -- Show that after processing all elements, the maintained 'best overall'\n  -- equals the maximum over all contiguous non-empty subarrays.\n  admit",
+      "nl_gloss": "Use the invariant to conclude that the final returned value equals the global maximum over all contiguous non-empty subarrays.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:0542f8150535f12b1cfcaf8bf5a0b53892d6d049ec16e1da83ef9d4e538f2f9c",
+  "seed": 1
+}

@@ -1,0 +1,134 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "sorting_insertion_sort_002",
+  "system_id": "code_only_v1",
+  "domain": "sorting",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.2/instances/sorting/sorting_insertion_sort_002",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_full_001/generated/code_only_v1/sorting_insertion_sort_002.json",
+  "informal_statement": {
+    "text": "Sort a mutable slice of integers in nondecreasing order using insertion sort. The function mutates its input in place and returns nothing.",
+    "preconditions": [],
+    "required_properties": [
+      "the resulting slice is sorted in nondecreasing order",
+      "the resulting slice is a permutation of the original slice",
+      "the function terminates on every input"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice",
+      "already-sorted slice",
+      "reverse-sorted slice",
+      "slice with duplicates",
+      "slice with all equal elements"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Sortedness: the output list is sorted in nondecreasing order.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU2",
+      "description": "Permutation: the output is a permutation of the input (every element preserved, counts preserved).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting set equality without counting duplicates",
+        "asserting length preservation only"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Termination on every input.",
+      "criticality": "supporting"
+    },
+    {
+      "id": "SU4",
+      "description": "Stability is NOT required and should not be asserted.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), SortedLE (insertionSort xs)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "True",
+      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the code snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "The Rust reference implementation is not provided in the prompt (the placeholder {{rust_reference}} is not expanded), so the exact computed function cannot be derived. Once the actual Rust code is available, this obligation should state the precise mathematical specification of the output.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "invariant",
+      "lean_statement": "True",
+      "nl_gloss": "The specific loop/recursion invariants cannot be determined without the actual Rust code. After the Rust code is provided, this obligation should capture the key invariant(s) maintained throughout the algorithm.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "termination",
+      "lean_statement": "True",
+      "nl_gloss": "Termination arguments depend on the concrete control flow (loops/recursion) in the Rust code. With the actual implementation, this obligation should prove that the algorithm terminates (e.g., via a decreasing measure).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "Correctness proof obligations (e.g., that the final result satisfies the functional specification) depend on the algorithm’s details. With the actual Rust code, this obligation should connect the maintained invariants to the postcondition.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/rust_summary.json"
+  }
+}

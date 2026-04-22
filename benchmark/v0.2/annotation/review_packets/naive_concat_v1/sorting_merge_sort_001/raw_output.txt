@@ -1,0 +1,39 @@
+{
+  "obligations": [
+    {
+      "kind": "spec",
+      "lean_statement": "theorem spec_sort_multiset (xs : List Int) : Multiset.ofList (sort xs) = Multiset.ofList xs",
+      "nl_gloss": "The output contains exactly the same elements as the input, counting multiplicities (multiset preservation)."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem spec_sort_sorted (xs : List Int) : Sorted (· ≤ ·) (sort xs)",
+      "nl_gloss": "The output list is sorted in nondecreasing order."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem spec_sort_length (xs : List Int) : (sort xs).length = xs.length",
+      "nl_gloss": "The output has the same length as the input (follows from multiset preservation, but can be required explicitly)."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem spec_sort_perm (xs : List Int) : xs ~p sort xs",
+      "nl_gloss": "The output is a permutation of the input (permutation equivalence induced by multiset equality)."
+    },
+    {
+      "kind": "impl",
+      "lean_statement": "theorem impl_correctness (xs : List Int) : Multiset.ofList (sort xs) = Multiset.ofList xs ∧ Sorted (· ≤ ·) (sort xs)",
+      "nl_gloss": "Combines the two main correctness properties: multiset preservation and sortedness."
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem impl_terminates (xs : List Int) : ∃ n : Nat, sort xs = sortAux n xs",
+      "nl_gloss": "The implementation terminates / is well-founded (expressed via an auxiliary bounded recursion or well-founded measure)."
+    },
+    {
+      "kind": "impl",
+      "lean_statement": "theorem impl_pure (xs : List Int) : sort xs = sort xs",
+      "nl_gloss": "The implementation is deterministic/pure with respect to the input (no hidden state); useful when mapping from Rust to Lean."
+    }
+  ]
+}

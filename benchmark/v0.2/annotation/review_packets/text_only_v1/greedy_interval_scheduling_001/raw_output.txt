@@ -1,0 +1,59 @@
+{
+  "obligations": [
+    {
+      "kind": "definition",
+      "lean_statement": "def Interval (α : Type) := { start : α // True }",
+      "nl_gloss": "Introduce an interval type (placeholder) to model closed-open intervals."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "structure COpenInterval (α : Type) where\n  start : α\n  end_ : α\n  (h : start ≤ end_)",
+      "nl_gloss": "Define a closed-open interval [start, end) with the invariant start ≤ end."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def nonoverlap {α} [LinearOrder α] (I J : COpenInterval α) : Prop := I.end_ ≤ J.start ∨ J.end_ ≤ I.start",
+      "nl_gloss": "Define when two intervals are mutually non-overlapping (disjoint in closed-open sense)."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def pairwiseNonoverlap {α} [LinearOrder α] (s : List (COpenInterval α)) : Prop :=\n  ∀ ⦃I⦄, I ∈ s → ∀ ⦃J⦄, J ∈ s → I ≠ J → nonoverlap I J",
+      "nl_gloss": "Define pairwise non-overlap for a set/list of intervals."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def selectable {α} [LinearOrder α] (s : List (COpenInterval α)) : Prop := pairwiseNonoverlap s",
+      "nl_gloss": "Define that a selection is valid iff its intervals are pairwise non-overlapping."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def maxSelectable {α} [LinearOrder α] (xs : List (COpenInterval α)) : Nat :=\n  Nat.findGreatest (by\n    -- placeholder: existence of a maximum size among finite subsets\n    admit) (by\n    -- placeholder: monotonicity\n    admit)",
+      "nl_gloss": "Define the intended objective: the maximum size of a selectable subset."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem maxSelectable_spec {α} [LinearOrder α] (xs : List (COpenInterval α)) :\n  (∃ s : List (COpenInterval α), s ⊆ xs ∧ selectable s ∧ s.length = maxSelectable xs) ∧\n  (∀ t : List (COpenInterval α), t ⊆ xs → selectable t → t.length ≤ maxSelectable xs)",
+      "nl_gloss": "The returned maximum is achievable by some selectable subset, and no selectable subset is larger."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def solve {α} [LinearOrder α] (xs : List (COpenInterval α)) : Nat := maxSelectable xs",
+      "nl_gloss": "Define the algorithm result as the maximum selectable size (spec-level definition)."
+    },
+    {
+      "kind": "correctness",
+      "lean_statement": "theorem solve_correct {α} [LinearOrder α] (xs : List (COpenInterval α)) :\n  (∃ s : List (COpenInterval α), s ⊆ xs ∧ selectable s ∧ s.length = solve xs) ∧\n  (∀ t : List (COpenInterval α), t ⊆ xs → selectable t → t.length ≤ solve xs)",
+      "nl_gloss": "The solver returns exactly the maximum number of mutually non-overlapping intervals."
+    },
+    {
+      "kind": "edge_case",
+      "lean_statement": "theorem solve_nil {α} [LinearOrder α] : solve ([] : List (COpenInterval α)) = 0",
+      "nl_gloss": "With no intervals, the maximum selectable number is 0."
+    },
+    {
+      "kind": "edge_case",
+      "lean_statement": "theorem solve_single {α} [LinearOrder α] (I : COpenInterval α) : solve [I] = 1",
+      "nl_gloss": "With one interval, the maximum selectable number is 1."
+    }
+  ]
+}

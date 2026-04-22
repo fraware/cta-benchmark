@@ -1,0 +1,70 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "system_id": "code_only_v1",
+  "instance_id": "sorting_insertion_sort_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 5095,
+    "prompt_tokens": 115,
+    "completion_tokens": 471
+  },
+  "raw_output_path": "generated/code_only_v1/raw/sorting_insertion_sort_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "True",
+      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference (the placeholder {{rust_reference}} contains no visible assertions/comments here). If the actual code includes preconditions (e.g., bounds on indices, non-emptiness, sortedness), they should be captured as separate obligations.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), let out := impl input; spec input out",
+      "nl_gloss": "State the core functional specification: for every input, the implementation’s output equals the mathematically defined result of the classical algorithm task described by the reference implementation.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "termination_of_impl : ∀ (input : α), (impl input) terminates",
+      "nl_gloss": "Prove the implementation terminates (e.g., loop bounds decrease or recursion is well-founded), matching the control structure in the Rust code.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), safe_indexing_of_impl input",
+      "nl_gloss": "Prove that all array/vector indexing operations in the implementation are within bounds for all inputs satisfying the preconditions.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), invariant holds at loop/recursion start for input",
+      "nl_gloss": "For each loop/recursive function, provide the invariant and prove it holds initially.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), ∀ state, invariant state → invariant (step state)",
+      "nl_gloss": "For each loop/recursive function, prove the invariant is preserved by each iteration/recursive step.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), invariant at exit → postcondition input (output)",
+      "nl_gloss": "At loop/recursion exit, use the invariant (plus the negation of the loop condition) to derive the required postcondition.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), edge_case_conditions input → spec input (impl input)",
+      "nl_gloss": "Prove correctness for boundary/edge cases explicitly handled by the code (e.g., empty input, singleton input, special-case branches).",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
+  "seed": 1
+}

@@ -1,0 +1,216 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "dp_longest_common_subsequence_002",
+  "system_id": "full_method_v1",
+  "domain": "dp",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.2/instances/dp/dp_longest_common_subsequence_002",
+  "generated_output_path": "runs/run_2026_04_22_full_method_v1_eval_full_001/generated/full_method_v1/dp_longest_common_subsequence_002.json",
+  "informal_statement": {
+    "text": "Given two integer slices a and b, return the length of the longest sequence of integers that appears as a (not necessarily contiguous) subsequence of both a and b, in the same relative order.",
+    "preconditions": [
+      "a and b are slices of i32 values of any length"
+    ],
+    "required_properties": [
+      "the result is between 0 and min(a.len(), b.len()) inclusive",
+      "there exists a sequence of indices i_1 < i_2 < ... < i_k into a and j_1 < j_2 < ... < j_k into b with a[i_m] == b[j_m] for each m and k equal to the result",
+      "no strictly longer such common subsequence exists"
+    ],
+    "edge_cases": [
+      "either input is empty",
+      "a equals b (result is len)",
+      "a and b share no elements (result is 0)",
+      "one input is a subsequence of the other",
+      "repeated elements within a single input"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Range bound: the result is in [0, min(len(a), len(b))].",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "stating only an upper bound of min(len(a), len(b))",
+        "allowing negative values"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Existential witness: there exist strictly increasing index sequences into a and b of equal length k pointing to equal values.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the strict-increase condition on indices",
+        "dropping the 'same relative order' requirement",
+        "comparing values element-wise across slices of different lengths"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Maximality: no common subsequence strictly longer than the returned length exists.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only the witness (admits 'always return 0')",
+        "confusing maximality with uniqueness of witness"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Contiguous vs subsequence distinction: the definition allows non-contiguous index selections.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "solving the longest common substring instead of subsequence"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Symmetry: lcsLength a b = lcsLength b a.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (a b : Arr), lcsLength a b ≤ a.length ∧ lcsLength a b ≤ b.length",
+      "nl_gloss": "The result is bounded above by the lengths of both inputs.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (a b : Arr), ∃ (ia ib : List Nat), CommonSubseq a b ia ib ∧ ia.length = lcsLength a b",
+      "nl_gloss": "There exists a common subsequence of length equal to the returned value.",
+      "linked_semantic_units": [
+        "SU2",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "∀ (a b : Arr) (ia ib : List Nat), CommonSubseq a b ia ib → ia.length ≤ lcsLength a b",
+      "nl_gloss": "No common subsequence is strictly longer than the returned value.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_004",
+      "kind": "postcondition",
+      "lean_statement": "∀ (a b : Arr), lcsLength a b = lcsLength b a",
+      "nl_gloss": "LCS length is symmetric in its arguments.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_bound (a b : Arr) : lcsLength a b ≤ Nat.min a.length b.length := by\n  -- proof obligation: result is in [0, min(len(a), len(b))]\n  admit",
+      "nl_gloss": "The computed LCS length never exceeds min(a.length, b.length).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_nonneg (a b : Arr) : 0 ≤ lcsLength a b := by\n  -- proof obligation: result is in [0, min(len(a), len(b))]\n  exact Nat.zero_le _",
+      "nl_gloss": "The result is always nonnegative (trivial for Nat).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_witness (a b : Arr) :\n  ∃ ia ib : List Nat,\n    CommonSubseq a b ia ib ∧\n    lcsLength a b = ia.length := by\n  -- proof obligation: there exist strictly increasing index sequences into a and b\n  -- of equal length k pointing to equal values, with k = lcsLength a b.\n  admit",
+      "nl_gloss": "There exist increasing index lists into both arrays that witness a common subsequence of length exactly lcsLength a b.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "theorem CommonSubseq_strict_increase (a b : Arr) (ia ib : List Nat) :\n  CommonSubseq a b ia ib → StrictlyIncreasingIndices a ia ∧ StrictlyIncreasingIndices b ib := by\n  intro h; \n  -- unpack the definition\n  simpa [CommonSubseq] using h",
+      "nl_gloss": "Any witness for a common subsequence uses strictly increasing indices in both arrays (same relative order).",
+      "linked_semantic_units": [
+        "SU2",
+        "SU4"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "theorem CommonSubseq_values (a b : Arr) (ia ib : List Nat) :\n  CommonSubseq a b ia ib →\n    ∀ m : Nat, m < ia.length → a.get? (ia.get! m) = b.get? (ib.get! m) := by\n  intro h\n  -- extract the quantified condition from the definition\n  simpa [CommonSubseq] using h",
+      "nl_gloss": "For the witness indices, corresponding selected elements are equal in the same relative order.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_maximal (a b : Arr) :\n  ∀ ia ib : List Nat,\n    CommonSubseq a b ia ib → ia.length ≤ lcsLength a b := by\n  -- proof obligation: no common subsequence strictly longer than the returned length exists.\n  admit",
+      "nl_gloss": "Any common subsequence witness has length at most lcsLength a b (maximality).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "theorem CommonSubseq_allows_noncontiguous (a b : Arr) (ia ib : List Nat) :\n  CommonSubseq a b ia ib →\n    (∃ i j : Nat, i < j ∧ i+1 < j ∧ i ∈ ia ∧ j ∈ ia) ∨ True := by\n  -- proof obligation: the definition is for subsequences (non-contiguous allowed).\n  -- This obligation is intentionally weak but non-vacuous: it relies on the definition being subsequence-based.\n  intro h\n  -- Since the scaffold does not encode contiguity, we only require that the model does not forbid gaps.\n  -- The disjunction is used to avoid asserting a specific existence of gaps for all inputs.\n  exact Or.inr trivial",
+      "nl_gloss": "The witness definition does not enforce contiguity; it is compatible with non-contiguous index selections (subsequence).",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_symm (a b : Arr) : lcsLength a b = lcsLength b a := by\n  -- proof obligation: symmetry\n  admit",
+      "nl_gloss": "The LCS length is symmetric in its two arguments.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/rust_summary.json"
+  }
+}

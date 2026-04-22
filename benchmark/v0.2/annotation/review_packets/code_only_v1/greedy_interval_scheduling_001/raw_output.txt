@@ -1,0 +1,1 @@
+{"obligations":[{"kind":"precondition","lean_statement":"True","nl_gloss":"No explicit preconditions are stated in the provided Rust reference implementation (the code snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination."}]}

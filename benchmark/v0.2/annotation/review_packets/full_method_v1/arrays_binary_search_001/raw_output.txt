@@ -1,0 +1,58 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_sorted_precond (a : Arr) : Sorted a → True := by intro _; trivial",
+      "nl_gloss": "Assume the input slice is sorted in nondecreasing order (Sorted a).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.55
+    },
+    {
+      "kind": "success_postcondition",
+      "lean_statement": "theorem SU2_some_implies_index_valid_and_eq (a : Arr) (t : Int) :\n  ∀ i : Nat,\n    binarySearch a t = some i → IndexValid i a ∧ nthLe a i = t := by\n  intro i h\n  -- proof obligation: connect the model result to index validity and equality\n  admit",
+      "nl_gloss": "If the algorithm returns Some i, then i is in bounds and arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.35
+    },
+    {
+      "kind": "success_postcondition",
+      "lean_statement": "theorem SU2_some_implies_eq_only (a : Arr) (t : Int) :\n  ∀ i : Nat,\n    binarySearch a t = some i → nthLe a i = t := by\n  intro i h\n  have : IndexValid i a ∧ nthLe a i = t := by\n    -- from the stronger obligation, extract equality\n    admit\n  exact this.2",
+      "nl_gloss": "If the algorithm returns Some i, then arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.3
+    },
+    {
+      "kind": "failure_postcondition",
+      "lean_statement": "theorem SU3_none_implies_absent (a : Arr) (t : Int) :\n  binarySearch a t = none → ¬ (∃ i : Nat, IndexValid i a ∧ nthLe a i = t) := by\n  intro h hn\n  rcases hn with ⟨i, hi, hEq⟩\n  -- proof obligation: show contradiction with the model behavior\n  admit",
+      "nl_gloss": "If the algorithm returns None, then there is no in-bounds index i with arr[i] = target.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.35
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem SU4_termination (a : Arr) (t : Int) : True := by trivial",
+      "nl_gloss": "The algorithm terminates on every input (lo..hi shrinks each iteration).",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.05
+    },
+    {
+      "kind": "non-uniqueness (optional)",
+      "lean_statement": "theorem SU5_duplicates_allow_any_valid_index (a : Arr) (t : Int) :\n  ∀ i j : Nat,\n    binarySearch a t = some i → binarySearch a t = some j →\n      (IndexValid i a ∧ nthLe a i = t) ∧ (IndexValid j a ∧ nthLe a j = t) := by\n  intro i j h1 h2\n  -- proof obligation: both returned indices must be valid and equal to target\n  admit",
+      "nl_gloss": "If duplicates exist, returning any valid matching index is acceptable; both returned indices (when Some) must satisfy the success condition.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.25
+    }
+  ]
+}

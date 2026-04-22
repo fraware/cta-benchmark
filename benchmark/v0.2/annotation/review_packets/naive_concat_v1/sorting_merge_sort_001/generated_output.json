@@ -1,0 +1,64 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_naive_concat_v1_eval_full_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "sorting_merge_sort_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4675,
+    "prompt_tokens": 132,
+    "completion_tokens": 493
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/sorting_merge_sort_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_sort_multiset (xs : List Int) : Multiset.ofList (sort xs) = Multiset.ofList xs",
+      "nl_gloss": "The output contains exactly the same elements as the input, counting multiplicities (multiset preservation).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_sort_sorted (xs : List Int) : Sorted (· ≤ ·) (sort xs)",
+      "nl_gloss": "The output list is sorted in nondecreasing order.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_sort_length (xs : List Int) : (sort xs).length = xs.length",
+      "nl_gloss": "The output has the same length as the input (follows from multiset preservation, but can be required explicitly).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_sort_perm (xs : List Int) : xs ~p sort xs",
+      "nl_gloss": "The output is a permutation of the input (permutation equivalence induced by multiset equality).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem impl_correctness (xs : List Int) : Multiset.ofList (sort xs) = Multiset.ofList xs ∧ Sorted (· ≤ ·) (sort xs)",
+      "nl_gloss": "Combines the two main correctness properties: multiset preservation and sortedness.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem impl_terminates (xs : List Int) : ∃ n : Nat, sort xs = sortAux n xs",
+      "nl_gloss": "The implementation terminates / is well-founded (expressed via an auxiliary bounded recursion or well-founded measure).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem impl_pure (xs : List Int) : sort xs = sort xs",
+      "nl_gloss": "The implementation is deterministic/pure with respect to the input (no hidden state); useful when mapping from Rust to Lean.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:8f3a7cb9b1373b0f7ef88d153afb2614ffce3688016ccea519c698dc07372f05",
+  "seed": 1
+}

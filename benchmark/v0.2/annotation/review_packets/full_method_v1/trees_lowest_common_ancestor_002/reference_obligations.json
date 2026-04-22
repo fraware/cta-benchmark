@@ -1,0 +1,34 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "trees_lowest_common_ancestor_002",
+  "benchmark_version": "v0.2",
+  "obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (p q a : Int), IsBst t → HasKey t p → HasKey t q → lcaBst t p q = some a → ∃ sub : Tree, IsSubtree sub t ∧ (match sub with | Tree.nil => False | Tree.node _ k _ => k = a) ∧ HasKey sub p ∧ HasKey sub q",
+      "nl_gloss": "When the input is a BST containing both query keys, the returned key is the root of a subtree containing both queries.",
+      "linked_semantic_units": ["SU1", "SU2", "SU3"],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (p q a : Int), IsBst t → HasKey t p → HasKey t q → lcaBst t p q = some a → ∀ (sub : Tree), IsProperSubtree sub t → (match sub with | Tree.nil => True | Tree.node _ k _ => k = a → False) → HasKey sub p → HasKey sub q → False",
+      "nl_gloss": "When the input is a BST containing both query keys, no proper subtree that is not rooted at the returned key contains both queries and sits strictly below the LCA.",
+      "linked_semantic_units": ["SU4"],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (p : Int), IsBst t → HasKey t p → lcaBst t p p = some p",
+      "nl_gloss": "When the input is a BST containing the key, the LCA of a key with itself is that key.",
+      "linked_semantic_units": ["SU5"],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    }
+  ]
+}

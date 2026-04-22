@@ -1,0 +1,122 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "arrays_max_subarray_001",
+  "system_id": "code_only_v1",
+  "domain": "arrays",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.2/instances/arrays/arrays_max_subarray_001",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_full_001/generated/code_only_v1/arrays_max_subarray_001.json",
+  "informal_statement": {
+    "text": "Given a non-empty slice of integers, return the maximum sum over all contiguous non-empty subslices.",
+    "preconditions": [
+      "the input slice is non-empty"
+    ],
+    "required_properties": [
+      "the returned value equals the maximum sum over all contiguous non-empty subslices",
+      "there exist indices i <= j with i < arr.len() and j <= arr.len() such that arr[i..j] sums to the returned value",
+      "no contiguous non-empty subslice sums to a strictly greater value"
+    ],
+    "edge_cases": [
+      "single-element slice",
+      "all negative elements (max is the largest single element)",
+      "all zero elements",
+      "all positive elements (max is the whole slice)",
+      "a single large negative element interleaved among positives"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: the slice is non-empty.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the non-emptiness precondition",
+        "treating the empty-slice case as returning 0"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Existential witness: there is a contiguous non-empty subslice whose sum equals the returned value.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only an upper bound without a witness",
+        "quantifying over subsequences rather than contiguous subslices"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Upper-bound property: no contiguous non-empty subslice sums strictly above the returned value.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "missing the maximality condition",
+        "quantifying only over subslices of a fixed length"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Contiguity constraint: the witness is a contiguous range i..j, not a subsequence.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "allowing gaps in the witnessed indices"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "All-negative case: the result equals the maximum single element when every element is negative.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr), arr ≠ [] → ∃ (i j : Nat), i ≤ j ∧ j ≤ arr.length ∧ i < j ∧ sliceSum arr i j = maxSubarray arr",
+      "nl_gloss": "For any non-empty input, there exists a contiguous non-empty subslice whose sum equals the returned maximum.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr) (i j : Nat), arr ≠ [] → i < j → j ≤ arr.length → sliceSum arr i j ≤ maxSubarray arr",
+      "nl_gloss": "For any non-empty input, no contiguous non-empty subslice has a sum strictly greater than the returned maximum.",
+      "linked_semantic_units": [
+        "SU3",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "True",
+      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_001/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_001/rust_summary.json"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "obligations": [
+    {
+      "kind": "spec",
+      "lean_statement": "theorem inorder_strictly_ascending_of_bst {t : Tree α} (hbst : BST t) (hin : InorderStrict t) : Inorder t = sort (Inorder t) ∧ InorderStrict t",
+      "nl_gloss": "Assume the input tree is a BST and its in-order traversal is strictly ascending; this provides the ordering property needed for correctness."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem keys_present {t : Tree α} (hbst : BST t) {k1 k2 : α} (hk1 : Mem k1 t) (hk2 : Mem k2 t) : ∃ n : Node α, Mem k1 (subtree n) ∧ Mem k2 (subtree n)",
+      "nl_gloss": "Since both keys are present in the tree, there exists at least one node whose subtree contains both keys."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "def lowest_both (t : Tree α) (k1 k2 : α) : Prop := ∃ n, Mem k1 (subtree n) ∧ Mem k2 (subtree n) ∧ ∀ m, (m ≠ n → ¬ (Mem k1 (subtree m) ∧ Mem k2 (subtree m))) ∧ (n is ancestor of all nodes with both keys)",
+      "nl_gloss": "Define the target property: the 'lowest' node is the one that contains both keys and is below (i.e., is not above) any other node that also contains both keys."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem lowest_both_unique {t : Tree α} (hbst : BST t) {k1 k2 : α} (hk1 : Mem k1 t) (hk2 : Mem k2 t) : ∃! n, Mem k1 (subtree n) ∧ Mem k2 (subtree n) ∧ LowestNode n t k1 k2",
+      "nl_gloss": "Under BST + strict in-order (no duplicates), the lowest node containing both keys is unique."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "def answer_key (t : Tree α) (k1 k2 : α) : α := (lowest_node t k1 k2).key",
+      "nl_gloss": "The desired output is the key stored at the lowest node whose subtree contains both keys."
+    },
+    {
+      "kind": "impl",
+      "lean_statement": "theorem impl_returns_some_key {t : Tree α} (hbst : BST t) {k1 k2 : α} (hk1 : Mem k1 t) (hk2 : Mem k2 t) : ∃ r, rust_impl t k1 k2 = some r",
+      "nl_gloss": "Show the reference implementation returns a key (not None / error) when both keys are present."
+    },
+    {
+      "kind": "impl",
+      "lean_statement": "theorem impl_invariant_subtree_contains {t : Tree α} (hbst : BST t) {k1 k2 : α} (hk1 : Mem k1 t) (hk2 : Mem k2 t) : let r := rust_impl t k1 k2; ∀ step, current_node step has both keys in its subtree",
+      "nl_gloss": "Prove the loop/recursion invariant: at each step, the current candidate node’s subtree still contains both keys."
+    },
+    {
+      "kind": "impl",
+      "lean_statement": "theorem impl_progress_towards_lowest {t : Tree α} (hbst : BST t) {k1 k2 : α} (hk1 : Mem k1 t) (hk2 : Mem k2 t) : rust_impl t k1 k2 terminates ∧ candidate_node moves strictly downward when possible",
+      "nl_gloss": "Prove termination and that the algorithm moves downward toward the lowest node that can still contain both keys."
+    },
+    {
+      "kind": "correctness",
+      "lean_statement": "theorem impl_result_contains_both {t : Tree α} (hbst : BST t) {k1 k2 : α} (hk1 : Mem k1 t) (hk2 : Mem k2 t) : let r := rust_impl t k1 k2; Mem k1 t_subtree_of_result r ∧ Mem k2 t_subtree_of_result r",
+      "nl_gloss": "The returned key corresponds to a node whose subtree contains both keys."
+    },
+    {
+      "kind": "correctness",
+      "lean_statement": "theorem impl_result_is_lowest {t : Tree α} (hbst : BST t) {k1 k2 : α} (hk1 : Mem k1 t) (hk2 : Mem k2 t) : let r := rust_impl t k1 k2; LowestNode (node_with_key r) t k1 k2",
+      "nl_gloss": "The returned node is the lowest node (no descendant below it contains both keys)."
+    },
+    {
+      "kind": "correctness",
+      "lean_statement": "theorem impl_matches_spec {t : Tree α} (hbst : BST t) {k1 k2 : α} (hk1 : Mem k1 t) (hk2 : Mem k2 t) : rust_impl t k1 k2 = answer_key t k1 k2",
+      "nl_gloss": "Overall correctness: the implementation’s returned key equals the key of the lowest node containing both keys."
+    },
+    {
+      "kind": "correctness",
+      "lean_statement": "theorem impl_respects_bst_ordering {t : Tree α} (hbst : BST t) {k1 k2 : α} : decisions_taken_by_impl_follow_inorder_order t k1 k2",
+      "nl_gloss": "Justify that the branching decisions made by the algorithm are consistent with BST ordering (e.g., comparisons route the search correctly)."
+    }
+  ]
+}

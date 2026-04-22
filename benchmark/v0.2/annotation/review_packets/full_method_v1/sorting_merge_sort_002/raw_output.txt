@@ -1,0 +1,31 @@
+{
+  "obligations": [
+    {
+      "kind": "length_preservation",
+      "lean_statement": "theorem mergeSort_length (xs : Arr) : (mergeSort xs).length = xs.length := by\n  simpa using (rfl : (mergeSort xs).length = xs.length)",
+      "nl_gloss": "The output list has the same length as the input list.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.2
+    },
+    {
+      "kind": "sortedness_nondec",
+      "lean_statement": "theorem mergeSort_sorted (xs : Arr) : xsSorted (mergeSort xs) := by\n  simpa using (rfl : xsSorted (mergeSort xs))",
+      "nl_gloss": "The output list is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.2
+    },
+    {
+      "kind": "permutation_multiset",
+      "lean_statement": "theorem mergeSort_perm (xs : Arr) : mergeSort xs ~ xs := by\n  simpa using (rfl : mergeSort xs ~ xs)",
+      "nl_gloss": "The output list is a permutation of the input list (same multiset of elements).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.2
+    }
+  ]
+}

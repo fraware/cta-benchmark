@@ -1,0 +1,44 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem precond_denoms {denoms : Array ℕ} :\n  (∀ i j, i < j → denoms[i]! < denoms[j]!) ∧ (∀ d ∈ denoms, d > 0) → True",
+      "nl_gloss": "Denominations are strictly increasing and all are positive."
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem precond_amount (amount : ℕ) : amount ≥ 0 → True",
+      "nl_gloss": "Target amount is non-negative (amount : ℕ)."
+    },
+    {
+      "kind": "canonical_system_assumption",
+      "lean_statement": "theorem canonical_assumption {denoms : Array ℕ} (hcanon : CanonicalGreedy denoms) : True",
+      "nl_gloss": "The given denomination system is canonical, i.e., greedy is optimal for all amounts."
+    },
+    {
+      "kind": "existence_of_solution",
+      "lean_statement": "theorem exists_counts {denoms : Array ℕ} (hpos : ∀ d ∈ denoms, d > 0) (amount : ℕ) :\n  ∃ counts : Array ℕ,\n    counts.size = denoms.size ∧\n    (∑ i in Finset.range denoms.size, counts[i]! * denoms[i]!) = amount",
+      "nl_gloss": "There exists a vector of nonnegative counts (same length as denoms) that makes the exact amount."
+    },
+    {
+      "kind": "output_length",
+      "lean_statement": "theorem output_length {denoms : Array ℕ} (amount : ℕ)\n    (hpos : ∀ d ∈ denoms, d > 0)\n    (hcanon : CanonicalGreedy denoms) :\n  let counts := greedyCounts denoms amount\n  counts.size = denoms.size",
+      "nl_gloss": "The returned counts vector has the same length as the denominations."
+    },
+    {
+      "kind": "output_nonnegativity",
+      "lean_statement": "theorem output_nonneg {denoms : Array ℕ} (amount : ℕ)\n    (hcanon : CanonicalGreedy denoms) :\n  ∀ i : Fin denoms.size, (greedyCounts denoms amount)[i]! ≥ 0",
+      "nl_gloss": "All returned counts are nonnegative."
+    },
+    {
+      "kind": "exact_change",
+      "lean_statement": "theorem exact_change {denoms : Array ℕ} (amount : ℕ)\n    (hcanon : CanonicalGreedy denoms) :\n  let counts := greedyCounts denoms amount\n  (∑ i in Finset.range denoms.size, counts[i]! * denoms[i]!) = amount",
+      "nl_gloss": "The returned counts realize the target amount exactly."
+    },
+    {
+      "kind": "optimality_min_total_coins",
+      "lean_statement": "theorem optimality_min_total_coins {denoms : Array ℕ} (amount : ℕ)\n    (hcanon : CanonicalGreedy denoms) :\n  let counts := greedyCounts denoms amount\n  ∀ counts' : Array ℕ,\n    counts'.size = denoms.size →\n    (∑ i in Finset.range denoms.size, counts'[i]! * denoms[i]!) = amount →\n    (∑ i in Finset.range denoms.size, counts[i]!) ≤ (∑ i in Finset.range denoms.size, counts'[i]!)",
+      "nl_gloss": "Among all exact representations, the returned counts minimize the total number of coins (sum of counts)."
+    }
+  ]
+}

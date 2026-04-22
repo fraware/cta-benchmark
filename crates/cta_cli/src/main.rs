@@ -83,6 +83,10 @@ enum BenchmarkCmd {
     Stats(cmd::benchmark::StatsArgs),
     /// Compute and write the benchmark manifest.
     Manifest(cmd::benchmark::ManifestArgs),
+    /// Run paper-track fail-fast orchestration pipeline.
+    PaperOrchestrate(cmd::benchmark::PaperOrchestrateArgs),
+    /// Generate gold-audit workbook CSVs for eval split.
+    AuditWorkbook(cmd::benchmark::AuditWorkbookArgs),
 }
 
 #[derive(Debug, Subcommand)]
@@ -107,6 +111,20 @@ enum BehaviorCmd {
 enum AnnotateCmd {
     /// Adjudicate and pack annotations into a single canonical pack.
     Pack(cmd::annotate::PackArgs),
+    /// Initialize task-board artifacts for annotation closure.
+    Plan(cmd::annotate::PlanArgs),
+    /// Compute annotation coverage and write summary artifacts.
+    Coverage(cmd::annotate::CoverageArgs),
+    /// Materialize strict per-system annotation batches.
+    Batches(cmd::annotate::BatchesArgs),
+    /// Sync adjudicator records from review packets into adjudicated subset.
+    SyncReviewPackets(cmd::annotate::SyncReviewPacketsArgs),
+    /// Build self-contained review packets for pair list.
+    BuildReviewPackets(cmd::annotate::BuildReviewPacketsArgs),
+    /// Ingest assistant draft annotations as non-human raw material.
+    IngestDraft(cmd::annotate::IngestDraftArgs),
+    /// Validate all review packet packet.json files and emit signed summary.
+    VerifyReviewPackets(cmd::annotate::VerifyReviewPacketsArgs),
 }
 
 #[derive(Debug, Subcommand)]
@@ -123,6 +141,8 @@ enum ReportsCmd {
     /// cross-run tables (summary, provider breakdown, domain breakdown,
     /// paired deltas).
     Aggregate(cmd::reports::AggregateArgs),
+    /// Build paper artifact bundle from canonical run ids.
+    Package(cmd::reports::PackageArgs),
 }
 
 fn init_tracing(verbose: u8) {
@@ -147,6 +167,7 @@ fn main() -> ExitCode {
         .workspace
         .clone()
         .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")));
+    load_workspace_env(&workspace);
 
     let result: anyhow::Result<()> = match cli.cmd {
         Command::Validate(ValidateCmd::Schemas(a)) => cmd::validate::schemas(&workspace, a),
@@ -155,14 +176,36 @@ fn main() -> ExitCode {
         Command::Benchmark(BenchmarkCmd::Lint(a)) => cmd::benchmark::lint(&workspace, a),
         Command::Benchmark(BenchmarkCmd::Stats(a)) => cmd::benchmark::stats(&workspace, a),
         Command::Benchmark(BenchmarkCmd::Manifest(a)) => cmd::benchmark::manifest(&workspace, a),
+        Command::Benchmark(BenchmarkCmd::PaperOrchestrate(a)) => {
+            cmd::benchmark::paper_orchestrate(&workspace, a)
+        }
+        Command::Benchmark(BenchmarkCmd::AuditWorkbook(a)) => {
+            cmd::benchmark::audit_workbook(&workspace, a)
+        }
         Command::Extract(ExtractCmd::RustSummary(a)) => cmd::extract::rust_summary(&workspace, a),
         Command::Generate(a) => cmd::generate::run(&workspace, a),
         Command::Lean(LeanCmd::Check(a)) => cmd::lean::check(&workspace, a),
         Command::Behavior(BehaviorCmd::Check(a)) => cmd::behavior::check(&workspace, a),
         Command::Annotate(AnnotateCmd::Pack(a)) => cmd::annotate::pack(&workspace, a),
+        Command::Annotate(AnnotateCmd::Plan(a)) => cmd::annotate::plan(&workspace, a),
+        Command::Annotate(AnnotateCmd::Coverage(a)) => cmd::annotate::coverage(&workspace, a),
+        Command::Annotate(AnnotateCmd::Batches(a)) => cmd::annotate::batches(&workspace, a),
+        Command::Annotate(AnnotateCmd::SyncReviewPackets(a)) => {
+            cmd::annotate::sync_review_packets(&workspace, a)
+        }
+        Command::Annotate(AnnotateCmd::BuildReviewPackets(a)) => {
+            cmd::annotate::build_review_packets(&workspace, a)
+        }
+        Command::Annotate(AnnotateCmd::IngestDraft(a)) => {
+            cmd::annotate::ingest_draft(&workspace, a)
+        }
+        Command::Annotate(AnnotateCmd::VerifyReviewPackets(a)) => {
+            cmd::annotate::verify_review_packets(&workspace, a)
+        }
         Command::Metrics(MetricsCmd::Compute(a)) => cmd::metrics::compute(&workspace, a),
         Command::Reports(ReportsCmd::Build(a)) => cmd::reports::build(&workspace, a),
         Command::Reports(ReportsCmd::Aggregate(a)) => cmd::reports::aggregate(&workspace, a),
+        Command::Reports(ReportsCmd::Package(a)) => cmd::reports::package(&workspace, a),
         Command::Experiment(a) => cmd::experiment::run(&workspace, a),
     };
 
@@ -172,6 +215,13 @@ fn main() -> ExitCode {
             eprintln!("error: {err:#}");
             ExitCode::FAILURE
         }
+    }
+}
+
+fn load_workspace_env(workspace: &std::path::Path) {
+    let env_path = workspace.join(".env");
+    if env_path.is_file() {
+        let _ = dotenvy::from_path(&env_path);
     }
 }
 

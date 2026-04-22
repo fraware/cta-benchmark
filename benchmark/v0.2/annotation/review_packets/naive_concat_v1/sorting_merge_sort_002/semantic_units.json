@@ -1,0 +1,38 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "sorting_merge_sort_002",
+  "benchmark_version": "v0.2",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "Length preservation: the output has the same length as the input.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only a length bound instead of equality"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Sortedness: the output is sorted in nondecreasing order.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting strict ordering",
+        "omitting the sortedness condition entirely"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Permutation: the output is a permutation of the input (equal multiset of elements).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting set-equality instead of multiset-equality",
+        "asserting subset relationships only"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Stability is NOT required by the spec.",
+      "criticality": "optional"
+    }
+  ]
+}

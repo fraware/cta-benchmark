@@ -68,10 +68,7 @@ impl RunSummary {
     /// Extract the seed from a run_manifest.json `Value`.
     #[must_use]
     pub fn seed_from_manifest(manifest: &serde_json::Value) -> u64 {
-        manifest
-            .get("seed")
-            .and_then(|v| v.as_u64())
-            .unwrap_or(0)
+        manifest.get("seed").and_then(|v| v.as_u64()).unwrap_or(0)
     }
 }
 
@@ -221,11 +218,7 @@ pub fn domain_breakdown(
 /// is missing are skipped. When a system has multiple runs, the
 /// instance-level scalars are averaged across its runs before differencing.
 #[must_use]
-pub fn paired_deltas(
-    runs: &[RunSummary],
-    system_a: &str,
-    system_b: &str,
-) -> Vec<PairedDelta> {
+pub fn paired_deltas(runs: &[RunSummary], system_a: &str, system_b: &str) -> Vec<PairedDelta> {
     let a = instance_means(runs, system_a);
     let b = instance_means(runs, system_b);
     let mut out = Vec::new();
@@ -235,8 +228,7 @@ pub fn paired_deltas(
                 instance_id: id.clone(),
                 delta_faithfulness_fraction: fraction(mb.faithfulness_score, mb.num_obligations)
                     - fraction(ma.faithfulness_score, ma.num_obligations),
-                delta_consistency_fraction: consistency_fraction(mb)
-                    - consistency_fraction(ma),
+                delta_consistency_fraction: consistency_fraction(mb) - consistency_fraction(ma),
                 delta_coverage_fraction: coverage_fraction(mb) - coverage_fraction(ma),
             });
         }
@@ -275,9 +267,7 @@ pub fn summary_primary_latex(aggregates: &[SystemAggregate]) -> String {
 pub fn domain_breakdown_latex(rows: &[(String, SystemAggregate)]) -> String {
     let mut s = String::new();
     s.push_str("\\begin{tabular}{llrrrrrr}\n\\toprule\n");
-    s.push_str(
-        "domain & system & elab & faith & cov & cons & vac & proof \\\\\n\\midrule\n",
-    );
+    s.push_str("domain & system & elab & faith & cov & cons & vac & proof \\\\\n\\midrule\n");
     for (dom, a) in rows {
         let _ = writeln!(
             s,
@@ -301,9 +291,7 @@ pub fn domain_breakdown_latex(rows: &[(String, SystemAggregate)]) -> String {
 pub fn provider_breakdown_latex(rows: &[(String, SystemAggregate)]) -> String {
     let mut s = String::new();
     s.push_str("\\begin{tabular}{llrrrrrr}\n\\toprule\n");
-    s.push_str(
-        "provider & system & elab & faith & cov & cons & vac & proof \\\\\n\\midrule\n",
-    );
+    s.push_str("provider & system & elab & faith & cov & cons & vac & proof \\\\\n\\midrule\n");
     for (prov, a) in rows {
         let _ = writeln!(
             s,
@@ -343,9 +331,15 @@ pub fn paired_deltas_csv(deltas: &[PairedDelta]) -> String {
     s
 }
 
-fn aggregate_runs(system_id: String, runs: &[&RunSummary], cfg: BootstrapConfig) -> SystemAggregate {
-    let mut primaries: Vec<&PrimaryMetrics> =
-        runs.iter().map(|r| &r.bundle.aggregate_metrics.primary).collect();
+fn aggregate_runs(
+    system_id: String,
+    runs: &[&RunSummary],
+    cfg: BootstrapConfig,
+) -> SystemAggregate {
+    let mut primaries: Vec<&PrimaryMetrics> = runs
+        .iter()
+        .map(|r| &r.bundle.aggregate_metrics.primary)
+        .collect();
     // Deterministic order for CI computation.
     primaries.sort_by(|a, b| {
         a.elaboration_rate
@@ -397,7 +391,9 @@ fn mean_primary(xs: &[&PrimaryMetrics]) -> PrimaryMetrics {
 fn bootstrap_ci(xs: &[&PrimaryMetrics], cfg: BootstrapConfig) -> BTreeMap<String, (f64, f64)> {
     let metrics: [(&str, fn(&PrimaryMetrics) -> f64); 6] = [
         ("elaboration_rate", |p| p.elaboration_rate),
-        ("semantic_faithfulness_mean", |p| p.semantic_faithfulness_mean),
+        ("semantic_faithfulness_mean", |p| {
+            p.semantic_faithfulness_mean
+        }),
         ("critical_unit_coverage", |p| p.critical_unit_coverage),
         ("rust_consistency_rate", |p| p.rust_consistency_rate),
         ("vacuity_rate", |p| p.vacuity_rate),
@@ -537,7 +533,13 @@ mod tests {
     use super::*;
     use cta_metrics::{AggregateMetrics, InstanceResult, SecondaryMetrics};
 
-    fn make_run(run_id: &str, system: &str, provider: &str, seed: u64, bundle: ResultsBundle) -> RunSummary {
+    fn make_run(
+        run_id: &str,
+        system: &str,
+        provider: &str,
+        seed: u64,
+        bundle: ResultsBundle,
+    ) -> RunSummary {
         RunSummary {
             run_id: run_id.to_string(),
             system_id: system.to_string(),
@@ -596,7 +598,13 @@ mod tests {
             make_run("r1", "full_method_v1", "stub", 1, bundle(1.0, 0.6)),
             make_run("r2", "full_method_v1", "stub", 2, bundle(1.0, 0.8)),
         ];
-        let agg = aggregate_by_system(&runs, BootstrapConfig { resamples: 0, ..Default::default() });
+        let agg = aggregate_by_system(
+            &runs,
+            BootstrapConfig {
+                resamples: 0,
+                ..Default::default()
+            },
+        );
         assert_eq!(agg.len(), 1);
         assert_eq!(agg[0].run_count, 2);
         assert!((agg[0].mean_primary.semantic_faithfulness_mean - 0.7).abs() < 1e-9);
@@ -610,7 +618,11 @@ mod tests {
             make_run("r3", "a", "stub", 3, bundle(1.0, 0.7)),
             make_run("r4", "a", "stub", 4, bundle(1.0, 0.8)),
         ];
-        let cfg = BootstrapConfig { resamples: 256, seed: 42, confidence: 0.95 };
+        let cfg = BootstrapConfig {
+            resamples: 256,
+            seed: 42,
+            confidence: 0.95,
+        };
         let a = aggregate_by_system(&runs, cfg);
         let b = aggregate_by_system(&runs, cfg);
         assert_eq!(
@@ -629,7 +641,10 @@ mod tests {
         let d_ba = paired_deltas(&runs, "full_method_v1", "text_only_v1");
         assert_eq!(d_ab.len(), 1);
         assert_eq!(d_ba.len(), 1);
-        assert!((d_ab[0].delta_faithfulness_fraction + d_ba[0].delta_faithfulness_fraction).abs() < 1e-9);
+        assert!(
+            (d_ab[0].delta_faithfulness_fraction + d_ba[0].delta_faithfulness_fraction).abs()
+                < 1e-9
+        );
     }
 
     #[test]

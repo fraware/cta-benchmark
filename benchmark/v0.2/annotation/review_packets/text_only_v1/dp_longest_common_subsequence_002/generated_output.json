@@ -1,0 +1,70 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "dp_longest_common_subsequence_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 7493,
+    "prompt_tokens": 163,
+    "completion_tokens": 814
+  },
+  "raw_output_path": "generated/text_only_v1/raw/dp_longest_common_subsequence_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "def lcsLen (a b : List Int) : Nat := sorry",
+      "nl_gloss": "Define the function that returns the length of the intended common subsequence.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_spec_upper (a b : List Int) :\n  ∀ (s : List Int),\n    s.Subseq a → s.Subseq b → s.length ≤ lcsLen a b := by\n  sorry",
+      "nl_gloss": "Any integer sequence that is a subsequence of both a and b has length at most the returned value.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_spec_lower (a b : List Int) :\n  ∃ (s : List Int),\n    s.Subseq a ∧ s.Subseq b ∧ lcsLen a b = s.length := by\n  sorry",
+      "nl_gloss": "There exists a common subsequence of a and b whose length equals the returned value.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_spec_characterization (a b : List Int) :\n  lcsLen a b =\n    Nat.findGreatest (by\n      -- there exists at least one common subsequence (e.g. [])\n      have : (List.nil : List Int).Subseq a ∧ (List.nil : List Int).Subseq b := by\n        constructor <;> simpa using (List.subseq_nil : (List.nil : List Int).Subseq a)\n      exact ⟨0, this.1, this.2⟩) := by\n  sorry",
+      "nl_gloss": "The returned length is exactly the maximum length among all common subsequences (i.e., it is the optimum).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_nil_left (b : List Int) : lcsLen [] b = 0 := by\n  sorry",
+      "nl_gloss": "If the first sequence is empty, the longest common subsequence length is 0.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_nil_right (a : List Int) : lcsLen a [] = 0 := by\n  sorry",
+      "nl_gloss": "If the second sequence is empty, the longest common subsequence length is 0.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_step_match (a b : List Int) (x : Int) :\n  lcsLen (x :: a) (x :: b) = Nat.succ (lcsLen a b) := by\n  sorry",
+      "nl_gloss": "If the heads match, the optimal common subsequence can extend by 1 plus the optimal for the tails.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_step_mismatch (a b : List Int) (x y : Int) (h : x ≠ y) :\n  lcsLen (x :: a) (y :: b) = Nat.max (lcsLen (x :: a) b) (lcsLen a (y :: b)) := by\n  sorry",
+      "nl_gloss": "If the heads differ, the optimal common subsequence must skip one of the heads, so the result is the max of the two possibilities.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:115732557df9858e4adc937e0aac028d24c28180b83f55a56468f8ec0bdc6d4c",
+  "seed": 3
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "trees_lowest_common_ancestor_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 9021,
+    "prompt_tokens": 159,
+    "completion_tokens": 1252
+  },
+  "raw_output_path": "generated/text_only_v1/raw/trees_lowest_common_ancestor_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "structure BST (α : Type) (lt : α → α → Prop) (key : α → α) : Prop :=\n  (inorder_strict_asc : True) -- placeholder for the BST invariant; to be refined by the surrounding development",
+      "nl_gloss": "Assume a BST structure with an invariant capturing that its in-order traversal is strictly ascending.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "inductive Tree (α : Type) : Type\n| empty : Tree α\n| node : Tree α → α → Tree α → Tree α\n\ndef inorder : Tree α → List α\n| Tree.empty => []\n| Tree.node l x r => inorder l ++ [x] ++ inorder r",
+      "nl_gloss": "Define the binary tree and its in-order traversal.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def present (t : Tree α) (k : α) : Prop := k ∈ inorder t",
+      "nl_gloss": "Define when a key is present in the tree via membership in the in-order traversal.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def subtree (t : Tree α) (u : Tree α) : Prop := ∃ l r x, t = Tree.node l x r ∧ (u = l ∨ u = r ∨ u = t) -- placeholder; refine to the intended 'u is a subtree of t' relation",
+      "nl_gloss": "Define the subtree relation used to talk about nodes whose subtrees contain both keys.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def hasBothInSubtree (t : Tree α) (k1 k2 : α) : Prop :=\n  ∃ u : Tree α, subtree t u ∧ present u k1 ∧ present u k2",
+      "nl_gloss": "Define the property that there exists some subtree of t containing both keys.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def lowestNodeWithBoth (t : Tree α) (k1 k2 : α) : Option α :=\n  -- intended: choose the node whose subtree contains both keys and is lowest (closest to leaves)\n  -- placeholder definition; to be implemented/connected to the algorithm in the surrounding development\n  none",
+      "nl_gloss": "Define the intended output: the key of the lowest node whose subtree contains both keys.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lowestNodeWithBoth_some_iff\n  (t : Tree α) (k1 k2 : α) :\n  lowestNodeWithBoth t k1 k2 ≠ none ↔ hasBothInSubtree t k1 k2 := by\n  -- proof obligation: connect the option result to existence of such a node\n  admit",
+      "nl_gloss": "The algorithm returns some key exactly when there exists a node whose subtree contains both keys.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lowestNodeWithBoth_correct_subtree\n  (t : Tree α) (k1 k2 : α) (res : α)\n  (h : lowestNodeWithBoth t k1 k2 = some res) :\n  ∃ u : Tree α, subtree t u ∧ present u k1 ∧ present u k2 ∧ res ∈ inorder u := by\n  admit",
+      "nl_gloss": "If the algorithm returns res, then res is the key of a node whose subtree contains both keys.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lowestNodeWithBoth_lowest_property\n  (t : Tree α) (k1 k2 : α) (res : α)\n  (h : lowestNodeWithBoth t k1 k2 = some res) :\n  ∀ u : Tree α,\n    subtree t u →\n    present u k1 →\n    present u k2 →\n    (∃ v : Tree α, subtree u v ∧ res ∈ inorder v) := by\n  admit",
+      "nl_gloss": "For any node whose subtree contains both keys, the returned node is at least as low (i.e., is contained in the subtree chain of any other such node).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "uniqueness",
+      "lean_statement": "theorem lowestNodeWithBoth_unique\n  (t : Tree α) (k1 k2 : α) (res1 res2 : α)\n  (h1 : lowestNodeWithBoth t k1 k2 = some res1)\n  (h2 : lowestNodeWithBoth t k1 k2 = some res2) :\n  res1 = res2 := by\n  admit",
+      "nl_gloss": "The lowest node with both keys is unique in terms of its key, so the algorithm’s result is well-defined.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem lowestNodeWithBoth_exists_from_present\n  (t : Tree α) (k1 k2 : α)\n  (h1 : present t k1) (h2 : present t k2) :\n  hasBothInSubtree t k1 k2 := by\n  -- witness the whole tree as a subtree\n  admit",
+      "nl_gloss": "If both keys are present in the tree, then there exists at least one node (the root) whose subtree contains both keys.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:0ff63c0d7ebdd4312bf7e8fafd8f027b5f68ee081cbd3f6333e09f5659a2e782",
+  "seed": 3
+}

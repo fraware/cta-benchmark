@@ -1,3 +1,4 @@
+use std::collections::{BTreeSet, HashSet};
 use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result};
@@ -8,6 +9,8 @@ use cta_reports::{
     paired_deltas_csv, provider_breakdown, provider_breakdown_latex, render_all,
     summary_primary_latex, BootstrapConfig, RunSummary,
 };
+use serde::Deserialize;
+use serde_json::json;
 
 #[derive(Debug, Args)]
 pub struct BuildArgs {
@@ -90,10 +93,30 @@ pub struct AggregateArgs {
     pub paired: Vec<String>,
 }
 
+#[derive(Debug, Args)]
+pub struct PackageArgs {
+    /// Benchmark version to package, e.g. v0.2.
+    #[arg(long, default_value = "v0.2", value_parser = crate::parse_bench_version)]
+    pub benchmark_version: cta_core::BenchmarkVersion,
+    /// Canonical run ids to include (comma-separated).
+    #[arg(long, value_delimiter = ',', required = true)]
+    pub canonical_run_ids: Vec<String>,
+    /// Optional experiment config (used for systems/providers/seeds metadata).
+    #[arg(long, default_value = "configs/experiments/benchmark_v1.json")]
+    pub experiment_config: PathBuf,
+    /// Optional runs root override.
+    #[arg(long)]
+    pub runs_root: Option<PathBuf>,
+    /// Output directory for paper artifacts.
+    #[arg(long)]
+    pub out: Option<PathBuf>,
+    /// Optional source directory for figure PDFs to copy into figures/.
+    #[arg(long)]
+    pub figures_source: Option<PathBuf>,
+}
+
 pub fn aggregate(workspace: &Path, args: AggregateArgs) -> Result<()> {
-    let runs_root = args
-        .runs_root
-        .unwrap_or_else(|| workspace.join("runs"));
+    let runs_root = args.runs_root.unwrap_or_else(|| workspace.join("runs"));
     let out_dir = args
         .out
         .unwrap_or_else(|| workspace.join("reports").join("aggregate"));
@@ -156,6 +179,145 @@ pub fn aggregate(workspace: &Path, args: AggregateArgs) -> Result<()> {
         p = providers.len(),
         d = domains.len(),
         dir = out_dir.display()
+    );
+    Ok(())
+}
+
+pub fn package(workspace: &Path, args: PackageArgs) -> Result<()> {
+    let runs_root = args.runs_root.unwrap_or_else(|| workspace.join("runs"));
+    let out_dir = args
+        .out
+        .unwrap_or_else(|| workspace.join("reports").join("paper_v0.2"));
+    let tables_dir = out_dir.join("tables");
+    let figures_dir = out_dir.join("figures");
+    let appendices_dir = out_dir.join("appendices");
+    std::fs::create_dir_all(&tables_dir)?;
+    std::fs::create_dir_all(&figures_dir)?;
+    std::fs::create_dir_all(&appendices_dir)?;
+
+    let all_runs = discover_run_summaries(&runs_root)
+        .with_context(|| format!("discovering runs under {}", runs_root.display()))?;
+    let wanted: HashSet<&str> = args.canonical_run_ids.iter().map(String::as_str).collect();
+    let selected: Vec<RunSummary> = all_runs
+        .into_iter()
+        .filter(|r| wanted.contains(r.run_id.as_str()))
+        .collect();
+    if selected.is_empty() {
+        anyhow::bail!("reports package: no canonical run ids resolved under runs/");
+    }
+    let found: BTreeSet<&str> = selected.iter().map(|r| r.run_id.as_str()).collect();
+    let missing: Vec<&str> = wanted
+        .iter()
+        .copied()
+        .filter(|run_id| !found.contains(run_id))
+        .collect();
+    if !missing.is_empty() {
+        anyhow::bail!("reports package: missing canonical runs: {missing:?}");
+    }
+
+    let cfg = BootstrapConfig {
+        resamples: 1000,
+        seed: 0x5EED_CAFE_B00F_F117,
+        confidence: 0.95,
+    };
+    let primary = aggregate_by_system(&selected, cfg);
+    let providers = provider_breakdown(&selected, cfg);
+    let domains = domain_breakdown(&selected, cfg);
+    let (pair_specs, pair_rows) = paired_tables(&selected);
+
+    std::fs::write(
+        tables_dir.join("primary_metrics.tex"),
+        summary_primary_latex(&primary),
+    )?;
+    std::fs::write(
+        tables_dir.join("provider_breakdown.tex"),
+        provider_breakdown_latex(&providers),
+    )?;
+    std::fs::write(
+        tables_dir.join("domain_breakdown.tex"),
+        domain_breakdown_latex(&domains),
+    )?;
+    std::fs::write(tables_dir.join("paired_deltas.tex"), pair_rows)?;
+
+    let coverage = load_json(
+        &workspace
+            .join("benchmark")
+            .join(args.benchmark_version.as_str())
+            .join("annotation")
+            .join("adjudicated_subset")
+            .join("coverage_summary.json"),
+    )?;
+    std::fs::write(
+        tables_dir.join("annotation_coverage.tex"),
+        annotation_coverage_table(&coverage),
+    )?;
+
+    let release_summary = load_json(
+        &workspace
+            .join("benchmark")
+            .join(args.benchmark_version.as_str())
+            .join("manifests")
+            .join("release_summary.json"),
+    )?;
+    let signoff = load_json(
+        &workspace
+            .join("benchmark")
+            .join(args.benchmark_version.as_str())
+            .join("audit")
+            .join("gold_signoff.json"),
+    )?;
+    let pack = load_json(
+        &workspace
+            .join("benchmark")
+            .join(args.benchmark_version.as_str())
+            .join("annotation")
+            .join("adjudicated_subset")
+            .join("pack.json"),
+    )?;
+    let exp = load_experiment_config(&args.experiment_config)?;
+
+    std::fs::write(
+        appendices_dir.join("adjudicated_examples.md"),
+        adjudicated_examples_md(&pack),
+    )?;
+    std::fs::write(
+        appendices_dir.join("gold_audit_summary.md"),
+        gold_audit_summary_md(&signoff),
+    )?;
+    std::fs::write(
+        appendices_dir.join("benchmark_release_summary.md"),
+        benchmark_release_summary_md(&release_summary),
+    )?;
+
+    copy_figures(args.figures_source.as_ref(), &figures_dir)?;
+    let paper_summary = json!({
+        "benchmark_version": args.benchmark_version.as_str(),
+        "manifest_hash": release_summary.get("manifest_hash").and_then(|v| v.as_str()).unwrap_or(""),
+        "eval_size": release_summary.get("eval_size").and_then(|v| v.as_u64()).unwrap_or(0),
+        "systems": exp.systems,
+        "providers": exp.providers,
+        "seeds": exp.seeds,
+        "required_annotation_pairs": coverage.get("required_pairs").and_then(|v| v.as_u64()).unwrap_or(0),
+        "covered_annotation_pairs": coverage.get("covered_pairs").and_then(|v| v.as_u64()).unwrap_or(0),
+        "gold_signoff_state": {
+            "primary_reviewer": signoff.get("primary_reviewer").and_then(|v| v.as_str()).unwrap_or(""),
+            "secondary_reviewer": signoff.get("secondary_reviewer").and_then(|v| v.as_str()).unwrap_or(""),
+            "approved": signoff.get("approved").and_then(|v| v.as_bool()).unwrap_or(false),
+        },
+        "canonical_run_ids": args.canonical_run_ids,
+        "paired_specs": pair_specs,
+        "date": time::OffsetDateTime::now_utc()
+            .format(&time::format_description::well_known::Rfc3339)
+            .unwrap_or_else(|_| "1970-01-01T00:00:00Z".to_string()),
+    });
+    std::fs::write(
+        out_dir.join("paper_summary.json"),
+        serde_json::to_vec_pretty(&paper_summary)?,
+    )?;
+
+    println!(
+        "reports package: wrote paper artifact bundle at {}",
+        out_dir.display()
     );
     Ok(())
 }
@@ -261,4 +423,149 @@ fn parse_paired_spec(spec: &str) -> Option<(String, String)> {
         (Some(a), Some(b)) => Some((a, b)),
         _ => None,
     }
+}
+
+#[derive(Debug, Deserialize)]
+struct ExperimentConfigMeta {
+    systems: Vec<String>,
+    providers: Vec<String>,
+    seeds: Vec<u64>,
+}
+
+fn load_experiment_config(path: &Path) -> Result<ExperimentConfigMeta> {
+    let raw =
+        std::fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
+    let exp = serde_json::from_str::<ExperimentConfigMeta>(&raw)
+        .with_context(|| format!("parsing {}", path.display()))?;
+    Ok(exp)
+}
+
+fn load_json(path: &Path) -> Result<serde_json::Value> {
+    let raw =
+        std::fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
+    Ok(serde_json::from_str(&raw).with_context(|| format!("parsing {}", path.display()))?)
+}
+
+fn annotation_coverage_table(coverage: &serde_json::Value) -> String {
+    format!(
+        "\\begin{{tabular}}{{lrr}}\\n\\toprule\\nmetric & value \\\\n\\midrule\\nrequired\\_pairs & {} \\\\ncovered\\_pairs & {} \\\\nmissing\\_pairs & {} \\\\n\\bottomrule\\n\\end{{tabular}}\\n",
+        coverage.get("required_pairs").and_then(|v| v.as_u64()).unwrap_or(0),
+        coverage.get("covered_pairs").and_then(|v| v.as_u64()).unwrap_or(0),
+        coverage.get("missing_pairs").and_then(|v| v.as_u64()).unwrap_or(0),
+    )
+}
+
+fn adjudicated_examples_md(pack: &serde_json::Value) -> String {
+    let mut out = String::from("# Adjudicated examples\n\n");
+    if let Some(records) = pack.get("records").and_then(|v| v.as_array()) {
+        for rec in records.iter().take(10) {
+            let iid = rec
+                .get("instance_id")
+                .and_then(|v| v.as_str())
+                .unwrap_or("");
+            let sid = rec.get("system_id").and_then(|v| v.as_str()).unwrap_or("");
+            out.push_str(&format!("- `{iid}` / `{sid}`\n"));
+        }
+    }
+    out
+}
+
+fn gold_audit_summary_md(signoff: &serde_json::Value) -> String {
+    format!(
+        "# Gold audit summary\n\n- primary reviewer: `{}`\n- secondary reviewer: `{}`\n- approved: `{}`\n",
+        signoff.get("primary_reviewer").and_then(|v| v.as_str()).unwrap_or(""),
+        signoff.get("secondary_reviewer").and_then(|v| v.as_str()).unwrap_or(""),
+        signoff.get("approved").and_then(|v| v.as_bool()).unwrap_or(false),
+    )
+}
+
+fn benchmark_release_summary_md(release: &serde_json::Value) -> String {
+    let status = release
+        .get("release_validation")
+        .and_then(|v| v.get("status"))
+        .and_then(|v| v.as_str())
+        .unwrap_or("unknown");
+    format!(
+        "# Benchmark release summary\n\n- benchmark version: `{}`\n- manifest hash: `{}`\n- eval size: `{}`\n- dev size: `{}`\n- release validation: `{status}`\n",
+        release.get("benchmark_version").and_then(|v| v.as_str()).unwrap_or(""),
+        release.get("manifest_hash").and_then(|v| v.as_str()).unwrap_or(""),
+        release.get("eval_size").and_then(|v| v.as_u64()).unwrap_or(0),
+        release.get("dev_size").and_then(|v| v.as_u64()).unwrap_or(0),
+    )
+}
+
+fn paired_tables(runs: &[RunSummary]) -> (Vec<String>, String) {
+    let systems: BTreeSet<&str> = runs.iter().map(|r| r.system_id.as_str()).collect();
+    let mut specs = Vec::new();
+    let mut rows = String::from(
+        "\\begin{tabular}{llrrr}\n\\toprule\nsystem a & system b & mean $\\Delta$ faith & mean $\\Delta$ cons & mean $\\Delta$ cov \\\\\n\\midrule\n",
+    );
+    let preferred = [
+        ("text_only_v1", "full_method_v1"),
+        ("code_only_v1", "full_method_v1"),
+        ("naive_concat_v1", "full_method_v1"),
+    ];
+    for (a, b) in preferred {
+        if systems.contains(a) && systems.contains(b) {
+            let deltas = paired_deltas(runs, a, b);
+            if deltas.is_empty() {
+                continue;
+            }
+            let n = deltas.len() as f64;
+            let (mut f, mut c, mut cov) = (0.0, 0.0, 0.0);
+            for d in deltas {
+                f += d.delta_faithfulness_fraction;
+                c += d.delta_consistency_fraction;
+                cov += d.delta_coverage_fraction;
+            }
+            rows.push_str(&format!(
+                "{a} & {b} & {:.3} & {:.3} & {:.3} \\\\\n",
+                f / n,
+                c / n,
+                cov / n
+            ));
+            specs.push(format!("a={a},b={b}"));
+        }
+    }
+    rows.push_str("\\bottomrule\n\\end{tabular}\n");
+    (specs, rows)
+}
+
+fn copy_figures(figures_source: Option<&PathBuf>, figures_dir: &Path) -> Result<()> {
+    let expected = [
+        "main_results.pdf",
+        "domain_results.pdf",
+        "provider_results.pdf",
+        "failure_taxonomy.pdf",
+        "annotation_progress.pdf",
+    ];
+    if let Some(source) = figures_source {
+        for name in expected {
+            let src = source.join(name);
+            if src.is_file() {
+                std::fs::copy(&src, figures_dir.join(name))
+                    .with_context(|| format!("copying {}", src.display()))?;
+            }
+        }
+    }
+    let mut missing = Vec::new();
+    for name in expected {
+        if !figures_dir.join(name).is_file() {
+            missing.push(name);
+        }
+    }
+    if !missing.is_empty() {
+        std::fs::write(
+            figures_dir.join("README.md"),
+            format!(
+                "# Missing figure PDFs\n\nThe following files were not present at package time:\n{}\n",
+                missing
+                    .into_iter()
+                    .map(|m| format!("- `{m}`"))
+                    .collect::<Vec<_>>()
+                    .join("\n")
+            ),
+        )?;
+    }
+    Ok(())
 }

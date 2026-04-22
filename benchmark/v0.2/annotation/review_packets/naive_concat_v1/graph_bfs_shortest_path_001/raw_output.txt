@@ -1,0 +1,64 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (n : Nat) (adj : Fin n → List (Fin n)) (s : Fin n), True",
+      "nl_gloss": "State the setting: we model the graph as an adjacency list function adj from each vertex to a list of successor vertices, and the source s is a valid vertex in Fin n."
+    },
+    {
+      "kind": "definition_of_output_shape",
+      "lean_statement": "let dist := {{dist_def}}; dist.length = n",
+      "nl_gloss": "The implementation returns a vector dist of length n (one entry per vertex)."
+    },
+    {
+      "kind": "initialization_correctness",
+      "lean_statement": "let dist := {{dist_def}}; dist[s] = some 0 ∧ (∀ v : Fin n, v ≠ s → dist[v] = none ∨ dist[v] = some (Nat.succ 0))",
+      "nl_gloss": "At the start (or after the initialization phase), the source has distance 0 and all other vertices are initially unreachable (None), before any relaxation."
+    },
+    {
+      "kind": "invariant_queue_soundness",
+      "lean_statement": "∀ (state : {{impl_state_type}}), {{invariant_queue_soundness}}",
+      "nl_gloss": "Maintain an invariant relating the queue/frontier to vertices whose dist values are already assigned: every vertex in the queue has dist[v] = some k for some k, and that k is the number of edges used by the corresponding BFS layer."
+    },
+    {
+      "kind": "invariant_distance_upper_bound",
+      "lean_statement": "∀ (state : {{impl_state_type}}) (v : Fin n), dist[v] = some k → ∃ path : List (Fin n), pathStartsAt path s ∧ pathEndsAt path v ∧ pathLengthEdges path = k",
+      "nl_gloss": "Whenever dist[v] = some k, there exists a directed path from s to v using exactly k edges. (So dist values are always realizable upper bounds on shortest-path lengths.)"
+    },
+    {
+      "kind": "invariant_layering_minimality",
+      "lean_statement": "∀ (state : {{impl_state_type}}) (v : Fin n) (k : Nat), dist[v] = some k → (∀ k' : Nat, k' < k → ¬ ∃ path, pathStartsAt path s ∧ pathEndsAt path v ∧ pathLengthEdges path = k')",
+      "nl_gloss": "If dist[v] = some k, then no path with fewer than k edges exists. (So assigned distances are minimal.)"
+    },
+    {
+      "kind": "relaxation_rule_correctness",
+      "lean_statement": "∀ (u v : Fin n) (k : Nat), dist[u] = some k → (v ∈ adj u) → dist[v] = none → after_relaxation dist v = some (k+1)",
+      "nl_gloss": "When exploring an edge u→v from a vertex u with known distance k, if v is currently unreachable (None), the algorithm sets dist[v] to k+1."
+    },
+    {
+      "kind": "no_overwrite_of_better_dist",
+      "lean_statement": "∀ (v : Fin n) (k k' : Nat), dist[v] = some k → after_algorithm dist'[v] = some k' → k' = k",
+      "nl_gloss": "Once a vertex v has been assigned a distance, the algorithm never changes it to a different value; in particular it never overwrites with a larger or smaller distance."
+    },
+    {
+      "kind": "unreachable_implies_none",
+      "lean_statement": "∀ (v : Fin n), (¬ ∃ path, pathStartsAt path s ∧ pathEndsAt path v) → dist[v] = none",
+      "nl_gloss": "If there is no directed path from s to v, then the algorithm returns None for v."
+    },
+    {
+      "kind": "reachable_implies_some_shortest",
+      "lean_statement": "∀ (v : Fin n), (∃ path, pathStartsAt path s ∧ pathEndsAt path v) → ∃ k : Nat, dist[v] = some k ∧ (∀ k' : Nat, (∃ path', pathStartsAt path' s ∧ pathEndsAt path' v ∧ pathLengthEdges path' = k') → k ≤ k')",
+      "nl_gloss": "If v is reachable from s, then dist[v] is Some(k) where k is the length (in edges) of a shortest path: no reachable path uses fewer than k edges."
+    },
+    {
+      "kind": "shortest_path_characterization",
+      "lean_statement": "∀ (v : Fin n), dist[v] = some k ↔ (∃ path, pathStartsAt path s ∧ pathEndsAt path v ∧ pathLengthEdges path = k) ∧ (∀ k' < k, ¬ ∃ path', pathStartsAt path' s ∧ pathEndsAt path' v ∧ pathLengthEdges path' = k')",
+      "nl_gloss": "A combined characterization: dist[v] = Some(k) exactly when k is the minimal number of edges among all s→v paths."
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "The algorithm terminates for all finite graphs: ∀ n adj s, ∃ t, run_bfs adj s terminates in t steps",
+      "nl_gloss": "Prove the BFS implementation terminates (e.g., because each vertex is enqueued at most once when its dist changes from None to Some)."
+    }
+  ]
+}

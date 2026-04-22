@@ -88,9 +88,7 @@ pub fn check_authoring(b: &LoadedBenchmark, issues: &mut Vec<LintIssue>) {
                         instance_id: id.as_str().to_string(),
                         severity: LintSeverity::Warning,
                         code: "AUTHORING_OBLIGATION_NO_SEMANTIC_UNITS",
-                        message: format!(
-                            "obligation {obl_id} is not linked to any semantic unit"
-                        ),
+                        message: format!("obligation {obl_id} is not linked to any semantic unit"),
                         path: Some(obls_path.clone()),
                     });
                 }
@@ -101,7 +99,9 @@ pub fn check_authoring(b: &LoadedBenchmark, issues: &mut Vec<LintIssue>) {
 
         if let Some(units) = sus.as_ref() {
             for su in units {
-                let Some(su_id) = su.get("id").and_then(|v| v.as_str()) else { continue };
+                let Some(su_id) = su.get("id").and_then(|v| v.as_str()) else {
+                    continue;
+                };
                 let criticality = su
                     .get("criticality")
                     .and_then(|v| v.as_str())

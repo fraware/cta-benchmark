@@ -1,0 +1,222 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "graph_dijkstra_002",
+  "system_id": "text_only_v1",
+  "domain": "graph",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.2/instances/graph/graph_dijkstra_002",
+  "generated_output_path": "runs/run_2026_04_22_text_only_v1_eval_003/generated/text_only_v1/graph_dijkstra_002.json",
+  "informal_statement": {
+    "text": "Given a directed graph with non-negative integer edge weights, a source vertex, and a vertex count n, return a vector dist of length n where dist[v] is the length of the shortest path from source to v, or None if no such path exists.",
+    "preconditions": [
+      "n >= 1",
+      "0 <= source < n",
+      "every edge's endpoints are in [0, n)",
+      "every edge weight is non-negative"
+    ],
+    "required_properties": [
+      "dist has length n",
+      "dist[source] == Some(0)",
+      "for every v, if dist[v] == Some(d), there exists a path from source to v of total weight d",
+      "for every v, if dist[v] == Some(d), no path from source to v has total weight less than d",
+      "for every v, if dist[v] == None, there is no path from source to v"
+    ],
+    "edge_cases": [
+      "graph with no edges",
+      "source with no outgoing edges",
+      "disconnected components (unreachable vertices)",
+      "self-loops with zero weight",
+      "parallel edges of differing weights",
+      "n == 1 graph"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: every edge's endpoints lie in [0, n) and every weight is non-negative.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU2",
+      "description": "Size: the returned dist vector has length n.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU3",
+      "description": "Source: dist[source] == Some(0).",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU4",
+      "description": "Achievability: if dist[v] == Some(d), there exists a path from source to v with total weight d.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU5",
+      "description": "Optimality: if dist[v] == Some(d), no path from source to v has total weight less than d.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only a weaker existence claim",
+        "asserting only on the shortest-path tree edges"
+      ]
+    },
+    {
+      "id": "SU6",
+      "description": "Unreachability: if dist[v] == None, there is no path from source to v.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU7",
+      "description": "Termination on every valid input.",
+      "criticality": "supporting"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "bounds",
+      "lean_statement": "∀ (n source : Nat) (g : Graph), (dijkstra n source g).length = n",
+      "nl_gloss": "The returned distance table has length n.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (n source : Nat) (g : Graph), source < n → (dijkstra n source g).get? source = some (some 0)",
+      "nl_gloss": "The distance from the source to itself is zero.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "optimality",
+      "lean_statement": "∀ (n source v : Nat) (g : Graph) (d : Nat), NonNegativeWeights g → (dijkstra n source g).get? v = some (some d) → ∀ d', PathWeight g source v d' → d ≤ d'",
+      "nl_gloss": "When every edge weight is non-negative, if dist[v] == Some(d) then no path from source to v has weight less than d.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU5"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_004",
+      "kind": "postcondition",
+      "lean_statement": "∀ (n source v : Nat) (g : Graph) (d : Nat), (dijkstra n source g).get? v = some (some d) → PathWeight g source v d",
+      "nl_gloss": "If dist[v] == Some(d), there exists a path from source to v with total weight d.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_005",
+      "kind": "postcondition",
+      "lean_statement": "∀ (n source v : Nat) (g : Graph), (dijkstra n source g).get? v = some none → ¬ ∃ d, PathWeight g source v d",
+      "nl_gloss": "If dist[v] == None, there is no path from source to v.",
+      "linked_semantic_units": [
+        "SU6"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (s : Fin n) (g : Fin n → Fin n → Option Nat),\n  let dist := dijkstraLike g s n\n  in dist.length = n",
+      "nl_gloss": "The returned distance vector has length n.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (s : Fin n) (g : Fin n → Fin n → Option Nat),\n  let dist := dijkstraLike g s n\n  in ∀ v : Fin n, dist[v].isSome ∨ dist[v].isNone",
+      "nl_gloss": "Each entry dist[v] is an optional nonnegative integer (i.e., either Some d or None).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat),\n  ∀ u v : Fin n, match g u v with\n  | some w => True\n  | none => True\n  end",
+      "nl_gloss": "Edge weights are nonnegative integers (modeled as Nat).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n),\n  let dist := dijkstraLike g s n\n  in dist[s] = some 0",
+      "nl_gloss": "The distance from the source to itself is 0.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in (¬ ∃ path : List (Fin n),\n        path.head? = some s ∧ path.get? (path.length - 1) = some v ∧\n        ∀ i : Nat, i + 1 < path.length →\n          ∃ w : Nat, g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w)\n      → dist[v] = none",
+      "nl_gloss": "If there is no directed path from the source to v, then dist[v] is None.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in (∃ path : List (Fin n),\n        path.head? = some s ∧ path.get? (path.length - 1) = some v ∧\n        ∀ i : Nat, i + 1 < path.length →\n          ∃ w : Nat, g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w)\n      → dist[v].isSome",
+      "nl_gloss": "If there exists a directed path from the source to v, then dist[v] is Some d for some d.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in ∀ path : List (Fin n),\n     path.head? = some s → path.get? (path.length - 1) = some v →\n     (∀ i : Nat, i + 1 < path.length → ∃ w : Nat,\n        g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w) →\n     ∃ d : Nat,\n       dist[v] = some d ∧\n       d ≤ pathWeight g path",
+      "nl_gloss": "For any valid path from s to v with total weight pathWeight, the returned distance dist[v] is ≤ that path’s weight.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in ∀ d : Nat,\n     dist[v] = some d →\n     (∀ d' : Nat,\n        (∃ path : List (Fin n),\n          path.head? = some s ∧ path.get? (path.length - 1) = some v ∧\n          ∀ i : Nat, i + 1 < path.length →\n            ∃ w : Nat,\n              g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w ∧\n              pathWeight g path = d') →\n        d ≤ d')",
+      "nl_gloss": "If dist[v] = some d, then d is no larger than the weight of every path from s to v (i.e., it is the shortest-path length).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in ∀ d : Nat,\n     dist[v] = some d →\n     ∃ path : List (Fin n),\n       path.head? = some s ∧ path.get? (path.length - 1) = some v ∧\n       (∀ i : Nat, i + 1 < path.length → ∃ w : Nat,\n          g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w) ∧\n       pathWeight g path = d",
+      "nl_gloss": "If dist[v] = some d, then there exists a path from s to v whose total weight equals d.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_002/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_002/rust_summary.json"
+  }
+}

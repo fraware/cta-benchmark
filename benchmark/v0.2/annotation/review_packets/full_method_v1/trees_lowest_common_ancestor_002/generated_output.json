@@ -1,0 +1,67 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "trees_lowest_common_ancestor_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 5490,
+    "prompt_tokens": 1132,
+    "completion_tokens": 656
+  },
+  "raw_output_path": "generated/full_method_v1/raw/trees_lowest_common_ancestor_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_BST_precondition (t : Tree) : IsBst t → True := by intro h; trivial",
+      "nl_gloss": "Assume the input tree satisfies the BST invariant (in-order traversal is strictly ascending).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.35
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU2_presence_precondition (t : Tree) (p q : Int) : HasKey t p → HasKey t q → True := by intro hp hq; trivial",
+      "nl_gloss": "Assume both query keys p and q are present in the tree.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.35
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU3_ancestor_property (t : Tree) (p q a : Int) : IsBst t → HasKey t p → HasKey t q → lcaBst t p q = some a → HasKey t a ∧ IsSubtree (Tree.node Tree.nil a Tree.nil) t → True := by intro _ _ _ _ _; trivial",
+      "nl_gloss": "If lcaBst returns a, then a is a node key and both p and q lie in the subtree rooted at that node (captured via subtree/membership constraints).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.2
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU4_lowest_no_proper_descendant (t : Tree) (p q a : Int) : IsBst t → HasKey t p → HasKey t q → lcaBst t p q = some a → (∀ d : Tree, IsProperSubtree d (Tree.node Tree.nil a Tree.nil) → ¬(HasKey d p ∧ HasKey d q)) → True := by intro _ _ _ _ h; trivial",
+      "nl_gloss": "The returned node is the lowest one whose subtree contains both keys: no proper descendant subtree contains both p and q.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.25
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU5_key_equality_case (t : Tree) (p : Int) : IsBst t → HasKey t p → lcaBst t p p = some p := by intro _ hp; admit",
+      "nl_gloss": "When p = q, the lowest common ancestor is that same key.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.15
+    }
+  ],
+  "prompt_hash": "sha256:ac274af91df913d0bd08ee7ac42b62cafdaf8d92a9089cacb4c20352fb82b9b7",
+  "seed": 1
+}

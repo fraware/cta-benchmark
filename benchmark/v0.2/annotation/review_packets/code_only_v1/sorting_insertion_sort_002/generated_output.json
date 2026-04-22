@@ -1,0 +1,52 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_full_001",
+  "system_id": "code_only_v1",
+  "instance_id": "sorting_insertion_sort_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 3149,
+    "prompt_tokens": 115,
+    "completion_tokens": 296
+  },
+  "raw_output_path": "generated/code_only_v1/raw/sorting_insertion_sort_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "True",
+      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference implementation (the code snippet is not included here), so there are no additional required assumptions beyond well-typedness and termination.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "The Rust reference implementation is not provided in the prompt (the placeholder {{rust_reference}} is not expanded), so the exact computed function cannot be derived. Once the actual Rust code is available, this obligation should state the precise mathematical specification of the output.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "True",
+      "nl_gloss": "The specific loop/recursion invariants cannot be determined without the actual Rust code. After the Rust code is provided, this obligation should capture the key invariant(s) maintained throughout the algorithm.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "True",
+      "nl_gloss": "Termination arguments depend on the concrete control flow (loops/recursion) in the Rust code. With the actual implementation, this obligation should prove that the algorithm terminates (e.g., via a decreasing measure).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "True",
+      "nl_gloss": "Correctness proof obligations (e.g., that the final result satisfies the functional specification) depend on the algorithm’s details. With the actual Rust code, this obligation should connect the maintained invariants to the postcondition.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:9664cfe9022ac47027d55cf4af9813e2c10b9b16209e4410f12941fbc5b4b626",
+  "seed": 1
+}

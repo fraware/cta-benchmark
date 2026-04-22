@@ -1,0 +1,34 @@
+{
+  "obligations": [
+    {
+      "kind": "definition",
+      "lean_statement": "theorem spec_sort (xs : List Int) : True := by trivial",
+      "nl_gloss": "Introduce the specification context for sorting a list of integers."
+    },
+    {
+      "kind": "output_type",
+      "lean_statement": "∀ (xs : List Int), ∃ (ys : Vector Int xs.length), True",
+      "nl_gloss": "The result is a vector of integers whose length matches the input length."
+    },
+    {
+      "kind": "length_preservation",
+      "lean_statement": "∀ (xs : List Int) (ys : Vector Int xs.length), ys.length = xs.length",
+      "nl_gloss": "The output vector has the same length as the input slice."
+    },
+    {
+      "kind": "sortedness",
+      "lean_statement": "∀ (xs : List Int) (ys : Vector Int xs.length), (∀ i j : Fin xs.length, i ≤ j → ys[i] ≤ ys[j]) → True",
+      "nl_gloss": "The output is in nondecreasing order (indices respect ≤)."
+    },
+    {
+      "kind": "permutation_multiset",
+      "lean_statement": "∀ (xs : List Int) (ys : Vector Int xs.length), (ys.toList ~ xs) → True",
+      "nl_gloss": "The output contains exactly the same multiset of elements as the input (permutation)."
+    },
+    {
+      "kind": "combined_spec",
+      "lean_statement": "∀ (xs : List Int), ∃ (ys : Vector Int xs.length), (∀ i j : Fin xs.length, i ≤ j → ys[i] ≤ ys[j]) ∧ (ys.toList ~ xs)",
+      "nl_gloss": "There exists an output vector of the same length that is nondecreasing and is a permutation of the input."
+    }
+  ]
+}

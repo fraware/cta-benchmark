@@ -1,0 +1,70 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "arrays_max_subarray_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 6032,
+    "prompt_tokens": 992,
+    "completion_tokens": 662
+  },
+  "raw_output_path": "generated/full_method_v1/raw/arrays_max_subarray_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_nonempty_precondition (arr : Arr) (h : arr ≠ []) : ∃ i j : Nat, i < j ∧ sliceSum arr i j = sliceSum arr i j := by\n  refine ⟨0, 1, ?_, rfl⟩\n  exact Nat.zero_lt_one",
+      "nl_gloss": "Assume the input slice is non-empty; establish that there exists at least one non-empty contiguous range to witness (i < j).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.35
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU2_witness_exists (arr : Arr) (h : arr ≠ []) : ∃ i j : Nat, i < j ∧ sliceSum arr i j = maxSubarray arr",
+      "nl_gloss": "There exists a contiguous non-empty subslice (indices i..j with i < j) whose sum equals the returned maximum.",
+      "linked_semantic_units": [
+        "SU2",
+        "SU4"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU3_upper_bound (arr : Arr) (h : arr ≠ []) : ∀ i j : Nat, i < j → sliceSum arr i j ≤ maxSubarray arr",
+      "nl_gloss": "For every contiguous non-empty subslice, its sum is not strictly greater than the returned value.",
+      "linked_semantic_units": [
+        "SU3",
+        "SU4"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU4_contiguity_form (arr : Arr) (h : arr ≠ []) : ∃ i j : Nat, i < j ∧ sliceSum arr i j = maxSubarray arr",
+      "nl_gloss": "The witness is expressed as a contiguous range i..j (not an arbitrary subsequence), with i < j.",
+      "linked_semantic_units": [
+        "SU4",
+        "SU2"
+      ],
+      "confidence": 0.6
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU5_all_negative_case (arr : Arr) (hne : arr ≠ []) (hallneg : ∀ x ∈ arr, x < 0) :\n  maxSubarray arr = (arr.foldr (fun x acc => max x acc) (Int.minBound))",
+      "nl_gloss": "If every element is negative, the maximum subarray sum equals the maximum single element.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.25
+    }
+  ],
+  "prompt_hash": "sha256:37978b66905e626cae3b9517e56369db753f3b049ff21356baf0370f15959075",
+  "seed": 1
+}

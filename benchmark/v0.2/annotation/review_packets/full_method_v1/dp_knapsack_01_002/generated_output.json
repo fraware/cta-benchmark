@@ -1,0 +1,67 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "dp_knapsack_01_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 7443,
+    "prompt_tokens": 1095,
+    "completion_tokens": 743
+  },
+  "raw_output_path": "generated/full_method_v1/raw/dp_knapsack_01_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU1_alignment_precondition (weights : Weights) (values : Values) :\n  weights.length = values.length → True := by\n  intro h; trivial",
+      "nl_gloss": "If weights and values are aligned index-for-index (same length), the algorithm is allowed to proceed.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.35
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU2_capacity_feasibility (weights : Weights) (values : Values) (capacity : Nat) :\n  ∀ sel : Selection,\n    ValidSelection weights sel → totalWeight weights sel ≤ capacity → True := by\n  intro sel hValid hCap; trivial",
+      "nl_gloss": "Any witness selection must satisfy the capacity constraint (total weight ≤ capacity).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.4
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU3_value_witness (weights : Weights) (values : Values) (capacity : Nat) :\n  ∀ sel : Selection,\n    ValidSelection weights sel → totalWeight weights sel ≤ capacity →\n    totalValue values sel ≤ knapsack01 weights values capacity := by\n  intro sel hValid hCap\n  -- This obligation captures that the returned result is at least the value of any feasible valid selection.\n  -- The scaffold does not define knapsack01, so we only state the required inequality form.\n  admit",
+      "nl_gloss": "There exists a valid selection whose total value equals the returned result (captured here as returned value ≥ any feasible selection value).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.25
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU4_optimality (weights : Weights) (values : Values) (capacity : Nat) :\n  ∀ sel : Selection,\n    ValidSelection weights sel → totalWeight weights sel ≤ capacity →\n    totalValue values sel ≤ knapsack01 weights values capacity := by\n  intro sel hValid hCap\n  -- Optimality: no feasible selection can have strictly greater value than the returned result.\n  admit",
+      "nl_gloss": "No valid selection with total weight ≤ capacity achieves a strictly greater total value than the returned result.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.25
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU5_uniqueness_in_valid_selection (weights : Weights) (sel : Selection) :\n  ValidSelection weights sel → sel.Nodup := by\n  intro h; exact h.1",
+      "nl_gloss": "Any witness selection is 0/1: items appear at most once (Nodup).",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.9
+    }
+  ],
+  "prompt_hash": "sha256:df569bcafcff752a91e934f8ad42f4062c47e76ce0b127951a8f279d35cacad9",
+  "seed": 1
+}

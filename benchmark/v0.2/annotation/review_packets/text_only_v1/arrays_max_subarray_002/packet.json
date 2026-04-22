@@ -1,0 +1,154 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "arrays_max_subarray_002",
+  "system_id": "text_only_v1",
+  "domain": "arrays",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.2/instances/arrays/arrays_max_subarray_002",
+  "generated_output_path": "runs/run_2026_04_22_text_only_v1_eval_003/generated/text_only_v1/arrays_max_subarray_002.json",
+  "informal_statement": {
+    "text": "Given a non-empty slice of integers, return the maximum sum over all contiguous non-empty subslices.",
+    "preconditions": [
+      "the input slice is non-empty"
+    ],
+    "required_properties": [
+      "the returned value equals the maximum sum over all contiguous non-empty subslices",
+      "there exist indices i <= j with i < arr.len() and j <= arr.len() such that arr[i..j] sums to the returned value",
+      "no contiguous non-empty subslice sums to a strictly greater value"
+    ],
+    "edge_cases": [
+      "single-element slice",
+      "all negative elements (max is the largest single element)",
+      "all zero elements",
+      "all positive elements (max is the whole slice)",
+      "a single large negative element interleaved among positives"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: the slice is non-empty.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the non-emptiness precondition",
+        "treating the empty-slice case as returning 0"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Existential witness: there is a contiguous non-empty subslice whose sum equals the returned value.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only an upper bound without a witness",
+        "quantifying over subsequences rather than contiguous subslices"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Upper-bound property: no contiguous non-empty subslice sums strictly above the returned value.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "missing the maximality condition",
+        "quantifying only over subslices of a fixed length"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Contiguity constraint: the witness is a contiguous range i..j, not a subsequence.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "allowing gaps in the witnessed indices"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "All-negative case: the result equals the maximum single element when every element is negative.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr), arr ≠ [] → ∃ (i j : Nat), i ≤ j ∧ j ≤ arr.length ∧ i < j ∧ sliceSum arr i j = maxSubarray arr",
+      "nl_gloss": "For any non-empty input, there exists a contiguous non-empty subslice whose sum equals the returned maximum.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr) (i j : Nat), arr ≠ [] → i < j → j ≤ arr.length → sliceSum arr i j ≤ maxSubarray arr",
+      "nl_gloss": "For any non-empty input, no contiguous non-empty subslice has a sum strictly greater than the returned maximum.",
+      "linked_semantic_units": [
+        "SU3",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "unknown",
+      "lean_statement": "def maxContigSubsliceSum (xs : List Int) : Int :=\n  if h : xs ≠ [] then\n    let subs := { ys : List Int // ∃ i j, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i) };\n    Finset.univ.image (fun p => p.1.sum) |>.max' (by\n      have : (∃ ys : List Int, ys ∈ subs) := by\n        rcases List.exists_ne_nil_iff.1 (by simpa [h]) with ⟨y, hy⟩\n        refine ⟨[y], ?_⟩\n        rcases List.length_pos_iff.1 (by simpa [List.length_eq_zero_iff] using h) with ⟨_⟩\n        -- witness indices i=0, j=1\n        refine ⟨0, 1, by decide, by decide, by\n          simpa [List.length] using (Nat.succ_le_iff.2 (Nat.zero_le _))⟩\n        simp)\n  else 0",
+      "nl_gloss": "Define the intended function as the maximum sum among all contiguous non-empty subslices of a non-empty list of integers (and return 0 for the empty case).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "theorem exists_contig_nonempty_subslice {xs : List Int} (h : xs ≠ []) :\n  ∃ ys : List Int, ys ≠ [] ∧ ∃ i j : Nat, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i) := by\n  rcases List.exists_ne_nil_iff.1 h with ⟨y, hy⟩\n  -- choose i=0, j=1\n  refine ⟨[y], by simp, ?_⟩\n  refine ⟨0, 1, by decide, by decide, ?_⟩\n  simpa [List.length_eq_zero_iff] using (Nat.succ_le_iff.2 (Nat.zero_le _))",
+      "nl_gloss": "For any non-empty input slice, there exists at least one contiguous non-empty subslice (e.g. taking the first element).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSubsliceSum_upper_bound {xs : List Int} (h : xs ≠ []) :\n  ∀ ys : List Int,\n    (∃ i j : Nat, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i)) →\n    ys.sum ≤ maxContigSubsliceSum xs := by\n  intro ys hys\n  -- show ys.sum is among the candidates and thus ≤ the max\n  -- (proof uses the definition via max over the candidate set)\n  admit",
+      "nl_gloss": "The returned value is at least the sum of every contiguous non-empty subslice.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSubsliceSum_attains {xs : List Int} (h : xs ≠ []) :\n  ∃ ys : List Int,\n    (∃ i j : Nat, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i)) ∧\n    maxContigSubsliceSum xs = ys.sum := by\n  -- since the candidate set is nonempty and finite, the max is achieved\n  admit",
+      "nl_gloss": "There exists a contiguous non-empty subslice whose sum equals the returned maximum.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSubsliceSum_spec {xs : List Int} (h : xs ≠ []) :\n  maxContigSubsliceSum xs =\n    (Finset.univ.image (fun p : { ys : List Int // ∃ i j, 0 ≤ i ∧ i < j ∧ j ≤ xs.length ∧ ys = xs.drop i |>.take (j - i) } => p.1.sum)).max' (by\n      -- nonempty witness from exists_contig_nonempty_subslice\n      rcases exists_contig_nonempty_subslice (xs:=xs) h with ⟨ys, ys_ne, i, j, hi, hij, hj, rfl⟩\n      refine ⟨⟨ys, ?_⟩, ?_⟩\n      · exact ⟨i, j, hi, hij, hj, rfl⟩\n      · simp)\n  := by\n  -- unfold the definition and simplify\n  simp [maxContigSubsliceSum, h]",
+      "nl_gloss": "The function equals the maximum of the sums of all contiguous non-empty subslices (for non-empty inputs).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_002/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_002/rust_summary.json"
+  }
+}

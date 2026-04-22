@@ -1,0 +1,54 @@
+{
+  "obligations": [
+    {
+      "kind": "definition",
+      "lean_statement": "inductive BST (α : Type) [LT α] : Type :=\n| node : (l r : BST α) → (key : α) → BST α\n-- placeholder: user will supply the intended BST definition and in-order traversal\n",
+      "nl_gloss": "Provide (or assume) a formal definition of a binary search tree and its in-order traversal."
+    },
+    {
+      "kind": "assumption",
+      "lean_statement": "variable {α : Type} [LinearOrder α]\nvariable (t : BST α)\n-- Assume in-order traversal is strictly ascending\naxiom inorder_strict_ascending : StrictMono (inorder t)\n",
+      "nl_gloss": "Assume the given tree has a strictly ascending in-order traversal (i.e., it is a valid BST with no duplicates)."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def In (x : α) (t : BST α) : Prop := x ∈ inorder t\n-- or an equivalent membership predicate tied to the tree structure\n",
+      "nl_gloss": "Define membership of a key in the tree (e.g., via in-order traversal)."
+    },
+    {
+      "kind": "assumption",
+      "lean_statement": "variable {a b : α}\naxiom ha : In a t\naxiom hb : In b t\n",
+      "nl_gloss": "Assume both keys a and b are present in the tree."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def Subtree (u : Node α) : BST α := -- intended subtree rooted at u\n  sorry\n\ndef LowestBoth (a b : α) (t : BST α) : α :=\n  -- intended: key of the lowest node whose subtree contains both a and b\n  sorry\n",
+      "nl_gloss": "Define the target value: the key of the lowest (deepest) node whose subtree contains both keys."
+    },
+    {
+      "kind": "specification",
+      "lean_statement": "axiom LowestBoth_spec_contains :\n  let x := LowestBoth a b t\n  In x t ∧ (∃ u, key u = x ∧ In a (Subtree u) ∧ In b (Subtree u))\n",
+      "nl_gloss": "The returned key corresponds to a node whose subtree contains both keys."
+    },
+    {
+      "kind": "specification",
+      "lean_statement": "axiom LowestBoth_spec_lowest :\n  let x := LowestBoth a b t\n  ∀ u, (In a (Subtree u) ∧ In b (Subtree u)) →\n    depth u ≤ depth (node_of_key x)\n",
+      "nl_gloss": "Among all nodes whose subtrees contain both keys, the returned node is the lowest (deepest)."
+    },
+    {
+      "kind": "specification",
+      "lean_statement": "axiom LowestBoth_spec_uniqueness :\n  let x := LowestBoth a b t\n  ∀ y, (∃ u, key u = y ∧ In a (Subtree u) ∧ In b (Subtree u)) →\n    (depth (node_of_key y) = depth (node_of_key x) → y = x)\n",
+      "nl_gloss": "The lowest such node is unique in terms of its key (consistent with strict BST ordering)."
+    },
+    {
+      "kind": "algorithm",
+      "lean_statement": "def lowestNodeBoth (a b : α) (t : BST α) : α :=\n  -- intended algorithm: traverse from root using BST ordering until the split point\n  sorry\n",
+      "nl_gloss": "Define the algorithm that returns the key of the lowest node whose subtree contains both keys."
+    },
+    {
+      "kind": "correctness",
+      "lean_statement": "theorem lowestNodeBoth_correct :\n  lowestNodeBoth a b t = LowestBoth a b t\n",
+      "nl_gloss": "The algorithm returns exactly the key specified by the 'lowest node with both keys in its subtree' definition."
+    }
+  ]
+}

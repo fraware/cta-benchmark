@@ -1,0 +1,216 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "dp_knapsack_01_001",
+  "system_id": "text_only_v1",
+  "domain": "dp",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.2/instances/dp/dp_knapsack_01_001",
+  "generated_output_path": "runs/run_2026_04_22_text_only_v1_eval_003/generated/text_only_v1/dp_knapsack_01_001.json",
+  "informal_statement": {
+    "text": "Given equal-length slices of non-negative item weights and item values, and a non-negative integer capacity, return the maximum total value achievable by choosing a subset whose total weight does not exceed the capacity. Each item may be selected at most once.",
+    "preconditions": [
+      "weights and values have the same length",
+      "every weight is a non-negative integer",
+      "every value is a non-negative integer",
+      "capacity is a non-negative integer"
+    ],
+    "required_properties": [
+      "the result is witnessed by some subset S of item indices whose total weight <= capacity and total value equals the result",
+      "no subset whose total weight <= capacity has a strictly greater total value",
+      "each item index is used at most once in any witness subset"
+    ],
+    "edge_cases": [
+      "empty input (result is 0)",
+      "capacity 0 (result is 0 unless there is a zero-weight positive-value item)",
+      "a single item with weight > capacity",
+      "multiple items of identical weight and value",
+      "all weights exceeding capacity"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Alignment precondition: weights and values have the same length.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the length alignment",
+        "allowing trailing values to be ignored"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Capacity feasibility: the witness subset has total weight at most the capacity.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "dropping the capacity constraint",
+        "applying strict inequality"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Value witness: there is a valid selection whose total value equals the returned result.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only a value upper bound"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Optimality: no valid selection with total weight <= capacity achieves a strictly greater total value.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only the witness (admits 'return 0')",
+        "reducing to unbounded knapsack (allowing repeats)"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "0/1 uniqueness: items appear at most once in any witness selection.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "allowing multiplicities (unbounded knapsack)"
+      ]
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (ws : Weights) (vs : Values) (cap : Nat), ws.length = vs.length → ∃ (sel : Selection), ValidSelection ws sel ∧ totalWeight ws sel ≤ cap ∧ totalValue vs sel = knapsack01 ws vs cap",
+      "nl_gloss": "When weights and values are length-aligned, there exists a valid feasible selection whose total value equals the returned result.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (ws : Weights) (vs : Values) (cap : Nat) (sel : Selection), ws.length = vs.length → ValidSelection ws sel → totalWeight ws sel ≤ cap → totalValue vs sel ≤ knapsack01 ws vs cap",
+      "nl_gloss": "When weights and values are length-aligned, no valid feasible selection beats the returned result.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "unknown",
+      "lean_statement": "theorem knapsack_spec (weights values : List Nat) (capacity : Nat)\n  (hlen : weights.length = values.length)\n  (hnonneg : True) : True := by trivial",
+      "nl_gloss": "Set up the problem with equal-length lists of non-negative weights and values and a non-negative capacity.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "def feasibleSubsets (weights values : List Nat) (capacity : Nat) : Set (List Nat) :=\n  { idxs |\n    let n := weights.length\n    idxs.Nodup ∧\n    idxs ⊆ List.range n ∧\n    (sum (idxs.map (fun i => weights.getD i 0))) ≤ capacity ∧\n    (sum (idxs.map (fun i => values.getD i 0))) ≥ 0 }",
+      "nl_gloss": "Define what it means for a subset (represented by distinct indices) to be feasible: indices are within bounds, no repeats, and total weight is within capacity.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "def subsetValue (weights values : List Nat) (idxs : List Nat) : Nat :=\n  sum (idxs.map (fun i => values.getD i 0))",
+      "nl_gloss": "Define the total value of a chosen subset (by indices).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "def subsetWeight (weights values : List Nat) (idxs : List Nat) : Nat :=\n  sum (idxs.map (fun i => weights.getD i 0))",
+      "nl_gloss": "Define the total weight of a chosen subset (by indices).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "def knapsackAnswer (weights values : List Nat) (capacity : Nat) : Nat :=\n  sSup ( { subsetValue weights values idxs | idxs ∈ feasibleSubsets weights values capacity } )",
+      "nl_gloss": "Define the intended output as the maximum total value among all feasible subsets.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "theorem feasible_empty (weights values : List Nat) (capacity : Nat) :\n  [] ∈ feasibleSubsets weights values capacity := by\n  simp [feasibleSubsets, subsetWeight, subsetValue]",
+      "nl_gloss": "The empty subset is feasible (weight 0 ≤ capacity), so the maximum is well-defined.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "theorem knapsackAnswer_is_upper_bound (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  subsetValue weights values idxs ≤ knapsackAnswer weights values capacity := by\n  -- follows from definition as supremum/maximum over feasible values\n  admit",
+      "nl_gloss": "Any feasible subset’s total value is ≤ the returned answer.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "theorem knapsackAnswer_attains (weights values : List Nat) (capacity : Nat) :\n  ∃ idxs : List Nat,\n    idxs ∈ feasibleSubsets weights values capacity ∧\n    subsetValue weights values idxs = knapsackAnswer weights values capacity := by\n  -- for Nat, supremum over a finite set is attained\n  admit",
+      "nl_gloss": "There exists a feasible subset whose value equals the returned maximum.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "theorem feasible_implies_each_item_used_at_most_once (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  idxs.Nodup := by\n  simpa [feasibleSubsets] using (by\n    have := (show idxs ∈ feasibleSubsets weights values capacity from hfeas)\n    simpa [feasibleSubsets] using this)",
+      "nl_gloss": "Feasibility enforces that each item index appears at most once (no repeated selection).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 9,
+      "kind": "unknown",
+      "lean_statement": "theorem feasible_implies_weight_le_capacity (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  subsetWeight weights values idxs ≤ capacity := by\n  simpa [feasibleSubsets, subsetWeight] using (by\n    have := (show idxs ∈ feasibleSubsets weights values capacity from hfeas)\n    simpa [feasibleSubsets] using this)",
+      "nl_gloss": "Any feasible subset respects the capacity constraint on total weight.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 10,
+      "kind": "unknown",
+      "lean_statement": "theorem feasible_implies_indices_within_length (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  let n := weights.length\n  idxs ⊆ List.range n := by\n  simpa [feasibleSubsets] using (by\n    have := (show idxs ∈ feasibleSubsets weights values capacity from hfeas)\n    simpa [feasibleSubsets] using this)",
+      "nl_gloss": "Chosen indices correspond to valid items within the list length.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 11,
+      "kind": "unknown",
+      "lean_statement": "theorem knapsack_correct_for_equal_lengths (weights values : List Nat) (capacity : Nat)\n  (hlen : weights.length = values.length) :\n  knapsackAnswer weights values capacity =\n    sSup ( { subsetValue weights values idxs | idxs.Nodup ∧ idxs ⊆ List.range weights.length ∧ subsetWeight weights values idxs ≤ capacity } ) := by\n  -- show feasibleSubsets matches the intended constraints when lengths agree\n  admit",
+      "nl_gloss": "When weights and values have equal length, the feasibility definition matches the intended subset constraints over items.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/rust_summary.json"
+  }
+}

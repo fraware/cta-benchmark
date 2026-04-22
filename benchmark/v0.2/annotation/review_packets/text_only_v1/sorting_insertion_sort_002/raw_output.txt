@@ -1,0 +1,44 @@
+{
+  "obligations": [
+    {
+      "kind": "spec",
+      "lean_statement": "theorem insertionSort_spec (a : Array Int) (h : a.Length = n) : True := by trivial",
+      "nl_gloss": "Introduce the intended specification context for insertion sort over a mutable slice/array of integers of length n."
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem insertionSort_terminates (a : Array Int) : Termination := by trivial",
+      "nl_gloss": "Insertion sort terminates when run on the given mutable slice/array."
+    },
+    {
+      "kind": "mutation_model",
+      "lean_statement": "theorem insertionSort_mutates_in_place (a : Array Int) : True := by trivial",
+      "nl_gloss": "The algorithm is modeled as mutating the input slice/array in place (no separate output array)."
+    },
+    {
+      "kind": "permutation",
+      "lean_statement": "theorem insertionSort_perm (a₀ a₁ : Array Int) (h : a₁ = insertionSort a₀) : a₁.toList.Perm a₀.toList := by\n  -- proof obligation: insertion sort preserves the multiset of elements\n  admit",
+      "nl_gloss": "The final array is a permutation of the initial array (same elements with the same multiplicities)."
+    },
+    {
+      "kind": "sortedness",
+      "lean_statement": "theorem insertionSort_sorted (a₀ a₁ : Array Int) (h : a₁ = insertionSort a₀) :\n  a₁.toList.Sorted (· ≤ ·) := by\n  -- proof obligation: output is nondecreasing\n  admit",
+      "nl_gloss": "After insertion sort, the array is sorted in nondecreasing order."
+    },
+    {
+      "kind": "loop_invariant_outer",
+      "lean_statement": "theorem insertionSort_outer_invariant (a : Array Int) (i : Nat) :\n  i ≤ a.Length →\n  Sorted (· ≤ ·) (a.toList.take i) := by\n  -- proof obligation: after processing i elements, the prefix is sorted\n  admit",
+      "nl_gloss": "Outer-loop invariant: the prefix up to the current index is sorted."
+    },
+    {
+      "kind": "loop_invariant_inner",
+      "lean_statement": "theorem insertionSort_inner_invariant (a : Array Int) (i j : Nat) :\n  i < a.Length → j ≤ i →\n  (Sorted (· ≤ ·) (a.toList.take j)) ∧\n  (∀ k, j ≤ k ∧ k < i → a[k] ≥ a[i]) := by\n  -- proof obligation: inner-loop maintains the correct shifting property\n  admit",
+      "nl_gloss": "Inner-loop invariant: elements are shifted to make room for the key while preserving sortedness of the already-processed part."
+    },
+    {
+      "kind": "bounds_safety",
+      "lean_statement": "theorem insertionSort_bounds_safe (a : Array Int) : True := by trivial",
+      "nl_gloss": "All index accesses performed by the algorithm stay within bounds of the slice/array."
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "benchmark_version": "v0.2",
+  "split": "eval",
+  "systems": [
+    "text_only_v1",
+    "code_only_v1",
+    "naive_concat_v1",
+    "full_method_v1"
+  ],
+  "required_pairs": 96,
+  "covered_pairs": 3,
+  "missing_pairs": 93,
+  "missing_examples": [
+    {
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "code_only_v1"
+    },
+    {
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "full_method_v1"
+    },
+    {
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "text_only_v1"
+    },
+    {
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "code_only_v1"
+    },
+    {
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "full_method_v1"
+    },
+    {
+      "instance_id": "arrays_max_subarray_001",
+      "system_id": "text_only_v1"
+    },
+    {
+      "instance_id": "arrays_max_subarray_001",
+      "system_id": "code_only_v1"
+    },
+    {
+      "instance_id": "arrays_max_subarray_001",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "instance_id": "arrays_max_subarray_001",
+      "system_id": "full_method_v1"
+    },
+    {
+      "instance_id": "arrays_max_subarray_002",
+      "system_id": "text_only_v1"
+    },
+    {
+      "instance_id": "arrays_max_subarray_002",
+      "system_id": "code_only_v1"
+    },
+    {
+      "instance_id": "arrays_max_subarray_002",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "instance_id": "arrays_max_subarray_002",
+      "system_id": "full_method_v1"
+    },
+    {
+      "instance_id": "dp_knapsack_01_001",
+      "system_id": "text_only_v1"
+    },
+    {
+      "instance_id": "dp_knapsack_01_001",
+      "system_id": "code_only_v1"
+    },
+    {
+      "instance_id": "dp_knapsack_01_001",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "instance_id": "dp_knapsack_01_001",
+      "system_id": "full_method_v1"
+    },
+    {
+      "instance_id": "dp_knapsack_01_002",
+      "system_id": "text_only_v1"
+    }
+  ]
+}

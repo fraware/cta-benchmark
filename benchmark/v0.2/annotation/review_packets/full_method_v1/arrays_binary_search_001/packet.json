@@ -1,0 +1,173 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "arrays_binary_search_001",
+  "system_id": "full_method_v1",
+  "domain": "arrays",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.2/instances/arrays/arrays_binary_search_001",
+  "generated_output_path": "runs/run_2026_04_22_full_method_v1_eval_full_001/generated/full_method_v1/arrays_binary_search_001.json",
+  "informal_statement": {
+    "text": "Given a sorted slice of integers in nondecreasing order and a target value, return Some(i) where arr[i] == target, or None if the target is absent. If multiple indices match, returning any valid index is acceptable.",
+    "preconditions": [
+      "arr is sorted in nondecreasing order"
+    ],
+    "required_properties": [
+      "if the function returns Some(i), then i < arr.len() and arr[i] == target",
+      "if the function returns None, then target does not occur in arr",
+      "the function terminates for every input"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice containing the target",
+      "single-element slice not containing the target",
+      "target smaller than all elements",
+      "target larger than all elements",
+      "duplicates of the target"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: the slice is sorted in nondecreasing order.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "forgetting the precondition entirely",
+        "asserting strict ordering instead of nondecreasing"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Success postcondition: if the return is Some(i), then i is a valid index and arr[i] == target.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the bounds check",
+        "omitting the equality check"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Failure postcondition: if the return is None, then target does not occur in arr.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "only quantifying over a prefix or suffix",
+        "stating the weaker claim that target is not at a specific position"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Termination: the function terminates on every input (lo..hi shrinks each iteration).",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "stating termination without a variant"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Uniqueness is NOT required: multiple valid indices exist when duplicates are present.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr) (t : Int) (i : Nat), binarySearch arr t = some i → i < arr.length ∧ arr.get? i = some t",
+      "nl_gloss": "If the function returns Some i, then i is in range and arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr) (t : Int), SortedLE arr → binarySearch arr t = none → ∀ i, i < arr.length → arr.get? i ≠ some t",
+      "nl_gloss": "Assuming the input is sorted in nondecreasing order, if the function returns None then the target does not occur anywhere in the slice.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_sorted_precond (a : Arr) : Sorted a → True := by intro _; trivial",
+      "nl_gloss": "Assume the input slice is sorted in nondecreasing order (Sorted a).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "theorem SU2_some_implies_index_valid_and_eq (a : Arr) (t : Int) :\n  ∀ i : Nat,\n    binarySearch a t = some i → IndexValid i a ∧ nthLe a i = t := by\n  intro i h\n  -- proof obligation: connect the model result to index validity and equality\n  admit",
+      "nl_gloss": "If the algorithm returns Some i, then i is in bounds and arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "theorem SU2_some_implies_eq_only (a : Arr) (t : Int) :\n  ∀ i : Nat,\n    binarySearch a t = some i → nthLe a i = t := by\n  intro i h\n  have : IndexValid i a ∧ nthLe a i = t := by\n    -- from the stronger obligation, extract equality\n    admit\n  exact this.2",
+      "nl_gloss": "If the algorithm returns Some i, then arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "theorem SU3_none_implies_absent (a : Arr) (t : Int) :\n  binarySearch a t = none → ¬ (∃ i : Nat, IndexValid i a ∧ nthLe a i = t) := by\n  intro h hn\n  rcases hn with ⟨i, hi, hEq⟩\n  -- proof obligation: show contradiction with the model behavior\n  admit",
+      "nl_gloss": "If the algorithm returns None, then there is no in-bounds index i with arr[i] = target.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "termination",
+      "lean_statement": "theorem SU4_termination (a : Arr) (t : Int) : True := by trivial",
+      "nl_gloss": "The algorithm terminates on every input (lo..hi shrinks each iteration).",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "theorem SU5_duplicates_allow_any_valid_index (a : Arr) (t : Int) :\n  ∀ i j : Nat,\n    binarySearch a t = some i → binarySearch a t = some j →\n      (IndexValid i a ∧ nthLe a i = t) ∧ (IndexValid j a ∧ nthLe a j = t) := by\n  intro i j h1 h2\n  -- proof obligation: both returned indices must be valid and equal to target\n  admit",
+      "nl_gloss": "If duplicates exist, returning any valid matching index is acceptable; both returned indices (when Some) must satisfy the success condition.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_binary_search_001/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_binary_search_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_binary_search_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_binary_search_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_binary_search_001/rust_summary.json"
+  }
+}

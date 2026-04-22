@@ -1,0 +1,54 @@
+{
+  "obligations": [
+    {
+      "kind": "spec",
+      "lean_statement": "theorem inorder_strictly_sorted_of_input {t : BST α} (h : InorderStrictAsc t) : InorderStrictAsc t := h",
+      "nl_gloss": "Assume the input BST has an in-order traversal that is strictly ascending (i.e., it is a valid BST with no duplicate keys)."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem mem_preservation_or_add {t : BST ℤ} {k : ℤ} : Mem (insert t k) k ↔ True",
+      "nl_gloss": "After insertion, the resulting tree contains the key k (either it was already present or a new node is added)."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem mem_existing_keys_unchanged {t : BST ℤ} {k x : ℤ} (hx : Mem t x) (hk : x ≠ k) : Mem (insert t k) x",
+      "nl_gloss": "Every key x already present in the input tree and different from k remains present in the output tree."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem no_new_keys_other_than_k {t : BST ℤ} {k x : ℤ} (hx : Mem (insert t k) x) : Mem t x ∨ x = k",
+      "nl_gloss": "The output tree does not introduce any new keys except possibly the inserted key k."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem insert_idempotent_on_existing {t : BST ℤ} {k : ℤ} (hk : Mem t k) : insert t k = t",
+      "nl_gloss": "If k is already present in the input tree, insertion returns the original tree unchanged."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem insert_adds_when_missing {t : BST ℤ} {k : ℤ} (hk : ¬ Mem t k) : Mem (insert t k) k ∧ (∀ x, Mem (insert t k) x → Mem t x ∨ x = k) ∧ ¬ Mem t k",
+      "nl_gloss": "If k is not present, insertion adds k while preserving all existing keys and adding no other keys."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem inorder_sorted_of_output {t : BST ℤ} {k : ℤ} (h : InorderStrictAsc t) : InorderStrictAsc (insert t k)",
+      "nl_gloss": "The output tree remains a valid BST with strictly ascending in-order traversal."
+    },
+    {
+      "kind": "spec",
+      "lean_statement": "theorem inorder_multiset_relation {t : BST ℤ} {k : ℤ} : Inorder (insert t k) = (if Mem t k then Inorder t else insert_sorted (Inorder t) k)",
+      "nl_gloss": "The in-order sequence of the output equals the input sequence if k is already present; otherwise it equals the input sequence with k inserted into the sorted order."
+    },
+    {
+      "kind": "impl",
+      "lean_statement": "theorem insert_matches_rust_reference {t : BST ℤ} {k : ℤ} : insert t k = rust_insert t k",
+      "nl_gloss": "The Lean function `insert` is definitionally/semantically equivalent to the provided Rust reference implementation."
+    },
+    {
+      "kind": "impl",
+      "lean_statement": "theorem termination_insert {t : BST ℤ} {k : ℤ} : Terminates (insert t k)",
+      "nl_gloss": "The recursive structure of the implementation terminates (e.g., recursion decreases on subtree size)."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "obligations": [
+    {
+      "kind": "definition",
+      "lean_statement": "theorem dist_length (dist : Vector (Option Nat) n) : dist.length = n := by simpa using dist.length",
+      "nl_gloss": "The returned distance vector has length n."
+    },
+    {
+      "kind": "type/vertex indexing",
+      "lean_statement": "∀ (v : Fin n), True",
+      "nl_gloss": "Distances are defined for every vertex index v in Fin n."
+    },
+    {
+      "kind": "reachability_soundness",
+      "lean_statement": "∀ (v : Fin n) (k : Nat), dist[v] = some k → (∃ (path : List (Fin n)), path.head? = some source ∧ path.Last? = some v ∧ path.length - 1 = k ∧ ∀ i : Nat, i + 1 < path.length → (adj path.get ⟨i, by ...⟩).contains (path.get ⟨i+1, by ...⟩))",
+      "nl_gloss": "If dist[v] = Some k, then there exists a directed path from source to v using exactly k edges."
+    },
+    {
+      "kind": "reachability_completeness",
+      "lean_statement": "∀ (v : Fin n), (∃ (k : Nat), ∃ (path : List (Fin n)), path.head? = some source ∧ path.Last? = some v ∧ path.length - 1 = k ∧ ∀ i : Nat, i + 1 < path.length → (adj path.get ⟨i, by ...⟩).contains (path.get ⟨i+1, by ...⟩)) → ∃ (k : Nat), dist[v] = some k",
+      "nl_gloss": "If there exists any directed path from source to v, then dist[v] is Some k for some k."
+    },
+    {
+      "kind": "unreachable_none",
+      "lean_statement": "∀ (v : Fin n), (¬∃ (k : Nat), ∃ (path : List (Fin n)), path.head? = some source ∧ path.Last? = some v ∧ path.length - 1 = k ∧ ∀ i : Nat, i + 1 < path.length → (adj path.get ⟨i, by ...⟩).contains (path.get ⟨i+1, by ...⟩)) → dist[v] = none",
+      "nl_gloss": "If v is unreachable from source, then dist[v] = None."
+    },
+    {
+      "kind": "shortest_path_minimality",
+      "lean_statement": "∀ (v : Fin n) (k : Nat), dist[v] = some k → (∀ (k' : Nat), (∃ (path : List (Fin n)), path.head? = some source ∧ path.Last? = some v ∧ path.length - 1 = k' ∧ ∀ i : Nat, i + 1 < path.length → (adj path.get ⟨i, by ...⟩).contains (path.get ⟨i+1, by ...⟩)) → k ≤ k')",
+      "nl_gloss": "If dist[v] = Some k, then k is the minimum number of edges among all paths from source to v."
+    },
+    {
+      "kind": "source_distance",
+      "lean_statement": "dist[source] = some 0",
+      "nl_gloss": "The distance from the source to itself is Some 0."
+    }
+  ]
+}

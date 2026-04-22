@@ -1,0 +1,49 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "sorting_merge_sort_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4325,
+    "prompt_tokens": 809,
+    "completion_tokens": 321
+  },
+  "raw_output_path": "generated/full_method_v1/raw/sorting_merge_sort_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem mergeSort_length (xs : Arr) : (mergeSort xs).length = xs.length := by\n  simpa using (rfl : (mergeSort xs).length = xs.length)",
+      "nl_gloss": "The output list has the same length as the input list.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.2
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem mergeSort_sorted (xs : Arr) : xsSorted (mergeSort xs) := by\n  simpa using (rfl : xsSorted (mergeSort xs))",
+      "nl_gloss": "The output list is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.2
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem mergeSort_perm (xs : Arr) : mergeSort xs ~ xs := by\n  simpa using (rfl : mergeSort xs ~ xs)",
+      "nl_gloss": "The output list is a permutation of the input list (same multiset of elements).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.2
+    }
+  ],
+  "prompt_hash": "sha256:145a02730c47374fce42c5caaf9331dde61b01e42b740142d62fba723e2afba5",
+  "seed": 1
+}

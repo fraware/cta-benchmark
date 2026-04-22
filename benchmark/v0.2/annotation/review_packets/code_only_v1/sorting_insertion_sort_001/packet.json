@@ -1,0 +1,158 @@
+{
+  "benchmark_version": "v0.2",
+  "instance_id": "sorting_insertion_sort_001",
+  "system_id": "code_only_v1",
+  "domain": "sorting",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.2/instances/sorting/sorting_insertion_sort_001",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_full_001/generated/code_only_v1/sorting_insertion_sort_001.json",
+  "informal_statement": {
+    "text": "Sort a mutable slice of integers in nondecreasing order using insertion sort. The function mutates its input in place and returns nothing.",
+    "preconditions": [],
+    "required_properties": [
+      "the resulting slice is sorted in nondecreasing order",
+      "the resulting slice is a permutation of the original slice",
+      "the function terminates on every input"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice",
+      "already-sorted slice",
+      "reverse-sorted slice",
+      "slice with duplicates",
+      "slice with all equal elements"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Sortedness: the output list is sorted in nondecreasing order.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU2",
+      "description": "Permutation: the output is a permutation of the input (every element preserved, counts preserved).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting set equality without counting duplicates",
+        "asserting length preservation only"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Termination on every input.",
+      "criticality": "supporting"
+    },
+    {
+      "id": "SU4",
+      "description": "Stability is NOT required and should not be asserted.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), SortedLE (insertionSort xs)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "True",
+      "nl_gloss": "No explicit preconditions are stated in the provided Rust reference (the placeholder {{rust_reference}} contains no visible assertions/comments here). If the actual code includes preconditions (e.g., bounds on indices, non-emptiness, sortedness), they should be captured as separate obligations.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), let out := impl input; spec input out",
+      "nl_gloss": "State the core functional specification: for every input, the implementation’s output equals the mathematically defined result of the classical algorithm task described by the reference implementation.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "termination",
+      "lean_statement": "termination_of_impl : ∀ (input : α), (impl input) terminates",
+      "nl_gloss": "Prove the implementation terminates (e.g., loop bounds decrease or recursion is well-founded), matching the control structure in the Rust code.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), safe_indexing_of_impl input",
+      "nl_gloss": "Prove that all array/vector indexing operations in the implementation are within bounds for all inputs satisfying the preconditions.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), invariant holds at loop/recursion start for input",
+      "nl_gloss": "For each loop/recursive function, provide the invariant and prove it holds initially.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), ∀ state, invariant state → invariant (step state)",
+      "nl_gloss": "For each loop/recursive function, prove the invariant is preserved by each iteration/recursive step.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), invariant at exit → postcondition input (output)",
+      "nl_gloss": "At loop/recursion exit, use the invariant (plus the negation of the loop condition) to derive the required postcondition.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "∀ (input : α), edge_case_conditions input → spec input (impl input)",
+      "nl_gloss": "Prove correctness for boundary/edge cases explicitly handled by the code (e.g., empty input, singleton input, special-case branches).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": null,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_001/lean_diagnostics.json"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_001/rust_summary.json"
+  }
+}

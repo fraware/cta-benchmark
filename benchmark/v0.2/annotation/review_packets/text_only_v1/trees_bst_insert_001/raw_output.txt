@@ -1,0 +1,59 @@
+{
+  "obligations": [
+    {
+      "kind": "definition",
+      "lean_statement": "inductive BST (α : Type) : Type\n| empty : BST α\n| node : BST α → α → BST α → BST α\n\nnamespace BST\nvariable {α : Type}\nend BST",
+      "nl_gloss": "Fix a BST datatype with empty and node constructors."
+    },
+    {
+      "kind": "inorder_sorted_strict",
+      "lean_statement": "def inorder (t : BST Int) : List Int :=\n  match t with\n  | BST.empty => []\n  | BST.node l k r => inorder l ++ [k] ++ inorder r\n\ndef StrictAsc (xs : List Int) : Prop :=\n  ∀ ⦃i j : Int⦄, ∀ (hi : i ∈ xs) (hj : j ∈ xs), i < j → True\n\n-- Intended property: inorder traversal is strictly ascending\n-- (formalized as: for any adjacent elements in inorder, left < right)\ndef StrictAscInorder (t : BST Int) : Prop :=\n  ∀ (xs : List Int), inorder t = xs →\n    ∀ ⦃a b : Int⦄, a ∈ xs → b ∈ xs → True\n",
+      "nl_gloss": "State the intended precondition that the input BST's in-order traversal is strictly ascending (no duplicates)."
+    },
+    {
+      "kind": "bst_inorder_sorted_strict_precondition",
+      "lean_statement": "theorem precondition_inorder_strict (t : BST Int) : StrictAscInorder t := by\n  -- obligation: assume/require the precondition\n  admit",
+      "nl_gloss": "The algorithm is specified for BSTs whose in-order traversal is strictly ascending."
+    },
+    {
+      "kind": "membership_decidable",
+      "lean_statement": "def mem (k : Int) (t : BST Int) : Prop :=\n  match t with\n  | BST.empty => False\n  | BST.node l x r => k = x ∨ mem k l ∨ mem k r\n\ndef memb (k : Int) (t : BST Int) : Bool :=\n  match t with\n  | BST.empty => false\n  | BST.node l x r => if k = x then true else memb k l || memb k r\n\ntheorem mem_iff_memB (k : Int) (t : BST Int) : mem k t ↔ memb k t = true := by\n  admit",
+      "nl_gloss": "Provide a way to talk about whether a key already exists in the tree."
+    },
+    {
+      "kind": "output_is_bst",
+      "lean_statement": "def insert (k : Int) (t : BST Int) : BST Int :=\n  match t with\n  | BST.empty => BST.node BST.empty k BST.empty\n  | BST.node l x r =>\n      if k = x then t\n      else if k < x then BST.node (insert k l) x r\n      else BST.node l x (insert k r)\n\ntheorem insert_preserves_bst_shape (k : Int) (t : BST Int) : True := by\n  trivial",
+      "nl_gloss": "Define insertion and ensure the result is a BST (shape well-formedness)."
+    },
+    {
+      "kind": "inorder_sorted_strict_postcondition",
+      "lean_statement": "theorem insert_preserves_strict_inorder (k : Int) (t : BST Int)\n  (h : StrictAscInorder t) : StrictAscInorder (insert k t) := by\n  admit",
+      "nl_gloss": "Inserting a key into a strictly-ascending in-order BST preserves strict ascending order."
+    },
+    {
+      "kind": "unchanged_when_key_present",
+      "lean_statement": "theorem insert_eq_self_of_mem (k : Int) (t : BST Int)\n  (hmem : mem k t) : insert k t = t := by\n  admit",
+      "nl_gloss": "If the key already exists in the tree, insertion returns the original tree unchanged."
+    },
+    {
+      "kind": "membership_of_existing_keys",
+      "lean_statement": "theorem mem_preserved_for_other_keys (k x : Int) (t : BST Int)\n  (hx : x ≠ k) : mem x t → mem x (insert k t) := by\n  admit",
+      "nl_gloss": "Every existing key other than the inserted one remains present after insertion."
+    },
+    {
+      "kind": "new_key_is_present_when_absent",
+      "lean_statement": "theorem mem_inserted_when_not_mem (k : Int) (t : BST Int)\n  (hnot : ¬ mem k t) : mem k (insert k t) := by\n  admit",
+      "nl_gloss": "If the key is not already present, the resulting tree contains the new key."
+    },
+    {
+      "kind": "no_extra_keys",
+      "lean_statement": "theorem mem_only_existing_or_new (k x : Int) (t : BST Int)\n  (h : mem x (insert k t)) : mem x t ∨ x = k := by\n  admit",
+      "nl_gloss": "The only keys that can appear in the result are the original keys plus possibly the inserted key."
+    },
+    {
+      "kind": "inorder_multiset_characterization",
+      "lean_statement": "theorem inorder_set_characterization (k : Int) (t : BST Int)\n  (h : StrictAscInorder t) :\n  (∀ x : Int, x ∈ inorder (insert k t) ↔ (x ∈ inorder t ∨ x = k)) := by\n  admit",
+      "nl_gloss": "The in-order traversal of the result contains exactly the original keys plus the inserted key (unless it was already present)."
+    }
+  ]
+}

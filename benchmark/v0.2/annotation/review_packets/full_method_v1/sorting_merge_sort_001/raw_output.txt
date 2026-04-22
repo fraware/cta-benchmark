@@ -1,0 +1,40 @@
+{
+  "obligations": [
+    {
+      "kind": "length_preservation",
+      "lean_statement": "theorem mergeSort_length (xs : Arr) : (mergeSort xs).length = xs.length := by\n  -- proof obligation: instantiate with semantic layer\n  admit",
+      "nl_gloss": "The output list has the same length as the input list.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "sortedness_nondec",
+      "lean_statement": "theorem mergeSort_sorted (xs : Arr) : xs.Sorted (· ≤ ·) (mergeSort xs) := by\n  -- proof obligation: instantiate with semantic layer\n  admit",
+      "nl_gloss": "The output list is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "kind": "permutation_multiset",
+      "lean_statement": "theorem mergeSort_perm (xs : Arr) : mergeSort xs ~ xs := by\n  -- proof obligation: instantiate with semantic layer\n  admit",
+      "nl_gloss": "The output list is a permutation of the input list (same multiset of elements).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "sortedness_implies_nondec_adjacent",
+      "lean_statement": "theorem mergeSort_sorted_adjacent (xs : Arr) :\n    (mergeSort xs).Pairwise (· ≤ ·) := by\n  -- proof obligation: instantiate with semantic layer\n  admit",
+      "nl_gloss": "A consequence of nondecreasing sortedness: every earlier element is ≤ every later element (pairwise nondecreasing).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.6
+    }
+  ]
+}
