@@ -1,0 +1,45 @@
+# Rust
+/target
+**/*.rs.bk
+Cargo.lock.bak
+
+# Lean
+/lean/.lake
+/lean/build
+/lean/lake-packages
+**/*.olean
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Runs and reports (local only)
+/runs/*
+!/runs/.gitkeep
+/reports/*
+!/reports/.gitkeep
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Build artifacts
+/dist
+/out
+
+# Python cache in notebooks folder
+/notebooks/.ipynb_checkpoints/

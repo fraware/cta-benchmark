@@ -1,0 +1,24 @@
+[package]
+name = "cta_reports"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Report generation: CSV, JSON, LaTeX, and markdown summaries."
+
+[dependencies]
+cta_core = { workspace = true }
+cta_metrics = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }
+tempfile = { workspace = true }
+insta = { workspace = true }
+
+[lints]
+workspace = true

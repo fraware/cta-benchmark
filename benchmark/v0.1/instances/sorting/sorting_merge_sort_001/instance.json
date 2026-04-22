@@ -1,0 +1,44 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "sorting_merge_sort_001",
+  "title": "Merge sort producing a sorted permutation of the input",
+  "domain": "sorting",
+  "difficulty": "medium",
+  "benchmark_version": "v0.1",
+  "informal_statement": {
+    "text": "Given a slice of integers, return a new vector containing the same multiset of elements in nondecreasing order.",
+    "preconditions": [
+      "the input is a slice of i32 values of any length"
+    ],
+    "required_properties": [
+      "the output length equals the input length",
+      "the output is sorted in nondecreasing order",
+      "the output is a permutation of the input (same multiset of elements)"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice",
+      "already-sorted slice",
+      "reverse-sorted slice",
+      "slice with duplicates",
+      "slice of length that is a power of two",
+      "slice of length that is not a power of two"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/sorting/sorting_merge_sort_001/reference.rs",
+    "entry_fn": "merge_sort"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/sorting/sorting_merge_sort_001/scaffold.lean",
+    "namespace": "CTA.Benchmark.Sorting.MergeSort001",
+    "reference_obligations_path": "instances/sorting/sorting_merge_sort_001/reference_obligations.json",
+    "semantic_units_path": "instances/sorting/sorting_merge_sort_001/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/sorting/sorting_merge_sort_001/harness.json"
+  }
+}

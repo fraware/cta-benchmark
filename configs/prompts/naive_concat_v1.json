@@ -1,0 +1,7 @@
+{
+  "schema_version": "schema_v1",
+  "system_id": "naive_concat_v1",
+  "kind": "naive_concat",
+  "version": "v1",
+  "body": "You are given an informal statement and a Rust reference implementation of a classical algorithm task. Produce a list of Lean 4 proof obligations that together describe what the task is, what the implementation computes, and the properties that make it correct.\n\nStatement:\n{{informal_statement}}\n\nReference implementation:\n```rust\n{{rust_reference}}\n```\n\nRules:\n- Output a single JSON object with key `obligations`.\n- Each obligation has: `kind`, `lean_statement`, `nl_gloss`.\n- Prefer decomposed obligations over a single theorem."
+}

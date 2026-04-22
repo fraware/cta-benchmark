@@ -1,0 +1,28 @@
+[package]
+name = "cta_lean"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Lean integration: file writer, elaboration driver, diagnostics."
+
+[dependencies]
+cta_core = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+camino = { workspace = true }
+tracing = { workspace = true }
+regex = { workspace = true }
+once_cell = { workspace = true }
+wait-timeout = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }
+pretty_assertions = { workspace = true }
+
+[lints]
+workspace = true

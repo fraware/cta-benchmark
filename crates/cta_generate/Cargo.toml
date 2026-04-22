@@ -1,0 +1,31 @@
+[package]
+name = "cta_generate"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Candidate obligation generation: prompts, providers, normalization."
+
+[dependencies]
+cta_core = { workspace = true }
+cta_schema = { workspace = true }
+cta_rust_extract = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+sha2 = { workspace = true }
+hex = { workspace = true }
+tracing = { workspace = true }
+reqwest = { workspace = true }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }
+cta_schema = { workspace = true }
+proptest = { workspace = true }
+insta = { workspace = true }
+
+[lints]
+workspace = true

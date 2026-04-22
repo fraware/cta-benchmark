@@ -1,0 +1,16 @@
+---
+source: crates/cta_generate/tests/prompt_snapshots.rs
+expression: rendered
+---
+You are given a Rust reference implementation of a classical algorithm task. Produce a list of Lean 4 proof obligations that together describe what this implementation computes and why it is correct.
+
+Rules:
+- Output a single JSON object with key `obligations`.
+- Each obligation has: `kind`, `lean_statement`, `nl_gloss`.
+- Do not invent functionality the code does not implement.
+- If the code documents a precondition (asserts, preconditions in comments), capture it.
+
+Reference implementation:
+```rust
+{{rust_reference}}
+```

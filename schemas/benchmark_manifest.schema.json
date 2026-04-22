@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.org/schemas/benchmark_manifest.schema.json",
+  "title": "BenchmarkManifest",
+  "description": "Immutable manifest for a released benchmark version.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "benchmark_version",
+    "rubric_version",
+    "metrics_version",
+    "created_at",
+    "instance_count_by_domain",
+    "instance_hashes",
+    "content_hash"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "schema_v1" },
+    "benchmark_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+$"
+    },
+    "rubric_version": {
+      "type": "string",
+      "pattern": "^rubric_v[0-9]+$"
+    },
+    "metrics_version": {
+      "type": "string",
+      "pattern": "^metrics_v[0-9]+$"
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "instance_count_by_domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "arrays":  { "type": "integer", "minimum": 0 },
+        "sorting": { "type": "integer", "minimum": 0 },
+        "graph":   { "type": "integer", "minimum": 0 },
+        "greedy":  { "type": "integer", "minimum": 0 },
+        "dp":      { "type": "integer", "minimum": 0 },
+        "trees":   { "type": "integer", "minimum": 0 }
+      }
+    },
+    "instance_hashes": {
+      "type": "object",
+      "description": "Map from instance_id to canonical sha256 of its directory.",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      }
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "Sha256 of sorted (instance_id, sha256) pairs; stable benchmark fingerprint."
+    }
+  }
+}

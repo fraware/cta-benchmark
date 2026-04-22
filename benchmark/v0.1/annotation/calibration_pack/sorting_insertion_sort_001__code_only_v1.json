@@ -1,0 +1,51 @@
+{
+  "schema_version": "schema_v1",
+  "rubric_version": "rubric_v1",
+  "instance_id": "sorting_insertion_sort_001",
+  "system_id": "code_only_v1",
+  "annotator_id": "adjudicator",
+  "set_level_scores": {
+    "semantic_faithfulness": 0.75,
+    "code_consistency": 1.0,
+    "vacuity_rate": 0.25,
+    "proof_utility": 0.5
+  },
+  "critical_unit_coverage": {
+    "covered": ["SU1", "SU2"],
+    "missed": []
+  },
+  "generated_obligations": [
+    {
+      "obligation_index": 0,
+      "faithfulness_label": "faithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": ["SU1"],
+      "notes": "Sortedness of the output array, captured as the canonical forall-adjacent-pair form."
+    },
+    {
+      "obligation_index": 1,
+      "faithfulness_label": "faithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": ["SU2"],
+      "notes": "Multiset permutation preservation."
+    },
+    {
+      "obligation_index": 2,
+      "faithfulness_label": "ambiguous",
+      "consistency_label": "consistent",
+      "is_vacuous": true,
+      "linked_semantic_units": [],
+      "notes": "Claims len(out) >= 0, which is trivially provable; clear vacuity example."
+    },
+    {
+      "obligation_index": 3,
+      "faithfulness_label": "faithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": []
+    }
+  ],
+  "annotator_notes": "This exemplar pins the vacuity label: even a faithful gloss can be vacuous when the Lean statement is trivially provable without using any problem-specific hypothesis. Mark vacuity independently of faithfulness."
+}

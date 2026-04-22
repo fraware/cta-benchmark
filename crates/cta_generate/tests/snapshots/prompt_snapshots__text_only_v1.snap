@@ -1,0 +1,15 @@
+---
+source: crates/cta_generate/tests/prompt_snapshots.rs
+expression: rendered
+---
+You are given an informal natural-language statement of a classical algorithm task. Produce a list of Lean 4 proof obligations that together pin down the intended meaning.
+
+Rules:
+- Output a single JSON object with key `obligations` mapped to a list.
+- Each obligation must have: `kind`, `lean_statement`, `nl_gloss`.
+- Never emit prose outside the JSON object.
+- Prefer decomposed obligations; avoid a single monolithic theorem.
+- Do NOT assert properties the statement does not require (e.g. stability for a sort that does not mention it).
+
+Statement:
+Return the index of `target` in the sorted slice `a`, or `None` if absent.

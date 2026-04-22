@@ -1,0 +1,52 @@
+{
+  "schema_version": "schema_v1",
+  "metrics_version": "metrics_v1",
+  "primary": [
+    {
+      "name": "elaboration_rate",
+      "description": "Fraction of instances whose generated Lean file elaborates successfully.",
+      "denominator": "instances_in_split"
+    },
+    {
+      "name": "semantic_faithfulness_mean",
+      "description": "Instance-average of (num_faithful / num_obligations) over instances that produced at least one obligation.",
+      "denominator": "instances_with_output"
+    },
+    {
+      "name": "critical_unit_coverage",
+      "description": "Sum of critical units covered across instances divided by the sum of critical units.",
+      "denominator": "total_critical_units"
+    },
+    {
+      "name": "rust_consistency_rate",
+      "description": "1 - total_inconsistent / total_obligations across the split.",
+      "denominator": "total_obligations"
+    },
+    {
+      "name": "vacuity_rate",
+      "description": "total_vacuous / total_obligations across the split.",
+      "denominator": "total_obligations"
+    },
+    {
+      "name": "proof_utility",
+      "description": "Fraction of instances where at least one obligation was used in a proof attempt.",
+      "denominator": "instances_in_split"
+    }
+  ],
+  "secondary": [
+    "avg_obligations_per_instance",
+    "faithful_obligation_density",
+    "contradiction_rate_on_critical_units",
+    "text_faithful_code_inconsistent_rate",
+    "code_faithful_text_incomplete_rate",
+    "inter_annotator_agreement"
+  ],
+  "acceptance_criteria": {
+    "all_instances_validated": true,
+    "schema_failures_zero": true,
+    "run_manifest_present": true,
+    "lean_checks_complete": true,
+    "annotation_subset_complete": true,
+    "metrics_bundle_generated": true
+  }
+}

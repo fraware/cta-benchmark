@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.org/schemas/results_bundle.schema.json",
+  "title": "ResultsBundle",
+  "description": "Terminal artifact of a reportable run; consumed by reports and paper tables.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_manifest",
+    "instance_results",
+    "aggregate_metrics"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "schema_v1" },
+    "run_manifest": {
+      "$ref": "https://cta-benchmark.org/schemas/run_manifest.schema.json"
+    },
+    "instance_results": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/InstanceResult" }
+    },
+    "aggregate_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metrics_version",
+        "primary",
+        "secondary"
+      ],
+      "properties": {
+        "metrics_version": {
+          "type": "string",
+          "pattern": "^metrics_v[0-9]+$"
+        },
+        "primary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "elaboration_rate",
+            "semantic_faithfulness_mean",
+            "critical_unit_coverage",
+            "rust_consistency_rate",
+            "vacuity_rate",
+            "proof_utility"
+          ],
+          "properties": {
+            "elaboration_rate":           { "$ref": "#/$defs/UnitScalar" },
+            "semantic_faithfulness_mean": { "$ref": "#/$defs/UnitScalar" },
+            "critical_unit_coverage":     { "$ref": "#/$defs/UnitScalar" },
+            "rust_consistency_rate":      { "$ref": "#/$defs/UnitScalar" },
+            "vacuity_rate":               { "$ref": "#/$defs/UnitScalar" },
+            "proof_utility":              { "$ref": "#/$defs/UnitScalar" }
+          }
+        },
+        "secondary": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "avg_obligations_per_instance":          { "type": "number", "minimum": 0.0 },
+            "faithful_obligation_density":           { "$ref": "#/$defs/UnitScalar" },
+            "contradiction_rate_on_critical_units":  { "$ref": "#/$defs/UnitScalar" },
+            "text_faithful_code_inconsistent_rate":  { "$ref": "#/$defs/UnitScalar" },
+            "code_faithful_text_incomplete_rate":    { "$ref": "#/$defs/UnitScalar" },
+            "inter_annotator_agreement": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "weighted_kappa_faithfulness": { "type": "number", "minimum": -1.0, "maximum": 1.0 },
+                "cohen_kappa_vacuity":         { "type": "number", "minimum": -1.0, "maximum": 1.0 },
+                "raw_agreement_coverage":      { "$ref": "#/$defs/UnitScalar" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "agreement_metrics": {
+      "type": "object",
+      "description": "Optional detailed agreement breakdown."
+    },
+    "report_artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "csv":     { "type": "array", "items": { "type": "string" } },
+        "latex":   { "type": "array", "items": { "type": "string" } },
+        "figures": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "$defs": {
+    "UnitScalar": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "InstanceResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "instance_id",
+        "elaborated",
+        "num_obligations"
+      ],
+      "properties": {
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*_[0-9]{3}$"
+        },
+        "elaborated": { "type": "boolean" },
+        "num_obligations": { "type": "integer", "minimum": 0 },
+        "num_faithful":    { "type": "integer", "minimum": 0 },
+        "num_vacuous":     { "type": "integer", "minimum": 0 },
+        "num_inconsistent":{ "type": "integer", "minimum": 0 },
+        "critical_units_covered":   { "type": "integer", "minimum": 0 },
+        "critical_units_total":     { "type": "integer", "minimum": 0 },
+        "lean_diagnostics_path":    { "type": "string" },
+        "behavior_report_path":     { "type": "string" }
+      }
+    }
+  }
+}

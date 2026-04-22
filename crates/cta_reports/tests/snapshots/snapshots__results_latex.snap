@@ -1,0 +1,11 @@
+---
+source: crates/cta_reports/tests/snapshots.rs
+expression: "results_latex(\"full_method_v1\", &canonical_bundle().aggregate_metrics)"
+---
+\begin{tabular}{lrrrrrr}
+\toprule
+system & elab & faith & cov & cons & vac & proof \\
+\midrule
+full_method_v1 & 0.667 & 0.714 & 0.500 & 1.000 & 0.143 & 0.333 \\
+\bottomrule
+\end{tabular}

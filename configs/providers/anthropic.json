@@ -1,0 +1,14 @@
+{
+  "name": "anthropic",
+  "model": "claude-4.6-sonnet",
+  "endpoint": "https://api.anthropic.com/v1/messages",
+  "auth_env": "ANTHROPIC_API_KEY",
+  "request_defaults": {
+    "temperature": 0.0,
+    "max_tokens": 2048
+  },
+  "rate_limit": {
+    "requests_per_minute": 60,
+    "max_concurrent": 4
+  }
+}

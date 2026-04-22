@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.org/schemas/annotation.schema.json",
+  "title": "Annotation",
+  "description": "Human annotation of a generated obligation set against an instance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "rubric_version",
+    "instance_id",
+    "system_id",
+    "annotator_id",
+    "set_level_scores",
+    "critical_unit_coverage",
+    "generated_obligations"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "schema_v1" },
+    "rubric_version": {
+      "type": "string",
+      "pattern": "^rubric_v[0-9]+$"
+    },
+    "instance_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*_[0-9]{3}$"
+    },
+    "system_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*_v[0-9]+$"
+    },
+    "annotator_id": {
+      "type": "string",
+      "pattern": "^(ann_[0-9]{2}|adjudicator)$"
+    },
+    "set_level_scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_faithfulness",
+        "code_consistency",
+        "vacuity_rate",
+        "proof_utility"
+      ],
+      "properties": {
+        "semantic_faithfulness": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "code_consistency": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "vacuity_rate": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "proof_utility": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      }
+    },
+    "critical_unit_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["covered", "missed"],
+      "properties": {
+        "covered": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^SU[0-9]+$" },
+          "uniqueItems": true
+        },
+        "missed": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^SU[0-9]+$" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "generated_obligations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/AnnotatedObligation" }
+    },
+    "annotator_notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "AnnotatedObligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligation_index",
+        "faithfulness_label",
+        "consistency_label",
+        "is_vacuous"
+      ],
+      "properties": {
+        "obligation_index": { "type": "integer", "minimum": 0 },
+        "faithfulness_label": {
+          "type": "string",
+          "enum": ["faithful", "partial", "unfaithful", "ambiguous"]
+        },
+        "consistency_label": {
+          "type": "string",
+          "enum": ["consistent", "inconsistent", "not_applicable"]
+        },
+        "is_vacuous": { "type": "boolean" },
+        "linked_semantic_units": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^SU[0-9]+$" },
+          "uniqueItems": true
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

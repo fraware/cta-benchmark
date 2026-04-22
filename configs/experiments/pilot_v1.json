@@ -1,0 +1,24 @@
+{
+  "schema_version": "schema_v1",
+  "experiment_id": "pilot_v1",
+  "benchmark_version": "v0.1",
+  "split": "dev",
+  "systems": [
+    "text_only_v1",
+    "full_method_v1"
+  ],
+  "providers": [
+    "configs/providers/local_stub.json"
+  ],
+  "seeds": [1],
+  "generation_parameters": {
+    "temperature": 0.0,
+    "max_tokens": 1024
+  },
+  "annotation_pack": "runs/annotation_packs/v0.1-adjudicated.json",
+  "reports": {
+    "enabled": true,
+    "output_subdir": "reports"
+  },
+  "notes": "Smoke pilot. Runs each system once per instance with the stub provider and scores against the 3-instance adjudicated pack to exercise the full pipeline."
+}

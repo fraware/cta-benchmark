@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.org/schemas/instance.schema.json",
+  "title": "BenchmarkInstance",
+  "description": "A single classical algorithm task instance in the CTA benchmark.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "instance_id",
+    "title",
+    "domain",
+    "difficulty",
+    "benchmark_version",
+    "informal_statement",
+    "rust_reference",
+    "lean_target",
+    "annotation",
+    "behavioral_oracle"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "schema_v1"
+    },
+    "instance_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*_[0-9]{3}$",
+      "description": "Canonical instance id: snake_case family + 3-digit suffix, e.g. 'graph_dijkstra_001'."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["arrays", "sorting", "graph", "greedy", "dp", "trees"]
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"]
+    },
+    "benchmark_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+$"
+    },
+    "informal_statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "preconditions", "required_properties", "edge_cases"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "preconditions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "required_properties": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "edge_cases": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "rust_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "entry_fn"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Repo-relative path to the reference .rs file.",
+          "pattern": "\\.rs$"
+        },
+        "entry_fn": { "type": "string", "minLength": 1 }
+      }
+    },
+    "lean_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scaffold_path", "namespace", "reference_obligations_path", "semantic_units_path"],
+      "properties": {
+        "scaffold_path": {
+          "type": "string",
+          "pattern": "\\.lean$"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.]*$"
+        },
+        "reference_obligations_path": {
+          "type": "string",
+          "pattern": "reference_obligations\\.json$"
+        },
+        "semantic_units_path": {
+          "type": "string",
+          "pattern": "semantic_units\\.json$"
+        }
+      }
+    },
+    "annotation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rubric_version"],
+      "properties": {
+        "rubric_version": {
+          "type": "string",
+          "pattern": "^rubric_v[0-9]+$"
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "behavioral_oracle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["harness_path"],
+      "properties": {
+        "harness_path": {
+          "type": "string",
+          "pattern": "harness\\.json$"
+        }
+      }
+    }
+  }
+}

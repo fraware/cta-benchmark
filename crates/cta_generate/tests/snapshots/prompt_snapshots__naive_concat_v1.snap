@@ -1,0 +1,18 @@
+---
+source: crates/cta_generate/tests/prompt_snapshots.rs
+expression: rendered
+---
+You are given an informal statement and a Rust reference implementation of a classical algorithm task. Produce a list of Lean 4 proof obligations that together describe what the task is, what the implementation computes, and the properties that make it correct.
+
+Statement:
+Return the index of `target` in `a`.
+
+Reference implementation:
+```rust
+{{rust_reference}}
+```
+
+Rules:
+- Output a single JSON object with key `obligations`.
+- Each obligation has: `kind`, `lean_statement`, `nl_gloss`.
+- Prefer decomposed obligations over a single theorem.

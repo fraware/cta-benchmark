@@ -1,0 +1,7 @@
+{
+  "schema_version": "schema_v1",
+  "system_id": "text_only_v1",
+  "kind": "text_only",
+  "version": "v1",
+  "body": "You are given an informal natural-language statement of a classical algorithm task. Produce a list of Lean 4 proof obligations that together pin down the intended meaning.\n\nRules:\n- Output a single JSON object with key `obligations` mapped to a list.\n- Each obligation must have: `kind`, `lean_statement`, `nl_gloss`.\n- Never emit prose outside the JSON object.\n- Prefer decomposed obligations; avoid a single monolithic theorem.\n- Do NOT assert properties the statement does not require (e.g. stability for a sort that does not mention it).\n\nStatement:\n{{informal_statement}}"
+}

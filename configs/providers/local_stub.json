@@ -1,0 +1,10 @@
+{
+  "name": "stub",
+  "model": "stub-local",
+  "endpoint": "local://",
+  "auth_env": null,
+  "request_defaults": {
+    "temperature": 0.0,
+    "max_tokens": 1024
+  }
+}

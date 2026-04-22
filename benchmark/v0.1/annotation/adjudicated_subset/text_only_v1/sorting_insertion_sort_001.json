@@ -1,0 +1,48 @@
+{
+  "schema_version": "schema_v1",
+  "rubric_version": "rubric_v1",
+  "instance_id": "sorting_insertion_sort_001",
+  "system_id": "text_only_v1",
+  "annotator_id": "adjudicator",
+  "set_level_scores": {
+    "semantic_faithfulness": 0.75,
+    "code_consistency": 0.75,
+    "vacuity_rate": 0.0,
+    "proof_utility": 0.5
+  },
+  "critical_unit_coverage": {
+    "covered": ["SU1", "SU2"],
+    "missed": ["SU3"]
+  },
+  "generated_obligations": [
+    {
+      "obligation_index": 0,
+      "faithfulness_label": "faithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": ["SU1"]
+    },
+    {
+      "obligation_index": 1,
+      "faithfulness_label": "faithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": ["SU2"]
+    },
+    {
+      "obligation_index": 2,
+      "faithfulness_label": "faithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": []
+    },
+    {
+      "obligation_index": 3,
+      "faithfulness_label": "partial",
+      "consistency_label": "inconsistent",
+      "is_vacuous": false,
+      "linked_semantic_units": []
+    }
+  ],
+  "annotator_notes": "Stability claim is inconsistent with the reference implementation."
+}

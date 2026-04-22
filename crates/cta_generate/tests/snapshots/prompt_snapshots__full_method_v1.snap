@@ -1,0 +1,29 @@
+---
+source: crates/cta_generate/tests/prompt_snapshots.rs
+expression: rendered
+---
+You are given a structured description of a classical algorithm task. Produce a list of Lean 4 proof obligations that together faithfully and completely capture the intended meaning of the task.
+
+Normalized problem summary:
+Binary search on a sorted slice.
+
+Semantic units (intended meaning, decomposed):
+SU1 sortedness; SU2 index-correctness; SU3 none-on-miss.
+
+Extracted Rust summary (control flow, comparisons, collections):
+{"shape":"divide_and_conquer"}
+
+Lean scaffold signatures and declarations you must instantiate against (do NOT redefine these):
+```lean
+theorem binary_search_correct : True := trivial
+```
+
+Requirements:
+- Output a single JSON object with key `obligations` mapped to a list.
+- Each obligation has: `kind`, `lean_statement`, `nl_gloss`, `linked_semantic_units`, `confidence`.
+- `lean_statement` MUST be a valid Lean 4 theorem body that references only the scaffold's declarations plus standard library (List, Nat, Int).
+- Cover every critical semantic unit at least once.
+- Do NOT emit vacuously true statements (`â x, True`, `True â True`, etc.); such obligations will be scored as failures.
+- Do NOT assert properties the statement does not require.
+- Keep each obligation minimal; prefer 4-8 obligations over 1-2 monolithic ones.
+- Output only the JSON object. No prose.

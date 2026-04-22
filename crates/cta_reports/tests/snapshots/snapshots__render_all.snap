@@ -1,0 +1,52 @@
+---
+source: crates/cta_reports/tests/snapshots.rs
+expression: concat
+---
+=== primary_csv ===
+system_id,elaboration_rate,semantic_faithfulness_mean,critical_unit_coverage,rust_consistency_rate,vacuity_rate,proof_utility
+full_method_v1,0.667,0.714,0.5,1,0.143,0.333
+
+=== instance_csv ===
+instance_id,elaborated,num_obligations,num_faithful,num_vacuous,num_inconsistent,critical_units_covered,critical_units_total
+arrays_binary_search_001,true,3,2,0,0,2,3
+sorting_insertion_sort_001,true,4,3,1,0,2,2
+graph_dijkstra_001,false,0,0,0,0,0,3
+
+=== markdown ===
+# CTA benchmark results — full_method_v1
+
+- metrics version: `metrics_v1`
+- instances scored: 3
+
+## Primary metrics
+
+| system | elab | faith | cov | cons | vac | proof |
+|---|---|---|---|---|---|---|
+| full_method_v1 | 0.667 | 0.714 | 0.500 | 1.000 | 0.143 | 0.333 |
+
+## Secondary metrics
+
+| metric | value |
+|---|---|
+| avg_obligations_per_instance | 2.333 |
+| faithful_obligation_density | 0.714 |
+| contradiction_rate_on_critical_units | 0.000 |
+| text_faithful_code_inconsistent_rate | 0.000 |
+| code_faithful_text_incomplete_rate | 0.000 |
+
+## Per-instance
+
+| instance | elab | n | faith | vac | inc | cov/tot |
+|---|---|---|---|---|---|---|
+| `arrays_binary_search_001` | true | 3 | 2 | 0 | 0 | 2/3 |
+| `sorting_insertion_sort_001` | true | 4 | 3 | 1 | 0 | 2/2 |
+| `graph_dijkstra_001` | false | 0 | 0 | 0 | 0 | 0/3 |
+
+=== latex ===
+\begin{tabular}{lrrrrrr}
+\toprule
+system & elab & faith & cov & cons & vac & proof \\
+\midrule
+full_method_v1 & 0.667 & 0.714 & 0.500 & 1.000 & 0.143 & 0.333 \\
+\bottomrule
+\end{tabular}

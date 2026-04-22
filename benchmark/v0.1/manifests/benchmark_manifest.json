@@ -1,0 +1,21 @@
+{
+  "schema_version": "schema_v1",
+  "benchmark_version": "v0.1",
+  "rubric_version": "rubric_v1",
+  "metrics_version": "metrics_v1",
+  "created_at": "2026-04-21T20:36:18.3516001Z",
+  "instance_count_by_domain": {
+    "arrays": 1,
+    "dp": 0,
+    "graph": 1,
+    "greedy": 0,
+    "sorting": 1,
+    "trees": 0
+  },
+  "instance_hashes": {
+    "arrays_binary_search_001": "sha256:0d30acdcc72e0d9bd1e0eb76178668eff10f194be0fbddd09dbbe0bcd908c042",
+    "graph_dijkstra_001": "sha256:dad6bf4c629625d6b66c301d54840e17a592090bf81ec508cf1bb9b360e27ef3",
+    "sorting_insertion_sort_001": "sha256:da37b7bc86d7b3b97e8f053a7f7ad6959bc937da3ca4b8ea0672c1f736c32b36"
+  },
+  "content_hash": "sha256:9ba5b74fe3cb268b7a0549a89fbabe8cd16ea2538a344871c7bb45a9538f6cfd"
+}

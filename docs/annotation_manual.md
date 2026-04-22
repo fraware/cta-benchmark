@@ -1,0 +1,79 @@
+# Annotation manual
+
+This manual explains how to annotate generated obligation sets against
+benchmark instances. It is pinned to `rubric_v1`.
+
+## Before you start
+
+- Confirm the rubric version: `rubric_v1`. If the instance declares a
+  different rubric version, stop and escalate.
+- Skim `benchmark/<version>/annotation/rubric_v1.md` end to end at least
+  once per benchmark release.
+- Work through every exemplar in
+  `benchmark/<version>/annotation/calibration_pack/` before touching eval
+  data. The pack is authoritative and pre-adjudicated; diff your labels
+  against it and escalate any mismatch with the adjudicator.
+
+## The three tasks per obligation
+
+For each generated obligation you will assign:
+
+1. **Faithfulness** — one of `faithful`, `partial`, `unfaithful`,
+   `ambiguous`.
+2. **Rust consistency** — one of `consistent`, `inconsistent`,
+   `not_applicable`.
+3. **Vacuity** — boolean `is_vacuous`.
+
+Use the rubric definitions exactly. Do not add your own intermediate
+labels. When in doubt, choose `ambiguous` and add an annotator note; the
+adjudicator will resolve it.
+
+## Critical-unit coverage
+
+For each instance, decide which critical semantic units are **covered** by
+the generated set. A unit is covered iff at least one obligation was
+labeled `faithful` and linked (either by the generator or by you) to that
+unit.
+
+Record covered and missed SU ids. The two lists must be disjoint and
+together cover every critical SU in the instance.
+
+## Set-level scalars
+
+Each scalar is in `[0, 1]` and should be computed, not estimated. The
+metrics layer re-derives them from the per-obligation labels; annotators
+compute them as a sanity check.
+
+- `semantic_faithfulness`: share of obligations labeled `faithful` or
+  `partial` (the partial weight used by metrics is 0.5).
+- `code_consistency`: share of obligations in `consistent` out of
+  `consistent + inconsistent`.
+- `vacuity_rate`: share of obligations flagged vacuous.
+- `proof_utility`: your subjective judgment of whether this set would
+  support a hand-written proof attempt.
+
+## Adjudication
+
+Whenever two annotators disagree:
+
+- `cta annotate pack` ingests the raw per-annotator records, applies the
+  configured adjudication policy (`prefer-adjudicator` by default, or
+  `majority` for sensitivity analyses), and emits a single
+  `runs/annotation_packs/<version>-adjudicated.json` file containing one
+  `AdjudicatedRecord` per `(instance, system)` group. Each record pins a
+  `per_obligation_disagreements` vector so disagreement counts are
+  auditable without a separate sidecar file.
+- Under `prefer-adjudicator`, the adjudicator produces a new `Annotation`
+  record with `annotator_id: "adjudicator"` and the final labels; that
+  record is taken verbatim by the packer.
+- Every record the packer consumes is append-only. The independent
+  annotator files are preserved verbatim; they are the source of truth
+  for the inter-annotator agreement metrics emitted by
+  `cta metrics compute --raw-annotations <dir>`.
+
+## Hygiene
+
+- Never edit a previously submitted annotation. Submit a new one.
+- Never adjust a label to match a colleague's. Disagreement is signal.
+- Never skip the vacuity check; vacuous obligations are the single most
+  common failure mode and missing them ruins the metric.

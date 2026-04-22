@@ -1,0 +1,25 @@
+[package]
+name = "cta_schema"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "JSON schema loading and validation for CTA benchmark artifacts."
+
+[dependencies]
+cta_core = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+jsonschema = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+walkdir = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }
+pretty_assertions = { workspace = true }
+
+[lints]
+workspace = true

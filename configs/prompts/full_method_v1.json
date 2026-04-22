@@ -1,0 +1,7 @@
+{
+  "schema_version": "schema_v1",
+  "system_id": "full_method_v1",
+  "kind": "full_method",
+  "version": "v1",
+  "body": "You are given a structured description of a classical algorithm task. Produce a list of Lean 4 proof obligations that together faithfully and completely capture the intended meaning of the task.\n\nNormalized problem summary:\n{{problem_summary}}\n\nSemantic units (intended meaning, decomposed):\n{{semantic_units}}\n\nExtracted Rust summary (control flow, comparisons, collections):\n{{rust_summary}}\n\nLean scaffold signatures and declarations you must instantiate against (do NOT redefine these):\n```lean\n{{lean_scaffold}}\n```\n\nRequirements:\n- Output a single JSON object with key `obligations` mapped to a list.\n- Each obligation has: `kind`, `lean_statement`, `nl_gloss`, `linked_semantic_units`, `confidence`.\n- `lean_statement` MUST be a valid Lean 4 theorem body that references only the scaffold's declarations plus standard library (List, Nat, Int).\n- Cover every critical semantic unit at least once.\n- Do NOT emit vacuously true statements (`∀ x, True`, `True → True`, etc.); such obligations will be scored as failures.\n- Do NOT assert properties the statement does not require.\n- Keep each obligation minimal; prefer 4-8 obligations over 1-2 monolithic ones.\n- Output only the JSON object. No prose."
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": "schema_v1",
+  "rubric_version": "rubric_v1",
+  "instance_id": "graph_dijkstra_001",
+  "system_id": "full_method_v1",
+  "annotator_id": "adjudicator",
+  "set_level_scores": {
+    "semantic_faithfulness": 0.5,
+    "code_consistency": 0.75,
+    "vacuity_rate": 0.0,
+    "proof_utility": 0.25
+  },
+  "critical_unit_coverage": {
+    "covered": ["SU1", "SU2"],
+    "missed": ["SU3"]
+  },
+  "generated_obligations": [
+    {
+      "obligation_index": 0,
+      "faithfulness_label": "faithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": ["SU1"],
+      "notes": "Non-negative-weight precondition stated correctly."
+    },
+    {
+      "obligation_index": 1,
+      "faithfulness_label": "faithful",
+      "consistency_label": "inconsistent",
+      "is_vacuous": false,
+      "linked_semantic_units": ["SU2"],
+      "notes": "Claims relaxation monotonicity but the written Lean uses strict < where the reference implementation uses <= — contradicts reference.rs on equal-distance neighbours."
+    },
+    {
+      "obligation_index": 2,
+      "faithfulness_label": "partial",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": [],
+      "notes": "Mentions source distance being 0 but omits the unreachability postcondition."
+    },
+    {
+      "obligation_index": 3,
+      "faithfulness_label": "unfaithful",
+      "consistency_label": "consistent",
+      "is_vacuous": false,
+      "linked_semantic_units": [],
+      "notes": "Hallucinates a BFS-style 'visited at most once' claim unrelated to Dijkstra's invariant."
+    }
+  ],
+  "annotator_notes": "This exemplar is the canonical contradiction-on-critical-unit case: obligation 1 reads as faithful in prose (SU2 is explicitly referenced) yet the Lean statement disagrees with the reference Rust at the >= boundary. Flag `inconsistent` without downgrading the faithfulness label. Also exercises the `unfaithful` label on obligation 3 — purely hallucinated content."
+}

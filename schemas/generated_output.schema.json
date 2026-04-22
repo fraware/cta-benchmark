@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.org/schemas/generated_output.schema.json",
+  "title": "GeneratedOutputBundle",
+  "description": "Normalized record of a single (run, system, instance) generation output.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "system_id",
+    "instance_id",
+    "provider_metadata",
+    "raw_output_path",
+    "parse_status",
+    "normalized_obligations",
+    "prompt_hash",
+    "seed"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "schema_v1" },
+    "run_id": {
+      "type": "string",
+      "pattern": "^run_[0-9]{4}_[0-9]{2}_[0-9]{2}_[a-z][a-z0-9_]*_[a-z]+_[0-9]{3}$"
+    },
+    "system_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*_v[0-9]+$"
+    },
+    "instance_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*_[0-9]{3}$"
+    },
+    "provider_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "model", "model_version"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "model_version": { "type": "string", "minLength": 1 },
+        "latency_ms": { "type": "integer", "minimum": 0 },
+        "prompt_tokens": { "type": "integer", "minimum": 0 },
+        "completion_tokens": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "raw_output_path": {
+      "type": "string",
+      "description": "Run-local path to the raw model response (always preserved, even on parse failure)."
+    },
+    "parse_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ok"],
+      "properties": {
+        "ok": { "type": "boolean" },
+        "error_class": {
+          "type": "string",
+          "enum": [
+            "json_parse_error",
+            "schema_validation_error",
+            "lean_lex_error",
+            "missing_fields",
+            "empty_output",
+            "other"
+          ]
+        },
+        "error_message": { "type": "string" }
+      }
+    },
+    "normalized_obligations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/GeneratedObligation" }
+    },
+    "prompt_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "seed": { "type": "integer", "minimum": 0 }
+  },
+  "$defs": {
+    "GeneratedObligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "lean_statement", "nl_gloss"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "precondition",
+            "postcondition",
+            "invariant",
+            "termination",
+            "bounds",
+            "uniqueness",
+            "monotonicity",
+            "optimality",
+            "structural",
+            "auxiliary",
+            "unknown"
+          ]
+        },
+        "lean_statement": { "type": "string", "minLength": 1 },
+        "nl_gloss":       { "type": "string" },
+        "linked_semantic_units": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^SU[0-9]+$" },
+          "uniqueItems": true
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      }
+    }
+  }
+}

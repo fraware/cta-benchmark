@@ -1,0 +1,38 @@
+name: nightly-evals
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: nightly-evals
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  smoke:
+    name: nightly smoke on pilot
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.88.0"
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: validate and lint
+        run: |
+          cargo run -p cta_cli --quiet -- validate schemas
+          cargo run -p cta_cli --quiet -- validate benchmark --version v0.1
+          cargo run -p cta_cli --quiet -- benchmark lint --version v0.1
+
+      - name: run pilot experiment (stub provider)
+        run: |
+          cargo run -p cta_cli --quiet -- experiment \
+            --config configs/experiments/pilot_v1.json

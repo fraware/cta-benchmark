@@ -1,0 +1,7 @@
+{
+  "schema_version": "schema_v1",
+  "system_id": "code_only_v1",
+  "kind": "code_only",
+  "version": "v1",
+  "body": "You are given a Rust reference implementation of a classical algorithm task. Produce a list of Lean 4 proof obligations that together describe what this implementation computes and why it is correct.\n\nRules:\n- Output a single JSON object with key `obligations`.\n- Each obligation has: `kind`, `lean_statement`, `nl_gloss`.\n- Do not invent functionality the code does not implement.\n- If the code documents a precondition (asserts, preconditions in comments), capture it.\n\nReference implementation:\n```rust\n{{rust_reference}}\n```"
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": "schema_v1",
+  "harness_type": "reference_relational",
+  "seed": 57,
+  "num_trials": 150,
+  "input_generator": {
+    "kind": "pair_int_vec",
+    "min_len": 0,
+    "max_len": 12,
+    "value_range": [0, 6]
+  },
+  "oracle_checks": [
+    "result_bounded_by_min_length",
+    "result_matches_dp_oracle",
+    "result_symmetric"
+  ],
+  "timeout_ms": 4000
+}
