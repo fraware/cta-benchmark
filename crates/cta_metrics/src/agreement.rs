@@ -94,23 +94,14 @@ fn mean(xs: &[f64]) -> Option<f64> {
     Some(xs.iter().sum::<f64>() / xs.len() as f64)
 }
 
-/// Ordinal code for faithfulness labels, `None` when the label is unknown.
-#[must_use]
-pub fn faithfulness_ord(label: &str) -> Option<u8> {
-    match label {
-        "unfaithful" => Some(0),
-        "partial" => Some(1),
-        "ambiguous" => Some(2),
-        "faithful" => Some(3),
-        _ => None,
-    }
-}
-
 /// Linearly-weighted Cohen's kappa on faithfulness labels, aligned by
 /// `obligation_index`. Returns `None` if fewer than two common obligations.
+///
+/// The ordinal ordering is `unfaithful < ambiguous < partial < faithful`,
+/// matching [`cta_annotations::FaithfulnessLabel::ord`].
 #[must_use]
 pub fn weighted_kappa_faithfulness(a: &Annotation, b: &Annotation) -> Option<f64> {
-    let common = aligned_labels(a, b, |o| faithfulness_ord(&o.faithfulness_label));
+    let common = aligned_labels(a, b, |o| Some(o.faithfulness_label.ord()));
     if common.len() < 2 {
         return None;
     }
@@ -252,7 +243,10 @@ fn weighted_kappa_linear(pairs: &[(u8, u8)], k: u8) -> Option<f64> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cta_annotations::{AnnotatedObligation, CriticalUnitCoverage, SetLevelScores};
+    use cta_annotations::{
+        AnnotatedObligation, ConsistencyLabel, CriticalUnitCoverage, FaithfulnessLabel,
+        SetLevelScores,
+    };
     use cta_core::{InstanceId, RubricVersion, SystemId};
 
     fn ann(id: &str, labels: &[(&str, bool)]) -> Annotation {
@@ -277,8 +271,8 @@ mod tests {
                 .enumerate()
                 .map(|(i, (f, vac))| AnnotatedObligation {
                     obligation_index: u32::try_from(i).unwrap(),
-                    faithfulness_label: (*f).to_string(),
-                    consistency_label: "consistent".into(),
+                    faithfulness_label: FaithfulnessLabel::parse(f).expect("valid label"),
+                    consistency_label: ConsistencyLabel::Consistent,
                     is_vacuous: *vac,
                     linked_semantic_units: vec![],
                     notes: None,

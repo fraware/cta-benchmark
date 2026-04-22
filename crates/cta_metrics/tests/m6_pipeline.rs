@@ -49,7 +49,7 @@ fn end_to_end_pipeline_produces_schema_valid_bundle() {
             "annotation": "schema_v1",
             "generated_output": "schema_v1",
             "results_bundle": "schema_v1",
-            "metrics": "metrics_v1",
+            "metrics": "metrics_v2",
             "rubric": "rubric_v1"
         },
         "system_id": "text_only_v1",

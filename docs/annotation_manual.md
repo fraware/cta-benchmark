@@ -44,10 +44,16 @@ Each scalar is in `[0, 1]` and should be computed, not estimated. The
 metrics layer re-derives them from the per-obligation labels; annotators
 compute them as a sanity check.
 
-- `semantic_faithfulness`: share of obligations labeled `faithful` or
-  `partial` (the partial weight used by metrics is 0.5).
+- `semantic_faithfulness`: mean of per-obligation faithfulness weights,
+  using the `metrics_v2` weights `faithful=1.0`, `partial=0.5`,
+  `ambiguous=0.0`, `unfaithful=0.0`. If the metrics reported in a paper
+  diverge from your manual computation, the metrics layer wins — report
+  the discrepancy to the adjudicator so the contract stays the source of
+  truth.
 - `code_consistency`: share of obligations in `consistent` out of
-  `consistent + inconsistent`.
+  `consistent + inconsistent`. Obligations labelled `not_applicable` are
+  excluded from both numerator and denominator (they are structural and
+  do not pin down runtime behavior).
 - `vacuity_rate`: share of obligations flagged vacuous.
 - `proof_utility`: your subjective judgment of whether this set would
   support a hand-written proof attempt.
@@ -58,11 +64,14 @@ Whenever two annotators disagree:
 
 - `cta annotate pack` ingests the raw per-annotator records, applies the
   configured adjudication policy (`prefer-adjudicator` by default, or
-  `majority` for sensitivity analyses), and emits a single
-  `runs/annotation_packs/<version>-adjudicated.json` file containing one
-  `AdjudicatedRecord` per `(instance, system)` group. Each record pins a
-  `per_obligation_disagreements` vector so disagreement counts are
-  auditable without a separate sidecar file.
+  `majority` for sensitivity analyses), and emits a single pack file
+  containing one `AdjudicatedRecord` per `(instance, system)` group. Each
+  record pins a `per_obligation_disagreements` vector so disagreement
+  counts are auditable without a separate sidecar file. For a released
+  benchmark the canonical pack lives at
+  `benchmark/<version>/annotation/adjudicated_subset/pack.json`; ad-hoc
+  runs additionally write a copy under
+  `runs/annotation_packs/<version>-adjudicated.json`.
 - Under `prefer-adjudicator`, the adjudicator produces a new `Annotation`
   record with `annotator_id: "adjudicator"` and the final labels; that
   record is taken verbatim by the packer.

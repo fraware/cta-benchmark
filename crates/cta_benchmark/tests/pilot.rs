@@ -21,8 +21,8 @@ fn pilot_v0_1_loads_and_lints_clean() {
     let version = BenchmarkVersion::new("v0.1").unwrap();
     let bench = load_benchmark(&bench_root, &version).expect("load pilot");
     assert!(
-        bench.len() >= 3,
-        "expected at least 3 pilot instances, got {}",
+        bench.len() >= 12,
+        "expected at least 12 pilot instances (6 domains x 2), got {}",
         bench.len()
     );
 
@@ -40,7 +40,7 @@ fn pilot_v0_1_manifest_hash_is_deterministic() {
     let version = BenchmarkVersion::new("v0.1").unwrap();
     let bench = load_benchmark(&bench_root, &version).unwrap();
     let rubric = RubricVersion::new("rubric_v1").unwrap();
-    let metrics = MetricsVersion::new("metrics_v1").unwrap();
+    let metrics = MetricsVersion::new("metrics_v2").unwrap();
 
     let ts = "2026-04-21T00:00:00Z";
     let a = build_manifest(&bench, &rubric, &metrics, ts).unwrap();

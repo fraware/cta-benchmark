@@ -5,33 +5,24 @@
   "obligations": [
     {
       "id": "obl_001",
-      "kind": "precondition",
-      "lean_statement": "∀ (ivs : Intervals) (i : Interval), i ∈ ivs → i.start < i.stop",
-      "nl_gloss": "Every input interval has strictly positive length.",
-      "linked_semantic_units": ["SU1"],
+      "kind": "postcondition",
+      "lean_statement": "∀ (ivs : Intervals), (∀ i ∈ ivs, i.start < i.stop) → ∃ (sel : List Nat), Feasible ivs sel ∧ sel.length = intervalScheduling ivs",
+      "nl_gloss": "When every input interval has strictly positive length, there exists a feasible selection whose size equals the returned count.",
+      "linked_semantic_units": ["SU1", "SU2"],
       "importance": "critical",
       "proof_relevance": "direct"
     },
     {
       "id": "obl_002",
       "kind": "postcondition",
-      "lean_statement": "∀ (ivs : Intervals), ∃ (sel : List Nat), Feasible ivs sel ∧ sel.length = intervalScheduling ivs",
-      "nl_gloss": "There exists a feasible selection whose size equals the returned count.",
-      "linked_semantic_units": ["SU2"],
-      "importance": "critical",
-      "proof_relevance": "direct"
-    },
-    {
-      "id": "obl_003",
-      "kind": "postcondition",
-      "lean_statement": "∀ (ivs : Intervals) (sel : List Nat), Feasible ivs sel → sel.length ≤ intervalScheduling ivs",
-      "nl_gloss": "No feasible selection is strictly larger than the returned count.",
+      "lean_statement": "∀ (ivs : Intervals) (sel : List Nat), (∀ i ∈ ivs, i.start < i.stop) → Feasible ivs sel → sel.length ≤ intervalScheduling ivs",
+      "nl_gloss": "When every input interval has strictly positive length, no feasible selection is strictly larger than the returned count.",
       "linked_semantic_units": ["SU3"],
       "importance": "critical",
       "proof_relevance": "direct"
     },
     {
-      "id": "obl_004",
+      "id": "obl_003",
       "kind": "postcondition",
       "lean_statement": "∀ (a b : Interval), a.stop = b.start → NonOverlap a b",
       "nl_gloss": "Intervals touching at a single endpoint are non-overlapping.",

@@ -40,9 +40,12 @@ increment the 3-digit suffix (e.g. `arrays_binary_search_002`).
 
 ## Metrics evolution
 
-Metric names are frozen under `metrics_v1`. Never redefine an existing
-metric. Introduce new metrics in `metrics_v2` and record the contract
-version in every `run_manifest.json`.
+Metric names are frozen under `metrics_v2`. Never redefine an existing
+metric. Introduce new metrics in `metrics_v3` and record the contract
+version in every `run_manifest.json`. `metrics_v1` is retained only for
+archival comparison; the current pipeline emits `metrics_v2` by default.
+Schema validation allows `metrics_vN` for archival runs, while paper
+aggregation should enforce the current contract version.
 
 ## Rubric evolution
 

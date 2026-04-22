@@ -107,13 +107,18 @@ cargo run -p cta_cli -- generate \
   --version v0.1 --split dev --system full_method_v1 \
   --provider configs/providers/local_stub.json
 
-# Annotation pack (reads benchmark/<v>/annotation/adjudicated_subset by default)
+# Annotation pack (reads benchmark/<v>/annotation/adjudicated_subset by default).
+# Add --from-benchmark to write the canonical release-grade pack back into
+# the benchmark tree (benchmark/<v>/annotation/adjudicated_subset/pack.json).
 cargo run -p cta_cli -- annotate pack --version v0.1 --policy prefer-adjudicator
+cargo run -p cta_cli -- annotate pack --version v0.1 --from-benchmark
 
-# Metrics + reports for a single run directory
+# Metrics + reports for a single run directory. Use the benchmark-local
+# pack for paper-reportable numbers; the runs/annotation_packs/ copy is
+# only for ad-hoc adjudication sessions.
 cargo run -p cta_cli -- metrics compute \
   --run <run_id> \
-  --annotations runs/annotation_packs/v0.1-adjudicated.json
+  --annotations benchmark/v0.1/annotation/adjudicated_subset/pack.json
 cargo run -p cta_cli -- reports build --run <run_id>
 
 # Config-driven experiment orchestration
@@ -134,8 +139,16 @@ Everything benchmark-related is versioned explicitly:
 
 - benchmark version: `v0.1`, `v0.2`, ...
 - schema version: `schema_v1`
-- metric contract version: `metrics_v1`
+- metric contract version: `metrics_v2`
 - annotation rubric version: `rubric_v1`
+
+`v0.1` is a 12-instance pilot release: 2 instances per domain across the
+6 domains (`arrays`, `sorting`, `graph`, `dp`, `greedy`, `trees`). Both
+`dev` and `eval` cover all 12 instances; `dev` is kept as a diagnostic
+duplicate of `eval`. Adjudicated gold annotations currently cover a
+3-instance subset (one per representative domain) and will expand with
+subsequent releases; paper numbers are only reportable on
+`(instance, system)` pairs present in the pack.
 
 Released benchmark instances are **never mutated in place**. Add a new
 version instead. The benchmark linter additionally enforces byte-identity

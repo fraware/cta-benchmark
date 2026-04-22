@@ -12,28 +12,48 @@
 
 #![deny(missing_docs)]
 
-use cta_annotations::{Annotation, AnnotationPack};
+use cta_annotations::{Annotation, AnnotationPack, ConsistencyLabel, FaithfulnessLabel};
 use serde::{Deserialize, Serialize};
 
 pub mod agreement;
 pub use agreement::InterAnnotatorAgreement;
 
 /// Canonical metrics version emitted into `results_bundle.aggregate_metrics`.
-pub const METRICS_VERSION: &str = "metrics_v1";
+///
+/// Bumped to `metrics_v2` when the semantic-faithfulness weights were frozen
+/// at `faithful=1.0, partial=0.5, ambiguous=0.0, unfaithful=0.0` and the
+/// `rust_consistency_rate` denominator was redefined to exclude `not_applicable`.
+/// See `docs/evaluation_contract.md` for the full rationale.
+pub const METRICS_VERSION: &str = "metrics_v2";
 
 /// A single instance's per-instance tallies as consumed by the metrics layer.
+///
+/// Under the `metrics_v2` contract `faithfulness_score` is the weighted sum
+/// of per-obligation faithfulness labels, using the canonical weights in
+/// [`FaithfulnessLabel::weight`]. `num_faithful_full` and `num_partial` are
+/// retained as unweighted counts so reports can surface the raw distribution
+/// alongside the scalar.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InstanceTally {
     /// Whether the generated Lean file elaborated.
     pub elaborated: bool,
     /// Total obligations generated.
     pub num_obligations: u32,
-    /// Obligations the annotator marked `faithful`.
-    pub num_faithful: u32,
+    /// Weighted faithfulness score in `[0, num_obligations]` under the
+    /// `metrics_v2` weights.
+    pub faithfulness_score: f64,
+    /// Obligations the annotator marked `faithful` (unweighted count).
+    pub num_faithful_full: u32,
+    /// Obligations the annotator marked `partial` (unweighted count).
+    pub num_partial: u32,
     /// Obligations flagged vacuous.
     pub num_vacuous: u32,
+    /// Obligations flagged `consistent` (feeds `rust_consistency_rate`'s numerator).
+    pub num_consistent: u32,
     /// Obligations flagged as contradicting the reference implementation.
     pub num_inconsistent: u32,
+    /// Obligations flagged `not_applicable` (excluded from consistency rate).
+    pub num_not_applicable: u32,
     /// Critical SUs covered out of total.
     pub critical_units_covered: u32,
     /// Total critical SUs.
@@ -63,12 +83,20 @@ pub struct InstanceResult {
     pub elaborated: bool,
     /// Number of generated obligations.
     pub num_obligations: u32,
-    /// Obligations annotated `faithful`.
-    pub num_faithful: u32,
+    /// Weighted faithfulness score under `metrics_v2`.
+    pub faithfulness_score: f64,
+    /// Obligations annotated `faithful` (unweighted count).
+    pub num_faithful_full: u32,
+    /// Obligations annotated `partial` (unweighted count).
+    pub num_partial: u32,
     /// Obligations flagged vacuous.
     pub num_vacuous: u32,
-    /// Obligations flagged inconsistent with the Rust reference.
+    /// Obligations flagged `consistent`.
+    pub num_consistent: u32,
+    /// Obligations flagged `inconsistent` with the Rust reference.
     pub num_inconsistent: u32,
+    /// Obligations flagged `not_applicable` (excluded from `rust_consistency_rate`).
+    pub num_not_applicable: u32,
     /// Critical semantic units covered.
     pub critical_units_covered: u32,
     /// Total critical semantic units.
@@ -151,27 +179,35 @@ pub struct ResultsBundle {
 #[must_use]
 pub fn tally_from_annotation(a: &Annotation, signal: &InstanceSignal) -> InstanceTally {
     let num_obligations = u32::try_from(a.generated_obligations.len()).unwrap_or(u32::MAX);
-    let num_faithful = u32::try_from(
-        a.generated_obligations
-            .iter()
-            .filter(|o| o.faithfulness_label == "faithful")
-            .count(),
-    )
-    .unwrap_or(u32::MAX);
-    let num_vacuous = u32::try_from(
-        a.generated_obligations
-            .iter()
-            .filter(|o| o.is_vacuous)
-            .count(),
-    )
-    .unwrap_or(u32::MAX);
-    let num_inconsistent = u32::try_from(
-        a.generated_obligations
-            .iter()
-            .filter(|o| o.consistency_label == "inconsistent")
-            .count(),
-    )
-    .unwrap_or(u32::MAX);
+
+    let mut faithfulness_score: f64 = 0.0;
+    let mut num_faithful_full = 0u32;
+    let mut num_partial = 0u32;
+    let mut num_vacuous = 0u32;
+    let mut num_consistent = 0u32;
+    let mut num_inconsistent = 0u32;
+    let mut num_not_applicable = 0u32;
+    for o in &a.generated_obligations {
+        faithfulness_score += o.faithfulness_label.weight();
+        match o.faithfulness_label {
+            FaithfulnessLabel::Faithful => num_faithful_full = num_faithful_full.saturating_add(1),
+            FaithfulnessLabel::Partial => num_partial = num_partial.saturating_add(1),
+            FaithfulnessLabel::Ambiguous | FaithfulnessLabel::Unfaithful => {}
+        }
+        if o.is_vacuous {
+            num_vacuous = num_vacuous.saturating_add(1);
+        }
+        match o.consistency_label {
+            ConsistencyLabel::Consistent => num_consistent = num_consistent.saturating_add(1),
+            ConsistencyLabel::Inconsistent => {
+                num_inconsistent = num_inconsistent.saturating_add(1);
+            }
+            ConsistencyLabel::NotApplicable => {
+                num_not_applicable = num_not_applicable.saturating_add(1);
+            }
+        }
+    }
+
     let cov = u32::try_from(a.critical_unit_coverage.covered.len()).unwrap_or(u32::MAX);
     let missed = u32::try_from(a.critical_unit_coverage.missed.len()).unwrap_or(u32::MAX);
     let annotated_total = cov.saturating_add(missed);
@@ -179,9 +215,13 @@ pub fn tally_from_annotation(a: &Annotation, signal: &InstanceSignal) -> Instanc
     InstanceTally {
         elaborated: signal.elaborated,
         num_obligations,
-        num_faithful,
+        faithfulness_score,
+        num_faithful_full,
+        num_partial,
         num_vacuous,
+        num_consistent,
         num_inconsistent,
+        num_not_applicable,
         critical_units_covered: cov,
         critical_units_total,
         proof_used: signal.proof_used,
@@ -201,9 +241,13 @@ pub fn instance_result_from_annotation(
         instance_id: a.instance_id.as_str().to_string(),
         elaborated: t.elaborated,
         num_obligations: t.num_obligations,
-        num_faithful: t.num_faithful,
+        faithfulness_score: t.faithfulness_score,
+        num_faithful_full: t.num_faithful_full,
+        num_partial: t.num_partial,
         num_vacuous: t.num_vacuous,
+        num_consistent: t.num_consistent,
         num_inconsistent: t.num_inconsistent,
+        num_not_applicable: t.num_not_applicable,
         critical_units_covered: t.critical_units_covered,
         critical_units_total: t.critical_units_total,
         lean_diagnostics_path,
@@ -212,6 +256,16 @@ pub fn instance_result_from_annotation(
 }
 
 /// Compute primary metrics from per-instance tallies.
+///
+/// Under the `metrics_v2` contract:
+///
+/// - `semantic_faithfulness_mean` is the mean over instances with at least
+///   one obligation of `faithfulness_score / num_obligations`, where
+///   `faithfulness_score` weights labels as `faithful=1.0, partial=0.5,
+///   ambiguous=0.0, unfaithful=0.0`.
+/// - `rust_consistency_rate` is `total_consistent / (total_consistent +
+///   total_inconsistent)`. Obligations labelled `not_applicable` are
+///   excluded from both numerator and denominator.
 ///
 /// Metrics are undefined on zero-sized denominators; we return `0.0` for each
 /// such case. The spec's acceptance criterion forbids promoting a run with
@@ -233,19 +287,21 @@ pub fn primary_metrics(tallies: &[InstanceTally]) -> PrimaryMetrics {
     let elaboration_rate = tallies.iter().filter(|t| t.elaborated).count() as f64 / n;
     let proof_utility = tallies.iter().filter(|t| t.proof_used).count() as f64 / n;
 
-    let (total_obligations, total_vacuous, total_inconsistent) =
-        tallies.iter().fold((0u64, 0u64, 0u64), |acc, t| {
+    let (total_obligations, total_vacuous, total_consistent, total_inconsistent) =
+        tallies.iter().fold((0u64, 0u64, 0u64, 0u64), |acc, t| {
             (
                 acc.0 + u64::from(t.num_obligations),
                 acc.1 + u64::from(t.num_vacuous),
-                acc.2 + u64::from(t.num_inconsistent),
+                acc.2 + u64::from(t.num_consistent),
+                acc.3 + u64::from(t.num_inconsistent),
             )
         });
 
-    let rust_consistency_rate = if total_obligations == 0 {
+    let consistency_denom = total_consistent + total_inconsistent;
+    let rust_consistency_rate = if consistency_denom == 0 {
         0.0
     } else {
-        1.0 - (total_inconsistent as f64 / total_obligations as f64)
+        total_consistent as f64 / consistency_denom as f64
     };
     let vacuity_rate = if total_obligations == 0 {
         0.0
@@ -260,7 +316,7 @@ pub fn primary_metrics(tallies: &[InstanceTally]) -> PrimaryMetrics {
     } else {
         instances_with_output
             .iter()
-            .map(|t| f64::from(t.num_faithful) / f64::from(t.num_obligations))
+            .map(|t| t.faithfulness_score / f64::from(t.num_obligations))
             .sum::<f64>()
             / instances_with_output.len() as f64
     };
@@ -300,7 +356,7 @@ pub fn secondary_metrics(
 ) -> SecondaryMetrics {
     let n = tallies.len() as f64;
     let total_obligations: u64 = tallies.iter().map(|t| u64::from(t.num_obligations)).sum();
-    let total_faithful: u64 = tallies.iter().map(|t| u64::from(t.num_faithful)).sum();
+    let total_weighted_faithful: f64 = tallies.iter().map(|t| t.faithfulness_score).sum();
 
     let avg_obligations_per_instance = if n == 0.0 {
         0.0
@@ -311,7 +367,7 @@ pub fn secondary_metrics(
     let faithful_obligation_density = if total_obligations == 0 {
         0.0
     } else {
-        total_faithful as f64 / total_obligations as f64
+        total_weighted_faithful / total_obligations as f64
     };
 
     let mut critical_obligations = 0u64;
@@ -323,13 +379,13 @@ pub fn secondary_metrics(
             let is_critical = !o.linked_semantic_units.is_empty();
             if is_critical {
                 critical_obligations += 1;
-                if o.consistency_label == "inconsistent" {
+                if o.consistency_label == ConsistencyLabel::Inconsistent {
                     critical_inconsistent += 1;
                 }
             }
-            if o.faithfulness_label == "faithful" {
+            if o.faithfulness_label == FaithfulnessLabel::Faithful {
                 total_faithful_obl += 1;
-                if o.consistency_label == "inconsistent" {
+                if o.consistency_label == ConsistencyLabel::Inconsistent {
                     faithful_but_inconsistent += 1;
                 }
             }
@@ -439,16 +495,22 @@ pub fn compute_results_bundle_with_agreement(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cta_annotations::{AnnotatedObligation, Annotation, CriticalUnitCoverage, SetLevelScores};
+    use cta_annotations::{
+        AnnotatedObligation, Annotation, ConsistencyLabel, CriticalUnitCoverage, FaithfulnessLabel,
+        SetLevelScores,
+    };
     use cta_core::{InstanceId, RubricVersion, SystemId};
 
     #[allow(clippy::too_many_arguments)]
     fn t(
         elaborated: bool,
         num: u32,
-        faithful: u32,
+        faithful_full: u32,
+        partial: u32,
         vacuous: u32,
+        consistent: u32,
         inconsistent: u32,
+        not_applicable: u32,
         cov: u32,
         tot: u32,
         proof: bool,
@@ -456,9 +518,13 @@ mod tests {
         InstanceTally {
             elaborated,
             num_obligations: num,
-            num_faithful: faithful,
+            faithfulness_score: f64::from(faithful_full) + 0.5 * f64::from(partial),
+            num_faithful_full: faithful_full,
+            num_partial: partial,
             num_vacuous: vacuous,
+            num_consistent: consistent,
             num_inconsistent: inconsistent,
+            num_not_applicable: not_applicable,
             critical_units_covered: cov,
             critical_units_total: tot,
             proof_used: proof,
@@ -487,8 +553,8 @@ mod tests {
                 .enumerate()
                 .map(|(i, (f, c, v, sus))| AnnotatedObligation {
                     obligation_index: u32::try_from(i).unwrap(),
-                    faithfulness_label: (*f).to_string(),
-                    consistency_label: (*c).to_string(),
+                    faithfulness_label: FaithfulnessLabel::parse(f).expect("faith label"),
+                    consistency_label: ConsistencyLabel::parse(c).expect("cons label"),
                     is_vacuous: *v,
                     linked_semantic_units: sus.iter().map(|s| (*s).to_string()).collect(),
                     notes: None,
@@ -507,23 +573,65 @@ mod tests {
     #[test]
     fn elaboration_rate_matches() {
         let tallies = vec![
-            t(true, 1, 1, 0, 0, 1, 1, true),
-            t(false, 0, 0, 0, 0, 0, 1, false),
+            t(true, 1, 1, 0, 0, 1, 0, 0, 1, 1, true),
+            t(false, 0, 0, 0, 0, 0, 0, 0, 0, 1, false),
         ];
         let m = primary_metrics(&tallies);
         assert!((m.elaboration_rate - 0.5).abs() < 1e-9);
     }
 
     #[test]
-    fn vacuity_and_consistency_compute() {
+    fn vacuity_and_consistency_exclude_not_applicable() {
+        // inst A: 10 obl, 2 vacuous, 7 consistent, 1 inconsistent, 2 not_applicable
+        //         => rust_cons numerator=7, denom=7+1=8 (NA excluded).
+        // inst B: 5 obl, 4 consistent, 0 inconsistent, 1 not_applicable
+        //         => rust_cons contribution numerator=4, denom=4.
+        // Aggregate: 11 / 12.
         let tallies = vec![
-            t(true, 10, 8, 2, 1, 3, 5, true),
-            t(true, 5, 4, 0, 0, 2, 5, false),
+            t(true, 10, 8, 0, 2, 7, 1, 2, 3, 5, true),
+            t(true, 5, 4, 0, 0, 4, 0, 1, 2, 5, false),
         ];
         let m = primary_metrics(&tallies);
         assert!((m.vacuity_rate - 2.0 / 15.0).abs() < 1e-9);
-        assert!((m.rust_consistency_rate - 14.0 / 15.0).abs() < 1e-9);
+        assert!((m.rust_consistency_rate - 11.0 / 12.0).abs() < 1e-9);
         assert!((m.critical_unit_coverage - 5.0 / 10.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn rust_consistency_all_not_applicable_yields_zero() {
+        let tallies = vec![t(true, 3, 0, 0, 0, 0, 0, 3, 0, 0, false)];
+        let m = primary_metrics(&tallies);
+        assert_eq!(m.rust_consistency_rate, 0.0);
+    }
+
+    #[test]
+    fn weighted_faithfulness_mixes_labels() {
+        // Single instance with 4 obligations labelled:
+        //   faithful   -> 1.0
+        //   partial    -> 0.5
+        //   ambiguous  -> 0.0
+        //   unfaithful -> 0.0
+        // => faithfulness_score = 1.5, mean_faithfulness = 1.5 / 4 = 0.375.
+        let a = ann(
+            "arrays_binary_search_001",
+            &[
+                ("faithful", "consistent", false, &["SU1"]),
+                ("partial", "consistent", false, &["SU2"]),
+                ("ambiguous", "not_applicable", false, &[]),
+                ("unfaithful", "inconsistent", false, &[]),
+            ],
+        );
+        let sig = InstanceSignal {
+            elaborated: true,
+            proof_used: false,
+            critical_units_total: 2,
+        };
+        let tally = tally_from_annotation(&a, &sig);
+        assert_eq!(tally.num_faithful_full, 1);
+        assert_eq!(tally.num_partial, 1);
+        assert!((tally.faithfulness_score - 1.5).abs() < 1e-9);
+        let m = primary_metrics(&[tally]);
+        assert!((m.semantic_faithfulness_mean - 0.375).abs() < 1e-9);
     }
 
     #[test]
@@ -543,8 +651,11 @@ mod tests {
         };
         let tally = tally_from_annotation(&a, &sig);
         assert_eq!(tally.num_obligations, 3);
-        assert_eq!(tally.num_faithful, 2);
+        assert_eq!(tally.num_faithful_full, 2);
+        assert_eq!(tally.num_partial, 1);
+        assert!((tally.faithfulness_score - 2.5).abs() < 1e-9);
         assert_eq!(tally.num_vacuous, 1);
+        assert_eq!(tally.num_consistent, 2);
         assert_eq!(tally.num_inconsistent, 1);
         assert_eq!(tally.critical_units_covered, 1);
         assert_eq!(tally.critical_units_total, 4);
@@ -567,5 +678,10 @@ mod tests {
         assert!((s.contradiction_rate_on_critical_units - 0.5).abs() < 1e-9);
         assert!((s.text_faithful_code_inconsistent_rate - 0.5).abs() < 1e-9);
         assert!((s.avg_obligations_per_instance - 3.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn metrics_version_is_v2() {
+        assert_eq!(METRICS_VERSION, "metrics_v2");
     }
 }

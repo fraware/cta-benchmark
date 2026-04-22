@@ -304,6 +304,7 @@ dependencies = [
  "cta_schema",
  "hex",
  "pretty_assertions",
+ "regex",
  "serde",
  "serde_json",
  "sha2",

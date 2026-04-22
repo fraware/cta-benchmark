@@ -243,7 +243,7 @@ fn build_run_manifest(
             "annotation": "schema_v1",
             "generated_output": "schema_v1",
             "results_bundle": "schema_v1",
-            "metrics": "metrics_v1",
+            "metrics": cta_metrics::METRICS_VERSION,
             "rubric": "rubric_v1"
         },
         "system_id": system_id.as_str(),

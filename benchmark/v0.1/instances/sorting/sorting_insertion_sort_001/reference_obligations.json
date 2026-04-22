@@ -20,15 +20,6 @@
       "linked_semantic_units": ["SU2"],
       "importance": "critical",
       "proof_relevance": "direct"
-    },
-    {
-      "id": "obl_003",
-      "kind": "termination",
-      "lean_statement": "∀ (xs : Arr), ∃ ys : Arr, insertionSort xs = ys",
-      "nl_gloss": "The function terminates on every input.",
-      "linked_semantic_units": ["SU3"],
-      "importance": "supporting",
-      "proof_relevance": "auxiliary"
     }
   ]
 }

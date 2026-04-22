@@ -3,9 +3,26 @@
 Authoritative definitions of every metric reported in the paper and the
 acceptance conditions a run must satisfy before it is paper-reportable.
 
-Version: `metrics_v1`. The definitions below are frozen under this version.
-Changes require a new `metrics_v2` contract; old metric names never change
-meaning.
+Version: `metrics_v2`. The definitions below are frozen under this version.
+
+`metrics_v2` froze two decisions that had previously been ambiguous in the
+codebase:
+
+1. `semantic_faithfulness_mean` uses explicit per-label weights, so
+   `partial` contributes `0.5` (not `0.0`) and `ambiguous` contributes `0.0`.
+2. `rust_consistency_rate` excludes `not_applicable` obligations from both
+   numerator and denominator.
+
+`metrics_v1` (the prior contract) is retained only for archival comparison;
+the canonical contract today is `metrics_v2` (`cta_core::METRICS_VERSION` and
+`cta_metrics::METRICS_VERSION`). The JSON Schemas for `run_manifest` and
+`results_bundle` accept any `metrics_vN` string that matches the version
+pattern, so a manifest declaring `metrics_v1` can still *validate* as
+well-formed JSON. For paper work you must not rely on that: generated runs
+and fresh bundles use the current constant, and `cta reports aggregate`
+skips bundles whose `aggregate_metrics.metrics_version` differs from the
+current contract. Future contract changes must bump to `metrics_v3`; names
+of existing metrics never change meaning once frozen.
 
 ## Primary metrics
 
@@ -20,10 +37,24 @@ Numerator: instances with `elaborated == true`.
 
 ### semantic_faithfulness_mean
 
-Instance-average of `num_faithful / num_obligations` over instances that
-produced at least one obligation. Empty-output instances are excluded from
-the denominator; they contribute to `elaboration_rate` and coverage but
-not to this mean.
+Instance-average of `faithfulness_score_i / num_obligations_i` over
+instances that produced at least one obligation, where
+`faithfulness_score_i` is the sum of per-label weights:
+
+| faithfulness label | weight |
+|--------------------|--------|
+| `faithful`         | 1.0    |
+| `partial`          | 0.5    |
+| `ambiguous`        | 0.0    |
+| `unfaithful`       | 0.0    |
+
+Empty-output instances are excluded from the denominator; they still
+contribute to `elaboration_rate` and coverage but not to this mean.
+
+Worked example. An instance with four generated obligations labelled
+`faithful, partial, ambiguous, unfaithful` has
+`faithfulness_score = 1.0 + 0.5 + 0.0 + 0.0 = 1.5` and contributes
+`1.5 / 4 = 0.375` to the mean.
 
 ### critical_unit_coverage
 
@@ -34,9 +65,13 @@ Numerator:   `sum_i critical_units_covered_i`.
 
 ### rust_consistency_rate
 
-`1 - total_inconsistent / total_obligations`, summed across the split.
-If `total_obligations == 0`, the metric is `0.0` and the run is not
-paper-eligible.
+`total_consistent / (total_consistent + total_inconsistent)` across the
+split. Obligations labelled `not_applicable` — typically structural
+obligations that do not map to executable Rust behavior — are excluded
+from both numerator and denominator.
+
+If the denominator (`total_consistent + total_inconsistent`) is zero, the
+metric is `0.0` and the run is not paper-eligible.
 
 ### vacuity_rate
 
@@ -52,7 +87,9 @@ records the boolean per instance.
 ## Secondary metrics
 
 - `avg_obligations_per_instance`: total obligations / number of instances.
-- `faithful_obligation_density`: total faithful / total obligations.
+- `faithful_obligation_density`: `sum_i faithfulness_score_i / sum_i num_obligations_i`
+  (the obligation-weighted analogue of `semantic_faithfulness_mean`, using
+  the same weights).
 - `contradiction_rate_on_critical_units`: share of obligations linked to
   at least one critical SU that were labeled `inconsistent`.
 - `text_faithful_code_inconsistent_rate`: among obligations labeled
@@ -88,9 +125,16 @@ group to a single adjudicated record:
   Ties are broken deterministically by annotator order. This policy
   is useful for sensitivity analysis.
 
-The adjudicated pack is stored under
-`runs/annotation_packs/<version>-adjudicated.json` and is the single
-input consumed by `cta metrics compute` and `cta reports build`.
+The canonical adjudicated pack for a released benchmark version lives
+under `benchmark/<version>/annotation/adjudicated_subset/pack.json`. It is
+the single input consumed by `cta metrics compute` and `cta reports build`
+when producing paper-reportable numbers. Experiment configs reference it
+via a workspace-relative path.
+
+For ad-hoc adjudication runs outside a benchmark release, `cta annotate
+pack` also writes a run-local copy under
+`runs/annotation_packs/<version>-adjudicated.json`; that path is never
+consulted by the release pipeline.
 
 ## Acceptance criteria for a paper-reportable run
 

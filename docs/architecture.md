@@ -86,7 +86,7 @@ These rules are enforced by CI or by the benchmark linter:
 - No benchmark instance enters v0.1 without semantic units.
 - No benchmark instance enters v0.1 without a behavioral harness.
 - No run is reportable without a manifest.
-- No metric name may change after `metrics_v1` freeze.
+- No metric name may change after `metrics_v2` freeze.
 - No generated Lean file is committed into benchmark gold directories.
 - No schema-breaking change without a version bump.
 - No silent prompt changes: prompt hash must change and be recorded.

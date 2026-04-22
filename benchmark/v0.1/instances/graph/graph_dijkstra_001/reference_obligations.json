@@ -24,9 +24,9 @@
     {
       "id": "obl_003",
       "kind": "optimality",
-      "lean_statement": "∀ (n source v : Nat) (g : Graph) (d : Nat), (dijkstra n source g).get? v = some (some d) → ∀ d', PathWeight g source v d' → d ≤ d'",
-      "nl_gloss": "If dist[v] == Some(d), no path from source to v has weight less than d.",
-      "linked_semantic_units": ["SU5"],
+      "lean_statement": "∀ (n source v : Nat) (g : Graph) (d : Nat), NonNegativeWeights g → (dijkstra n source g).get? v = some (some d) → ∀ d', PathWeight g source v d' → d ≤ d'",
+      "nl_gloss": "When every edge weight is non-negative, if dist[v] == Some(d) then no path from source to v has weight less than d.",
+      "linked_semantic_units": ["SU1", "SU5"],
       "importance": "critical",
       "proof_relevance": "direct"
     },

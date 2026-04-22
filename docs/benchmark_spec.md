@@ -44,14 +44,21 @@ See `schemas/instance.schema.json`. Highlights:
 
 ## Splits
 
-Three splits, one JSON file each under `splits/`:
+Each benchmark version ships the following JSON files under `splits/`:
 
 - `dev.json` — used while designing prompts and tuning systems; metrics on
   this split are diagnostic only.
 - `eval.json` — frozen for every released benchmark version; all paper
-  results are computed on this split.
-- `challenge.json` — optional stress split (`hard` difficulty and
-  adversarially constructed edge cases).
+  results are computed on this split. Must be non-empty and must list
+  every instance declared by the manifest (`dev` may be a subset, a
+  duplicate, or disjoint).
+- `challenge.json` — *optional* stress split. A benchmark version that
+  does not ship a real challenge set must omit this file; an empty
+  `challenge.json` is disallowed and rejected by
+  `cta benchmark lint --release`.
+
+For `v0.1` (the pilot release), `dev.json` and `eval.json` both cover all
+12 pilot instances, and `challenge.json` is absent.
 
 ## Release / versioning
 

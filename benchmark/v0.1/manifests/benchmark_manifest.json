@@ -2,20 +2,29 @@
   "schema_version": "schema_v1",
   "benchmark_version": "v0.1",
   "rubric_version": "rubric_v1",
-  "metrics_version": "metrics_v1",
-  "created_at": "2026-04-21T20:36:18.3516001Z",
+  "metrics_version": "metrics_v2",
+  "created_at": "2026-04-22T07:20:16.4590571Z",
   "instance_count_by_domain": {
-    "arrays": 1,
-    "dp": 0,
-    "graph": 1,
-    "greedy": 0,
-    "sorting": 1,
-    "trees": 0
+    "arrays": 2,
+    "dp": 2,
+    "graph": 2,
+    "greedy": 2,
+    "sorting": 2,
+    "trees": 2
   },
   "instance_hashes": {
-    "arrays_binary_search_001": "sha256:0d30acdcc72e0d9bd1e0eb76178668eff10f194be0fbddd09dbbe0bcd908c042",
-    "graph_dijkstra_001": "sha256:dad6bf4c629625d6b66c301d54840e17a592090bf81ec508cf1bb9b360e27ef3",
-    "sorting_insertion_sort_001": "sha256:da37b7bc86d7b3b97e8f053a7f7ad6959bc937da3ca4b8ea0672c1f736c32b36"
+    "arrays_binary_search_001": "sha256:2ddc61d3f2f7a1fa1ea4f276c85b10086d52f96ef0f23c04efd519f19c9b99c8",
+    "arrays_max_subarray_001": "sha256:be9889d9e9e23e2ab7583d95d50d25680bec40f9e3859693ce75e1728dbbe526",
+    "dp_knapsack_01_001": "sha256:07f3bf7d83df1683e2900d2b7edcfce13bbd5b00ec4c0a4db79f4765913d9d7c",
+    "dp_longest_common_subsequence_001": "sha256:40d02cedd0c53f26a39c71b8c16a5ff174845de6403d2f68dd9a41b0178a6df7",
+    "graph_bfs_shortest_path_001": "sha256:d349f1cb0848900e9fb3951e9ae190f9a3be2dc176f3476c41732badbc0ef80f",
+    "graph_dijkstra_001": "sha256:ef5cc15f7b33e38ce338ceecb740b7fcf5b0bd874c62cd5ada851e66ba19ee18",
+    "greedy_coin_change_canonical_001": "sha256:571a7271b1a39f63fa4ad5ba928b8fce3b8402490fbf2954094c1bcaf7dfa96d",
+    "greedy_interval_scheduling_001": "sha256:6820febd8858d48b7515449bbafaeeaa86a112ba95c138337cbfc5e1b26f64d0",
+    "sorting_insertion_sort_001": "sha256:39dcca8c50b1c877e1ca1560867bfd9da4cfc428a7f87951a4db3713420d1cc7",
+    "sorting_merge_sort_001": "sha256:33c3ca4e7521fd97349ba783547e9ed9cf12468111564a8573232a23d30f6e9d",
+    "trees_bst_insert_001": "sha256:92d54cccf0c2dde7ba31d9e49a607753f99d40637ef61a331b83ae4008782d46",
+    "trees_lowest_common_ancestor_001": "sha256:daca9b4236316bb43a2529a7ae5adab4eab6eaf70459317c5332878df0159584"
   },
-  "content_hash": "sha256:9ba5b74fe3cb268b7a0549a89fbabe8cd16ea2538a344871c7bb45a9538f6cfd"
+  "content_hash": "sha256:b157bc22e75ecc29eb94c49f181b970e7163b961672ec8cc7b272aeb96558c15"
 }

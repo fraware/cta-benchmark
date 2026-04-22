@@ -18,5 +18,6 @@
     "temperature": 0.0,
     "max_tokens": 2048
   },
+  "annotation_pack": "benchmark/v0.1/annotation/adjudicated_subset/pack.json",
   "notes": "Full benchmark eval. Three seeds per (system, provider, instance) triple. Results feed paper-ready tables and figures."
 }

@@ -50,17 +50,21 @@ pub enum AnnotationError {
 pub type Result<T> = std::result::Result<T, AnnotationError>;
 
 /// Faithfulness label.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+///
+/// Ordering: `Unfaithful < Partial < Ambiguous < Faithful`. This ordering
+/// is used for ordinal statistics (weighted kappa on agreement) and mirrors
+/// the numeric weights defined in [`FaithfulnessLabel::weight`].
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum FaithfulnessLabel {
-    /// The obligation faithfully captures the semantics.
-    Faithful,
-    /// The obligation captures semantics only partially.
-    Partial,
-    /// The obligation misrepresents the semantics.
+    /// The obligation misrepresents the semantics (weight `0.0`).
     Unfaithful,
-    /// The annotator could not decide.
+    /// The annotator could not decide (weight `0.0`).
     Ambiguous,
+    /// The obligation captures semantics only partially (weight `0.5`).
+    Partial,
+    /// The obligation faithfully captures the semantics (weight `1.0`).
+    Faithful,
 }
 
 impl FaithfulnessLabel {
@@ -89,10 +93,45 @@ impl FaithfulnessLabel {
             Self::Ambiguous => "ambiguous",
         }
     }
+
+    /// Contribution of this label to `semantic_faithfulness_mean` under the
+    /// `metrics_v2` contract.
+    ///
+    /// The weights are documented in `docs/evaluation_contract.md` and
+    /// mirrored in `docs/annotation_manual.md`:
+    ///
+    /// | label       | weight |
+    /// |-------------|--------|
+    /// | faithful    | 1.0    |
+    /// | partial     | 0.5    |
+    /// | ambiguous   | 0.0    |
+    /// | unfaithful  | 0.0    |
+    ///
+    /// `ambiguous` is treated as 0.0 (not 0.5) because the label indicates
+    /// the annotator could not decide, not that the obligation is half-right.
+    #[must_use]
+    pub const fn weight(self) -> f64 {
+        match self {
+            Self::Faithful => 1.0,
+            Self::Partial => 0.5,
+            Self::Ambiguous | Self::Unfaithful => 0.0,
+        }
+    }
+
+    /// Ordinal rank in `[0, 4)`, matching the weighted-kappa ordering.
+    #[must_use]
+    pub const fn ord(self) -> u8 {
+        match self {
+            Self::Unfaithful => 0,
+            Self::Ambiguous => 1,
+            Self::Partial => 2,
+            Self::Faithful => 3,
+        }
+    }
 }
 
 /// Consistency label.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ConsistencyLabel {
     /// The obligation is consistent with the reference Rust implementation.
@@ -176,14 +215,21 @@ pub struct CriticalUnitCoverage {
 }
 
 /// Per-obligation annotator labels.
+///
+/// Labels are stored as typed enums internally; the on-wire JSON form is
+/// still the canonical lowercase string (enforced by `annotation.schema.json`
+/// and by the `#[serde(rename_all = ...)]` attributes on the enums). This
+/// eliminates the risk of silent drift between the annotation rubric and
+/// the metrics implementation: string comparisons on label fields are
+/// impossible from Rust.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnnotatedObligation {
     /// Index into the generated obligation list.
     pub obligation_index: u32,
-    /// Faithfulness label.
-    pub faithfulness_label: String,
-    /// Consistency label.
-    pub consistency_label: String,
+    /// Faithfulness label (typed).
+    pub faithfulness_label: FaithfulnessLabel,
+    /// Consistency label (typed).
+    pub consistency_label: ConsistencyLabel,
     /// Vacuity flag.
     pub is_vacuous: bool,
     /// Linked SUs.
@@ -296,6 +342,15 @@ fn collect_json_files(dir: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
         if ty.is_dir() {
             collect_json_files(&path, out)?;
         } else if ty.is_file() && path.extension().and_then(|e| e.to_str()) == Some("json") {
+            // Skip `pack.json` files by convention: they are
+            // `AnnotationPack` artifacts (derived from adjudicated
+            // annotations), not raw annotations.  Loading them through
+            // `load_dir` would fail the annotation schema because the
+            // pack has a `records` envelope instead of the
+            // per-annotation fields.
+            if path.file_name().and_then(|n| n.to_str()) == Some("pack.json") {
+                continue;
+            }
             out.push(path);
         }
     }
@@ -426,8 +481,8 @@ fn synthesize_majority(annotators: &[Annotation]) -> Result<Annotation> {
         if at.is_empty() {
             continue;
         }
-        let faith = mode(at.iter().map(|o| o.faithfulness_label.clone()));
-        let cons = mode(at.iter().map(|o| o.consistency_label.clone()));
+        let faith = mode_faith(at.iter().map(|o| o.faithfulness_label));
+        let cons = mode_cons(at.iter().map(|o| o.consistency_label));
         let vac_votes = at.iter().filter(|o| o.is_vacuous).count();
         let is_vacuous = vac_votes * 2 > at.len();
         let mut linked: Vec<String> = at
@@ -471,8 +526,8 @@ fn mean<I: Iterator<Item = f64>>(iter: I) -> f64 {
     v.into_iter().sum::<f64>() / len
 }
 
-fn mode<I: Iterator<Item = String>>(iter: I) -> String {
-    let mut counts: BTreeMap<String, u32> = BTreeMap::new();
+fn mode_faith<I: Iterator<Item = FaithfulnessLabel>>(iter: I) -> FaithfulnessLabel {
+    let mut counts: BTreeMap<FaithfulnessLabel, u32> = BTreeMap::new();
     for s in iter {
         *counts.entry(s).or_insert(0) += 1;
     }
@@ -480,7 +535,19 @@ fn mode<I: Iterator<Item = String>>(iter: I) -> String {
         .into_iter()
         .max_by(|a, b| a.1.cmp(&b.1).then_with(|| a.0.cmp(&b.0)))
         .map(|(k, _)| k)
-        .unwrap_or_default()
+        .unwrap_or(FaithfulnessLabel::Ambiguous)
+}
+
+fn mode_cons<I: Iterator<Item = ConsistencyLabel>>(iter: I) -> ConsistencyLabel {
+    let mut counts: BTreeMap<ConsistencyLabel, u32> = BTreeMap::new();
+    for s in iter {
+        *counts.entry(s).or_insert(0) += 1;
+    }
+    counts
+        .into_iter()
+        .max_by(|a, b| a.1.cmp(&b.1).then_with(|| a.0.cmp(&b.0)))
+        .map(|(k, _)| k)
+        .unwrap_or(ConsistencyLabel::NotApplicable)
 }
 
 fn count_disagreements(group: &AnnotatorGroup) -> Vec<u32> {
@@ -495,16 +562,16 @@ fn count_disagreements(group: &AnnotatorGroup) -> Vec<u32> {
         .unwrap_or(0);
     let mut out = Vec::with_capacity(n);
     for idx in 0..n {
-        let labels: Vec<&String> = annotators
+        let labels: Vec<FaithfulnessLabel> = annotators
             .iter()
             .filter_map(|a| a.generated_obligations.get(idx))
-            .map(|o| &o.faithfulness_label)
+            .map(|o| o.faithfulness_label)
             .collect();
         if labels.is_empty() {
             out.push(0);
             continue;
         }
-        let mut unique: Vec<&String> = labels.clone();
+        let mut unique: Vec<FaithfulnessLabel> = labels.clone();
         unique.sort();
         unique.dedup();
         out.push(u32::try_from(unique.len().saturating_sub(1)).unwrap_or(0));
@@ -591,8 +658,8 @@ mod tests {
             },
             generated_obligations: vec![AnnotatedObligation {
                 obligation_index: 0,
-                faithfulness_label: faith_label.into(),
-                consistency_label: "consistent".into(),
+                faithfulness_label: FaithfulnessLabel::parse(faith_label).unwrap(),
+                consistency_label: ConsistencyLabel::Consistent,
                 is_vacuous: false,
                 linked_semantic_units: vec!["SU1".into()],
                 notes: None,
@@ -611,7 +678,7 @@ mod tests {
         assert!(r.from_adjudicator);
         assert_eq!(
             r.annotation.generated_obligations[0].faithfulness_label,
-            "faithful"
+            FaithfulnessLabel::Faithful
         );
     }
 
@@ -629,7 +696,7 @@ mod tests {
         assert!(!r.from_adjudicator);
         assert_eq!(
             r.annotation.generated_obligations[0].faithfulness_label,
-            "faithful"
+            FaithfulnessLabel::Faithful
         );
     }
 

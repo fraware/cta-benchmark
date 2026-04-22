@@ -119,6 +119,10 @@ enum MetricsCmd {
 enum ReportsCmd {
     /// Build CSV/LaTeX/Markdown reports from a results_bundle.json.
     Build(cmd::reports::BuildArgs),
+    /// Aggregate all results bundles under `runs/` into paper-ready
+    /// cross-run tables (summary, provider breakdown, domain breakdown,
+    /// paired deltas).
+    Aggregate(cmd::reports::AggregateArgs),
 }
 
 fn init_tracing(verbose: u8) {
@@ -158,6 +162,7 @@ fn main() -> ExitCode {
         Command::Annotate(AnnotateCmd::Pack(a)) => cmd::annotate::pack(&workspace, a),
         Command::Metrics(MetricsCmd::Compute(a)) => cmd::metrics::compute(&workspace, a),
         Command::Reports(ReportsCmd::Build(a)) => cmd::reports::build(&workspace, a),
+        Command::Reports(ReportsCmd::Aggregate(a)) => cmd::reports::aggregate(&workspace, a),
         Command::Experiment(a) => cmd::experiment::run(&workspace, a),
     };
 

@@ -11,11 +11,18 @@ use std::fmt::Write as _;
 
 use cta_metrics::{AggregateMetrics, PrimaryMetrics, ResultsBundle};
 
+pub mod aggregate;
+pub use aggregate::{
+    aggregate_by_system, domain_breakdown, domain_breakdown_latex, paired_deltas,
+    paired_deltas_csv, provider_breakdown, provider_breakdown_latex, summary_primary_latex,
+    BootstrapConfig, PairedDelta, RunSummary, SystemAggregate, PAIRED_DELTAS_CSV_HEADER,
+};
+
 /// Canonical system id column header used in tables.
 pub const SYSTEM_ID_COL: &str = "system_id";
 
 /// Canonical per-instance CSV header.
-pub const INSTANCE_CSV_HEADER: &str = "instance_id,elaborated,num_obligations,num_faithful,num_vacuous,num_inconsistent,critical_units_covered,critical_units_total\n";
+pub const INSTANCE_CSV_HEADER: &str = "instance_id,elaborated,num_obligations,faithfulness_score,num_faithful_full,num_partial,num_vacuous,num_consistent,num_inconsistent,num_not_applicable,critical_units_covered,critical_units_total\n";
 
 /// Render the primary metrics as a LaTeX table body (tabular-free, caller
 /// supplies the `\begin{tabular}{...}` environment).
@@ -78,13 +85,17 @@ pub fn instance_results_csv(bundle: &ResultsBundle) -> String {
     for r in &bundle.instance_results {
         let _ = writeln!(
             s,
-            "{id},{elab},{n},{f},{v},{i},{c},{t}",
+            "{id},{elab},{n},{fs:.6},{ff},{fp},{v},{cons},{inc},{na},{c},{t}",
             id = r.instance_id,
             elab = r.elaborated,
             n = r.num_obligations,
-            f = r.num_faithful,
+            fs = r.faithfulness_score,
+            ff = r.num_faithful_full,
+            fp = r.num_partial,
             v = r.num_vacuous,
-            i = r.num_inconsistent,
+            cons = r.num_consistent,
+            inc = r.num_inconsistent,
+            na = r.num_not_applicable,
             c = r.critical_units_covered,
             t = r.critical_units_total,
         );
@@ -140,20 +151,24 @@ pub fn results_markdown(system_id: &str, bundle: &ResultsBundle) -> String {
     );
     s.push('\n');
     s.push_str("## Per-instance\n\n");
-    s.push_str("| instance | elab | n | faith | vac | inc | cov/tot |\n");
-    s.push_str("|---|---|---|---|---|---|---|\n");
+    s.push_str("| instance | elab | n | faith-score | ff | fp | vac | cons | inc | na | cov/tot |\n");
+    s.push_str("|---|---|---|---|---|---|---|---|---|---|---|\n");
     for r in &bundle.instance_results {
         let _ = writeln!(
             s,
-            "| `{}` | {} | {} | {} | {} | {} | {}/{} |",
-            r.instance_id,
-            r.elaborated,
-            r.num_obligations,
-            r.num_faithful,
-            r.num_vacuous,
-            r.num_inconsistent,
-            r.critical_units_covered,
-            r.critical_units_total,
+            "| `{id}` | {elab} | {n} | {fs:.3} | {ff} | {fp} | {v} | {cons} | {inc} | {na} | {c}/{t} |",
+            id = r.instance_id,
+            elab = r.elaborated,
+            n = r.num_obligations,
+            fs = r.faithfulness_score,
+            ff = r.num_faithful_full,
+            fp = r.num_partial,
+            v = r.num_vacuous,
+            cons = r.num_consistent,
+            inc = r.num_inconsistent,
+            na = r.num_not_applicable,
+            c = r.critical_units_covered,
+            t = r.critical_units_total,
         );
     }
     s
@@ -241,16 +256,20 @@ mod tests {
                 instance_id: "arrays_binary_search_001".into(),
                 elaborated: true,
                 num_obligations: 3,
-                num_faithful: 2,
+                faithfulness_score: 2.0,
+                num_faithful_full: 2,
+                num_partial: 0,
                 num_vacuous: 0,
+                num_consistent: 3,
                 num_inconsistent: 0,
+                num_not_applicable: 0,
                 critical_units_covered: 2,
                 critical_units_total: 3,
                 lean_diagnostics_path: None,
                 behavior_report_path: None,
             }],
             aggregate_metrics: AggregateMetrics {
-                metrics_version: "metrics_v1".into(),
+                metrics_version: "metrics_v2".into(),
                 primary: demo_metrics(),
                 secondary: SecondaryMetrics {
                     avg_obligations_per_instance: 3.0,

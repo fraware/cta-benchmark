@@ -34,12 +34,21 @@
 
 #![deny(missing_docs)]
 
+pub mod authoring_lint;
 pub mod lint;
 pub mod loader;
 pub mod manifest;
 pub mod model;
+pub mod release_checks;
+pub mod splits;
 
+pub use authoring_lint::check_authoring;
 pub use lint::{lint_benchmark, LintIssue, LintReport, LintSeverity};
 pub use loader::{load_benchmark, LoadedBenchmark};
 pub use manifest::{build_manifest, BenchmarkManifest};
 pub use model::{InstanceRecord, InstanceView};
+pub use release_checks::{
+    load_experiment_summaries, load_manifest, validate_release, ExperimentConfigSummary,
+    ReleaseCheckContext,
+};
+pub use splits::{load_splits, Split, SplitName};

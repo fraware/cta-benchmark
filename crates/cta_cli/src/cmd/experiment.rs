@@ -193,6 +193,26 @@ pub fn run(workspace: &Path, args: ExperimentArgs) -> Result<()> {
         .iter()
         .filter_map(|v| v.as_str().map(str::to_string))
         .collect();
+    if instance_ids.is_empty() {
+        anyhow::bail!(
+            "EXPERIMENT_REFERENCES_EMPTY_SPLIT: experiment {eid} targets split '{sp}' at {path}, \
+             but the split has no instance_ids. Populate the split or point the experiment at a \
+             different one before running.",
+            eid = config.experiment_id,
+            sp = config.split,
+            path = split_path.display(),
+        );
+    }
+    let mut seen: std::collections::BTreeSet<&str> = std::collections::BTreeSet::new();
+    for iid in &instance_ids {
+        if !seen.insert(iid.as_str()) {
+            anyhow::bail!(
+                "SPLIT_DUPLICATE_INSTANCE: split '{sp}' at {path} contains duplicate instance id {iid}",
+                sp = config.split,
+                path = split_path.display(),
+            );
+        }
+    }
 
     let annotation_pack: Option<AnnotationPack> = match config.annotation_pack.as_deref() {
         Some(rel) => {

@@ -29,15 +29,6 @@
       "linked_semantic_units": ["SU3"],
       "importance": "critical",
       "proof_relevance": "direct"
-    },
-    {
-      "id": "obl_004",
-      "kind": "termination",
-      "lean_statement": "∀ (arr : Arr), ∃ r : Arr, mergeSort arr = r",
-      "nl_gloss": "The function terminates on every input.",
-      "linked_semantic_units": [],
-      "importance": "supporting",
-      "proof_relevance": "auxiliary"
     }
   ]
 }

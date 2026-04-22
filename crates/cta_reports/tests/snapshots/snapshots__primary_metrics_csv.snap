@@ -3,4 +3,4 @@ source: crates/cta_reports/tests/snapshots.rs
 expression: csv
 ---
 system_id,elaboration_rate,semantic_faithfulness_mean,critical_unit_coverage,rust_consistency_rate,vacuity_rate,proof_utility
-full_method_v1,0.667,0.714,0.5,1,0.143,0.333
+full_method_v1,0.667,0.792,0.5,1,0.143,0.333

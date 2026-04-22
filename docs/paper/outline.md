@@ -13,7 +13,7 @@ Obligation Generation from Rust Reference Code".
    `lean/CTA/Benchmark/**` module, and an adjudicated annotation subset.
 2. Four baseline generation systems (`text_only_v1`, `code_only_v1`,
    `naive_concat_v1`, `full_method_v1`) implemented as a reproducible
-   Rust pipeline with frozen metric (`metrics_v1`), schema (`schema_v1`),
+   Rust pipeline with frozen metric (`metrics_v2`), schema (`schema_v1`),
    and rubric (`rubric_v1`) contracts.
 3. A metric suite decomposed into `elaboration_rate`,
    `semantic_faithfulness_mean`, `critical_unit_coverage`,

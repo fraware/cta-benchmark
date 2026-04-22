@@ -18,12 +18,21 @@ pub struct PackArgs {
     #[arg(long)]
     pub input: Option<PathBuf>,
     /// Output path for the adjudicated pack JSON. Defaults to
-    /// `runs/annotation_packs/<version>-adjudicated.json`.
+    /// `runs/annotation_packs/<version>-adjudicated.json`, or, when
+    /// `--from-benchmark` is set, to the benchmark-local canonical path
+    /// `benchmark/<version>/annotation/adjudicated_subset/pack.json`.
     #[arg(long)]
     pub out: Option<PathBuf>,
     /// Adjudication policy: `prefer-adjudicator` (default) or `majority`.
     #[arg(long, default_value = "prefer-adjudicator")]
     pub policy: String,
+    /// Treat this invocation as producing the canonical, release-grade pack
+    /// for the given benchmark version. Shifts the default output path from
+    /// `runs/annotation_packs/` into the benchmark tree so that a fresh
+    /// clone can compute paper-reportable metrics without prior runs/.
+    /// Has no effect if `--out` is supplied explicitly.
+    #[arg(long, default_value_t = false)]
+    pub from_benchmark: bool,
 }
 
 pub fn pack(workspace: &Path, args: PackArgs) -> Result<()> {
@@ -52,10 +61,19 @@ pub fn pack(workspace: &Path, args: PackArgs) -> Result<()> {
     let pack = AnnotationPack::from_adjudicated(&adjudicated)?;
 
     let out = args.out.unwrap_or_else(|| {
-        workspace
-            .join("runs")
-            .join("annotation_packs")
-            .join(format!("{}-adjudicated.json", args.version.as_str()))
+        if args.from_benchmark {
+            workspace
+                .join("benchmark")
+                .join(args.version.as_str())
+                .join("annotation")
+                .join("adjudicated_subset")
+                .join("pack.json")
+        } else {
+            workspace
+                .join("runs")
+                .join("annotation_packs")
+                .join(format!("{}-adjudicated.json", args.version.as_str()))
+        }
     });
     if let Some(parent) = out.parent() {
         std::fs::create_dir_all(parent)?;

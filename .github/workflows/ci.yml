@@ -53,6 +53,9 @@ jobs:
       - name: cta experiment run (pilot_v1, stub provider)
         run: cargo run -p cta_cli --quiet -- experiment --config configs/experiments/pilot_v1.json
 
+      - name: cta experiment run (pilot_all_systems_v1, stub provider, all four baselines)
+        run: cargo run -p cta_cli --quiet -- experiment --config configs/experiments/pilot_all_systems_v1.json
+
       - name: validate generated run_manifest + results_bundle
         run: |
           set -euo pipefail
@@ -62,6 +65,22 @@ jobs:
             fi
             if [ -f "$run/results_bundle.json" ]; then
               cargo run -p cta_cli --quiet -- validate file --schema results_bundle --path "$run/results_bundle.json"
+            fi
+          done
+
+      - name: assert all four baselines produced outputs (pilot_all_systems_v1)
+        run: |
+          set -euo pipefail
+          summary_dir="runs/experiments/pilot_all_systems_v1"
+          if [ ! -d "$summary_dir" ]; then
+            echo "::error::$summary_dir missing; pilot_all_systems_v1 did not run"
+            exit 1
+          fi
+          for sys in text_only_v1 code_only_v1 naive_concat_v1 full_method_v1; do
+            count=$(find runs -type d -name "$sys" -path "runs/run_*/generated/*" 2>/dev/null | wc -l)
+            if [ "$count" -lt 1 ]; then
+              echo "::error::baseline $sys produced no generated/ directory"
+              exit 1
             fi
           done
 

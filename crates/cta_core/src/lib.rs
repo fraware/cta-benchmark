@@ -22,6 +22,6 @@ pub use versions::{BenchmarkVersion, MetricsVersion, RubricVersion, SchemaVersio
 /// Current schema version constant used across the workspace.
 pub const SCHEMA_VERSION: &str = "schema_v1";
 /// Current metrics contract version.
-pub const METRICS_VERSION: &str = "metrics_v1";
+pub const METRICS_VERSION: &str = "metrics_v2";
 /// Current annotation rubric version.
 pub const RUBRIC_VERSION: &str = "rubric_v1";
