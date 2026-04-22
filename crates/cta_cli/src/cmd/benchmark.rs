@@ -266,9 +266,9 @@ pub fn paper_orchestrate(workspace: &Path, args: PaperOrchestrateArgs) -> Result
     let review_packet_schema = args
         .review_packet_schema
         .unwrap_or_else(|| workspace.join("schemas").join("review_packet.schema.json"));
-    let review_packets_verification_out = args.review_packets_verification_out.unwrap_or_else(|| {
-        review_packets_root.join("verification_summary.signed.json")
-    });
+    let review_packets_verification_out = args
+        .review_packets_verification_out
+        .unwrap_or_else(|| review_packets_root.join("verification_summary.signed.json"));
 
     println!("orchestrate: phase 1/6 annotate plan");
     annotate::plan(

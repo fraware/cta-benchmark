@@ -41,6 +41,18 @@ pub enum GenerateError {
     /// JSON serialization error.
     #[error("json error: {0}")]
     Json(#[from] serde_json::Error),
+    /// Prompt template still contained unresolved `{{placeholders}}` after context bind.
+    #[error(transparent)]
+    Prompt(#[from] crate::prompts::PromptError),
+    /// `reference.rs` missing or empty for a system that requires Rust source.
+    #[error(
+        "reference implementation is missing or empty at {} (required for this prompt kind)",
+        path.display()
+    )]
+    MissingReferenceRust {
+        /// Expected path to `reference.rs` under the instance directory.
+        path: std::path::PathBuf,
+    },
 }
 
 /// Result alias.

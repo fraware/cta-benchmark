@@ -799,7 +799,8 @@ pub fn verify_review_packets(workspace: &Path, args: VerifyReviewPacketsArgs) ->
         workspace.join(&args.out)
     };
     let _schema_value: serde_json::Value = serde_json::from_slice(
-        &std::fs::read(&schema_path).with_context(|| format!("reading {}", schema_path.display()))?,
+        &std::fs::read(&schema_path)
+            .with_context(|| format!("reading {}", schema_path.display()))?,
     )
     .with_context(|| format!("parsing {}", schema_path.display()))?;
     let registry = SchemaRegistry::load(workspace.join("schemas"))
@@ -863,7 +864,10 @@ pub fn verify_review_packets(workspace: &Path, args: VerifyReviewPacketsArgs) ->
             let raw_output = std::fs::read_to_string(&raw_output_path)
                 .with_context(|| format!("reading {}", raw_output_path.display()))?;
             if raw_output.trim().is_empty() {
-                packet_issues.push(format!("empty raw_output.txt: {}", raw_output_path.display()));
+                packet_issues.push(format!(
+                    "empty raw_output.txt: {}",
+                    raw_output_path.display()
+                ));
             }
         }
 

@@ -1,5 +1,6 @@
 ---
 source: crates/cta_generate/tests/prompt_snapshots.rs
+assertion_line: 87
 expression: rendered
 ---
 You are given an informal statement and a Rust reference implementation of a classical algorithm task. Produce a list of Lean 4 proof obligations that together describe what the task is, what the implementation computes, and the properties that make it correct.
@@ -9,7 +10,7 @@ Return the index of `target` in `a`.
 
 Reference implementation:
 ```rust
-{{rust_reference}}
+pub fn binary_search(a: &[i64], target: i64) -> Option<usize> { /* ... */ }
 ```
 
 Rules:

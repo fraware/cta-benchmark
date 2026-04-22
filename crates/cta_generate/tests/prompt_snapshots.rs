@@ -35,17 +35,17 @@ fn canonical_ctx(kind: PromptKind) -> PromptContext {
             );
         }
         PromptKind::CodeOnly => {
-            ctx.insert(
-                "reference_rs",
-                "pub fn binary_search(a: &[i64], target: i64) -> Option<usize> { /* ... */ }",
-            );
+            let code =
+                "pub fn binary_search(a: &[i64], target: i64) -> Option<usize> { /* ... */ }";
+            ctx.insert("reference_rs", code)
+                .insert("rust_reference", code);
         }
         PromptKind::NaiveConcat => {
+            let code =
+                "pub fn binary_search(a: &[i64], target: i64) -> Option<usize> { /* ... */ }";
             ctx.insert("informal_statement", "Return the index of `target` in `a`.")
-                .insert(
-                    "reference_rs",
-                    "pub fn binary_search(a: &[i64], target: i64) -> Option<usize> { /* ... */ }",
-                );
+                .insert("reference_rs", code)
+                .insert("rust_reference", code);
         }
         PromptKind::FullMethod => {
             ctx.insert("problem_summary", "Binary search on a sorted slice.")

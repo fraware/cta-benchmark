@@ -109,6 +109,17 @@ cargo run -p cta_cli -- generate \
   --version v0.2 --split dev --system full_method_v1 \
   --provider configs/providers/local_stub.json
 
+# Subset generation: `--instances` restricts to ids that must appear in the split
+# (comma-separated). Useful for cross-domain smoke runs.
+cargo run -p cta_cli -- generate \
+  --version v0.2 --split eval --system code_only_v1 \
+  --instances arrays_binary_search_002,graph_dijkstra_001 \
+  --provider stub --run-id run_2026_04_22_code_only_v1_eval_zfix_001
+
+# Prompt safety: `generate` / `experiment` render prompts with strict placeholder
+# resolution (no leftover `{{...}}`) and refuse empty `reference.rs` for
+# `code_only_v1` / `naive_concat_v1` before any provider call.
+
 # Annotation pack (reads benchmark/<v>/annotation/adjudicated_subset by default).
 # Add --from-benchmark to write the canonical release-grade pack back into
 # the benchmark tree (benchmark/<v>/annotation/adjudicated_subset/pack.json).

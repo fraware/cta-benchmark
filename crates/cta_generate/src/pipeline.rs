@@ -36,14 +36,17 @@ pub struct GenerateParams {
 ///
 /// The specific placeholders produced depend on [`PromptKind`]:
 /// - `text_only`: `{{informal_statement}}`
-/// - `code_only`: `{{reference_rs}}`
-/// - `naive_concat`: both above
+/// - `code_only`: `{{reference_rs}}` (and `{{rust_reference}}`, an alias used by
+///   checked-in prompt templates for historical reasons)
+/// - `naive_concat`: informal statement plus both `{{reference_rs}}` and
+///   `{{rust_reference}}` (same file content for each key)
 /// - `full_method`: `{{problem_summary}}`, `{{semantic_units}}`,
 ///   `{{rust_summary}}`, `{{lean_scaffold}}`
 ///
 /// Values missing from the instance (e.g. extraction failure) default to an
-/// empty string rather than failing, so renders always proceed; the caller
-/// may use [`PromptTemplate::render_strict`] to fail hard.
+/// empty string for optional slots in `full_method` prompts. [`generate`]
+/// always renders with [`PromptTemplate::render_strict`], so any remaining
+/// `{{placeholder}}` in the template body aborts before a provider call.
 ///
 /// # Errors
 /// Returns an IO error if any of the required instance files cannot be read.
@@ -62,12 +65,27 @@ pub fn build_context(
         }
         PromptKind::CodeOnly => {
             let code = read_if_exists(&reference_rs_path)?;
-            ctx.insert("reference_rs", code);
+            if code.trim().is_empty() {
+                return Err(GenerateError::MissingReferenceRust {
+                    path: reference_rs_path,
+                });
+            }
+            // `reference_rs` is the canonical placeholder name; `rust_reference`
+            // duplicates the same bytes so templates using either key render
+            // verbatim Rust (see `configs/prompts/code_only_v1.json`).
+            ctx.insert("reference_rs", code.clone())
+                .insert("rust_reference", code);
         }
         PromptKind::NaiveConcat => {
             let code = read_if_exists(&reference_rs_path)?;
+            if code.trim().is_empty() {
+                return Err(GenerateError::MissingReferenceRust {
+                    path: reference_rs_path,
+                });
+            }
             ctx.insert("informal_statement", informal_statement)
-                .insert("reference_rs", code);
+                .insert("reference_rs", code.clone())
+                .insert("rust_reference", code);
         }
         PromptKind::FullMethod => {
             let code = read_if_exists(&reference_rs_path)?;
@@ -146,7 +164,10 @@ pub fn generate(
     ctx: &PromptContext,
     params: &GenerateParams,
 ) -> Result<GenerationOutcome> {
-    let prompt = template.render(ctx);
+    // Fail closed if any `{{placeholder}}` from the template body is still
+    // present after substitution (prevents silent provider calls with stale
+    // markers such as `{{rust_reference}}`).
+    let prompt = template.render_strict(ctx)?;
     let prompt_hash = hash_prompt(&prompt);
     let response = provider.generate(&ProviderRequest {
         prompt,
@@ -198,6 +219,7 @@ pub fn generate_bundle(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::prompts::PromptError;
     use crate::StubProvider;
 
     #[test]
@@ -224,5 +246,64 @@ mod tests {
         assert!(bundle.parse_status.ok);
         assert!(bundle.prompt_hash.starts_with("sha256:"));
         assert_eq!(bundle.normalized_obligations.len(), 1);
+    }
+
+    #[test]
+    fn generate_errors_on_unresolved_template_placeholders() {
+        let provider = StubProvider::default();
+        let template = PromptTemplate::new(
+            "code_only_v1",
+            PromptKind::CodeOnly,
+            "v1",
+            "Rust:\n```rust\n{{typo_placeholder}}\n```",
+        );
+        let mut ctx = PromptContext::new();
+        ctx.insert("reference_rs", "fn ok() {}")
+            .insert("rust_reference", "fn ok() {}");
+        let params = GenerateParams {
+            run_id: RunId::new("run_2026_04_22_code_only_v1_eval_097").unwrap(),
+            system_id: SystemId::new("code_only_v1").unwrap(),
+            instance_id: InstanceId::new("arrays_binary_search_001").unwrap(),
+            seed: 0,
+            max_tokens: 64,
+            temperature: 0.0,
+            raw_output_path: "raw.txt".into(),
+        };
+        let err = generate_bundle(&provider, &template, &ctx, &params).unwrap_err();
+        match err {
+            crate::GenerateError::Prompt(PromptError::UnresolvedPlaceholders(keys)) => {
+                assert!(keys.iter().any(|k| k == "typo_placeholder"));
+            }
+            e => panic!("unexpected error: {e:?}"),
+        }
+    }
+
+    #[test]
+    fn build_context_code_only_errors_when_reference_rs_missing_or_empty() {
+        let base = std::env::temp_dir().join(format!(
+            "cta_gen_empty_ref_{}_{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_nanos())
+                .unwrap_or(0)
+        ));
+        let _ = std::fs::remove_dir_all(&base);
+        std::fs::create_dir_all(&base).unwrap();
+        std::fs::write(base.join("scaffold.lean"), "theorem t : True := trivial").unwrap();
+        std::fs::write(base.join("semantic_units.json"), "{\"units\":[]}").unwrap();
+        let err = build_context(
+            PromptKind::CodeOnly,
+            &base,
+            "informal",
+            &base.join("scaffold.lean"),
+            &base.join("semantic_units.json"),
+        )
+        .unwrap_err();
+        assert!(matches!(
+            err,
+            crate::GenerateError::MissingReferenceRust { .. }
+        ));
+        let _ = std::fs::remove_dir_all(&base);
     }
 }

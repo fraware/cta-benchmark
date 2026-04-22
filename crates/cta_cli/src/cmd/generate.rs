@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::path::Path;
 
 use anyhow::{anyhow, Context, Result};
@@ -46,6 +47,11 @@ pub struct GenerateArgs {
     /// `run_YYYY_MM_DD_<system>_<split>_001` is synthesized.
     #[arg(long)]
     pub run_id: Option<String>,
+
+    /// Optional comma-separated instance ids. When set, only these instances
+    /// are generated (each must appear in the chosen split).
+    #[arg(long, value_delimiter = ',')]
+    pub instances: Option<Vec<String>>,
 }
 
 pub fn run(workspace: &Path, args: GenerateArgs) -> Result<()> {
@@ -62,13 +68,29 @@ pub fn run(workspace: &Path, args: GenerateArgs) -> Result<()> {
     let split_raw = std::fs::read_to_string(&split_path)
         .with_context(|| format!("reading split: {}", split_path.display()))?;
     let split_json: serde_json::Value = serde_json::from_str(&split_raw)?;
-    let instance_ids: Vec<String> = split_json
+    let split_instance_ids: Vec<String> = split_json
         .get("instance_ids")
         .and_then(|v| v.as_array())
         .ok_or_else(|| anyhow!("split {} missing instance_ids", args.split))?
         .iter()
         .filter_map(|v| v.as_str().map(str::to_string))
         .collect();
+    let split_set: HashSet<String> = split_instance_ids.iter().cloned().collect();
+
+    let instance_ids: Vec<String> = if let Some(filter) = args.instances.clone() {
+        for iid in &filter {
+            if !split_set.contains(iid) {
+                anyhow::bail!(
+                    "instance {iid} is not listed in split {} ({} instances)",
+                    args.split,
+                    split_instance_ids.len()
+                );
+            }
+        }
+        filter
+    } else {
+        split_instance_ids
+    };
 
     let system_id = SystemId::new(&args.system)
         .map_err(|e| anyhow!("invalid system id '{}': {e}", args.system))?;
