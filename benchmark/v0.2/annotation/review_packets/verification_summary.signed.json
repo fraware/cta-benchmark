@@ -1,13 +1,13 @@
 {
   "signature": {
     "algorithm": "sha256",
-    "value": "162b7a140ef0317839f4d406f5c1330531666e8696b8aad2f42ad96a3d019cac"
+    "value": "ddfcd096a3d60d375b2082875cfed08160e94c7af8225d1d6eb4efbf7b03bc0d"
   },
   "verification": {
     "benchmark_version": "v0.2",
     "packets_root": "benchmark/v0.2/annotation/review_packets",
     "schema_path": "schemas/review_packet.schema.json",
-    "generated_at": "2026-04-23T10:38:15.1807362Z",
+    "generated_at": "2026-04-23T11:29:56.4559883Z",
     "total_packets": 93,
     "passed_packets": 93,
     "failed_packets": 0,
@@ -64,7 +64,7 @@
         "instance_id": "graph_bfs_shortest_path_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_bfs_shortest_path_001/packet.json",
-        "sha256": "168582c2389eea7a5040c55f658727832350e57ea4ca34f1129238dda6c9a572"
+        "sha256": "c8e481dc74e836f2fc7b190af10bb369c91ddf4c6559a6351679fdfdea6b96ad"
       },
       {
         "instance_id": "graph_bfs_shortest_path_002",
@@ -100,7 +100,7 @@
         "instance_id": "greedy_interval_scheduling_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_001/packet.json",
-        "sha256": "5cf2410c4df6be4f56122d6404ac5557f4c5d3fc29917d450bef0aea799db8da"
+        "sha256": "73a2266799837fc94783a84b3efd522aad196b39daeeb81fc241ece75048c9ee"
       },
       {
         "instance_id": "greedy_interval_scheduling_002",
@@ -136,7 +136,7 @@
         "instance_id": "trees_bst_insert_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_bst_insert_001/packet.json",
-        "sha256": "afaa8f7d7470229e7053ea1672c61d1a34a39da02dd1843e315a1cd27aee2e8c"
+        "sha256": "b32b54382569cb9cac5b2e1370982ec59f4b1b596ac0dea600d2e6370f889eb1"
       },
       {
         "instance_id": "trees_bst_insert_002",

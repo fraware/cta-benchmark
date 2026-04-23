@@ -240,14 +240,30 @@ fn assert_instance_specific_fixes(instance_id: &str, packet: &Value) {
                 !bf_text.contains("∀ iv, iv ∈ s ↔ iv ∈ intervals"),
                 "{instance_id}: witness theorem incorrectly equates selection with all intervals"
             );
+            assert!(
+                bf_text.contains("∀ iv, iv ∈ s → iv ∈ intervals")
+                    || bf_text.contains("t ⊆ intervals")
+                    || bf_text.contains("s ⊆ intervals"),
+                "{instance_id}: witness theorem must encode subset selection from input"
+            );
         }
         "graph_bfs_shortest_path_001" => {
             assert!(
                 !bf_text.contains("p.get? i ∈ adj[p.get? i]"),
                 "{instance_id}: malformed path-edge adjacency remains in witness/minimality theorem"
             );
+            assert!(
+                bf_text.contains("let u := p.get! i")
+                    && bf_text.contains("let w := p.get! (i + 1)")
+                    && bf_text.contains("w ∈ adj[u]"),
+                "{instance_id}: bfs edge clause must use consecutive vertices with adjacency w ∈ adj[u]"
+            );
         }
         "graph_dijkstra_001" => {
+            assert!(
+                !bf_text.contains("w ≥ 0") && !bf_text.contains("w >= 0"),
+                "{instance_id}: dijkstra includes vacuous nonnegativity clause despite Nat weights"
+            );
             let source = bf
                 .iter()
                 .find(|ob| {
@@ -278,6 +294,23 @@ fn assert_instance_specific_fixes(instance_id: &str, packet: &Value) {
             assert!(
                 !has_bf_precondition,
                 "{instance_id}: tautological BST precondition must not remain benchmark-facing"
+            );
+            assert!(
+                !bf_text.contains("→ keys (bst_insert t key) = keys t ∪ {key} ∨"),
+                "{instance_id}: malformed key-change disjunction theorem remains benchmark-facing"
+            );
+            let su3_bf = bf
+                .iter()
+                .filter(|ob| {
+                    ob["linked_semantic_units"]
+                        .as_array()
+                        .map(|arr| arr.iter().any(|v| v.as_str() == Some("SU3")))
+                        .unwrap_or(false)
+                })
+                .count();
+            assert!(
+                su3_bf >= 2,
+                "{instance_id}: benchmark-facing SU3 should be split into absent-key and present-key multiset theorems"
             );
         }
         _ => {}

@@ -18,7 +18,7 @@
   "normalized_obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "theorem bfs_shortest_path_length_eq (adj : Array (Array Nat)) (source : Nat) : (let dist := bfs_shortest_path adj source; dist.length = adj.size) := by\n  simp [bfs_shortest_path]",
+      "lean_statement": "theorem bfs_shortest_path_length_eq (adj : Array (Array Nat)) (source : Nat) : (let dist := bfs_shortest_path adj source; dist.length = adj.size) := by\n simp [bfs_shortest_path]",
       "nl_gloss": "The returned distance vector has length exactly equal to the number of vertices.",
       "linked_semantic_units": [
         "SU1"
@@ -26,7 +26,7 @@
     },
     {
       "kind": "postcondition",
-      "lean_statement": "theorem bfs_shortest_path_source_anchor (adj : Array (Array Nat)) (source : Nat) (h : source < adj.size) :\n  (bfs_shortest_path adj source)[source] = some 0 := by\n  simp [bfs_shortest_path, h]",
+      "lean_statement": "theorem bfs_shortest_path_source_anchor (adj : Array (Array Nat)) (source : Nat) (h : source < adj.size) :\n (bfs_shortest_path adj source)[source] = some 0 := by\n simp [bfs_shortest_path, h]",
       "nl_gloss": "The source distance is anchored to Some(0) when the source index is in bounds.",
       "linked_semantic_units": [
         "SU2"
@@ -34,7 +34,7 @@
     },
     {
       "kind": "postcondition",
-      "lean_statement": "theorem bfs_shortest_path_reachability_witness (adj : Array (Array Nat)) (source : Nat) (h : source < adj.size)\n    (v : Nat) (k : Nat) (hk : (bfs_shortest_path adj source)[v] = some k) :\n    ∃ p : List Nat,\n      p.length = k + 1 ∧ p.get? 0 = some source ∧ p.get? (k) = some v ∧\n      (∀ i : Nat, i < k →\n        ∃ u w : Nat,\n          p.get? i = some u ∧ p.get? (i+1) = some w ∧ w ∈ adj[u.toNat].toList) := by\n  -- proof obligation: extract the BFS predecessor chain and show it forms a k-edge path\n  admit",
+      "lean_statement": "theorem bfs_shortest_path_reachability_witness (adj : Array (Array Nat)) (source : Nat) (h : source < adj.size)\n  (v : Nat) (k : Nat) (hk : (bfs_shortest_path adj source)[v] = some k) :\n  \u00e2\u02c6\u0192 p : List Nat,\n   p.length = k + 1 \u00e2\u02c6\u00a7 p.get? 0 = some source \u00e2\u02c6\u00a7 p.get? k = some v \u00e2\u02c6\u00a7\n   (\u00e2\u02c6\u20ac i : Nat, i + 1 < p.length \u00e2\u2020\u2019\n     let u := p.get! i\n     let w := p.get! (i + 1)\n     w \u00e2\u02c6\u02c6 adj[u].toList) := by\n -- proof obligation: extract the BFS predecessor chain and show each consecutive vertex pair is an edge\n admit",
       "nl_gloss": "If dist[v] = Some(k), there exists a directed path from source to v using exactly k edges (k+1 vertices).",
       "linked_semantic_units": [
         "SU3"
@@ -42,7 +42,7 @@
     },
     {
       "kind": "optimality",
-      "lean_statement": "theorem bfs_shortest_path_minimality (adj : Array (Array Nat)) (source : Nat) (h : source < adj.size)\n    (v : Nat) (k : Nat) (hk : (bfs_shortest_path adj source)[v] = some k) :\n    ¬ (∃ p : List Nat, p.length = m + 1 ∧ p.get? 0 = some source ∧ p.get? m = some v ∧\n        (∀ i : Nat, i < m →\n          ∃ u w : Nat,\n            p.get? i = some u ∧ p.get? (i+1) = some w ∧ w ∈ adj[u.toNat].toList) ∧ m < k) := by\n  -- proof obligation: show no path with fewer than k edges exists\n  admit",
+      "lean_statement": "theorem bfs_shortest_path_minimality (adj : Array (Array Nat)) (source : Nat) (h : source < adj.size)\n  (v : Nat) (k : Nat) (hk : (bfs_shortest_path adj source)[v] = some k) :\n  \u00c2\u00ac (\u00e2\u02c6\u0192 m : Nat, \u00e2\u02c6\u0192 p : List Nat,\n      p.length = m + 1 \u00e2\u02c6\u00a7 p.get? 0 = some source \u00e2\u02c6\u00a7 p.get? m = some v \u00e2\u02c6\u00a7\n      (\u00e2\u02c6\u20ac i : Nat, i + 1 < p.length \u00e2\u2020\u2019\n        let u := p.get! i\n        let w := p.get! (i + 1)\n        w \u00e2\u02c6\u02c6 adj[u].toList) \u00e2\u02c6\u00a7 m < k) := by\n -- proof obligation: show no path with fewer than k edges exists\n admit",
       "nl_gloss": "Minimality: if dist[v] = Some(k), then there is no directed path from source to v using fewer than k edges.",
       "linked_semantic_units": [
         "SU4"
@@ -50,7 +50,7 @@
     },
     {
       "kind": "postcondition",
-      "lean_statement": "theorem bfs_shortest_path_unreachability_iff (adj : Array (Array Nat)) (source : Nat) (h : source < adj.size)\n    (v : Nat) :\n    (bfs_shortest_path adj source)[v] = none ↔\n      ¬ (∃ k : Nat, ∃ p : List Nat,\n          p.length = k + 1 ∧ p.get? 0 = some source ∧ p.get? k = some v ∧\n          (∀ i : Nat, i < k →\n            ∃ u w : Nat,\n              p.get? i = some u ∧ p.get? (i+1) = some w ∧ w ∈ adj[u.toNat].toList)) := by\n  -- proof obligation: BFS explores all reachable vertices and assigns their shortest edge counts\n  admit",
+      "lean_statement": "theorem bfs_shortest_path_unreachability_iff (adj : Array (Array Nat)) (source : Nat) (h : source < adj.size)\n  (v : Nat) :\n  (bfs_shortest_path adj source)[v] = none \u00e2\u2020\u201d\n   \u00c2\u00ac (\u00e2\u02c6\u0192 k : Nat, \u00e2\u02c6\u0192 p : List Nat,\n       p.length = k + 1 \u00e2\u02c6\u00a7 p.get? 0 = some source \u00e2\u02c6\u00a7 p.get? k = some v \u00e2\u02c6\u00a7\n       (\u00e2\u02c6\u20ac i : Nat, i + 1 < p.length \u00e2\u2020\u2019\n         let u := p.get! i\n         let w := p.get! (i + 1)\n         w \u00e2\u02c6\u02c6 adj[u].toList)) := by\n -- proof obligation: BFS explores all reachable vertices and assigns their shortest edge counts\n admit",
       "nl_gloss": "Unreachability: dist[v] = None iff there is no directed path from source to v.",
       "linked_semantic_units": [
         "SU5"

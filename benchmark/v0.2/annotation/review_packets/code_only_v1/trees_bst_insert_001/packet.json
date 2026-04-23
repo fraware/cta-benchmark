@@ -125,8 +125,8 @@
       "index": 2,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem bst_insert_keyset_change (t : Tree) (key : Int) (hBST : BST t) :\n (key ∈ keys t) → keys (bst_insert t key) = keys t ∪ {key} ∨\n (key ∉ keys t) → keys (bst_insert t key) = keys t ∪ {key}",
-      "nl_gloss": "Benchmark-facing: key multiset changes by adding {key} exactly when key is absent; otherwise it stays the same.",
+      "lean_statement": "theorem bst_insert_keymultiset_absent (t : Tree) (key : Int) (hBST : BST t) (habsent : key ∉ keys t) :\n  KeyMultiset (bst_insert t key) = KeyMultiset t + {key}",
+      "nl_gloss": "Absent-key case: inserting a missing key adds exactly one occurrence of that key to the output key multiset.",
       "linked_semantic_units": [
         "SU3"
       ],
@@ -134,6 +134,17 @@
     },
     {
       "index": 3,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem bst_insert_keymultiset_present (t : Tree) (key : Int) (hBST : BST t) (hpresent : key ∈ keys t) :\n  KeyMultiset (bst_insert t key) = KeyMultiset t",
+      "nl_gloss": "Present-key case: inserting an existing key leaves the output key multiset unchanged.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
       "kind": "postcondition",
       "layer": "auxiliary",
       "lean_statement": "theorem bst_insert_duplicate_noop (t : Tree) (key : Int) (hBST : BST t) (hmem : key ∈ keys t) :\n keys (bst_insert t key) = keys t",

@@ -106,7 +106,7 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU2_feasibility_witness {intervals : List (Int × Int)} (hlt : ∀ iv ∈ intervals, iv.1 < iv.2) (k : Nat)\n  (hk : k = interval_scheduling intervals) :\n  ∃ S : List (Int × Int),\n   (S ⊆ intervals) ∧\n   (pairwise_nonoverlapping S) ∧\n   (S.length = k.toNat)",
+      "lean_statement": "theorem SU2_feasibility_witness {intervals : List (Int × Int)} (hlt : ∀ iv ∈ intervals, iv.1 < iv.2) :\n  ∃ S : List (Int × Int),\n   (∀ iv, iv ∈ S → iv ∈ intervals) ∧\n   pairwise_nonoverlapping S ∧\n   S.length = interval_scheduling intervals",
       "nl_gloss": "The returned count is witnessed by some subset of the input that is pairwise non-overlapping.",
       "linked_semantic_units": [
         "SU2"
