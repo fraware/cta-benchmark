@@ -5,7 +5,7 @@
   "domain": "arrays",
   "difficulty": "easy",
   "instance_path": "benchmark/v0.2/instances/arrays/arrays_binary_search_002",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzzzzzzzzz_695/generated/code_only_v1/arrays_binary_search_002.json",
+  "generated_output_path": "runs/run_2026_04_23_code_only_v1_eval_zzzzzzzzzzzz_900/generated/code_only_v1/arrays_binary_search_002.json",
   "informal_statement": {
     "text": "Given a sorted slice of integers in nondecreasing order and a target value, return Some(i) where arr[i] == target, or None if the target is absent. If multiple indices match, returning any valid index is acceptable.",
     "preconditions": [
@@ -71,7 +71,7 @@
     {
       "id": "obl_001",
       "kind": "postcondition",
-      "lean_statement": "∀ (arr : Arr) (t : Int) (i : Nat), binarySearch arr t = some i → i < arr.length ∧ arr.get? i = some t",
+      "lean_statement": "\u2200 (arr : Arr) (t : Int) (i : Nat), binarySearch arr t = some i \u2192 i < arr.length \u2227 arr.get? i = some t",
       "nl_gloss": "If the function returns Some i, then i is in range and arr[i] equals the target.",
       "linked_semantic_units": [
         "SU2"
@@ -82,7 +82,7 @@
     {
       "id": "obl_002",
       "kind": "postcondition",
-      "lean_statement": "∀ (arr : Arr) (t : Int), SortedLE arr → binarySearch arr t = none → ∀ i, i < arr.length → arr.get? i ≠ some t",
+      "lean_statement": "\u2200 (arr : Arr) (t : Int), SortedLE arr \u2192 binarySearch arr t = none \u2192 \u2200 i, i < arr.length \u2192 arr.get? i \u2260 some t",
       "nl_gloss": "Assuming the input is sorted in nondecreasing order, if the function returns None then the target does not occur anywhere in the slice.",
       "linked_semantic_units": [
         "SU1",
@@ -97,9 +97,10 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU2_some_implies_valid_and_eq {arr : Array Int} {target : Int} {i : Nat} (hsorted : ∀ i j : Fin arr.size, i ≤ j → arr[i] ≤ arr[j]) :\n  binary_search arr target = some i → i < arr.size ∧ arr[i] = target",
-      "nl_gloss": "Success: if the algorithm returns Some(i), then i is in bounds and arr[i] equals target.",
+      "lean_statement": "theorem SU2_success_index_and_value (arr : Arr) (target : Int) (hs : Sorted arr) (i : Nat) :\n  binarySearch arr target = some i → i < arr.length ∧ arr.get? i = some target",
+      "nl_gloss": "Under sortedness, if the search returns Some i, then i is in bounds and the slice value at i equals the target.",
       "linked_semantic_units": [
+        "SU1",
         "SU2"
       ],
       "raw_source": "model"
@@ -108,32 +109,11 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU3_none_implies_not_mem {arr : Array Int} (target : Int) (hsorted : ∀ i j : Fin arr.size, i ≤ j → arr[i] ≤ arr[j]) :\n binary_search arr target = none → (∀ i : Fin arr.size, arr[i] ≠ target)",
-      "nl_gloss": "Failure: if the algorithm returns None, then the target does not occur anywhere in the array.",
+      "lean_statement": "theorem SU3_failure_absent (arr : Arr) (target : Int)\n  (hs : Sorted arr) (h : binarySearch arr target = none) :\n  ∀ j, j < arr.length → arr.get? j ≠ some target",
+      "nl_gloss": "Under sortedness, if the search returns None, then the target does not occur at any valid index.",
       "linked_semantic_units": [
+        "SU1",
         "SU3"
-      ],
-      "raw_source": "model"
-    },
-    {
-      "index": 2,
-      "kind": "termination",
-      "layer": "auxiliary",
-      "lean_statement": "theorem SU4_terminates {arr : Array Int} (target : Int) :\n ∃ n : Nat, binary_search_steps arr target n = true",
-      "nl_gloss": "Termination: the binary search loop terminates (there exists a finite step bound).",
-      "linked_semantic_units": [
-        "SU4"
-      ],
-      "raw_source": "model"
-    },
-    {
-      "index": 3,
-      "kind": "optimality",
-      "layer": "auxiliary",
-      "lean_statement": "theorem SU5_allows_any_matching_index {arr : Array Int} (target : Int) (hsorted : ∀ i j : Fin arr.size, i ≤ j → arr[i] ≤ arr[j]) :\n (∃ i : Fin arr.size, arr[i] = target) →\n ∃ k : Fin arr.size, binary_search arr target = some k ∧ arr[k] = target",
-      "nl_gloss": "Duplicates are allowed: if the target occurs, the algorithm may return any matching index (not necessarily the first/last).",
-      "linked_semantic_units": [
-        "SU5"
       ],
       "raw_source": "model"
     }

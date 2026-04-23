@@ -1,1 +1,44 @@
-{"obligations":[{"kind":"precondition","lean_statement":"denoms.Sorted (· ≤ ·) ∧ denoms.length > 0 ∧ denoms[0] = 1","nl_gloss":"The denomination list is sorted strictly ascending and starts with 1 (as required by the implementation’s intended canonical greedy behavior)."},{"kind":"precondition","lean_statement":"∀ i j : Fin denoms.length, i < j → denoms[i] < denoms[j]","nl_gloss":"Strictly increasing denominations (no duplicates), matching the stated precondition."},{"kind":"precondition","lean_statement":"∀ i : Fin denoms.length, denoms[i] ≠ 0","nl_gloss":"Denominations are nonzero; the code has a branch for d = 0, but the stated precondition is that the system is a proper denomination system."},{"kind":"precondition","lean_statement":"amount ≥ 0","nl_gloss":"Amount is nonnegative (trivially true for u32, but included as stated)."},{"kind":"specification","lean_statement":"let counts := coin_change_canonical denoms amount; ∀ i : Fin denoms.length, 0 ≤ counts[i]","nl_gloss":"All returned counts are valid natural coin counts (nonnegative)."},{"kind":"invariant","lean_statement":"let counts := coin_change_canonical denoms amount; ∀ i : Fin denoms.length, counts[i] * denoms[i] ≤ amount","nl_gloss":"Each computed coin contribution does not exceed the original amount (follows from division and subtraction)."},{"kind":"invariant","lean_statement":"∃ remaining : Nat, remaining = amount - ∑ i : Fin denoms.length, counts[i] * denoms[i]","nl_gloss":"There exists a remaining amount after taking the computed coins; the algorithm maintains remaining by subtracting counts[i]*d."},{"kind":"correctness","lean_statement":"amount = ∑ i : Fin denoms.length, (coin_value i) * counts[i] + remaining ∧ remaining = 0","nl_gloss":"For the canonical greedy system, the greedy decomposition exactly sums to the target amount (no leftover)."},{"kind":"optimality","lean_statement":"(canonical denoms) → (∀ alt : Fin denoms.length → Nat, (∑ i, alt i * denoms[i]) = amount → (∑ i, alt i) ≥ (∑ i, counts i))","nl_gloss":"If the denomination system is canonical (greedy is optimal), then the greedy decomposition uses the minimum number of coins among all decompositions that sum to the amount."},{"kind":"termination","lean_statement":"True","nl_gloss":"The loop iterates over a finite range (reverse over indices), so it terminates."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem coin_change_canonical_precondition_canonicality {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hlen : denoms.length > 0) : True := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: require the denomination system to be canonical so greedy is optimal.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem coin_change_canonical_alignment {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hamount : amount ≥ 0) (counts := coin_change_canonical denoms amount) : counts.length = denoms.length := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: the output counts vector has the same length as denoms.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem coin_change_canonical_decomposition {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hamount : amount ≥ 0) (counts := coin_change_canonical denoms amount) :\n    (∑ i in Finset.range denoms.length, (counts.get ⟨i, by simpa using Nat.lt_of_lt_of_le (Fin.isLt i) (Nat.le_of_lt_succ (Nat.lt_succ_self _)))⟩ * denoms.get ⟨i, by simpa using Nat.lt_of_lt_of_le (Fin.isLt i) (Nat.le_of_lt_succ (Nat.lt_succ_self _)))⟩) = amount := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: the weighted sum of counts by denoms equals the requested amount.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem coin_change_canonical_optimality {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hamount : amount ≥ 0) (counts := coin_change_canonical denoms amount) :\n    (∑ i in Finset.range denoms.length, counts.get ⟨i, by\n      have : i.1 < denoms.length := i.isLt\n      simpa using this⟩) ≤\n    (∑ i in Finset.range denoms.length, c.get ⟨i, by\n      have : i.1 < denoms.length := i.isLt\n      simpa using this⟩) := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: greedy yields a decomposition with minimal total number of coins among all valid decompositions.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem coin_change_canonical_nonnegativity {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hamount : amount ≥ 0) (counts := coin_change_canonical denoms amount) :\n    ∀ i : Fin denoms.length, 0 ≤ counts.get i := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: every count entry is non-negative.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ]
+}

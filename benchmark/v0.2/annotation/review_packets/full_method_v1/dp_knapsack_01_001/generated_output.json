@@ -17,49 +17,35 @@
   },
   "normalized_obligations": [
     {
-      "kind": "unknown",
-      "lean_statement": "theorem SU1_alignment_precondition (weights : Weights) (values : Values) : weights.length = values.length → True := by intro h; trivial",
-      "nl_gloss": "If weights and values are aligned index-for-index (same length), then the alignment precondition holds.",
+      "kind": "postcondition",
+      "lean_statement": "theorem knapsack01_value_witness (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) :\n  ∃ sel : Selection,\n    ValidSelection weights sel ∧\n    totalWeight weights sel ≤ capacity ∧\n    totalValue values sel = knapsack01 weights values capacity := by\n  admit",
+      "nl_gloss": "When weights and values are length-aligned, there exists a valid feasible selection whose total value equals the returned result.",
       "linked_semantic_units": [
-        "SU1"
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
       ],
-      "confidence": 0.35
+      "confidence": 0.75
     },
     {
-      "kind": "unknown",
-      "lean_statement": "theorem SU2_capacity_feasibility (weights : Weights) (values : Values) (capacity : Nat) (sel : Selection) : ValidSelection weights sel → totalWeight weights sel ≤ capacity → True := by intro h; intro hw; trivial",
-      "nl_gloss": "For any valid witness selection, its total weight is at most the capacity.",
+      "kind": "postcondition",
+      "lean_statement": "theorem knapsack01_optimality (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) (sel : Selection)\n  (hV : ValidSelection weights sel) (hw : totalWeight weights sel ≤ capacity) :\n  totalValue values sel ≤ knapsack01 weights values capacity := by\n  admit",
+      "nl_gloss": "When weights and values are length-aligned, no valid feasible selection beats the returned result.",
       "linked_semantic_units": [
-        "SU2"
-      ],
-      "confidence": 0.55
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "theorem SU3_value_witness (weights : Weights) (values : Values) (capacity : Nat) (sel : Selection) : ValidSelection weights sel → totalWeight weights sel ≤ capacity → knapsack01 weights values capacity = totalValue values sel → True := by intro h; intro hw; intro hEq; trivial",
-      "nl_gloss": "There exists a valid selection within capacity whose total value equals the returned result.",
-      "linked_semantic_units": [
-        "SU3"
-      ],
-      "confidence": 0.6
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "theorem SU4_optimality (weights : Weights) (values : Values) (capacity : Nat) : (∀ sel : Selection, ValidSelection weights sel → totalWeight weights sel ≤ capacity → totalValue values sel ≤ knapsack01 weights values capacity) → True := by intro h; trivial",
-      "nl_gloss": "No valid selection with total weight ≤ capacity has total value strictly greater than the returned result (i.e., returned value is an upper bound over all feasible selections).",
-      "linked_semantic_units": [
+        "SU1",
         "SU4"
       ],
-      "confidence": 0.6
+      "confidence": 0.75
     },
     {
-      "kind": "unknown",
-      "lean_statement": "theorem SU5_uniqueness (weights : Weights) (sel : Selection) : ValidSelection weights sel → sel.Nodup → True := by intro h; intro hN; trivial",
-      "nl_gloss": "Any witness selection is 0/1: items appear at most once (captured by Nodup in ValidSelection).",
+      "kind": "postcondition",
+      "lean_statement": "theorem knapsack01_valid_selection_nodup (weights : Weights) (sel : Selection)\n  (hV : ValidSelection weights sel) : sel.Nodup := by\n  exact hV.1",
+      "nl_gloss": "Any valid selection is 0/1 at the index level: indices are distinct (Nodup is part of ValidSelection).",
       "linked_semantic_units": [
         "SU5"
       ],
-      "confidence": 0.5
+      "confidence": 0.85
     }
   ],
   "prompt_hash": "sha256:8f0c31b56cbac7c5de9b26782f7c4a6db0344afb7c3997b140781feb52eb82d2",

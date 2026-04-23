@@ -1,49 +1,52 @@
 {
   "obligations": [
     {
-      "kind": "spec",
-      "lean_statement": "theorem bfs_shortest_path_length_spec (adj : List (List Nat)) (source : Nat) :\n  let n := adj.length\n  let dist := bfs_shortest_path (adj.map (fun l => l.map id)) source\n  dist.length = n := by\n    -- proof obligation: output vector length matches number of vertices\n    sorry",
-      "nl_gloss": "The returned distance vector has length equal to the number of vertices (adj.len())."
-    },
-    {
       "kind": "precondition",
-      "lean_statement": "theorem bfs_shortest_path_out_of_bounds_returns_none (adj : List (List Nat)) (source : Nat) :\n  source >= adj.length ->\n  bfs_shortest_path (adj.map (fun l => l.map id)) source = List.replicate adj.length none := by\n  sorry",
-      "nl_gloss": "If source is out of bounds (source >= n), the implementation returns a vector of None for all vertices."
+      "lean_statement": "theorem bfs_shortest_path_len {adj : Array (Array Nat)} {source : Nat} (h : source < adj.size) : True := by\n  trivial",
+      "nl_gloss": "Benchmark precondition: source must be within bounds of the adjacency array.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "invariant",
-      "lean_statement": "theorem bfs_invariant_dist_sound (adj : Array (List Nat)) (source u : Nat) :\n  let n := adj.size\n  source < n ->\n  -- During the BFS loop, whenever dist[u] = some d, there exists a path of length d from source to u.\n  True := by\n  sorry",
-      "nl_gloss": "Loop invariant: any assigned distance dist[u] = d corresponds to an actual directed path from source to u using exactly d edges."
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_length_eq {adj : Array (Array Nat)} {source : Nat} (h : source < adj.size) :\n  (bfs_shortest_path adj source).size = adj.size := by\n  sorry",
+      "nl_gloss": "Length invariant: dist has length n, equal to the number of vertices.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "invariant",
-      "lean_statement": "theorem bfs_invariant_dist_minimal (adj : Array (List Nat)) (source u : Nat) :\n  let n := adj.size\n  source < n ->\n  -- During the BFS loop, assigned distances are nondecreasing along discovery order,\n  -- implying that when dist[u] is first set to d, no shorter path exists.\n  True := by\n  sorry",
-      "nl_gloss": "Loop invariant / correctness property: when a vertex v is first discovered with dist[v] = d, there is no path from source to v with fewer than d edges."
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_source_anchor {adj : Array (Array Nat)} {source : Nat} (h : source < adj.size) :\n  (bfs_shortest_path adj source)[source] = some 0 := by\n  sorry",
+      "nl_gloss": "Source anchor: dist[source] = Some(0).",
+      "linked_semantic_units": [
+        "SU2"
+      ]
     },
     {
-      "kind": "invariant",
-      "lean_statement": "theorem bfs_invariant_queue_consistency (adj : Array (List Nat)) (source : Nat) :\n  let n := adj.size\n  source < n ->\n  -- For every vertex u currently in the queue, dist[u] is some d and d is the distance used to generate its outgoing relaxations.\n  True := by\n  sorry",
-      "nl_gloss": "Queue invariant: vertices in the queue have already been assigned a distance, and that distance is used consistently for edge expansions."
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_witness {adj : Array (Array Nat)} {source v : Nat} (hs : source < adj.size) (hv : v < adj.size) :\n  (bfs_shortest_path adj source)[v] = some k →\n  ∃ p : List Nat,\n    p.length = k + 1 ∧\n    p.get? 0 = some source ∧\n    p.get? (k) = some v ∧\n    (∀ i : Nat, i + 1 < p.length →\n      ∃ w : Nat,\n        p.get? i = some w ∧\n        p.get? (i+1) = some (adj.get! w).get? 0 ∨ True) := by\n  sorry",
+      "nl_gloss": "Reachability witness: if dist[v] = Some(k), there is a directed path from source to v using exactly k edges.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
-      "kind": "termination",
-      "lean_statement": "theorem bfs_terminates (adj : Array (List Nat)) (source : Nat) :\n  let n := adj.size\n  source < n ->\n  -- The loop terminates because each vertex is enqueued at most once (dist[v] changes from none to some once).\n  True := by\n  sorry",
-      "nl_gloss": "Termination argument: each vertex is discovered at most once, so the queue processing loop is finite."
+      "kind": "optimality",
+      "lean_statement": "theorem bfs_shortest_path_minimality {adj : Array (Array Nat)} {source v : Nat} (hs : source < adj.size) (hv : v < adj.size) :\n  (bfs_shortest_path adj source)[v] = some k →\n  ¬ (∃ p : List Nat, p.length ≤ k ∧ p.get? 0 = some source ∧ p.get? (p.length-1) = some v ∧\n      ∀ i : Nat, i + 1 < p.length →\n        ∃ u : Nat, p.get? i = some u ∧ p.get? (i+1) ∈ (adj.get! u).toList) := by\n  sorry",
+      "nl_gloss": "Minimality: if dist[v] = Some(k), no path uses fewer than k edges.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
     },
     {
-      "kind": "correctness",
-      "lean_statement": "theorem bfs_correct_reachable (adj : Array (List Nat)) (source : Nat) :\n  let n := adj.size\n  source < n ->\n  ∀ v < n,\n    (∃ k : Nat, shortestPathLen adj source v k) ->\n    (bfs_shortest_path (adj.toList.map (fun l => l)) source)[v] = some (shortestPathLenValue adj source v) := by\n  sorry",
-      "nl_gloss": "If v is reachable from source, the algorithm returns Some(k) where k is the length of a shortest path."
-    },
-    {
-      "kind": "correctness",
-      "lean_statement": "theorem bfs_correct_unreachable (adj : Array (List Nat)) (source : Nat) :\n  let n := adj.size\n  source < n ->\n  ∀ v < n,\n    (¬ ∃ k : Nat, pathLen adj source v k) ->\n    (bfs_shortest_path (adj.toList.map (fun l => l)) source)[v] = none := by\n  sorry",
-      "nl_gloss": "If v is unreachable from source, the algorithm leaves dist[v] as None."
-    },
-    {
-      "kind": "edge_case",
-      "lean_statement": "theorem bfs_source_distance_is_zero (adj : Array (List Nat)) (source : Nat) :\n  let n := adj.size\n  source < n ->\n  (bfs_shortest_path (adj.toList.map (fun l => l)) source)[source] = some 0 := by\n  sorry",
-      "nl_gloss": "The source vertex is assigned distance 0."
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_unreachability_iff {adj : Array (Array Nat)} {source v : Nat} (hs : source < adj.size) (hv : v < adj.size) :\n  (bfs_shortest_path adj source)[v] = none ↔\n    ¬ (∃ p : List Nat, p.length ≥ 1 ∧ p.get? 0 = some source ∧ p.get? (p.length-1) = some v ∧\n        ∀ i : Nat, i + 1 < p.length →\n          ∃ u : Nat, p.get? i = some u ∧ p.get? (i+1) ∈ (adj.get! u).toList) := by\n  sorry",
+      "nl_gloss": "Unreachability: dist[v] = None iff no path exists from source to v.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
     }
   ]
 }

@@ -5,7 +5,7 @@
   "domain": "greedy",
   "difficulty": "medium",
   "instance_path": "benchmark/v0.2/instances/greedy/greedy_interval_scheduling_002",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001/generated/code_only_v1/greedy_interval_scheduling_002.json",
+  "generated_output_path": "runs/run_2026_04_23_code_only_v1_eval_zzzzzzzzzzzz_900/generated/code_only_v1/greedy_interval_scheduling_002.json",
   "informal_statement": {
     "text": "Given a slice of closed-open intervals [start, end), return the maximum number of mutually non-overlapping intervals selectable from the input.",
     "preconditions": [
@@ -69,7 +69,7 @@
     {
       "id": "obl_001",
       "kind": "postcondition",
-      "lean_statement": "∀ (ivs : Intervals), (∀ i ∈ ivs, i.start < i.stop) → ∃ (sel : List Nat), Feasible ivs sel ∧ sel.length = intervalScheduling ivs",
+      "lean_statement": "\u2200 (ivs : Intervals), (\u2200 i \u2208 ivs, i.start < i.stop) \u2192 \u2203 (sel : List Nat), Feasible ivs sel \u2227 sel.length = intervalScheduling ivs",
       "nl_gloss": "When every input interval has strictly positive length, there exists a feasible selection whose size equals the returned count.",
       "linked_semantic_units": [
         "SU1",
@@ -81,7 +81,7 @@
     {
       "id": "obl_002",
       "kind": "postcondition",
-      "lean_statement": "∀ (ivs : Intervals) (sel : List Nat), (∀ i ∈ ivs, i.start < i.stop) → Feasible ivs sel → sel.length ≤ intervalScheduling ivs",
+      "lean_statement": "\u2200 (ivs : Intervals) (sel : List Nat), (\u2200 i \u2208 ivs, i.start < i.stop) \u2192 Feasible ivs sel \u2192 sel.length \u2264 intervalScheduling ivs",
       "nl_gloss": "When every input interval has strictly positive length, no feasible selection is strictly larger than the returned count.",
       "linked_semantic_units": [
         "SU3"
@@ -92,7 +92,7 @@
     {
       "id": "obl_003",
       "kind": "postcondition",
-      "lean_statement": "∀ (a b : Interval), a.stop = b.start → NonOverlap a b",
+      "lean_statement": "\u2200 (a b : Interval), a.stop = b.start \u2192 NonOverlap a b",
       "nl_gloss": "Intervals touching at a single endpoint are non-overlapping.",
       "linked_semantic_units": [
         "SU4"
@@ -104,109 +104,59 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "precondition",
-      "lean_statement": "∀ (intervals : List (Int × Int)), True",
-      "nl_gloss": "No explicit preconditions are asserted by the implementation; it accepts any list of (start,end) integer pairs.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_feasible_witness {intervals : List (Int * Int)} (hSU1 : forall iv, List.Mem iv intervals -> iv.1 < iv.2) :\n  exists S : List (Int * Int), (forall iv, List.Mem iv S -> List.Mem iv intervals) /\\ pairwise_nonoverlapping S /\\ S.length = interval_scheduling intervals",
+      "nl_gloss": "Returned count is witnessed by a feasible subset.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "def nonoverlap (iv₁ iv₂ : Int × Int) : Prop := iv₁.1 ≥ iv₂.2 ∨ iv₂.1 ≥ iv₁.2",
-      "nl_gloss": "Intervals are treated as half-open [start,end). Two intervals are non-overlapping iff one starts at or after the other ends.",
-      "linked_semantic_units": [],
+      "kind": "optimality",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_maximality {intervals : List (Int * Int)} (hSU1 : forall iv, List.Mem iv intervals -> iv.1 < iv.2) :\n  forall T : List (Int * Int), (forall iv, List.Mem iv T -> List.Mem iv intervals) -> pairwise_nonoverlapping T -> T.length <= interval_scheduling intervals",
+      "nl_gloss": "No feasible subset is larger.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "unknown",
-      "lean_statement": "def feasible (S : List (Int × Int)) : Prop := ∀ ⦃a b⦄, a ∈ S → b ∈ S → a ≠ b → nonoverlap a b",
-      "nl_gloss": "A set/list of intervals is feasible if every distinct pair is non-overlapping.",
-      "linked_semantic_units": [],
+      "kind": "auxiliary",
+      "layer": "auxiliary",
+      "lean_statement": "theorem SU4_endpoint_convention (a b c d : Int) : b <= c -> nonoverlapping (a,b) (c,d)",
+      "nl_gloss": "Endpoint-touching intervals are non-overlapping.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
       "raw_source": "model"
     },
     {
       "index": 3,
-      "kind": "unknown",
-      "lean_statement": "def greedySelect (sorted : List (Int × Int)) : List (Int × Int) :=\n  let rec go (lastEnd : Option Int) (acc : List (Int × Int)) (xs : List (Int × Int)) : List (Int × Int) :=\n    match xs with\n    | [] => acc\n    | (s,e)::xs' =>\n      match lastEnd with\n      | none => go (some e) ((s,e)::acc) xs'\n      | some le => if s ≥ le then go (some e) ((s,e)::acc) xs' else go lastEnd acc xs'\n  go none [] sorted",
-      "nl_gloss": "Model the loop: after sorting by increasing end, greedily take an interval iff its start is ≥ the end of the last chosen interval.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "def greedyCount (intervals : List (Int × Int)) : Nat := (greedySelect (intervals.sort (fun a b => a.2 ≤ b.2))).length",
-      "nl_gloss": "Model the returned count as the length of the greedy-selected intervals after sorting by end time.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 5,
-      "kind": "unknown",
-      "lean_statement": "interval_scheduling intervals = greedyCount intervals",
-      "nl_gloss": "The Rust function returns exactly the number of intervals selected by the greedy procedure described above.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "invariant",
-      "lean_statement": "∀ (sorted : List (Int × Int)) (acc : List (Int × Int)) (lastEnd : Option Int),\n  let chosen := greedySelect sorted in\n  True",
-      "nl_gloss": "Placeholder for the loop invariant structure: the chosen intervals are exactly those accumulated by the greedy rule; the key properties are captured in subsequent obligations.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 7,
-      "kind": "invariant",
-      "lean_statement": "∀ (sorted : List (Int × Int)),\n  let chosen := greedySelect sorted\n  in feasible chosen",
-      "nl_gloss": "All intervals chosen by the greedy algorithm are mutually non-overlapping (feasibility).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 8,
-      "kind": "invariant",
-      "lean_statement": "∀ (sorted : List (Int × Int)),\n  let chosen := greedySelect sorted\n  in ∀ {a b}, a ∈ chosen → b ∈ chosen → a ≠ b →\n     (a.2 ≤ b.1 ∨ b.2 ≤ a.1)",
-      "nl_gloss": "Stronger pairwise non-overlap property consistent with half-open intervals: for any two chosen intervals, one ends no later than the other starts.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 9,
-      "kind": "invariant",
-      "lean_statement": "∀ (sorted : List (Int × Int)),\n  let chosen := greedySelect sorted\n  in ∀ {a b}, a ∈ chosen → b ∈ chosen → a ≠ b →\n     (a.2 ≤ b.2 ∨ b.2 ≤ a.2)",
-      "nl_gloss": "Because the algorithm processes intervals in nondecreasing end-time order, the chosen intervals can be assumed to respect that ordering; this supports exchange arguments.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 10,
-      "kind": "optimality",
-      "lean_statement": "∀ (intervals : List (Int × Int)),\n  let n := interval_scheduling intervals\n  in ∃ (S : List (Int × Int)),\n     S ⊆ intervals ∧ feasible S ∧ S.length = n",
-      "nl_gloss": "The algorithm returns the size of some feasible subset of the input intervals (so the count is achievable).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 11,
-      "kind": "optimality",
-      "lean_statement": "∀ (intervals : List (Int × Int)),\n  let n := interval_scheduling intervals\n  in ∀ (T : List (Int × Int)),\n     T ⊆ intervals → feasible T → T.length ≤ n",
-      "nl_gloss": "Maximum-cardinality optimality: no feasible subset of the input has more intervals than the greedy algorithm returns.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 12,
-      "kind": "unknown",
-      "lean_statement": "∀ (sorted : List (Int × Int)),\n  let chosen := greedySelect sorted\n  in True",
-      "nl_gloss": "Placeholder obligation to structure the correctness proof via the standard earliest-finish-time exchange argument; the concrete exchange/induction steps would be formalized in additional lemmas in a full development.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "auxiliary",
+      "lean_statement": "theorem SU5_empty_input : interval_scheduling ([] : List (Int \u00d7 Int)) = 0",
+      "nl_gloss": "Empty-input theorem.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_002/lean_diagnostics.json"

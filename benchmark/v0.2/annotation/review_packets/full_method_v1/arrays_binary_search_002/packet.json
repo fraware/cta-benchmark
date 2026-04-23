@@ -95,56 +95,61 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "precondition",
-      "lean_statement": "theorem SU1_sorted_precond {a : Arr} (h : Sorted a) : Sorted a := h",
-      "nl_gloss": "Assume the input slice is sorted in nondecreasing order (SortedLE).",
-      "linked_semantic_units": [
-        "SU1"
-      ],
-      "raw_source": "model"
-    },
-    {
-      "index": 1,
-      "kind": "unknown",
-      "lean_statement": "theorem SU2_some_implies_inbounds_and_eq {a : Arr} {t : Int} {i : Nat}\n  (h : binarySearch a t = some i) : IndexValid i a ∧ nthLe a i = t := by\n  -- proof obligation: model must guarantee bounds and equality when Some i is returned\n  admit",
-      "nl_gloss": "If the algorithm returns Some i, then i is a valid index and a[i] = target.",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem binary_search_success (a : Arr) (t : Int) (i : Nat)\n  (h : binarySearch a t = some i) :\n  i < a.length ∧ a.get? i = some t := by\n  admit",
+      "nl_gloss": "If the function returns Some i, then i is in range and arr[i] equals the target.",
       "linked_semantic_units": [
         "SU2"
       ],
       "raw_source": "model"
     },
     {
-      "index": 2,
-      "kind": "unknown",
-      "lean_statement": "theorem SU3_none_implies_absent {a : Arr} {t : Int}\n  (h : binarySearch a t = none) : ¬ ∃ i : Nat, IndexValid i a ∧ nthLe a i = t := by\n  -- proof obligation: model must guarantee absence when None is returned\n  admit",
-      "nl_gloss": "If the algorithm returns None, then target does not occur at any valid index.",
+      "index": 1,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem binary_search_absent_when_sorted (a : Arr) (t : Int)\n  (hs : Sorted a) (h : binarySearch a t = none) :\n  ∀ i, i < a.length → a.get? i ≠ some t := by\n  admit",
+      "nl_gloss": "Assuming the input is sorted in nondecreasing order, if the function returns None then the target does not occur anywhere in the slice.",
       "linked_semantic_units": [
+        "SU1",
         "SU3"
       ],
       "raw_source": "model"
     },
     {
-      "index": 3,
+      "index": 2,
       "kind": "termination",
-      "lean_statement": "theorem SU4_terminates {a : Arr} {t : Int} : ∃ n : Nat, True := by\n  -- proof obligation placeholder: establish termination via a variant/measure\n  exact ⟨0, trivial⟩",
-      "nl_gloss": "The function terminates on every input (loop variant decreases).",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem binary_search_terminates (a : Arr) (t : Int) :\n  ∃ r : SearchResult, r = binarySearch a t := by\n  refine ⟨binarySearch a t, rfl⟩",
+      "nl_gloss": "The function always returns a result value (terminates with an output on every input).",
       "linked_semantic_units": [
         "SU4"
       ],
       "raw_source": "model"
     },
     {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "theorem SU5_duplicates_allow_any_index {a : Arr} {t : Int} {i j : Nat}\n  (hi : binarySearch a t = some i)\n  (hj : binarySearch a t = some j)\n  (hiv : IndexValid i a)\n  (hjv : IndexValid j a) : nthLe a i = t ∧ nthLe a j = t := by\n  -- proof obligation: if multiple indices match, returning any valid one is acceptable\n  admit",
-      "nl_gloss": "When duplicates exist, returning any matching valid index is allowed; both returned indices (if Some) must satisfy equality.",
+      "index": 3,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem binary_search_duplicate_indices (a : Arr) (t : Int) (i j : Nat)\n  (hi : binarySearch a t = some i) (hj : binarySearch a t = some j) :\n  i < a.length ∧\n  j < a.length ∧\n  a.get? i = some t ∧\n  a.get? j = some t := by\n  admit",
+      "nl_gloss": "If duplicates exist, any two Some-results returned for the same search must both be valid hits for the target.",
       "linked_semantic_units": [
-        "SU5",
-        "SU2"
+        "SU2",
+        "SU5"
       ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_binary_search_002/lean_diagnostics.json"

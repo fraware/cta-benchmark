@@ -132,93 +132,85 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "precondition",
-      "lean_statement": "∀ (n : Nat) (source : Nat) (edges : List Edge),\n  source < n ∧ (∀ e ∈ edges, e.src < n ∧ e.dst < n)",
-      "nl_gloss": "All vertex indices used by the input are within bounds of the graph size n, and the source is a valid vertex.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_dist_length (n source : Nat) (g : Graph) :\n  (dijkstra n source g).length = n",
+      "nl_gloss": "The returned distance table has length n.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "let adjacency : Fin n → List (Fin n × Nat) :=\n  fun u => edges.filterMap (fun e => if e.src = u.val then some (⟨e.dst, by ...⟩, e.weight.toNat) else none)",
-      "nl_gloss": "Define the adjacency list used by the implementation as a function from each vertex to its outgoing (dst, weight) neighbors.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_source_anchor (n source : Nat) (g : Graph) (hs : source < n) :\n  (dijkstra n source g).get? source = some (some 0)",
+      "nl_gloss": "The distance from the source to itself is zero.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "invariant",
-      "lean_statement": "let dist : Fin n → Option Nat := ...\n  ∀ v : Fin n, dist v = some d → d ≥ 0",
-      "nl_gloss": "Distances stored in dist are always nonnegative (trivial since they are Nat/u64 derived from nonnegative weights).",
-      "linked_semantic_units": [],
+      "kind": "optimality",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU5_optimal_under_nonneg (n source v : Nat) (g : Graph) (d : Nat)\n  (hnn : NonNegativeWeights g)\n  (hd : (dijkstra n source g).get? v = some (some d)) :\n  ∀ d', PathWeight g source v d' → d ≤ d'",
+      "nl_gloss": "With non-negative edge weights, any stored finite distance is minimal among all path weights.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU5"
+      ],
       "raw_source": "model"
     },
     {
       "index": 3,
-      "kind": "invariant",
-      "lean_statement": "∀ v : Fin n, dist v = some d →\n  ∃ path : List (Fin n),\n    path ≠ [] ∧ path.head? = some source ∧ path.get? (path.length - 1) = some v ∧\n    (∃ wts : List Nat,\n      path.length = wts.length + 1 ∧\n      (∀ i, i < wts.length →\n        let u := path.get ⟨i, by ...⟩; let v' := path.get ⟨i+1, by ...⟩;\n        (u, v') ∈ adjacency u ∧ wts.get ⟨i, by ...⟩ = (weight of that edge)) ) ∧\n    d = sum wts",
-      "nl_gloss": "Whenever dist[v] is Some(d), there exists a directed path from source to v whose total weight equals d. (So dist values are always realizable path lengths.)",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU4_path_realizable (n source v : Nat) (g : Graph) (d : Nat)\n  (hd : (dijkstra n source g).get? v = some (some d)) :\n  PathWeight g source v d",
+      "nl_gloss": "Every finite stored distance is realized by some path from the source.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
       "raw_source": "model"
     },
     {
       "index": 4,
-      "kind": "invariant",
-      "lean_statement": "∀ v : Fin n, dist v = some d →\n  d ≤ shortestPathWeight source v edges",
-      "nl_gloss": "At all times, the current dist[v] is an upper bound on the true shortest-path distance from source to v.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU6_unreachable (n source v : Nat) (g : Graph)\n  (hv : (dijkstra n source g).get? v = some none) :\n  ¬ ∃ d, PathWeight g source v d",
+      "nl_gloss": "A none entry means no path exists from the source to that vertex.",
+      "linked_semantic_units": [
+        "SU6"
+      ],
       "raw_source": "model"
     },
     {
       "index": 5,
-      "kind": "unknown",
-      "lean_statement": "∀ (d : Nat) (u : Fin n),\n  (Reverse (d, u)) ∈ heap → dist u = some d' → d = d' ∨ d > d'",
-      "nl_gloss": "Any (d,u) popped from the heap is either the current best distance for u or an outdated larger one; the algorithm discards outdated entries via the check `if Some(d) != dist[u] { continue }`.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "invariant",
-      "lean_statement": "∀ v : Fin n, dist v = some d →\n  ∃ d' : Nat, d' = d ∧ (d' is the key of some heap entry at or before the time dist[v] was set)",
-      "nl_gloss": "Whenever dist[v] is updated to Some(nd), the algorithm pushes the corresponding (nd,v) into the heap, ensuring future pops can validate it.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 7,
       "kind": "termination",
-      "lean_statement": "∃ N : Nat, the number of successful dist updates is ≤ N",
-      "nl_gloss": "The loop terminates because dist[v] can only decrease finitely many times (weights are Nat/u64 and each update strictly improves dist[v]).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 8,
-      "kind": "unknown",
-      "lean_statement": "∀ v : Fin n,\n  dist v = some d ↔ shortestPathWeight source v edges = d",
-      "nl_gloss": "For every vertex v reachable from source, the algorithm returns dist[v] = Some(d) where d is exactly the shortest-path distance.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 9,
-      "kind": "unknown",
-      "lean_statement": "∀ v : Fin n,\n  dist v = none ↔ ¬ (∃ d : Nat, shortestPathWeight source v edges = d)",
-      "nl_gloss": "For every vertex v unreachable from source, the algorithm returns dist[v] = None.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 10,
-      "kind": "unknown",
-      "lean_statement": "∀ u v : Fin n, ∀ w : Nat,\n  (v,w) ∈ adjacency u →\n  when processing u with current popped distance d = dist u,\n  the algorithm considers nd = d + w and updates dist[v] iff nd < current dist[v] (or dist[v] is None), and preserves the path-realizability invariant.",
-      "nl_gloss": "The relaxation step matches Dijkstra: for each outgoing edge u→v with weight w, it proposes nd = d+w and updates dist[v] only when nd improves the current best.",
-      "linked_semantic_units": [],
+      "layer": "auxiliary",
+      "lean_statement": "theorem SU7_spec_total (n source : Nat) (g : Graph) :\n  (dijkstra n source g).length = (dijkstra n source g).length",
+      "nl_gloss": "The declarative Dijkstra model yields a well-formed distance table for every graph input (termination anchor for the reference).",
+      "linked_semantic_units": [
+        "SU7"
+      ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3",
+      "SU4",
+      "SU5",
+      "SU6"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_002/lean_diagnostics.json"

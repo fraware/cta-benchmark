@@ -102,55 +102,53 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "unknown",
-      "lean_statement": "theorem SU1_alignment_precondition (weights : Weights) (values : Values) :\n  weights.length = values.length → True := by\n  intro h; trivial",
-      "nl_gloss": "If weights and values are aligned index-for-index (same length), the algorithm is allowed to proceed.",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_value_witness (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) :\n  ∃ sel : Selection,\n    ValidSelection weights sel ∧\n    totalWeight weights sel ≤ capacity ∧\n    totalValue values sel = knapsack01 weights values capacity := by\n  admit",
+      "nl_gloss": "When weights and values are length-aligned, there exists a valid feasible selection whose total value equals the returned result.",
       "linked_semantic_units": [
-        "SU1"
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
       ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "theorem SU2_capacity_feasibility (weights : Weights) (values : Values) (capacity : Nat) :\n  ∀ sel : Selection,\n    ValidSelection weights sel → totalWeight weights sel ≤ capacity → True := by\n  intro sel hValid hCap; trivial",
-      "nl_gloss": "Any witness selection must satisfy the capacity constraint (total weight ≤ capacity).",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_optimality (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) (sel : Selection)\n  (hV : ValidSelection weights sel) (hw : totalWeight weights sel ≤ capacity) :\n  totalValue values sel ≤ knapsack01 weights values capacity := by\n  admit",
+      "nl_gloss": "When weights and values are length-aligned, no valid feasible selection beats the returned result.",
       "linked_semantic_units": [
-        "SU2"
-      ],
-      "raw_source": "model"
-    },
-    {
-      "index": 2,
-      "kind": "unknown",
-      "lean_statement": "theorem SU3_value_witness (weights : Weights) (values : Values) (capacity : Nat) :\n  ∀ sel : Selection,\n    ValidSelection weights sel → totalWeight weights sel ≤ capacity →\n    totalValue values sel ≤ knapsack01 weights values capacity := by\n  intro sel hValid hCap\n  -- This obligation captures that the returned result is at least the value of any feasible valid selection.\n  -- The scaffold does not define knapsack01, so we only state the required inequality form.\n  admit",
-      "nl_gloss": "There exists a valid selection whose total value equals the returned result (captured here as returned value ≥ any feasible selection value).",
-      "linked_semantic_units": [
-        "SU3"
-      ],
-      "raw_source": "model"
-    },
-    {
-      "index": 3,
-      "kind": "unknown",
-      "lean_statement": "theorem SU4_optimality (weights : Weights) (values : Values) (capacity : Nat) :\n  ∀ sel : Selection,\n    ValidSelection weights sel → totalWeight weights sel ≤ capacity →\n    totalValue values sel ≤ knapsack01 weights values capacity := by\n  intro sel hValid hCap\n  -- Optimality: no feasible selection can have strictly greater value than the returned result.\n  admit",
-      "nl_gloss": "No valid selection with total weight ≤ capacity achieves a strictly greater total value than the returned result.",
-      "linked_semantic_units": [
+        "SU1",
         "SU4"
       ],
       "raw_source": "model"
     },
     {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "theorem SU5_uniqueness_in_valid_selection (weights : Weights) (sel : Selection) :\n  ValidSelection weights sel → sel.Nodup := by\n  intro h; exact h.1",
-      "nl_gloss": "Any witness selection is 0/1: items appear at most once (Nodup).",
+      "index": 2,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_valid_selection_nodup (weights : Weights) (sel : Selection)\n  (hV : ValidSelection weights sel) : sel.Nodup := by\n  exact hV.1",
+      "nl_gloss": "Any valid selection is 0/1 at the index level: indices are distinct (Nodup is part of ValidSelection).",
       "linked_semantic_units": [
         "SU5"
       ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3",
+      "SU4"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_knapsack_01_002/lean_diagnostics.json"

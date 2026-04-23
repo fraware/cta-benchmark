@@ -193,3 +193,14 @@ inter-annotator agreement reporting by pointing the runner at the raw
 per-annotator directory (the same directory consumed by
 `cta annotate pack`). Without it, the `inter_annotator_agreement` block
 is elided from `results_bundle.json`.
+
+## Review packets and metric inputs
+
+Automated runs score whatever obligations the generator emits into run
+artifacts. Curated human-review `packet.json` files under
+`benchmark/<version>/annotation/review_packets/` are a separate staging
+ground for adjudication quality; their `quality_summary` and
+benchmark-facing obligation sets are regression-tested so that
+`critical_unit_coverage` and `semantic_faithfulness_mean` remain meaningful
+when those packets are promoted into packs and compared against model output.
+See `docs/annotation_manual.md` and `README.md` (obligation quality gate).

@@ -96,6 +96,35 @@ For paper-track batches, use this command sequence:
 5. Enforce review-packet audit gate before packaging:
    - `cta annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
 
+## Review packet contract (`packet.json`)
+
+Structured review artifacts live under
+`benchmark/<version>/annotation/review_packets/<system_id>/<instance_id>/packet.json`
+(plus sidecars such as `generated_output.json` and `raw_output.txt` where your
+workflow materialises them). Treat `schemas/review_packet.schema.json` as the
+authoritative field set; the points below are the paper-track conventions that
+CI-style regressions enforce on top of bare schema validity.
+
+**`generated_obligations`**: each element must include `index`, `kind`,
+`lean_statement`, `nl_gloss`, `linked_semantic_units`, and `raw_source` (model
+output). For `code_only_v1` gold packets in the regression roster, every entry
+must also set `layer` to either `benchmark_facing` or `auxiliary` so vacuity
+and off-spec checks can be scoped correctly (`code_only_packet_regression`).
+
+**`quality_summary`**: when present, it must be consistent with the
+benchmark-facing theorems (for example `critical_units_only_indirectly_covered`
+empty when every critical SU is directly covered, and both
+`vacuous_theorems_present` and `off_spec_theorems_present` false for release
+candidates). The schema permits omitting `quality_summary`; curated v0.2
+`code_only_v1` packets in-repo include it and the regression tests assert final
+values.
+
+**Batch markdown** under `annotation/task_board/batches/` or similar paths is
+for queueing and checklists only. It is not a substitute for a valid
+`packet.json` plus `annotate verify-review-packets` and, when you change packet
+shape or prompts, the `cta_generate` packet regression tests documented in
+`README.md` and `docs/release_process.md`.
+
 ## Hygiene
 
 - Never edit a previously submitted annotation. Submit a new one.

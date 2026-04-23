@@ -133,7 +133,8 @@
     {
       "index": 0,
       "kind": "precondition",
-      "lean_statement": "theorem SU1_input_precond\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ∀ e ∈ edges, let s := e.1; let t := e.2.1; let w := e.2.2; s < n ∧ t < n ∧ w ≥ 0) : True := by\n  trivial",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU1_input_precond\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ∀ e ∈ edges, let s := e.1; let t := e.2.1; let w := e.2.2; s < n ∧ t < n ∧ w ≥ 0) :\n  NonNegativeWeights edges := by\n  -- proof obligation: package the edge-range + non-negativity assumption as a reusable predicate\n  admit",
       "nl_gloss": "Assume the input precondition: all edge endpoints are within [0,n) and all weights are non-negative.",
       "linked_semantic_units": [
         "SU1"
@@ -142,8 +143,9 @@
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "theorem SU2_length\n  (n : Nat) (source : Nat) (edges : Graph) : (dijkstra n source edges).length = n := by\n  simp [dijkstra]",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_length\n  (n : Nat) (source : Nat) (edges : Graph) : (dijkstra n source edges).length = n := by\n  -- proof obligation\n  admit",
       "nl_gloss": "The returned distance vector has length n.",
       "linked_semantic_units": [
         "SU2"
@@ -152,8 +154,9 @@
     },
     {
       "index": 2,
-      "kind": "unknown",
-      "lean_statement": "theorem SU3_source_dist\n  (n : Nat) (source : Nat) (edges : Graph)\n  (hs : source < n) : (dijkstra n source edges).get? source = some (some 0) := by\n  simp [dijkstra, hs]",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_source_dist\n  (n : Nat) (source : Nat) (edges : Graph)\n  (hs : source < n) : (dijkstra n source edges).get? source = some (some 0) := by\n  -- proof obligation\n  admit",
       "nl_gloss": "The source vertex has distance 0.",
       "linked_semantic_units": [
         "SU3"
@@ -162,8 +165,9 @@
     },
     {
       "index": 3,
-      "kind": "unknown",
-      "lean_statement": "theorem SU4_achievable\n  (n : Nat) (source : Nat) (edges : Graph)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  ∃ path : List Nat, path ≠ [] ∧ path.head? = some source ∧ path.get? (path.length - 1) = some v ∧\n    (∃ wsum : Nat, wsum = d) := by\n  -- Model-level reachability is not provided in the scaffold; keep the obligation minimal.\n  refine ⟨[source, v], by simp, by simp, by simp, ?_⟩\n  exact ⟨d, rfl⟩",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU4_achievable\n  (n : Nat) (source : Nat) (edges : Graph)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  PathWeight edges source v d := by\n  -- proof obligation: witness path exists with total edge weight exactly d\n  admit",
       "nl_gloss": "If dist[v] = Some(d), then there exists a path from source to v with total weight d.",
       "linked_semantic_units": [
         "SU4"
@@ -173,17 +177,20 @@
     {
       "index": 4,
       "kind": "optimality",
-      "lean_statement": "theorem SU5_optimal\n  (n : Nat) (source : Nat) (edges : Graph)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  ∀ d' : Nat, d' < d → False := by\n  intro d' hdlt\n  -- Without an explicit path predicate in the scaffold, encode optimality as a contradiction form.\n  exact Nat.lt_asymm hdlt hdlt",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU5_optimal\n  (n : Nat) (source : Nat) (edges : Graph)\n  (v : Nat) (d : Nat)\n  (hW : NonNegativeWeights edges)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  ∀ w, PathWeight edges source v w → d ≤ w := by\n  -- proof obligation: no cheaper path exists\n  admit",
       "nl_gloss": "If dist[v] = Some(d), then no path from source to v has total weight less than d.",
       "linked_semantic_units": [
+        "SU1",
         "SU5"
       ],
       "raw_source": "model"
     },
     {
       "index": 5,
-      "kind": "unknown",
-      "lean_statement": "theorem SU6_unreachable\n  (n : Nat) (source : Nat) (edges : Graph)\n  (v : Nat)\n  (hv : v < n)\n  (hu : (dijkstra n source edges).get? v = some none) :\n  ∀ d : Nat, False := by\n  intro d\n  -- No explicit reachability predicate is available in the scaffold.\n  exact (Nat.lt_irrefl d).elim",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU6_unreachable\n  (n : Nat) (source : Nat) (edges : Graph)\n  (v : Nat)\n  (hv : v < n)\n  (hu : (dijkstra n source edges).get? v = some none) :\n  ¬ ∃ w, PathWeight edges source v w := by\n  -- proof obligation: unreachable means no path exists in the graph sense\n  admit",
       "nl_gloss": "If dist[v] = None (within range), then there is no path from source to v.",
       "linked_semantic_units": [
         "SU6"
@@ -193,6 +200,7 @@
     {
       "index": 6,
       "kind": "termination",
+      "layer": "benchmark_facing",
       "lean_statement": "theorem SU7_termination\n  (n : Nat) (source : Nat) (edges : Graph) : ∃ dist : DistTable, dist = dijkstra n source edges := by\n  refine ⟨dijkstra n source edges, rfl⟩",
       "nl_gloss": "The algorithm terminates on every valid input (the function returns a value).",
       "linked_semantic_units": [
@@ -201,6 +209,19 @@
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3",
+      "SU4",
+      "SU5",
+      "SU6"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_dijkstra_002/lean_diagnostics.json"

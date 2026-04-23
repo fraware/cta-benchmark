@@ -1,0 +1,38 @@
+[
+  {
+    "instance_id": "dp_longest_common_subsequence_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "greedy_interval_scheduling_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "arrays_binary_search_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_002",
+    "system_id": "code_only_v1"
+  }
+]

@@ -17,58 +17,28 @@
   },
   "normalized_obligations": [
     {
-      "kind": "precondition",
-      "lean_statement": "∀ (arr : Array Int), True",
-      "nl_gloss": "No explicit precondition is required beyond having a mutable slice/array; the algorithm works for any length (including 0 and 1).",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU1_sorted_output (xs : Arr) : Sorted (insertionSort xs)",
+      "nl_gloss": "The declarative output list is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (i : Nat), i < arr.size → (i = 0 ∨ i > 0) → True",
-      "nl_gloss": "The outer loop iterates i from 1 to arr.len-1, so any access to arr[i] and arr[j-1] is within bounds when the loop conditions hold.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_perm_output (xs : Arr) : List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input (duplicate counts preserved).",
+      "linked_semantic_units": [
+        "SU2"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (i : Nat), i ≤ arr.size →\n  let arr' := (insertion_sort_prefix arr i) in\n  Sorted (arr'.toList) ∧ Permutation arr.toList arr'.toList",
-      "nl_gloss": "After processing indices up to i (i.e., after the outer loop has completed for all k < i), the prefix arr[0..i) is sorted in ascending order, and the multiset of elements in the whole array is unchanged (only swaps occur).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (i j : Nat),\n  i < arr.size → j ≤ i →\n  let arr0 := arr in\n  let arr1 := (insertion_sort_inner_step arr0 i j) in\n  (Permutation arr0.toList arr1.toList) ∧\n  (Sorted ( (arr1.toList).take i )) ∧\n  (∀ k < j, arr1[k] ≤ arr1[k+1])",
-      "nl_gloss": "During the inner while-loop for a fixed i, with current index j, the elements outside the moving window are unchanged up to permutation, and the portion before j remains sorted; the swap step preserves the multiset and moves arr[j] left while maintaining sortedness of the already-processed prefix.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (i j : Nat), i < arr.size → j ≤ i →\n  (j > 0 ∧ arr[j-1] > arr[j]) →\n  (j-1) < j",
-      "nl_gloss": "The inner loop decreases j by 1 each iteration, so it terminates.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int), True",
-      "nl_gloss": "The outer loop iterates over a finite range i = 1..arr.len-1, so it terminates.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int),\n  let arr' := insertion_sort arr in\n  Permutation arr.toList arr'.toList",
-      "nl_gloss": "Because the implementation only uses swaps, the output array is a permutation of the input (same elements with the same multiplicities).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int),\n  let arr' := insertion_sort arr in\n  Sorted (arr'.toList)",
-      "nl_gloss": "After completion, the entire array is sorted in ascending order.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int), True",
-      "nl_gloss": "No stability property is required or claimed by the implementation; it performs swaps, so only sortedness and permutation are proven.",
-      "linked_semantic_units": []
+      "kind": "termination",
+      "lean_statement": "theorem SU3_output_length (xs : Arr) : (insertionSort xs).length = xs.length",
+      "nl_gloss": "The specification-level sort preserves length, matching finite termination of the reference on every input.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     }
   ],
   "prompt_hash": "sha256:a642b318f02b3af2e1a695b581b9c715589129a74a825f309b5f001c8d407036",

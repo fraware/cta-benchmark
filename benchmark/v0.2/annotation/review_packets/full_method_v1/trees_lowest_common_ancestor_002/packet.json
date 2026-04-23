@@ -108,55 +108,51 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "precondition",
-      "lean_statement": "theorem SU1_BST_precondition (t : Tree) : IsBst t → True := by intro h; trivial",
-      "nl_gloss": "Assume the input tree satisfies the BST invariant (in-order traversal is strictly ascending).",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem lca_bst_subtree_witness (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a) :\n  ∃ sub : Tree,\n    IsSubtree sub t ∧\n    (match sub with\n     | Tree.nil => False\n     | Tree.node _ k _ => k = a) ∧\n    HasKey sub p ∧\n    HasKey sub q := by\n  admit",
+      "nl_gloss": "When the input is a BST containing both query keys, the returned key is the root of a subtree containing both queries.",
       "linked_semantic_units": [
-        "SU1"
-      ],
-      "raw_source": "model"
-    },
-    {
-      "index": 1,
-      "kind": "precondition",
-      "lean_statement": "theorem SU2_presence_precondition (t : Tree) (p q : Int) : HasKey t p → HasKey t q → True := by intro hp hq; trivial",
-      "nl_gloss": "Assume both query keys p and q are present in the tree.",
-      "linked_semantic_units": [
-        "SU2"
-      ],
-      "raw_source": "model"
-    },
-    {
-      "index": 2,
-      "kind": "unknown",
-      "lean_statement": "theorem SU3_ancestor_property (t : Tree) (p q a : Int) : IsBst t → HasKey t p → HasKey t q → lcaBst t p q = some a → HasKey t a ∧ IsSubtree (Tree.node Tree.nil a Tree.nil) t → True := by intro _ _ _ _ _; trivial",
-      "nl_gloss": "If lcaBst returns a, then a is a node key and both p and q lie in the subtree rooted at that node (captured via subtree/membership constraints).",
-      "linked_semantic_units": [
+        "SU1",
+        "SU2",
         "SU3"
       ],
       "raw_source": "model"
     },
     {
-      "index": 3,
-      "kind": "unknown",
-      "lean_statement": "theorem SU4_lowest_no_proper_descendant (t : Tree) (p q a : Int) : IsBst t → HasKey t p → HasKey t q → lcaBst t p q = some a → (∀ d : Tree, IsProperSubtree d (Tree.node Tree.nil a Tree.nil) → ¬(HasKey d p ∧ HasKey d q)) → True := by intro _ _ _ _ h; trivial",
-      "nl_gloss": "The returned node is the lowest one whose subtree contains both keys: no proper descendant subtree contains both p and q.",
+      "index": 1,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem lca_bst_lowest_common_shape (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a) :\n  ∀ (sub : Tree),\n    IsProperSubtree sub t →\n    (match sub with\n     | Tree.nil => True\n     | Tree.node _ k _ => k = a → False) →\n    HasKey sub p →\n    HasKey sub q →\n    False := by\n  admit",
+      "nl_gloss": "When the input is a BST containing both query keys, no proper subtree can contain both keys unless it is rooted at the returned key (lowestness / no proper descendant counterexample).",
       "linked_semantic_units": [
         "SU4"
       ],
       "raw_source": "model"
     },
     {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "theorem SU5_key_equality_case (t : Tree) (p : Int) : IsBst t → HasKey t p → lcaBst t p p = some p := by intro _ hp; admit",
-      "nl_gloss": "When p = q, the lowest common ancestor is that same key.",
+      "index": 2,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem lca_bst_self_key (t : Tree) (p : Int)\n  (hbst : IsBst t) (hp : HasKey t p) :\n  lcaBst t p p = some p := by\n  admit",
+      "nl_gloss": "When the input is a BST containing the key, the LCA of a key with itself is that key.",
       "linked_semantic_units": [
         "SU5"
       ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3",
+      "SU4"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_002/lean_diagnostics.json"

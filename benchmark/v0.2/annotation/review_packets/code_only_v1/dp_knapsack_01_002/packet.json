@@ -102,69 +102,41 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "precondition",
-      "lean_statement": "weights.length = values.length",
-      "nl_gloss": "The implementation asserts that `weights.len() == values.len()`. Any correctness statement assumes this holds.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU1_feasible_witness (ws : Weights) (vs : Values) (cap : Nat)\n  (hal : ws.length = vs.length) :\n  ∃ sel : Selection,\n    ValidSelection ws sel ∧\n    totalWeight ws sel ≤ cap ∧\n    totalValue vs sel = knapsack01 ws vs cap",
+      "nl_gloss": "When weights and values align, some valid selection achieves the returned optimum within the capacity.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "let cap : Nat := capacity.toNat\n  ∀ i : Fin weights.length,\n    let w : Nat := (weights[i.1]).toNat\n    let v : Nat := values[i.1]\n    w > cap ∨ (w ≤ cap ∧ (w ≤ cap) ∧ (w ≤ cap) )",
-      "nl_gloss": "For each item, the inner loop only runs when `w ≤ cap`; otherwise the item is skipped. This ensures indices like `c - w` are valid when the update is performed.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 2,
-      "kind": "unknown",
-      "lean_statement": "let cap : Nat := capacity.toNat\n  let n : Nat := weights.length\n  let dp0 : Array Nat := Array.mk (cap+1) 0\n  ∀ (k : Nat) (hk : k ≤ n),\n    let dp_k := (by\n      -- dp_k denotes the dp array after processing items 0..k-1\n      admit)\n    ∀ c : Nat, c ≤ cap →\n      dp_k[c] =\n        Nat.max\n          (dp_{k-1}[c])\n          (if (weights[k-1]).toNat ≤ c then dp_{k-1}[c - (weights[k-1]).toNat] + (values[k-1]) else 0)",
-      "nl_gloss": "After processing the first `k` items, `dp[c]` equals the optimal value achievable with total weight ≤ `c` using only those `k` items, following the standard 0/1 knapsack recurrence.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 3,
-      "kind": "unknown",
-      "lean_statement": "let cap : Nat := capacity.toNat\n  ∀ (i : Nat) (hi : i < weights.length),\n    let w : Nat := (weights[i]).toNat\n    let v : Nat := values[i]\n    ∀ (c : Nat), w ≤ c ∧ c ≤ cap →\n      -- During the reverse iteration, dp[c] is updated using the previous-iteration value dp_old[c-w]\n      -- not the already-updated dp[c-w].\n      (by\n        admit)",
-      "nl_gloss": "Because the inner loop iterates `c` in decreasing order from `cap` down to `w`, the update `dp[c] := max(dp[c], dp[c-w] + v)` uses the dp values from before item `i` was processed (the 0/1 constraint).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "let cap : Nat := capacity.toNat\n  ∀ i : Nat, i < weights.length →\n    (if (weights[i]).toNat > cap then\n      -- processing item i leaves dp unchanged\n      (by admit)\n    else True)",
-      "nl_gloss": "If an item's weight exceeds `capacity`, the code continues without updating dp; thus dp remains the optimum for the processed items.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 5,
-      "kind": "unknown",
-      "lean_statement": "let cap : Nat := capacity.toNat\n  let n : Nat := weights.length\n  -- Before processing any items, dp[c] = 0 for all c ≤ cap\n  ∀ c : Nat, c ≤ cap →\n    (by\n      admit : (dp_before)[c] = 0)",
-      "nl_gloss": "Initially dp is a vector of zeros, representing that with zero items the best value is 0 for any capacity.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "unknown",
-      "lean_statement": "let cap : Nat := capacity.toNat\n  let n : Nat := weights.length\n  -- After processing all n items, dp[cap] is the optimum for total weight ≤ cap\n  (by\n    admit : (knapsack_01 weights values capacity) = (dp_after)[cap])",
-      "nl_gloss": "The function returns `dp[cap]` after all items are processed.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 7,
-      "kind": "unknown",
-      "lean_statement": "let cap : Nat := capacity.toNat\n  let n : Nat := weights.length\n  let W : Fin n → Nat := fun i => (weights[i.1]).toNat\n  let V : Fin n → Nat := fun i => values[i.1]\n  let best : Nat :=\n    Finset.univ.image (fun s : Finset (Fin n) =>\n      if s.sum W ≤ cap then s.sum V else 0) |>.sup\n  -- dp[cap] equals the maximum total value among subsets with total weight ≤ cap\n  (by\n    admit : knapsack_01 weights values capacity = best)",
-      "nl_gloss": "Connect the recurrence/invariants to the intended mathematical specification: the maximum total value over all subsets of items whose total weight is at most `capacity`.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU4_global_optimal (ws : Weights) (vs : Values) (cap : Nat) (sel : Selection)\n  (hal : ws.length = vs.length)\n  (hv : ValidSelection ws sel)\n  (hw : totalWeight ws sel ≤ cap) :\n  totalValue vs sel ≤ knapsack01 ws vs cap",
+      "nl_gloss": "No feasible selection within the capacity beats the returned optimum.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3",
+      "SU4"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_002/lean_diagnostics.json"

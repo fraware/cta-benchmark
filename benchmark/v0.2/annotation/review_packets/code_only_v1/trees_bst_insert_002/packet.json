@@ -101,77 +101,51 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "unknown",
-      "lean_statement": "theorem bst_insert_terminates (t : Tree) (k : Int) : ∃ n : Nat, True := by trivial",
-      "nl_gloss": "The recursive definition is well-founded on the structure of the input tree (i.e., recursion terminates).",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_bst_preserved (t : Tree) (k : Int) (hb : IsBst t) :\n  IsBst (bstInsert t k)",
+      "nl_gloss": "Strict BST validity is preserved after insertion.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "theorem bst_insert_shape (t : Tree) (k : Int) :\n  match t with\n  | Tree.nil => bst_insert t k = Tree.node Tree.nil k Tree.nil\n  | Tree.node l x r =>\n      match k.cmp x with\n      | .lt => bst_insert t k = Tree.node (bst_insert l k) x r\n      | .gt => bst_insert t k = Tree.node l x (bst_insert r k)\n      | .eq => bst_insert t k = t",
-      "nl_gloss": "Unfolding the implementation: on Nil it creates a single-node tree; on Node it recurses left/right depending on comparison, and leaves the tree unchanged on duplicates.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_keys_absent_insert (t : Tree) (k : Int)\n  (hb : IsBst t) (habs : k ∉ keys t) :\n  List.Perm (keys (bstInsert t k)) (k :: keys t)",
+      "nl_gloss": "When the key is absent, the output key list is the input keys with one copy of the new key adjoined.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU3"
+      ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "unknown",
-      "lean_statement": "theorem bst_insert_noop_on_duplicate (t : Tree) (k : Int) :\n  (∃ l r, t = Tree.node l k r) → bst_insert t k = t",
-      "nl_gloss": "If the tree already contains a node with key k at the root, insertion of k is a no-op (the implementation returns the original node).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 3,
-      "kind": "unknown",
-      "lean_statement": "theorem bst_insert_preserves_bst (t : Tree) (k : Int) :\n  BST t → BST (bst_insert t k)",
-      "nl_gloss": "If the input tree satisfies the binary search tree ordering invariant, then the output tree also satisfies it.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "theorem bst_insert_ordering (t : Tree) (k : Int) :\n  BST t →\n  (∀ x, x ∈ keys (bst_insert t k) →\n    (x < rootKey (bst_insert t k) ∨ x = rootKey (bst_insert t k) ∨ x > rootKey (bst_insert t k)))",
-      "nl_gloss": "All keys in the resulting BST respect the BST ordering relative to the root (capturing that insertion places the new key in the correct side).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 5,
-      "kind": "unknown",
-      "lean_statement": "theorem bst_insert_mem_inserted (t : Tree) (k : Int) :\n  BST t → k ∈ keys (bst_insert t k)",
-      "nl_gloss": "After insertion, the key k is present in the resulting tree (either newly inserted or already existed, in which case the tree is unchanged).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "unknown",
-      "lean_statement": "theorem bst_insert_mem_preserves_others (t : Tree) (k : Int) :\n  BST t →\n  (∀ x, x ≠ k → x ∈ keys t → x ∈ keys (bst_insert t k))",
-      "nl_gloss": "Insertion does not remove any existing key other than possibly leaving it unchanged; all keys different from k remain present.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 7,
-      "kind": "unknown",
-      "lean_statement": "theorem bst_insert_no_new_duplicate (t : Tree) (k : Int) :\n  BST t →\n  (countKeys (bst_insert t k) k = countKeys t k)",
-      "nl_gloss": "Because the implementation is a no-op on duplicates, the number of occurrences of k does not increase.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 8,
-      "kind": "unknown",
-      "lean_statement": "theorem bst_insert_correct_by_cases (t : Tree) (k : Int) :\n  match t with\n  | Tree.nil => True\n  | Tree.node l x r =>\n      (k < x → bst_insert t k = Tree.node (bst_insert l k) x r) ∧\n      (k > x → bst_insert t k = Tree.node l x (bst_insert r k)) ∧\n      (k = x → bst_insert t k = t)",
-      "nl_gloss": "The output matches the intended recursive BST insertion behavior for all comparison cases.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU4_keys_present_unchanged (t : Tree) (k : Int)\n  (hb : IsBst t) (hp : k ∈ keys t) :\n  List.Perm (keys (bstInsert t k)) (keys t)",
+      "nl_gloss": "When the key is already present, insertion is a no-op on the key multiset.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU4"
+      ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_bst_insert_002/lean_diagnostics.json"

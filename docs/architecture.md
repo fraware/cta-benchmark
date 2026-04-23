@@ -41,7 +41,11 @@ everything).
 2. `cta_schema` — JSON schema loading + validation. Pure IO + jsonschema.
 3. `cta_benchmark` — benchmark loader, linter, manifest builder.
 4. `cta_rust_extract` — syn-based semantic cue extractor. No compiler clone.
-5. `cta_generate` — provider trait, prompts, normalized output.
+5. `cta_generate` — provider trait, prompts, normalized output. Integration-style
+   regression tests under `crates/cta_generate/tests/` pin obligation shape for
+   committed `code_only_v1` / `naive_concat_v1` review packets (vacuity, layers,
+   family-specific theorem guards) and must stay green alongside
+   `cta annotate verify-review-packets` for paper-track releases.
 6. `cta_lean` — Lean file writer, elaboration driver, diagnostics.
 7. `cta_behavior` — harness executor and falsification engine.
 8. `cta_annotations` — annotation ingest, adjudication, aggregation.

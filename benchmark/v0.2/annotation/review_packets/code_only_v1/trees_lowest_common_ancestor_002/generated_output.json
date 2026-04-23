@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "run_id": "run_2026_04_23_code_only_v1_eval_zzzzzzzzzzzz_900",
   "system_id": "code_only_v1",
   "instance_id": "trees_lowest_common_ancestor_002",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 8032,
-    "prompt_tokens": 311,
-    "completion_tokens": 1189
+    "latency_ms": 4522,
+    "prompt_tokens": 1237,
+    "completion_tokens": 587
   },
   "raw_output_path": "generated/code_only_v1/raw/trees_lowest_common_ancestor_002.txt",
   "parse_status": {
@@ -17,66 +17,32 @@
   },
   "normalized_obligations": [
     {
-      "kind": "precondition",
-      "lean_statement": "∀ t : Tree, ∀ p q : Int, (∃ x : Int, x = p ∧ x ∈ bstKeys t) ∧ (∃ y : Int, y = q ∧ y ∈ bstKeys t) → True",
-      "nl_gloss": "The implementation assumes both keys p and q are present in the BST. Model this as a precondition that p and q occur among the keys of the tree.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_subtree_witness (t : Tree) (p q a : Int)\n  (hb : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hl : lcaBst t p q = some a) :\n  ∃ sub : Tree,\n    IsSubtree sub t ∧\n    (match sub with\n     | Tree.nil => False\n     | Tree.node _ k _ => k = a) ∧\n    HasKey sub p ∧\n    HasKey sub q",
+      "nl_gloss": "When the BST contains both keys, the returned key roots a subtree of t that still contains both queries.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "let lo : Int := min p q; let hi : Int := max p q; in lo ≤ hi ∧ (lo = p ∨ lo = q) ∧ (hi = p ∨ hi = q)",
-      "nl_gloss": "The code normalizes the inputs by setting lo=min(p,q) and hi=max(p,q), ensuring lo ≤ hi and that lo/hi are exactly the two input keys.",
-      "linked_semantic_units": []
+      "kind": "optimality",
+      "lean_statement": "theorem SU4_lowestness (t : Tree) (p q a : Int)\n  (hb : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hl : lcaBst t p q = some a) :\n  ∀ d : Tree,\n    IsProperSubtree d t →\n    (match d with\n     | Tree.nil => True\n     | Tree.node _ k _ => k = a → False) →\n    HasKey d p →\n    HasKey d q →\n    False",
+      "nl_gloss": "No proper subtree strictly below the returned root can still contain both query keys.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "∀ (t : Tree) (p q : Int), ∃ v : Nat, v = size t ∧ (∀ cur : Tree, cur ≠ Nil → (next cur) has size < size cur) → (loop terminates)",
-      "nl_gloss": "When the search moves left or right, it strictly decreases the remaining subtree size, so the loop terminates (cannot continue indefinitely).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "let lo := min p q; let hi := max p q; in ∀ cur : Tree, cur ≠ Nil → (p ∈ bstKeys cur ∧ q ∈ bstKeys cur) → (lo ≤ keyOfLCA cur p q ∧ keyOfLCA cur p q ≤ hi)",
-      "nl_gloss": "Maintain that the true LCA key (in the current subtree) lies within the current bounds [lo, hi]. The algorithm only narrows by moving to the side consistent with BST ordering.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ l : Tree, ∀ k : Int, ∀ r : Tree, bst l → bst r → (∀ x ∈ bstKeys l, x < k) → (∀ y ∈ bstKeys r, k < y) → bst (Node l k r)",
-      "nl_gloss": "Assume the tree is a BST: all keys in the left subtree are < node key and all keys in the right subtree are > node key. This justifies the branch conditions hi < k and lo > k.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ cur : Tree, cur = Node left k right → hi < k → (p ∈ bstKeys cur ∧ q ∈ bstKeys cur) → (p ∈ bstKeys left ∧ q ∈ bstKeys left) ∧ lcaKey left p q = lcaKey cur p q",
-      "nl_gloss": "If hi < k, then both p and q must lie in the left subtree (by BST ordering), and the LCA in the left subtree is the same as the LCA in the current tree.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ cur : Tree, cur = Node left k right → lo > k → (p ∈ bstKeys cur ∧ q ∈ bstKeys cur) → (p ∈ bstKeys right ∧ q ∈ bstKeys right) ∧ lcaKey right p q = lcaKey cur p q",
-      "nl_gloss": "If lo > k, then both p and q must lie in the right subtree, and the LCA in the right subtree equals the LCA in the current tree.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ cur : Tree, cur = Node left k right → lo ≤ k ∧ hi ≥ k → (p ∈ bstKeys cur ∧ q ∈ bstKeys cur) → (k = lcaKey cur p q)",
-      "nl_gloss": "When the bounds straddle the current node key (lo ≤ k ≤ hi), the algorithm returns k. Under BST ordering and presence of both keys, this node key is exactly the LCA.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ t : Tree, ∀ p q : Int, (p ∈ bstKeys t ∧ q ∈ bstKeys t) → lca_bst t p q ≠ None",
-      "nl_gloss": "Given the precondition that both keys are present, the loop should never reach Nil; therefore the function cannot return None.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ t : Tree, ∀ p q : Int, bst t → (p ∈ bstKeys t ∧ q ∈ bstKeys t) → ∃! a : Int, lca_bst t p q = Some a ∧ a = lcaKey t p q",
-      "nl_gloss": "Putting everything together: for a BST where both keys are present, lca_bst returns Some a, and that a is the (unique) lowest common ancestor key of p and q in the tree.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_equal_keys (t : Tree) (p : Int)\n  (hb : IsBst t) (hp : HasKey t p) :\n  lcaBst t p p = some p",
+      "nl_gloss": "When p equals q, the LCA is that shared key.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
     }
   ],
-  "prompt_hash": "sha256:27d67ffbbe17a89a7abcbfc04fdc02ca316c14b523b2081025119e2c2e330212",
-  "seed": 0
+  "prompt_hash": "sha256:55b99937aefdb7999a5b535f707e5b703fd2eb9d17b4927c933f8a79ae6e31d9",
+  "seed": 123
 }

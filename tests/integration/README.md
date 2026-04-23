@@ -14,6 +14,9 @@ green on every push.
 | `cta_generate/tests/pipeline_smoke.rs`                  | Full generate pipeline with the stub provider and all four prompt templates          |
 | `cta_metrics/tests/m6_pipeline.rs`                      | Annotations -> adjudicated pack -> results bundle, schema-validated                   |
 | `cta_metrics/tests/multi_annotator_pipeline.rs`         | Multi-annotator adjudication policies + inter-annotator agreement metrics             |
+| `cta_generate/tests/code_only_packet_regression.rs`     | Curated `code_only_v1` review `packet.json` set: schema-adjacent checks, layers, vacuity, per-instance theorem hygiene |
+| `cta_generate/tests/family_packet_regression.rs`        | Cross-instance template coherence (BFS adjacency, binary-search success shape, LCA, coin change, LCS)                 |
+| `cta_generate/tests/naive_concat_packet_regression.rs`| Canonical `naive_concat_v1` exemplar packets                                                                            |
 
 End-to-end CLI orchestration is additionally exercised by
 `.github/workflows/ci.yml`:

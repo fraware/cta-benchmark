@@ -273,6 +273,8 @@ The generator/normalizer pipeline applies the following fail-closed rules:
 - off-spec theorem demotion (for example stability claims when stability is optional)
 - benchmark-facing-first ordering in normalized obligations
 
+Paper-track `code_only_v1` review packets under `benchmark/v0.2/annotation/review_packets/code_only_v1/` are expected to carry machine-checkable structure beyond the minimum JSON schema: each `generated_obligations[]` entry should include `layer` (`benchmark_facing` or `auxiliary`), stable `index`, non-empty `linked_semantic_units` where the rubric expects linkage, and a `quality_summary` block consistent with the benchmark-facing theorems. Operational markdown under batch directories is a human workflow aid only; the canonical contract is `packet.json` plus `schemas/review_packet.schema.json` and the regressions below.
+
 Review packets include per-packet QA metadata under `quality_summary`:
 
 - `critical_units_covered_by_direct_theorems`
@@ -286,9 +288,24 @@ and sufficient for evaluating semantic faithfulness without auxiliary lemmas.
 Final theorem-hygiene constraints for benchmark-facing obligations:
 
 - interval scheduling feasibility witnesses must use subset semantics (`iv ∈ S → iv ∈ intervals`) and never `iv ∈ S ↔ iv ∈ intervals`
-- BFS witness/minimality path-edge clauses must encode consecutive adjacency as `u = p[i]`, `w = p[i+1]`, `w ∈ adj[u]`
+- BFS witness/minimality path-edge clauses must encode consecutive vertices `u = p[i]`, `w = p[i+1]` with adjacency expressed in scaffold-consistent form, for example `w ∈ adj[u]`, `list.mem w (adj[u].tolist)`, or membership in `(adj.get? u).getd []` (List-based `Adj` scaffolds); self-loop forms such as `p.get? i ∈ adj[p.get? i]` are rejected
 - BST key-change obligations must use absent/present split theorems with multiset semantics, not malformed disjunctions over implications
 - Dijkstra preconditions must avoid vacuous non-negativity clauses when edge weights are already typed as `Nat`
+
+Run these after any change to prompts, normalizers, or committed `packet.json` files for the listed systems:
+
+```bash
+cargo test -p cta_generate --test code_only_packet_regression
+cargo test -p cta_generate --test family_packet_regression
+cargo test -p cta_generate --test naive_concat_packet_regression
+cargo run -p cta_cli -- annotate verify-review-packets \
+  --benchmark-version v0.2 \
+  --packets-root benchmark/v0.2/annotation/review_packets \
+  --schema schemas/review_packet.schema.json \
+  --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json
+```
+
+**Canonical `code_only_v1` regression roster** (must stay green; source of truth is the `targets` array in `crates/cta_generate/tests/code_only_packet_regression.rs`): `arrays_binary_search_001`, `arrays_binary_search_002`, `arrays_max_subarray_001`, `arrays_max_subarray_002`, `graph_bfs_shortest_path_001`, `graph_bfs_shortest_path_002`, `graph_dijkstra_001`, `graph_dijkstra_002`, `greedy_interval_scheduling_001`, `sorting_insertion_sort_001`, `sorting_insertion_sort_002`, `sorting_merge_sort_001`, `sorting_merge_sort_002`, `trees_bst_insert_001`, `trees_bst_insert_002`, `trees_lowest_common_ancestor_001`, `trees_lowest_common_ancestor_002`, `dp_knapsack_01_001`, `dp_knapsack_01_002`, `dp_longest_common_subsequence_001`.
 
 Regression suites pin this contract for focused cleanup packets:
 
@@ -324,10 +341,13 @@ checks for known failure modes:
 - Interval scheduling: reject unresolved placeholders and reject benchmark-facing
   `True` placeholders; feasibility witness must use subset semantics.
 - BFS: reject witness/minimality forms that use malformed adjacency or `∨ True`
-  escape hatches.
+  escape hatches; accept the adjacency spellings enumerated in the obligation
+  quality gate above.
 - BST-LCA: benchmark-facing lowestness must be direct descendant exclusion, not
   only helper-predicate indirection.
-- Binary search: success theorem must derive bounds from the `Some i` return.
+- Binary search: success theorem must derive in-bounds facts from `= some i`
+  (including `i < arr.length` when the scaffold uses `Arr` / `length`, or the
+  `i < arr.size` variants checked in `family_packet_regression`).
 - Coin change: canonicality must be explicit in optimality theorem shape, not an
   opaque unused predicate.
 

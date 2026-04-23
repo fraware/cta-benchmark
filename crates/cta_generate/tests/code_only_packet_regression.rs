@@ -231,7 +231,12 @@ fn assert_instance_specific_fixes(instance_id: &str, packet: &Value) {
     let bf = benchmark_facing(packet);
     let bf_text = bf
         .iter()
-        .map(|ob| ob["lean_statement"].as_str().unwrap_or("").to_ascii_lowercase())
+        .map(|ob| {
+            ob["lean_statement"]
+                .as_str()
+                .unwrap_or("")
+                .to_ascii_lowercase()
+        })
         .collect::<Vec<_>>()
         .join("\n");
     match instance_id {
@@ -255,11 +260,13 @@ fn assert_instance_specific_fixes(instance_id: &str, packet: &Value) {
             assert!(
                 bf_text.contains("let u := p.get! i")
                     && bf_text.contains("let w := p.get! (i + 1)")
-                    && bf_text.contains("w ∈ adj[u]"),
-                "{instance_id}: bfs edge clause must use consecutive vertices with adjacency w ∈ adj[u]"
+                    && (bf_text.contains("w ∈ adj[u]")
+                        || bf_text.contains("list.mem w (adj[u].tolist)")
+                        || bf_text.contains("(adj.get? u).getd []")),
+                "{instance_id}: bfs edge clause must use consecutive vertices with adjacency membership"
             );
         }
-        "graph_dijkstra_001" => {
+        "graph_dijkstra_001" | "graph_dijkstra_002" => {
             assert!(
                 !bf_text.contains("w ≥ 0") && !bf_text.contains("w >= 0"),
                 "{instance_id}: dijkstra includes vacuous nonnegativity clause despite Nat weights"
@@ -269,9 +276,7 @@ fn assert_instance_specific_fixes(instance_id: &str, packet: &Value) {
                 .find(|ob| {
                     ob["linked_semantic_units"]
                         .as_array()
-                        .map(|arr| {
-                            arr.len() == 1 && arr[0].as_str().unwrap_or("") == "SU3"
-                        })
+                        .map(|arr| arr.len() == 1 && arr[0].as_str().unwrap_or("") == "SU3")
                         .unwrap_or(false)
                 })
                 .expect("dijkstra source theorem present");
@@ -313,6 +318,37 @@ fn assert_instance_specific_fixes(instance_id: &str, packet: &Value) {
                 "{instance_id}: benchmark-facing SU3 should be split into absent-key and present-key multiset theorems"
             );
         }
+        "trees_bst_insert_002" => {
+            let has_bf_precondition = bf
+                .iter()
+                .any(|ob| ob["kind"].as_str().unwrap_or("") == "precondition");
+            assert!(
+                !has_bf_precondition,
+                "{instance_id}: tautological BST precondition must not remain benchmark-facing"
+            );
+            assert!(
+                bf_text.contains("isbst") && bf_text.contains("bstinsert"),
+                "{instance_id}: benchmark-facing theorems must use IsBst / bstInsert scaffold names"
+            );
+            assert!(
+                bf_text.contains("list.perm (keys (bstinsert")
+                    || bf_text.contains("list.perm(keys(bstinsert"),
+                "{instance_id}: multiset change must use List.Perm on keys (bstInsert …)"
+            );
+            let su3_bf = bf
+                .iter()
+                .filter(|ob| {
+                    ob["linked_semantic_units"]
+                        .as_array()
+                        .map(|arr| arr.iter().any(|v| v.as_str() == Some("SU3")))
+                        .unwrap_or(false)
+                })
+                .count();
+            assert!(
+                su3_bf >= 1,
+                "{instance_id}: absent-key multiset theorem should link SU3"
+            );
+        }
         _ => {}
     }
 }
@@ -340,12 +376,26 @@ fn assert_quality_summary_final_content(instance_id: &str, packet: &Value) {
 #[test]
 fn regression_target_packets_are_benchmark_aligned() {
     let targets = [
+        "arrays_binary_search_001",
         "arrays_binary_search_002",
-        "graph_dijkstra_001",
+        "arrays_max_subarray_001",
+        "arrays_max_subarray_002",
         "graph_bfs_shortest_path_001",
+        "graph_bfs_shortest_path_002",
+        "graph_dijkstra_001",
         "greedy_interval_scheduling_001",
+        "sorting_insertion_sort_002",
         "sorting_merge_sort_001",
         "trees_bst_insert_001",
+        "trees_lowest_common_ancestor_001",
+        "trees_lowest_common_ancestor_002",
+        "graph_dijkstra_002",
+        "sorting_insertion_sort_001",
+        "sorting_merge_sort_002",
+        "dp_knapsack_01_001",
+        "dp_knapsack_01_002",
+        "dp_longest_common_subsequence_001",
+        "trees_bst_insert_002",
     ];
 
     for instance_id in targets {

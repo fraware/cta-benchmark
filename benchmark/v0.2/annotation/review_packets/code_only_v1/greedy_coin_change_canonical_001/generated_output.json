@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "run_id": "run_2026_04_23_code_only_v1_eval_zzzzzzzzzzzz_902",
   "system_id": "code_only_v1",
   "instance_id": "greedy_coin_change_canonical_001",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 5550,
-    "prompt_tokens": 318,
-    "completion_tokens": 592
+    "latency_ms": 6876,
+    "prompt_tokens": 1237,
+    "completion_tokens": 937
   },
   "raw_output_path": "generated/code_only_v1/raw/greedy_coin_change_canonical_001.txt",
   "parse_status": {
@@ -17,66 +17,39 @@
   },
   "normalized_obligations": [
     {
-      "kind": "precondition",
-      "lean_statement": "denoms.Sorted (· ≤ ·) ∧ denoms.length > 0 ∧ denoms[0] = 1",
-      "nl_gloss": "The denomination list is sorted strictly ascending and starts with 1 (as required by the implementation’s intended canonical greedy behavior).",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_alignment (denoms : List Nat) (amount : Nat) : (coin_change_canonical denoms amount).length = denoms.length",
+      "nl_gloss": "Counts vector aligns with denominations.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
     },
     {
-      "kind": "precondition",
-      "lean_statement": "∀ i j : Fin denoms.length, i < j → denoms[i] < denoms[j]",
-      "nl_gloss": "Strictly increasing denominations (no duplicates), matching the stated precondition.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_weighted_sum (denoms : List Nat) (amount : Nat) : dot_product (coin_change_canonical denoms amount) denoms = amount",
+      "nl_gloss": "Weighted sum equals amount.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
-      "kind": "precondition",
-      "lean_statement": "∀ i : Fin denoms.length, denoms[i] ≠ 0",
-      "nl_gloss": "Denominations are nonzero; the code has a branch for d = 0, but the stated precondition is that the system is a proper denomination system.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "precondition",
-      "lean_statement": "amount ≥ 0",
-      "nl_gloss": "Amount is nonnegative (trivially true for u32, but included as stated).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "let counts := coin_change_canonical denoms amount; ∀ i : Fin denoms.length, 0 ≤ counts[i]",
-      "nl_gloss": "All returned counts are valid natural coin counts (nonnegative).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "invariant",
-      "lean_statement": "let counts := coin_change_canonical denoms amount; ∀ i : Fin denoms.length, counts[i] * denoms[i] ≤ amount",
-      "nl_gloss": "Each computed coin contribution does not exceed the original amount (follows from division and subtraction).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "invariant",
-      "lean_statement": "∃ remaining : Nat, remaining = amount - ∑ i : Fin denoms.length, counts[i] * denoms[i]",
-      "nl_gloss": "There exists a remaining amount after taking the computed coins; the algorithm maintains remaining by subtracting counts[i]*d.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "amount = ∑ i : Fin denoms.length, (coin_value i) * counts[i] + remaining ∧ remaining = 0",
-      "nl_gloss": "For the canonical greedy system, the greedy decomposition exactly sums to the target amount (no leftover).",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_nonnegative_counts (denoms : List Nat) (amount : Nat) : ? c ? coin_change_canonical denoms amount, 0 = c",
+      "nl_gloss": "All counts are non-negative.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
     },
     {
       "kind": "optimality",
-      "lean_statement": "(canonical denoms) → (∀ alt : Fin denoms.length → Nat, (∑ i, alt i * denoms[i]) = amount → (∑ i, alt i) ≥ (∑ i, counts i))",
-      "nl_gloss": "If the denomination system is canonical (greedy is optimal), then the greedy decomposition uses the minimum number of coins among all decompositions that sum to the amount.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "termination",
-      "lean_statement": "True",
-      "nl_gloss": "The loop iterates over a finite range (reverse over indices), so it terminates.",
-      "linked_semantic_units": []
+      "lean_statement": "theorem SU4_optimality_under_canonicality (denoms : List Nat) (amount : Nat) (hcanon : CanonicalDenoms denoms) :\n  let counts := coin_change_canonical denoms amount\n  ? counts' : List Nat, counts'.length = denoms.length ? dot_product counts' denoms = amount ? sum counts = sum counts'",
+      "nl_gloss": "Optimality is explicit and conditional on canonicality.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU4"
+      ]
     }
   ],
-  "prompt_hash": "sha256:d2cbc0391e1d68399367eeeb52ee0fcef6641a5919ab2a951351b128220743d5",
-  "seed": 0
+  "prompt_hash": "sha256:92ccb08c3d620cd9823ec4fb9640ca75e8b97f2bc4a68c696ac42011dd5be8d0",
+  "seed": 202
 }

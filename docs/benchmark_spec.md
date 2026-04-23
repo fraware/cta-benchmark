@@ -94,6 +94,17 @@ disjoint. See `docs/paper_readiness.md`.
 - Generated files never overwrite scaffold files; they live under
   `runs/<run_id>/lean_generated/...`.
 
+## Annotation review packets (`v0.2+`)
+
+Human adjudication for paper-track systems is staged in
+`benchmark/<version>/annotation/review_packets/<system_id>/<instance_id>/`.
+Those directories hold JSON review packets (`packet.json`) validated by
+`schemas/review_packet.schema.json`, not benchmark instance gold files. Rubric
+semantics, two-layer obligations, and `quality_summary` expectations are
+documented in `docs/annotation_manual.md`; mechanical guards live in
+`crates/cta_generate/tests/code_only_packet_regression.rs`,
+`family_packet_regression.rs`, and `naive_concat_packet_regression.rs`.
+
 ## Prohibited patterns
 
 - No `unsafe` blocks in reference Rust.

@@ -91,10 +91,18 @@ this targeted remediation loop before broad benchmark refresh:
    - `cargo test -p cta_generate --test family_packet_regression`
    - `cta annotate verify-review-packets ...`
 
+The exact instance ids covered by `code_only_packet_regression` live in the
+`targets` array inside `crates/cta_generate/tests/code_only_packet_regression.rs`
+(currently nineteen instances spanning arrays, graphs, greedy, sorting, trees,
+and DP, including both Dijkstra instances, both knapsack instances, LCS `001`,
+both LCA instances, `trees_bst_insert_002`, and both insertion-sort ids). Extend
+that array when you add a new first-class exemplar packet so it cannot silently
+rot.
+
 `code_only_packet_regression` must fail on each of the following malformed cases:
 
 - interval witness theorem using `∀ iv, iv ∈ S ↔ iv ∈ intervals` for selected subsets
-- BFS path-edge theorem using malformed self-membership forms like `p.get? i ∈ adj[p.get? i]`
+- BFS path-edge theorem using malformed self-membership forms like `p.get? i ∈ adj[p.get? i]`, or omitting valid consecutive-vertex adjacency (`w ∈ adj[u]`, `list.mem w (adj[u].tolist)`, or `(adj.get? u).getd []` alongside `u = p[i]` / `w = p[i+1]` as appropriate to the scaffold)
 - BST benchmark-facing key-change theorem encoded as implication-disjunction instead of absent/present multiset split
 - Dijkstra benchmark-facing preconditions containing redundant `w ≥ 0` / `w >= 0` clauses when edge weights are already `Nat`
 
@@ -102,9 +110,9 @@ this targeted remediation loop before broad benchmark refresh:
 
 - LCS subsequence semantics drifting to contiguous embedding
 - interval scheduling witness not encoding subset selection
-- BFS witness/minimality edge clauses not using consecutive-vertex adjacency
+- BFS witness/minimality edge clauses not using consecutive-vertex adjacency with one of the adjacency spellings accepted above
 - BST-LCA lowestness expressed only via helper abstractions
-- binary-search success theorem assuming bounds instead of proving bounds
+- binary-search success theorem assuming bounds instead of proving them from `binarySearch … = some i` (must chain to `i < arr.size` or `i < arr.length` per `family_packet_regression`)
 - coin-change canonicality appearing without explicit optimality dependence
 
 ## Family remediation execution order

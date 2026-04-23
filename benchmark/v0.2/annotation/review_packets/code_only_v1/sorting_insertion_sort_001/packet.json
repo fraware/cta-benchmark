@@ -76,69 +76,47 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "precondition",
-      "lean_statement": "∀ (arr : Array Int), True",
-      "nl_gloss": "No explicit preconditions are required by the implementation; it works for any mutable slice/array of i32 (Lean Int).",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU1_sorted_output (xs : Arr) : Sorted (insertionSort xs)",
+      "nl_gloss": "The declarative output list is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "termination",
-      "lean_statement": "∀ (arr : Array Int) (i : Nat), i < arr.size → (let j0 := i; ∃ j, j ≤ j0 ∧ (j = 0 ∨ ¬(arr.get! (j-1) > arr.get! j)))",
-      "nl_gloss": "The inner while-loop terminates because j decreases strictly on each swap and is bounded below by 0.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_perm_output (xs : Arr) : List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input (duplicate counts preserved).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (i : Nat), i ≤ arr.size →\n  let a := arr in\n  (Sorted (a.subarray 0 i)) ∧ (Permutation a (a))",
-      "nl_gloss": "After completing the outer loop for index i (i.e., before processing i), the prefix arr[0..i) is sorted in ascending order. The algorithm only swaps elements, so the multiset of elements is preserved (permutation).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 3,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (i j : Nat), i < arr.size → j ≤ i →\n  (Permutation arr arr) ∧\n  (Sorted (arr.subarray 0 j)) ∧\n  (∀ k, k < j → arr[k] ≤ arr[j])",
-      "nl_gloss": "During the inner while-loop for a fixed i, the portion before j remains sorted, and all elements in that prefix are ≤ the current element at position j. Swaps only move the current element left while maintaining these properties.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (i j : Nat), i < arr.size → j > 0 → j ≤ i →\n  arr[j-1] > arr[j] →\n  (let arr' := arr.swap (j-1) j in\n   Sorted (arr'.subarray 0 (j-1)) ∧\n   (∀ k, k < (j-1) → arr'[k] ≤ arr'[j-1]) ∧\n   Permutation arr arr')",
-      "nl_gloss": "If the while-condition holds (arr[j-1] > arr[j]), swapping positions j-1 and j preserves the sortedness of the already-processed prefix and maintains the relationship needed for the current element to continue moving left.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 5,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int),\n  let a0 := arr in\n  insertion_sort a0;\n  Sorted a0",
-      "nl_gloss": "After the algorithm finishes, the entire array is sorted in ascending order.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int),\n  let a0 := arr in\n  insertion_sort a0;\n  Permutation a0 arr",
-      "nl_gloss": "After the algorithm finishes, the output array is a permutation of the input array (it only uses swaps, so it preserves the multiset of elements).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 7,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int),\n  let a0 := arr in\n  insertion_sort a0;\n  (Sorted a0) ∧ (Permutation a0 arr) →\n  a0 = sort arr",
-      "nl_gloss": "Combining sortedness and permutation characterizes the result as the standard sorted version of the input (i.e., insertion sort computes the ascending sort).",
-      "linked_semantic_units": [],
+      "kind": "termination",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_output_length (xs : Arr) : (insertionSort xs).length = xs.length",
+      "nl_gloss": "The specification-level sort preserves length, matching finite termination of the reference on every input.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_001/lean_diagnostics.json"

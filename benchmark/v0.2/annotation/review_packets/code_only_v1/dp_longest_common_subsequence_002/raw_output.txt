@@ -2,38 +2,42 @@
   "obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "∀ (a b : List Int), True",
-      "nl_gloss": "No explicit preconditions are required by the implementation; it works for any input lists."
+      "lean_statement": "theorem lcs_length_range_bound (a b : List Int) : 0 <= lcsLength a b ∧ lcsLength a b <= Int.min a.length b.length := by\n  -- obligation: benchmark-aligned range bound for the returned length\n  admit",
+      "nl_gloss": "The computed LCS length is always within [0, min(|a|, |b|)].",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "definition_of_dp_table",
-      "lean_statement": "let m := a.length; let n := b.length; ∃ (dp : Fin (m+1) → Fin (n+1) → Nat),\n  (∀ i : Fin (m+1), dp i ⟨0, by simp⟩ = 0) ∧\n  (∀ j : Fin (n+1), dp ⟨0, by simp⟩ j = 0) ∧\n  (∀ i : Fin m, ∀ j : Fin n,\n    dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩ =\n      if a.get ⟨i.1, i.2⟩ = b.get ⟨j.1, j.2⟩ then\n        dp ⟨i.1, i.2⟩ ⟨j.1, j.2⟩ + 1\n      else\n        Nat.max (dp ⟨i.1, i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩)\n                 (dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1, j.2⟩))",
-      "nl_gloss": "Model the DP table computed by the nested loops: dp[0][*]=0, dp[*][0]=0, and the recurrence for dp[i+1][j+1] matches the Rust code."
+      "kind": "postcondition",
+      "lean_statement": "theorem lcs_length_witness_strict_increasing (a b : List Int) :\n  let k := lcsLength a b\n  ∃ (ia : Finset Nat) (ib : Finset Nat),\n    (Nat.card ia = k) ∧ (Nat.card ib = k) ∧\n    (∀ i1 i2, i1 ∈ ia → i2 ∈ ia → i1 < i2 → a.get? i1 = a.get? i2 → False) ∧\n    (∀ i ∈ ia, ∃ j ∈ ib, a.get? i = b.get? j) := by\n  admit",
+      "nl_gloss": "There exist strictly increasing index selections into a and b of equal length k such that the chosen elements match pairwise in order.",
+      "linked_semantic_units": [
+        "SU2",
+        "SU4"
+      ]
     },
     {
-      "kind": "bounds_and_indexing_safety",
-      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ i : Fin m, ∀ j : Fin n,\n    (a.get ⟨i.1, i.2⟩) = a.get ⟨i.1, i.2⟩ ∧ (b.get ⟨j.1, j.2⟩) = b.get ⟨j.1, j.2⟩",
-      "nl_gloss": "The recurrence only accesses a[i-1] and b[j-1] for i∈1..m and j∈1..n; in Lean this corresponds to safe indexing via Fin."
+      "kind": "optimality",
+      "lean_statement": "theorem lcs_length_maximality (a b : List Int) :\n  let k := lcsLength a b\n  ∀ (ia ib : List Nat),\n    (ia.Nodup ∧ ib.Nodup) →\n    (ia.Sorted (· < ·)) → (ib.Sorted (· < ·)) →\n    (ia.length = ib.length) →\n    (∀ t : Fin ia.length, ia.get t < a.length ∧ ib.get t < b.length) →\n    (∀ t : Fin ia.length, a.get? (ia.get t) = b.get? (ib.get t)) →\n    ia.length <= k := by\n  admit",
+      "nl_gloss": "No common subsequence longer than the returned length exists (maximality).",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
-      "kind": "dp_correctness_characterization",
-      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ (dp : Fin (m+1) → Fin (n+1) → Nat),\n    (∀ i, dp i ⟨0, by simp⟩ = 0) →\n    (∀ j, dp ⟨0, by simp⟩ j = 0) →\n    (∀ i : Fin m, ∀ j : Fin n,\n      dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩ =\n        if a.get ⟨i.1, i.2⟩ = b.get ⟨j.1, j.2⟩ then\n          dp ⟨i.1, i.2⟩ ⟨j.1, j.2⟩ + 1\n        else\n          Nat.max (dp ⟨i.1, i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩)\n                   (dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1, j.2⟩)) →\n    (∀ i : Fin (m+1), ∀ j : Fin (n+1),\n      dp i j = lcsLen (a.take i.1) (b.take j.1))",
-      "nl_gloss": "Prove the DP table entry dp[i][j] equals the length of the longest common subsequence of the prefixes a[0..i) and b[0..j). (Here lcsLen is the standard LCS length function in Lean.)"
+      "kind": "termination",
+      "lean_statement": "theorem lcs_length_terminates (a b : List Int) :\n  ∃ (m n : Nat), m = a.length ∧ n = b.length ∧ m * n < (m + 1) * (n + 1) := by\n  admit",
+      "nl_gloss": "The DP computation is over a finite m×n table and therefore terminates.",
+      "linked_semantic_units": []
     },
     {
-      "kind": "final_result_matches_dp",
-      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ (dp : Fin (m+1) → Fin (n+1) → Nat),\n    dp ⟨m, by simp⟩ ⟨n, by simp⟩ = lcsLen a b",
-      "nl_gloss": "The function returns dp[m][n], so the returned value equals the LCS length of the full lists."
-    },
-    {
-      "kind": "soundness_of_recurrence_step",
-      "lean_statement": "∀ (a b : List Int) (i j : Nat),\n  i ≤ a.length → j ≤ b.length →\n  let ai := a.get ⟨i-1, by omega⟩; let bj := b.get ⟨j-1, by omega⟩;\n  (ai = bj →\n    lcsLen (a.take i) (b.take j) = lcsLen (a.take (i-1)) (b.take (j-1)) + 1) ∧\n  (ai ≠ bj →\n    lcsLen (a.take i) (b.take j) =\n      Nat.max (lcsLen (a.take (i-1)) (b.take j)) (lcsLen (a.take i) (b.take (j-1))))",
-      "nl_gloss": "Justify the two cases in the recurrence: if the last elements of the prefixes match, LCS length increases by 1; otherwise it is the max of dropping one side."
-    },
-    {
-      "kind": "termination_and_totality",
-      "lean_statement": "∀ (a b : List Int), True",
-      "nl_gloss": "The nested loops iterate over finite ranges 1..=m and 1..=n, so the computation is total."
+      "kind": "auxiliary",
+      "lean_statement": "theorem lcs_length_symmetry (a b : List Int) : lcsLength a b = lcsLength b a := by\n  admit",
+      "nl_gloss": "Symmetry of the LCS length with respect to swapping the two input sequences.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
     }
   ]
 }

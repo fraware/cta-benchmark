@@ -47,6 +47,11 @@ cargo run -p cta_cli -- annotate coverage --benchmark-version v0.2 --experiment-
 cargo run -p cta_cli -- benchmark audit-workbook --version v0.2
 cargo run -p cta_cli -- reports package --benchmark-version v0.2 --canonical-run-ids <run_ids>
 
+# 3c. review-packet regressions (when touching prompts, normalize.rs, or review packet JSON)
+cargo test -p cta_generate --test code_only_packet_regression
+cargo test -p cta_generate --test family_packet_regression
+cargo test -p cta_generate --test naive_concat_packet_regression
+
 # 4. end-to-end experiment smoke test (stub provider, offline)
 cargo run -p cta_cli -- experiment --config configs/experiments/pilot_v1.json --dry-run
 
@@ -105,3 +110,13 @@ cargo audit --deny warnings
       or constraint — never "what the code does".
 - [ ] If adding or changing an evaluated quantity, bumped the relevant
       contract version.
+- [ ] If the PR touches `configs/prompts/code_only_v1.json`,
+      `configs/prompts/naive_concat_v1.json`, `crates/cta_generate/src/normalize.rs`,
+      or any `benchmark/v0.2/annotation/review_packets/**/packet.json`:
+      run `cargo test -p cta_generate --test code_only_packet_regression`,
+      `cargo test -p cta_generate --test family_packet_regression`, and
+      (when `naive_concat_v1` packets change)
+      `cargo test -p cta_generate --test naive_concat_packet_regression`, then
+      `cta annotate verify-review-packets` for `v0.2` and commit the updated
+      `benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
+      when that file is part of your change set.

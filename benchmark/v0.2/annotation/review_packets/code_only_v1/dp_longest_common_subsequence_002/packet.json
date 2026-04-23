@@ -5,7 +5,7 @@
   "domain": "dp",
   "difficulty": "medium",
   "instance_path": "benchmark/v0.2/instances/dp/dp_longest_common_subsequence_002",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001/generated/code_only_v1/dp_longest_common_subsequence_002.json",
+  "generated_output_path": "runs/run_2026_04_23_code_only_v1_eval_zzzzzzzzzzzz_900/generated/code_only_v1/dp_longest_common_subsequence_002.json",
   "informal_statement": {
     "text": "Given two integer slices a and b, return the length of the longest sequence of integers that appears as a (not necessarily contiguous) subsequence of both a and b, in the same relative order.",
     "preconditions": [
@@ -71,7 +71,7 @@
     {
       "id": "obl_001",
       "kind": "postcondition",
-      "lean_statement": "∀ (a b : Arr), lcsLength a b ≤ a.length ∧ lcsLength a b ≤ b.length",
+      "lean_statement": "\u2200 (a b : Arr), lcsLength a b \u2264 a.length \u2227 lcsLength a b \u2264 b.length",
       "nl_gloss": "The result is bounded above by the lengths of both inputs.",
       "linked_semantic_units": [
         "SU1"
@@ -82,7 +82,7 @@
     {
       "id": "obl_002",
       "kind": "postcondition",
-      "lean_statement": "∀ (a b : Arr), ∃ (ia ib : List Nat), CommonSubseq a b ia ib ∧ ia.length = lcsLength a b",
+      "lean_statement": "\u2200 (a b : Arr), \u2203 (ia ib : List Nat), CommonSubseq a b ia ib \u2227 ia.length = lcsLength a b",
       "nl_gloss": "There exists a common subsequence of length equal to the returned value.",
       "linked_semantic_units": [
         "SU2",
@@ -94,7 +94,7 @@
     {
       "id": "obl_003",
       "kind": "postcondition",
-      "lean_statement": "∀ (a b : Arr) (ia ib : List Nat), CommonSubseq a b ia ib → ia.length ≤ lcsLength a b",
+      "lean_statement": "\u2200 (a b : Arr) (ia ib : List Nat), CommonSubseq a b ia ib \u2192 ia.length \u2264 lcsLength a b",
       "nl_gloss": "No common subsequence is strictly longer than the returned value.",
       "linked_semantic_units": [
         "SU3"
@@ -105,7 +105,7 @@
     {
       "id": "obl_004",
       "kind": "postcondition",
-      "lean_statement": "∀ (a b : Arr), lcsLength a b = lcsLength b a",
+      "lean_statement": "\u2200 (a b : Arr), lcsLength a b = lcsLength b a",
       "nl_gloss": "LCS length is symmetric in its arguments.",
       "linked_semantic_units": [
         "SU5"
@@ -117,61 +117,38 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "precondition",
-      "lean_statement": "∀ (a b : List Int), True",
-      "nl_gloss": "No explicit preconditions are required by the implementation; it works for any input lists.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_lcs_witness_indices (a b : List Int) :\n  let k := lcs_length a b\n  ? ia ib : List Nat, ia.length = k ? ib.length = k ? StrictlyIncreasing ia ? StrictlyIncreasing ib ? (? t : Nat, t < k ? a[ia.get! t]! = b[ib.get! t]!)",
+      "nl_gloss": "Witness via strictly increasing index selections (non-contiguous subsequence semantics).",
+      "linked_semantic_units": [
+        "SU2",
+        "SU4"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "let m := a.length; let n := b.length; ∃ (dp : Fin (m+1) → Fin (n+1) → Nat),\n  (∀ i : Fin (m+1), dp i ⟨0, by simp⟩ = 0) ∧\n  (∀ j : Fin (n+1), dp ⟨0, by simp⟩ j = 0) ∧\n  (∀ i : Fin m, ∀ j : Fin n,\n    dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩ =\n      if a.get ⟨i.1, i.2⟩ = b.get ⟨j.1, j.2⟩ then\n        dp ⟨i.1, i.2⟩ ⟨j.1, j.2⟩ + 1\n      else\n        Nat.max (dp ⟨i.1, i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩)\n                 (dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1, j.2⟩))",
-      "nl_gloss": "Model the DP table computed by the nested loops: dp[0][*]=0, dp[*][0]=0, and the recurrence for dp[i+1][j+1] matches the Rust code.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 2,
-      "kind": "unknown",
-      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ i : Fin m, ∀ j : Fin n,\n    (a.get ⟨i.1, i.2⟩) = a.get ⟨i.1, i.2⟩ ∧ (b.get ⟨j.1, j.2⟩) = b.get ⟨j.1, j.2⟩",
-      "nl_gloss": "The recurrence only accesses a[i-1] and b[j-1] for i∈1..m and j∈1..n; in Lean this corresponds to safe indexing via Fin.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 3,
-      "kind": "unknown",
-      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ (dp : Fin (m+1) → Fin (n+1) → Nat),\n    (∀ i, dp i ⟨0, by simp⟩ = 0) →\n    (∀ j, dp ⟨0, by simp⟩ j = 0) →\n    (∀ i : Fin m, ∀ j : Fin n,\n      dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩ =\n        if a.get ⟨i.1, i.2⟩ = b.get ⟨j.1, j.2⟩ then\n          dp ⟨i.1, i.2⟩ ⟨j.1, j.2⟩ + 1\n        else\n          Nat.max (dp ⟨i.1, i.2⟩ ⟨j.1+1, by exact Nat.succ_lt_succ j.2⟩)\n                   (dp ⟨i.1+1, by exact Nat.succ_lt_succ i.2⟩ ⟨j.1, j.2⟩)) →\n    (∀ i : Fin (m+1), ∀ j : Fin (n+1),\n      dp i j = lcsLen (a.take i.1) (b.take j.1))",
-      "nl_gloss": "Prove the DP table entry dp[i][j] equals the length of the longest common subsequence of the prefixes a[0..i) and b[0..j). (Here lcsLen is the standard LCS length function in Lean.)",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ (dp : Fin (m+1) → Fin (n+1) → Nat),\n    dp ⟨m, by simp⟩ ⟨n, by simp⟩ = lcsLen a b",
-      "nl_gloss": "The function returns dp[m][n], so the returned value equals the LCS length of the full lists.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 5,
-      "kind": "unknown",
-      "lean_statement": "∀ (a b : List Int) (i j : Nat),\n  i ≤ a.length → j ≤ b.length →\n  let ai := a.get ⟨i-1, by omega⟩; let bj := b.get ⟨j-1, by omega⟩;\n  (ai = bj →\n    lcsLen (a.take i) (b.take j) = lcsLen (a.take (i-1)) (b.take (j-1)) + 1) ∧\n  (ai ≠ bj →\n    lcsLen (a.take i) (b.take j) =\n      Nat.max (lcsLen (a.take (i-1)) (b.take j)) (lcsLen (a.take i) (b.take (j-1))))",
-      "nl_gloss": "Justify the two cases in the recurrence: if the last elements of the prefixes match, LCS length increases by 1; otherwise it is the max of dropping one side.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "unknown",
-      "lean_statement": "∀ (a b : List Int), True",
-      "nl_gloss": "The nested loops iterate over finite ranges 1..=m and 1..=n, so the computation is total.",
-      "linked_semantic_units": [],
+      "kind": "optimality",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_lcs_maximality (a b : List Int) :\n  let k := lcs_length a b\n  ? m : Nat, (? ia ib : List Nat, ia.length = m ? ib.length = m ? StrictlyIncreasing ia ? StrictlyIncreasing ib ? (? t : Nat, t < m ? a[ia.get! t]! = b[ib.get! t]!)) ? m = k",
+      "nl_gloss": "No common subsequence defined by increasing indices is longer than returned length.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU2",
+      "SU3",
+      "SU4"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_longest_common_subsequence_002/lean_diagnostics.json"

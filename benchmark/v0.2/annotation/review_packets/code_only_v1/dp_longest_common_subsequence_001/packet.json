@@ -117,69 +117,60 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "precondition",
-      "lean_statement": "∀ (a b : List Int), True",
-      "nl_gloss": "No explicit preconditions are required by the implementation; it works for any input lists (including empty lists).",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_common_subseq_witness (a b : Arr) :\n  ∃ ia ib : List Nat,\n    CommonSubseq a b ia ib ∧ ia.length = lcsLength a b",
+      "nl_gloss": "There exists a common subsequence whose length matches the returned LCS length.",
+      "linked_semantic_units": [
+        "SU2",
+        "SU4"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "let m := a.length; let n := b.length; ∃ (dp : Fin (m+1) → Fin (n+1) → Nat),\n  (∀ i : Fin (m+1), dp i 0 = 0) ∧ (∀ j : Fin (n+1), dp 0 j = 0) ∧\n  (∀ i : Fin m, ∀ j : Fin n,\n    dp (Fin.succ i) (Fin.succ j) =\n      if a.get ⟨i.1, by simp⟩ = b.get ⟨j.1, by simp⟩\n      then dp i j + 1\n      else Nat.max (dp i (Fin.succ j)) (dp (Fin.succ i) j))",
-      "nl_gloss": "The DP table is initialized with zeros on the first row and first column, and filled by the standard LCS recurrence using the equality of elements at positions i-1 and j-1.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_maximal (a b : Arr) (ia ib : List Nat)\n  (h : CommonSubseq a b ia ib) :\n  ia.length ≤ lcsLength a b",
+      "nl_gloss": "No common subsequence is strictly longer than the returned value.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "unknown",
-      "lean_statement": "let m := a.length; let n := b.length;\n∀ i : Fin (m+1), ∀ j : Fin (n+1),\n  (0 ≤ i.1 ∧ i.1 ≤ m) ∧ (0 ≤ j.1 ∧ j.1 ≤ n)",
-      "nl_gloss": "All DP accesses dp[i][j] are within bounds for i ∈ [0..m] and j ∈ [0..n].",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "auxiliary",
+      "lean_statement": "theorem SU1_length_bounds (a b : Arr) :\n  lcsLength a b ≤ a.length ∧ lcsLength a b ≤ b.length",
+      "nl_gloss": "The LCS length never exceeds either input length.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
       "raw_source": "model"
     },
     {
       "index": 3,
-      "kind": "unknown",
-      "lean_statement": "let m := a.length; let n := b.length;\n∀ i : Fin (m+1),\n  (i.1 = 0 → True) ∧\n  (i.1 = 0 → dp i ⟨0, by simp⟩ = 0) ∧\n∀ j : Fin (n+1),\n  (j.1 = 0 → True) ∧\n  (j.1 = 0 → dp ⟨0, by simp⟩ j = 0)",
-      "nl_gloss": "The first row and first column are set to 0, matching the fact that the LCS length with an empty prefix is 0.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "let m := a.length; let n := b.length;\n∀ i : Fin m, ∀ j : Fin n,\n  let x := a.get ⟨i.1, by simp⟩; let y := b.get ⟨j.1, by simp⟩;\n  (x = y → dp (Fin.succ i) (Fin.succ j) = dp i j + 1) ∧\n  (x ≠ y → dp (Fin.succ i) (Fin.succ j) = Nat.max (dp i (Fin.succ j)) (dp (Fin.succ i) j))",
-      "nl_gloss": "When the current elements match, the DP increases the diagonal value by 1; otherwise it takes the maximum of skipping one element from either sequence.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 5,
-      "kind": "unknown",
-      "lean_statement": "∀ (a b : List Int),\n  let m := a.length; let n := b.length;\n  ∀ i : Fin (m+1), ∀ j : Fin (n+1),\n    let A := a.take i.1; let B := b.take j.1;\n    True",
-      "nl_gloss": "Introduce the intended interpretation of dp[i][j] as the LCS length of prefixes a[0..i) and b[0..j). (This obligation is a placeholder for connecting dp to the standard LCS-over-prefixes definition.)",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "unknown",
-      "lean_statement": "let m := a.length; let n := b.length;\n∀ i : Fin (m+1), ∀ j : Fin (n+1),\n  dp i j = lcsLen (a.take i.1) (b.take j.1)",
-      "nl_gloss": "For all i,j, the filled DP value equals the length of the longest common subsequence of the corresponding prefixes.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 7,
-      "kind": "unknown",
-      "lean_statement": "let m := a.length; let n := b.length;\n  dp ⟨m, by simp⟩ ⟨n, by simp⟩ = lcsLen a b",
-      "nl_gloss": "The function returns dp[m][n], which equals the LCS length of the full input lists.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "auxiliary",
+      "lean_statement": "theorem SU5_symmetry (a b : Arr) : lcsLength a b = lcsLength b a",
+      "nl_gloss": "LCS length is symmetric in the two inputs.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU2",
+      "SU3",
+      "SU4"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_longest_common_subsequence_001/lean_diagnostics.json"

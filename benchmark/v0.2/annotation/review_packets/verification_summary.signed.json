@@ -1,13 +1,13 @@
 {
   "signature": {
     "algorithm": "sha256",
-    "value": "ddfcd096a3d60d375b2082875cfed08160e94c7af8225d1d6eb4efbf7b03bc0d"
+    "value": "42d4f93f9d5681f6e99a8ab81171141554fb5531efa1c650e01108d3720bec98"
   },
   "verification": {
     "benchmark_version": "v0.2",
     "packets_root": "benchmark/v0.2/annotation/review_packets",
     "schema_path": "schemas/review_packet.schema.json",
-    "generated_at": "2026-04-23T11:29:56.4559883Z",
+    "generated_at": "2026-04-23T18:23:20.0459868Z",
     "total_packets": 93,
     "passed_packets": 93,
     "failed_packets": 0,
@@ -16,61 +16,61 @@
         "instance_id": "arrays_binary_search_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_binary_search_001/packet.json",
-        "sha256": "4806ef755c9dc2d1137a1b5ece494f09bbaed53dc442b2deb498986c20386e43"
+        "sha256": "af9c5e150b551774f9a011a43114bba2a5279eb6f49a0e0553f0e283040cbf09"
       },
       {
         "instance_id": "arrays_binary_search_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_binary_search_002/packet.json",
-        "sha256": "3f730d1084622fc8d72894b88f184c7ebfcdd4dc60956db3e91644a353e9b16c"
+        "sha256": "b809ecea9978106c27e325b8606bcf0d1068cf8ad401ef3456b2c4ec9ba97ad3"
       },
       {
         "instance_id": "arrays_max_subarray_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_001/packet.json",
-        "sha256": "933814f507b7d65d22085a3b152a422f95b7d9916cb5cbd8ab12ff257e184243"
+        "sha256": "9b8beae8c3426551911fd8f01e8f5fffe044d4d11f319ab5e4afd0e5b8cfa2d0"
       },
       {
         "instance_id": "arrays_max_subarray_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_002/packet.json",
-        "sha256": "7febf9e2741e1cffbd325f37c2a4b5beae47b8cc7a5ac37eadc095812434afc0"
+        "sha256": "b73a9feca202241c78c0758331c02e2e9ba0d30ca0af5123f18600c59b942a9a"
       },
       {
         "instance_id": "dp_knapsack_01_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_001/packet.json",
-        "sha256": "a428fe30730d006c58f957f39a4ebbeab7ae7c48e3982ba1369921a50c2dd8d4"
+        "sha256": "4a83f9afa1b91999ec81c571dbf4e1f74a0f97f64147cefa06f4f076b1e53bca"
       },
       {
         "instance_id": "dp_knapsack_01_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_002/packet.json",
-        "sha256": "9c2f9ac77523fc897da22ed3b3f72a2da0992a6d5b5f69f73fe3d347c8c88d3e"
+        "sha256": "26eb00e8bac92806594bce2815722140a2efd5e6d8a855ba7f5de379333c5336"
       },
       {
         "instance_id": "dp_longest_common_subsequence_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_longest_common_subsequence_001/packet.json",
-        "sha256": "4c5a3043b4241ac67cd724a928ea2d81bb089efaf755e4c5629e4737d952f7e6"
+        "sha256": "0f4735228154e261676b7e25aee5b8db101a898bf287dbb1ab1a58de9ec1f308"
       },
       {
         "instance_id": "dp_longest_common_subsequence_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_longest_common_subsequence_002/packet.json",
-        "sha256": "4dd93c3fb9e7d6622aabbfff29cff293f46d143f0b2978aae05d4d77024eade4"
+        "sha256": "4659b5ad5d967bde5c8b7f21999a6c34b6b52f94a8c7e8e03f36e0fe991f863f"
       },
       {
         "instance_id": "graph_bfs_shortest_path_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_bfs_shortest_path_001/packet.json",
-        "sha256": "c8e481dc74e836f2fc7b190af10bb369c91ddf4c6559a6351679fdfdea6b96ad"
+        "sha256": "7e4e677ed57d3e4ae73a48b5530583e2e5f21bcf1b270bead080a09939c3088d"
       },
       {
         "instance_id": "graph_bfs_shortest_path_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_bfs_shortest_path_002/packet.json",
-        "sha256": "d1eee0a9647b1eec35db40b962be335326d93a44ec867f2e0d8730367f8346d3"
+        "sha256": "b306130fd34a8017b65b16d0ce5fe4e0ef2ffd0bec67e1bfb24f68f4b7e2ae8c"
       },
       {
         "instance_id": "graph_dijkstra_001",
@@ -82,19 +82,19 @@
         "instance_id": "graph_dijkstra_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_002/packet.json",
-        "sha256": "08cb02268f3919d0a351b71f92996ee97ec0749e1c6ef8a343068eef5a80b947"
+        "sha256": "7966ff4f948b4c2ba6e06bb78960ff8d0333156e784328bb2cb167eac3d244ee"
       },
       {
         "instance_id": "greedy_coin_change_canonical_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_coin_change_canonical_001/packet.json",
-        "sha256": "c7dde1b4ede472629af1fc3ce6a1a971417d61c8942e5cfb6c32d8cf880bd99b"
+        "sha256": "5b29748bd823b7c667da5816fcfe831fe7eb1ff440d7906d2842505d124e68de"
       },
       {
         "instance_id": "greedy_coin_change_canonical_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_coin_change_canonical_002/packet.json",
-        "sha256": "0709a5ca3854726eeb258fd011370ff123f693e31bc2aa91e8afaf72a4675362"
+        "sha256": "4f08843cbcd2beee71d90bde7504e61035643e916a7b9ed1515c067a8756ef9c"
       },
       {
         "instance_id": "greedy_interval_scheduling_001",
@@ -106,19 +106,19 @@
         "instance_id": "greedy_interval_scheduling_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_002/packet.json",
-        "sha256": "d35fffcb7351eaa4598fe68b752f2dec9b4067345777a2bd3d538e9b3d2f25b0"
+        "sha256": "75bdf58e57a7af6e8bfbf5f80ca6fd58aaaaf7494f5f67200b2c1a051b0cdf97"
       },
       {
         "instance_id": "sorting_insertion_sort_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_001/packet.json",
-        "sha256": "dba2ddbc71a854f7b26bad5f817eacdad5a04c05d55ac744968eb6f69f3b92c9"
+        "sha256": "99051c043f80f9d1833fc28824818352ce54752ba7c02ceba99db677f5bd334e"
       },
       {
         "instance_id": "sorting_insertion_sort_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/packet.json",
-        "sha256": "e190d95965c5221de64e8b9345cad2421f90b376adda77ed035770db265f1766"
+        "sha256": "fbf32b6ddb417cd1da3b1ea7eaefadbf615523af51ea3c276e6ef89623abe612"
       },
       {
         "instance_id": "sorting_merge_sort_001",
@@ -130,7 +130,7 @@
         "instance_id": "sorting_merge_sort_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_merge_sort_002/packet.json",
-        "sha256": "2c6e8f50d0c8ad24b64b2ff7125df93cc862976d969c2b1e46b9a01893bd5def"
+        "sha256": "a581c7e479aabed1ef6ad334d99cf976978d30b67d52812ef35c4ad4843e09e6"
       },
       {
         "instance_id": "trees_bst_insert_001",
@@ -142,31 +142,31 @@
         "instance_id": "trees_bst_insert_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_bst_insert_002/packet.json",
-        "sha256": "00953b957f09dbeba25d7e2bd0d1a8f7ff7dd3cebb42dd042e3c04dbaf909ff5"
+        "sha256": "9272b5ced70b5fd9a891261ef7df28180953226bdd89886f6fd5e487cbffb559"
       },
       {
         "instance_id": "trees_lowest_common_ancestor_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_lowest_common_ancestor_001/packet.json",
-        "sha256": "800c2ab9709242ec1ba8e2ce29e42ce0f9777eba877ed74bed129c098be33cc1"
+        "sha256": "937e4d27679cd4aa5b13440a17b9ba978f699666e15f61ec562ad69f3000c8db"
       },
       {
         "instance_id": "trees_lowest_common_ancestor_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_lowest_common_ancestor_002/packet.json",
-        "sha256": "1f786f3c3c44fce490138a564ecc8b03b380ccc02050c04010b31fa4718e9402"
+        "sha256": "a98bd0dab17331d7916274a120177b060d539246aa4a03853d5fd7583ff5c859"
       },
       {
         "instance_id": "arrays_binary_search_001",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_binary_search_001/packet.json",
-        "sha256": "35221301f41d8f94657006ea7f818a8319410b84b9cf42683d382ef5fdcfbbfd"
+        "sha256": "8a4817db52e2c5a4a9259dde085b1a0ee16491500dbcd0d17ed5eace6633f398"
       },
       {
         "instance_id": "arrays_binary_search_002",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_binary_search_002/packet.json",
-        "sha256": "c7880b90adc0e731c05dedd9a85e4dd8d7765bf4f1029f1cd81b37edf37bdd9d"
+        "sha256": "ca0f19196e3337e09ccc602c102d03d82f026624ec6ba0d4000bcce407189060"
       },
       {
         "instance_id": "arrays_max_subarray_001",
@@ -184,13 +184,13 @@
         "instance_id": "dp_knapsack_01_001",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_knapsack_01_001/packet.json",
-        "sha256": "9f1ef7e83ebe6313f328c56c4bbddb28fec1862e9bec15b2e0356bd0dae61404"
+        "sha256": "34e4b2947643faab2613a8a67484015f21a641425c4c63840d46b07ed5b54971"
       },
       {
         "instance_id": "dp_knapsack_01_002",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_knapsack_01_002/packet.json",
-        "sha256": "cccd7a5b5f464852dc1b7cc7bfb4bfc35e6e2311b7e51d965ef395d659f76af5"
+        "sha256": "e948c6b0cf1c83291d3ece94b807c4614d54eb39cd8024346799a375742b2d38"
       },
       {
         "instance_id": "dp_longest_common_subsequence_001",
@@ -214,7 +214,7 @@
         "instance_id": "graph_bfs_shortest_path_002",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_002/packet.json",
-        "sha256": "164cb9705895ec7cbbf1de27e7a43315c531b97e722dad8f564f494ff4a24c67"
+        "sha256": "bab04ac04832420680aa0b642c74b047dff1bf1b7e63ca4212d4457b781d2c30"
       },
       {
         "instance_id": "graph_dijkstra_001",
@@ -226,7 +226,7 @@
         "instance_id": "graph_dijkstra_002",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_dijkstra_002/packet.json",
-        "sha256": "21852ce9831d733a57fae879f4388e86feca147638c43e23010e8517844a1fc0"
+        "sha256": "0ae18843fc31c52038109aa6e1644c2d9f6c40bda541740d0ff55c1a9c1ba12e"
       },
       {
         "instance_id": "greedy_coin_change_canonical_001",
@@ -238,7 +238,7 @@
         "instance_id": "greedy_coin_change_canonical_002",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/greedy_coin_change_canonical_002/packet.json",
-        "sha256": "43b163ac92fe2ff8becb9fcc830e90638a4739f2f4095c395935fddf7db5fe36"
+        "sha256": "7abc89d5b86374390c8fec7644e4513b3b7a358382564affb9c3e8685ad73487"
       },
       {
         "instance_id": "greedy_interval_scheduling_001",
@@ -292,13 +292,13 @@
         "instance_id": "trees_lowest_common_ancestor_001",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_001/packet.json",
-        "sha256": "703738ae643b12fdc40e2bbb04541b5156dbf65476fe7ad4be84224b3486634a"
+        "sha256": "aa1e7f6e2be878140d530e0e7fbdbc0f3d4027cb43dac63c4502b643969f0451"
       },
       {
         "instance_id": "trees_lowest_common_ancestor_002",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_002/packet.json",
-        "sha256": "23f327530af7d62360ddaa3bd89d3184dbea39646230d9d2c936fca67bd9d88f"
+        "sha256": "fb5c60747bce544518b425dd6977c312a2f371a3aa42e499c1baa52171a2e8a9"
       },
       {
         "instance_id": "arrays_binary_search_001",

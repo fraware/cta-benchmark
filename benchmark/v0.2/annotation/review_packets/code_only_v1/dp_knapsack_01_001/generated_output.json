@@ -17,64 +17,23 @@
   },
   "normalized_obligations": [
     {
-      "kind": "precondition",
-      "lean_statement": "weights.length = values.length",
-      "nl_gloss": "The implementation asserts that `weights.len() == values.len()`, so the proof context must assume the lengths match.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU1_feasible_witness (ws : Weights) (vs : Values) (cap : Nat)\n  (hal : ws.length = vs.length) :\n  ∃ sel : Selection,\n    ValidSelection ws sel ∧\n    totalWeight ws sel ≤ cap ∧\n    totalValue vs sel = knapsack01 ws vs cap",
+      "nl_gloss": "When weights and values align, some valid selection achieves the returned optimum within the capacity.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "let cap : Nat := capacity.toNat\nlet dp0 : List Nat := List.replicate (cap+1) 0",
-      "nl_gloss": "Define the capacity as a natural number and the initial DP table as an array of length `cap+1` filled with 0.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "bounds",
-      "lean_statement": "∀ c : Nat, c ≤ cap → (dp[c] : Nat) is well-defined during the algorithm",
-      "nl_gloss": "Show that all DP accesses `dp[c]` and `dp[c-w]` are within bounds whenever they occur (using the loop invariants and the check `w ≤ cap`).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "For each outer iteration index i (0 ≤ i ≤ n), there exists a function best_i : Fin (cap+1) → Nat such that for all c ≤ cap, dp[c] = best_i ⟨c, _⟩, where best_i c equals the maximum total value achievable using items from indices < i with total weight ≤ c.",
-      "nl_gloss": "State the main correctness invariant: after processing the first `i` items, `dp[c]` stores the optimal value for capacity `c` using only those items.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "Assuming the invariant holds for i, after processing item i with weight w and value v (and skipping if w > cap), the update for each c ≤ cap satisfies:\n`dp_new[c] = max dp_old[c] (dp_old[c - w] + v)` for c ≥ w, and `dp_new[c] = dp_old[c]` for c < w.",
-      "nl_gloss": "Prove that the inner reverse loop implements the 0/1 knapsack recurrence for each capacity: either do not take the item (keep old value) or take it (add value to the best for remaining capacity).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "Because the inner loop iterates `c` in decreasing order from `w` to `cap`, for each c ≥ w the expression `dp[c - w]` used to compute `cand` refers to the dp state before updating capacity c (i.e., it corresponds to `dp_old[c - w]`).",
-      "nl_gloss": "Justify why the 1-D rolling array is correct: iterating capacities in reverse prevents using the same item multiple times.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "If w > cap then for all c ≤ cap, dp_new[c] = dp_old[c].",
-      "nl_gloss": "When an item’s weight exceeds the capacity, the code continues without changing the DP table; prove the DP remains unchanged.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "For i = 0, for all c ≤ cap, dp[c] = 0, which equals the maximum value achievable using no items with total weight ≤ c.",
-      "nl_gloss": "Show the base case: with zero items, the best value is 0 for any capacity.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "Let n := weights.length. After the outer loop completes, for all c ≤ cap, dp[c] equals the maximum total value achievable using items with indices < n and total weight ≤ c.",
-      "nl_gloss": "Conclude the invariant at i = n: the DP table represents the optimal values for all capacities after considering all items.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "dp[cap] = maxValue (subsets of {0..n-1} with totalWeight ≤ cap) (sum of corresponding values), and the function returns dp[cap].",
-      "nl_gloss": "The function returns `dp[cap]`, so prove that this equals the maximum total value over all subsets whose total weight is at most `capacity`.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU4_global_optimal (ws : Weights) (vs : Values) (cap : Nat) (sel : Selection)\n  (hal : ws.length = vs.length)\n  (hv : ValidSelection ws sel)\n  (hw : totalWeight ws sel ≤ cap) :\n  totalValue vs sel ≤ knapsack01 ws vs cap",
+      "nl_gloss": "No feasible selection within the capacity beats the returned optimum.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
     }
   ],
   "prompt_hash": "sha256:f1e042179477d35aeae02ddaf7ca581282688d16434dc34005894c3ef62c1c33",

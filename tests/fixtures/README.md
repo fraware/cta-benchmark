@@ -16,6 +16,7 @@ Authoritative fixtures in the repository:
 | `benchmark/v0.2/annotation/adjudicated_subset/**`             | release validation + paper pipeline                                     | Active paper-track annotation source of truth                       |
 | `benchmark/v0.2/annotation/multi_annotator_fixture/**`        | `cta_metrics::multi_annotator_pipeline`                                 | Multi-annotator adjudication + agreement pathway                    |
 | `benchmark/v0.2/annotation/calibration_pack/**`               | human annotators (calibration)                                          | Worked exemplars spanning the rubric                                |
+| `benchmark/v0.2/annotation/review_packets/**`                 | `cta_generate` packet regressions, `cta annotate verify-review-packets` | Staged per-system review `packet.json` trees for paper-track systems |
 | `configs/experiments/pilot_v1.json`                           | `cta_cli` smoke, CI                                                     | End-to-end orchestration fixture                                    |
 
 Conventions:

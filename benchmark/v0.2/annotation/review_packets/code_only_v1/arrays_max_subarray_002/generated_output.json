@@ -17,58 +17,23 @@
   },
   "normalized_obligations": [
     {
-      "kind": "precondition",
-      "lean_statement": "∀ (arr : Array Int), arr.size > 0 → True",
-      "nl_gloss": "The function requires the input array/slice to be non-empty (it reads arr[0]).",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_contiguous_witness (arr : Arr) (hne : arr ≠ []) :\n  ∃ i j : Nat,\n    i ≤ j ∧ j ≤ arr.length ∧ i < j ∧ sliceSum arr i j = maxSubarray arr",
+      "nl_gloss": "For every non-empty input, some contiguous non-empty subslice achieves the returned maximum sum.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU4"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let best0 := arr.get ⟨0, h⟩\n  in True",
-      "nl_gloss": "Initialize best to the first element (corresponds to best := arr[0]).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let cur0 := arr.get ⟨0, h⟩\n  in True",
-      "nl_gloss": "Initialize cur to the first element (corresponds to cur := arr[0]).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  ∀ (i : Nat) (hi : i ≤ arr.size - 1),\n  let a := fun j : Fin arr.size => arr.get j\n  in True",
-      "nl_gloss": "For each iteration index i (processing element at position i+1 in the Rust code), maintain that cur equals the maximum sum of a contiguous non-empty subarray that ends at the current position.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  ∀ (i : Nat) (hi : i ≤ arr.size - 1),\n  True",
-      "nl_gloss": "For each iteration, maintain that best equals the maximum sum of any contiguous non-empty subarray within the prefix processed so far.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (x cur : Int),\n  cur' = Int.max x (cur + x) →\n  True",
-      "nl_gloss": "Show that updating cur via cur := max(x, cur + x) correctly computes the best sum of a non-empty subarray ending at the new element (either start new at x or extend the previous best-ending-at-previous).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (best cur : Int),\n  best' = Int.max best cur →\n  True",
-      "nl_gloss": "Show that updating best via best := max(best, cur) correctly preserves that best is the maximum over all subarrays in the processed prefix.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let n := arr.size\n  in True",
-      "nl_gloss": "The loop iterates over exactly the elements arr[1..] (i.e., all positions after the first), so the invariants cover the entire array.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (h : arr.size > 0),\n  let res := max_subarray (arr.toList) -- conceptual; corresponds to Rust slice\n  in\n  ∃ (l r : Nat),\n    l < r ∧ r ≤ arr.size ∧\n    res = (∑ k in Finset.range (r - l), arr.get ⟨l + k, by omega⟩) ∧\n    ∀ (l' r' : Nat),\n      l' < r' ∧ r' ≤ arr.size →\n      res ≥ (∑ k in Finset.range (r' - l'), arr.get ⟨l' + k, by omega⟩)",
-      "nl_gloss": "The returned value equals the maximum sum over all contiguous non-empty subarrays (choose l<r; sum arr[l..r) is maximized).",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_global_upper_bound (arr : Arr) (i j : Nat) (hne : arr ≠ [])\n  (hij : i < j) (hj : j ≤ arr.length) :\n  sliceSum arr i j ≤ maxSubarray arr",
+      "nl_gloss": "No contiguous non-empty subslice sums above the returned maximum.",
+      "linked_semantic_units": [
+        "SU3",
+        "SU4"
+      ]
     }
   ],
   "prompt_hash": "sha256:51cfdd6a328f5061f75481ee105a3ea9fa380079aeeb150a082d164da8709f79",
