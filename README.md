@@ -283,6 +283,13 @@ Review packets include per-packet QA metadata under `quality_summary`:
 The benchmark-facing layer is expected to stay compact (typically <= 6 theorems)
 and sufficient for evaluating semantic faithfulness without auxiliary lemmas.
 
+Final theorem-hygiene constraints for benchmark-facing obligations:
+
+- interval scheduling feasibility witnesses must use subset semantics (`iv ∈ S → iv ∈ intervals`) and never `iv ∈ S ↔ iv ∈ intervals`
+- BFS witness/minimality path-edge clauses must encode consecutive adjacency as `u = p[i]`, `w = p[i+1]`, `w ∈ adj[u]`
+- BST key-change obligations must use absent/present split theorems with multiset semantics, not malformed disjunctions over implications
+- Dijkstra preconditions must avoid vacuous non-negativity clauses when edge weights are already typed as `Nat`
+
 Regression suites pin this contract for focused cleanup packets:
 
 - `crates/cta_generate/tests/code_only_packet_regression.rs`

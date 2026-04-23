@@ -90,6 +90,13 @@ this targeted remediation loop before broad benchmark refresh:
    - `cargo test -p cta_generate --test code_only_packet_regression`
    - `cta annotate verify-review-packets ...`
 
+`code_only_packet_regression` must fail on each of the following malformed cases:
+
+- interval witness theorem using `∀ iv, iv ∈ S ↔ iv ∈ intervals` for selected subsets
+- BFS path-edge theorem using malformed self-membership forms like `p.get? i ∈ adj[p.get? i]`
+- BST benchmark-facing key-change theorem encoded as implication-disjunction instead of absent/present multiset split
+- Dijkstra benchmark-facing preconditions containing redundant `w ≥ 0` / `w >= 0` clauses when edge weights are already `Nat`
+
 Focus-first policy: do not broaden instance scope until the targeted packet
 set is clean under both regression checks and packet schema verification.
 
