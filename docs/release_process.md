@@ -93,6 +93,26 @@ this targeted remediation loop before broad benchmark refresh:
 Focus-first policy: do not broaden instance scope until the targeted packet
 set is clean under both regression checks and packet schema verification.
 
+## Naive-concat remediation protocol
+
+Apply the same quality discipline to `naive_concat_v1`:
+
+1. Tighten prompt constraints in `configs/prompts/naive_concat_v1.json`:
+   - benchmark-facing obligations first
+   - optional auxiliary obligations second
+   - no vacuous/filler theorem forms
+   - semantic-unit linked obligations using canonical SU ids
+2. Reuse normalizer filters (`crates/cta_generate/src/normalize.rs`) so
+   vacuous obligations are dropped and off-spec extras are demoted.
+3. Regenerate only the scoped packet set with `cta generate --instances ...`.
+4. Rebuild scoped packets with `cta annotate build-review-packets --pairs ...`.
+5. Run focused regression and packet verification:
+   - `cargo test -p cta_generate --test naive_concat_packet_regression`
+   - `cta annotate verify-review-packets ...`
+
+As with `code_only_v1`, do not broaden to full-system refresh until the
+scoped packet set is clean under regression + schema gates.
+
 ## Schema evolution
 
 - Additive, non-breaking changes (new optional fields): bump the schema to

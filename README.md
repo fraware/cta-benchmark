@@ -258,9 +258,9 @@ form of every prompt template. Property-based tests in
 LLM-output normalizer never panics and only accepts well-formed
 obligations.
 
-### Code-only obligation quality gate
+### Obligation quality gate
 
-`code_only_v1` now enforces a strict two-layer obligation model:
+`code_only_v1` and `naive_concat_v1` enforce a strict two-layer obligation model:
 
 - benchmark-facing layer: only direct theorems used for semantic-faithfulness scoring
 - auxiliary layer: proof scaffolding (invariants, helper lemmas, termination machinery)
@@ -269,7 +269,7 @@ The generator/normalizer pipeline applies the following fail-closed rules:
 
 - strict template rendering (`render_strict`) with no unresolved placeholders
 - required non-empty `reference.rs` for `code_only_v1` / `naive_concat_v1`
-- vacuous theorem rejection (`True`, `P -> True`, `P ∧ True`, `∃ x, True`, trivial wrappers)
+- vacuous theorem rejection (`True`, `P -> True`, `P ∧ True`, `∃ x, True`, `: Prop := by trivial`, placeholder-style glosses)
 - off-spec theorem demotion (for example stability claims when stability is optional)
 - benchmark-facing-first ordering in normalized obligations
 
@@ -282,6 +282,11 @@ Review packets include per-packet QA metadata under `quality_summary`:
 
 The benchmark-facing layer is expected to stay compact (typically <= 6 theorems)
 and sufficient for evaluating semantic faithfulness without auxiliary lemmas.
+
+Regression suites pin this contract for focused cleanup packets:
+
+- `crates/cta_generate/tests/code_only_packet_regression.rs`
+- `crates/cta_generate/tests/naive_concat_packet_regression.rs`
 
 ## Documentation
 
