@@ -294,6 +294,42 @@ Regression suites pin this contract for focused cleanup packets:
 
 - `crates/cta_generate/tests/code_only_packet_regression.rs`
 - `crates/cta_generate/tests/naive_concat_packet_regression.rs`
+- `crates/cta_generate/tests/family_packet_regression.rs`
+
+### Gold template packet families
+
+The following `naive_concat_v1` packets are the canonical shape exemplars for
+future prompt/normalizer behavior:
+
+- `naive_concat_v1/greedy_interval_scheduling_001`
+- `naive_concat_v1/sorting_merge_sort_001`
+- `naive_concat_v1/trees_bst_insert_001`
+- `naive_concat_v1/graph_dijkstra_001`
+
+For these families, benchmark-facing obligations must remain:
+
+- compact (small direct theorem surface)
+- placeholder-free (no `{{...}}`)
+- vacuity-free (no `True` shell theorem forms)
+- direct with respect to critical semantic units
+- free of proof-plan prose in theorem slots
+
+### Family-specific theorem-shape guards
+
+In addition to the generic quality gate, CI now enforces packet-family shape
+checks for known failure modes:
+
+- LCS: subsequence relation must preserve non-contiguous increasing-index
+  semantics and remain consistent with recurrence/witness wording.
+- Interval scheduling: reject unresolved placeholders and reject benchmark-facing
+  `True` placeholders; feasibility witness must use subset semantics.
+- BFS: reject witness/minimality forms that use malformed adjacency or `∨ True`
+  escape hatches.
+- BST-LCA: benchmark-facing lowestness must be direct descendant exclusion, not
+  only helper-predicate indirection.
+- Binary search: success theorem must derive bounds from the `Some i` return.
+- Coin change: canonicality must be explicit in optimality theorem shape, not an
+  opaque unused predicate.
 
 ## Documentation
 

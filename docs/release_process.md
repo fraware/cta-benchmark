@@ -88,6 +88,7 @@ this targeted remediation loop before broad benchmark refresh:
 4. Rebuild scoped packets with `cta annotate build-review-packets --pairs ...`.
 5. Run packet regression and schema gates:
    - `cargo test -p cta_generate --test code_only_packet_regression`
+   - `cargo test -p cta_generate --test family_packet_regression`
    - `cta annotate verify-review-packets ...`
 
 `code_only_packet_regression` must fail on each of the following malformed cases:
@@ -96,6 +97,28 @@ this targeted remediation loop before broad benchmark refresh:
 - BFS path-edge theorem using malformed self-membership forms like `p.get? i ∈ adj[p.get? i]`
 - BST benchmark-facing key-change theorem encoded as implication-disjunction instead of absent/present multiset split
 - Dijkstra benchmark-facing preconditions containing redundant `w ≥ 0` / `w >= 0` clauses when edge weights are already `Nat`
+
+`family_packet_regression` must fail on the following family-specific regressions:
+
+- LCS subsequence semantics drifting to contiguous embedding
+- interval scheduling witness not encoding subset selection
+- BFS witness/minimality edge clauses not using consecutive-vertex adjacency
+- BST-LCA lowestness expressed only via helper abstractions
+- binary-search success theorem assuming bounds instead of proving bounds
+- coin-change canonicality appearing without explicit optimality dependence
+
+## Family remediation execution order
+
+For broad cross-family cleanup cycles, follow this exact order:
+
+1. patch `dp_longest_common_subsequence_002`
+2. patch `greedy_interval_scheduling_002`
+3. patch `graph_bfs_shortest_path_001` and `graph_bfs_shortest_path_002`
+4. patch `trees_lowest_common_ancestor_001` and `trees_lowest_common_ancestor_002`
+5. patch `arrays_binary_search_002`
+6. patch `greedy_coin_change_canonical_001` and `greedy_coin_change_canonical_002`
+7. run `code_only_packet_regression` + `family_packet_regression`
+8. rebuild packets and run `annotate verify-review-packets`
 
 Focus-first policy: do not broaden instance scope until the targeted packet
 set is clean under both regression checks and packet schema verification.
