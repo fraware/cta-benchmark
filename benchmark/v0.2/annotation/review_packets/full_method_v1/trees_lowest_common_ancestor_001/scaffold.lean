@@ -32,6 +32,9 @@ opaque IsSubtree : Tree → Tree → Prop
 def IsProperSubtree (sub t : Tree) : Prop :=
   IsSubtree sub t ∧ sub ≠ t
 
+/-- Subtree of `t` rooted at the unique node whose key is `a` (when such a node exists). -/
+axiom subtreeRootedAt : Tree → Int → Tree
+
 /-- Declarative model of the reference `lca_bst`. -/
 opaque lcaBst : Tree → Int → Int → Option Int
 

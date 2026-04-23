@@ -19,10 +19,14 @@ abbrev Counts := List Nat
     Left opaque so annotators can specialize it per-instance in proofs. -/
 opaque Canonical : Denoms → Prop
 
+/-- Sum of a list of natural numbers (core `List` has no `List.sum` in this toolchain). -/
+private def listNatSum (xs : List Nat) : Nat :=
+  xs.foldl (· + ·) 0
+
 /-- Predicate: `counts` decomposes `amount` against `denoms`. -/
 def Decomposes (denoms : Denoms) (counts : Counts) (amount : Nat) : Prop :=
   counts.length = denoms.length ∧
-  (List.zipWith (· * ·) counts denoms).sum = amount
+  listNatSum (List.zipWith (· * ·) counts denoms) = amount
 
 /-- Declarative model of the reference `coin_change_canonical`. -/
 opaque coinChangeCanonical : Denoms → Nat → Counts

@@ -27,7 +27,7 @@
     },
     {
       "kind": "postcondition",
-      "lean_statement": "theorem SU2_source_anchor (adj : Adj) (source : Nat) :\n  (bfsShortestPath adj source).get? source = some (some 0) := by\n  -- proof obligation\n  admit",
+      "lean_statement": "theorem SU2_source_anchor (adj : Adj) (source : Nat)\n    (hs : source < adj.length) :\n  (bfsShortestPath adj source).get? source = some (some 0) := by\n  -- proof obligation\n  admit",
       "nl_gloss": "The distance from the source to itself is exactly 0 edges.",
       "linked_semantic_units": [
         "SU2"

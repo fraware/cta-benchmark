@@ -145,8 +145,10 @@ fn assert_family_shapes(instance_id: &str, packet: &Value) {
                 "{instance_id}: LCA witness must mention subtree containment and key presence"
             );
             assert!(
-                joined.contains("ispropersubtree") && joined.contains("false"),
-                "{instance_id}: LCA lowestness must quantify proper subtrees and conclude False for impossible cases"
+                joined.contains("subtreerootedat")
+                    && joined.contains("ispropersubtree")
+                    && (joined.contains("¬ (haskey") || joined.contains("¬(")),
+                "{instance_id}: LCA lowestness must use proper subtrees below subtreeRootedAt t a and forbid both keys"
             );
         }
         "arrays_binary_search_001" | "arrays_binary_search_002" => {

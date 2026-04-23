@@ -1,13 +1,13 @@
 {
   "signature": {
     "algorithm": "sha256",
-    "value": "42d4f93f9d5681f6e99a8ab81171141554fb5531efa1c650e01108d3720bec98"
+    "value": "ec1c68bf582c3805f0af8241f26c93c6fdfcb99818a3811d51015a7003e7f6c7"
   },
   "verification": {
     "benchmark_version": "v0.2",
     "packets_root": "benchmark/v0.2/annotation/review_packets",
     "schema_path": "schemas/review_packet.schema.json",
-    "generated_at": "2026-04-23T18:23:20.0459868Z",
+    "generated_at": "2026-04-23T21:09:22.231197Z",
     "total_packets": 93,
     "passed_packets": 93,
     "failed_packets": 0,
@@ -214,7 +214,7 @@
         "instance_id": "graph_bfs_shortest_path_002",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_002/packet.json",
-        "sha256": "bab04ac04832420680aa0b642c74b047dff1bf1b7e63ca4212d4457b781d2c30"
+        "sha256": "bb4fa1d4b3d5ba831a689e6c3ca34d4a2cf6b832a6c6af5df4c72e08f4502a11"
       },
       {
         "instance_id": "graph_dijkstra_001",
@@ -226,7 +226,7 @@
         "instance_id": "graph_dijkstra_002",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_dijkstra_002/packet.json",
-        "sha256": "0ae18843fc31c52038109aa6e1644c2d9f6c40bda541740d0ff55c1a9c1ba12e"
+        "sha256": "0cd9d5e1e3fe1ca6091562dd8fba119ba693515693067080e1682e4c28866350"
       },
       {
         "instance_id": "greedy_coin_change_canonical_001",
@@ -292,13 +292,13 @@
         "instance_id": "trees_lowest_common_ancestor_001",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_001/packet.json",
-        "sha256": "aa1e7f6e2be878140d530e0e7fbdbc0f3d4027cb43dac63c4502b643969f0451"
+        "sha256": "6bb105e85d535410ebbe38b94e470c9c6c15597743536a0018ca55bfd60a23ef"
       },
       {
         "instance_id": "trees_lowest_common_ancestor_002",
         "system_id": "full_method_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_002/packet.json",
-        "sha256": "fb5c60747bce544518b425dd6977c312a2f371a3aa42e499c1baa52171a2e8a9"
+        "sha256": "9022c2e9f96e2e41c3f8b193c3a534f7e4d6e50e9965327be3eba017de2c04de"
       },
       {
         "instance_id": "arrays_binary_search_001",

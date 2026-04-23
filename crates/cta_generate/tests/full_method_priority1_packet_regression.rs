@@ -180,9 +180,37 @@ fn full_method_v1_priority1_semantic_hardening_packets() {
     let dijkstra = load_packet("full_method_v1", "graph_dijkstra_002");
     assert_no_known_bad_graph_patterns("graph_dijkstra_002", &dijkstra);
     assert_path_linked_obligations_tie_distance_to_paths("graph_dijkstra_002", &dijkstra);
+    for ob in benchmark_facing(&dijkstra) {
+        let idx = ob["index"].as_i64().unwrap_or(-1);
+        if idx == 0 || idx == 6 {
+            continue;
+        }
+        let stmt = ob["lean_statement"]
+            .as_str()
+            .unwrap_or("")
+            .to_ascii_lowercase();
+        assert!(
+            stmt.contains("validdijkstrainput"),
+            "graph_dijkstra_002: obligation index {idx} must carry a ValidDijkstraInput hypothesis"
+        );
+    }
 
     let bfs = load_packet("full_method_v1", "graph_bfs_shortest_path_002");
     assert_bfs_path_obligations("graph_bfs_shortest_path_002", &bfs);
+    let su2 = benchmark_facing(&bfs)
+        .into_iter()
+        .find(|o| {
+            o["linked_semantic_units"]
+                .as_array()
+                .map(|a| a.iter().filter_map(|v| v.as_str()).any(|s| s == "SU2"))
+                .unwrap_or(false)
+        })
+        .expect("graph_bfs_shortest_path_002: missing SU2 theorem");
+    let su2_stmt = su2["lean_statement"].as_str().unwrap_or("").to_ascii_lowercase();
+    assert!(
+        su2_stmt.contains("source < adj.length"),
+        "graph_bfs_shortest_path_002: SU2 source anchor must guard with source < adj.length"
+    );
 
     let coin = load_packet("full_method_v1", "greedy_coin_change_canonical_002");
     assert_coin_change_optimality_direction("greedy_coin_change_canonical_002", &coin);

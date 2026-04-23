@@ -26,6 +26,6 @@ def IsBst (t : Tree) : Prop :=
 opaque keys : Tree → List Int
 
 /-- Declarative model of the reference `bst_insert`. -/
-opaque bstInsert : Tree → Int → Tree
+axiom bstInsert : Tree → Int → Tree
 
 end CTA.Benchmark.Trees.BstInsert001

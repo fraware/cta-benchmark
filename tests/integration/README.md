@@ -17,6 +17,7 @@ green on every push.
 | `cta_generate/tests/code_only_packet_regression.rs`     | Curated `code_only_v1` review `packet.json` set: schema-adjacent checks, layers, vacuity, per-instance theorem hygiene |
 | `cta_generate/tests/family_packet_regression.rs`        | Cross-instance template coherence (BFS adjacency, binary-search success shape, LCA, coin change, LCS)                 |
 | `cta_generate/tests/naive_concat_packet_regression.rs`| Canonical `naive_concat_v1` exemplar packets                                                                            |
+| `cta_generate/tests/review_packet_lean_lint.rs`        | Repo-wide `review_packets/**/packet.json` static checks (vacuity shells, Dijkstra `PathWeight`, coin `≤`, LCA shape on curated systems) |
 
 End-to-end CLI orchestration is additionally exercised by
 `.github/workflows/ci.yml`:
