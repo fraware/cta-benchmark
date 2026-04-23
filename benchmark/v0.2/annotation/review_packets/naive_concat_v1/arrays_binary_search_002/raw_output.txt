@@ -1,1 +1,36 @@
-{"obligations":[{"kind":"precondition","lean_statement":"∀ (arr : Array Int) (target : Int), True","nl_gloss":"No additional global preconditions beyond having an array and a target; the key assumptions are stated in later obligations."},{"kind":"precondition","lean_statement":"∀ (arr : Array Int), SortedNondecreasing arr","nl_gloss":"The input slice/array is sorted in nondecreasing order (i.e., for all i<j, arr[i] ≤ arr[j])."},{"kind":"specification","lean_statement":"∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; r = Option Nat ∧ (r = none ↔ ¬ (∃ i : Nat, i < arr.size ∧ arr[i] = target))","nl_gloss":"The result is an Option index; it is None exactly when the target does not occur anywhere in the array."},{"kind":"specification","lean_statement":"∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; (∃ i : Nat, i < arr.size ∧ arr[i] = target) → (∃ k : Nat, k < arr.size ∧ rust_reference arr target = some k ∧ arr[k] = target)","nl_gloss":"If the target occurs in the array, the implementation returns Some(k) for some valid index k where arr[k] = target."},{"kind":"safety","lean_statement":"∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; r = some k → k < arr.size","nl_gloss":"Any returned index is within bounds of the array."},{"kind":"soundness","lean_statement":"∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; r = some k → arr[k] = target","nl_gloss":"If the implementation returns Some(k), then the element at that index equals the target."},{"kind":"completeness","lean_statement":"∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; r = none → ¬ (∃ i : Nat, i < arr.size ∧ arr[i] = target)","nl_gloss":"If the implementation returns None, then there is no index containing the target."},{"kind":"termination/variant","lean_statement":"For the internal loop/recursion of rust_reference, there exists a natural-number variant that strictly decreases on each iteration and is bounded below by 0","nl_gloss":"The algorithm terminates (e.g., binary search loop decreases the search interval size)."},{"kind":"invariant","lean_statement":"For the internal loop/recursion with search bounds lo hi, maintain: (∀ i : Nat, i < arr.size → (i < lo ∨ i ≥ hi) → arr[i] ≠ target) ∧ lo ≤ hi","nl_gl_gloss":"Loop invariant: all indices outside the current search interval cannot contain the target; bounds are well-formed."},{"kind":"invariant","lean_statement":"For the internal loop/recursion, maintain that the target can only be in the current interval: (∃ i : Nat, i < arr.size ∧ arr[i] = target) → (lo ≤ i ∧ i < hi)","nl_gloss":"Loop invariant: if the target exists, then it lies within the current search interval."},{"kind":"correctness_step","lean_statement":"Assuming SortedNondecreasing arr and the loop invariant, after choosing mid and updating bounds based on comparison with target, the invariant is preserved","nl_gloss":"The binary-search step using sortedness preserves the invariant and shrinks the interval correctly."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_sorted_nondec {arr : Array Int} : SortedNondecreasing (arr.toList) -> True",
+      "nl_gloss": "Benchmark-facing: the input slice must be sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_some_implies_bounds_and_eq {arr : Array Int} {target : Int} {i : Nat} : SortedNondecreasing (arr.toList) -> binary_search arr target = some i -> i < arr.size -> arr[i] = target",
+      "nl_gloss": "If the function returns Some(i), then i is within bounds and arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_none_implies_absent {arr : Array Int} {target : Int} : SortedNondecreasing (arr.toList) -> binary_search arr target = none -> ¬ (∃ i : Nat, i < arr.size ∧ arr[i] = target)",
+      "nl_gloss": "If the function returns None, then the target does not occur anywhere in the array.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem SU4_binary_search_terminates {arr : Array Int} {target : Int} : SortedNondecreasing (arr.toList) -> Terminates (binary_search arr target)",
+      "nl_gloss": "The binary search loop terminates (the search interval shrinks each iteration).",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    }
+  ]
+}

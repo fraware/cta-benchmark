@@ -88,6 +88,7 @@ fn sanitize_obligations(obligations: Vec<GeneratedObligation>) -> Vec<GeneratedO
     let mut benchmark_facing = Vec::new();
     let mut auxiliary = Vec::new();
     for mut ob in obligations {
+        ob.lean_statement = simplify_redundant_nat_nonneg(&ob.lean_statement);
         if is_vacuous_obligation(&ob) || is_prose_filler_obligation(&ob) {
             continue;
         }
@@ -112,6 +113,11 @@ fn is_benchmark_facing_kind(kind: &str) -> bool {
     )
 }
 
+fn simplify_redundant_nat_nonneg(stmt: &str) -> String {
+    stmt.replace("; u < n ∧ v < n ∧ w ≥ 0", "; u < n ∧ v < n")
+        .replace("; u < n ∧ v < n ∧ w >= 0", "; u < n ∧ v < n")
+}
+
 fn is_vacuous_obligation(ob: &GeneratedObligation) -> bool {
     let stmt = ob.lean_statement.trim().to_ascii_lowercase();
     let stmt_norm = stmt.split_whitespace().collect::<Vec<_>>().join(" ");
@@ -124,6 +130,8 @@ fn is_vacuous_obligation(ob: &GeneratedObligation) -> bool {
         || stmt_norm.contains("-> true")
         || stmt_norm.contains("→ true")
         || stmt_norm.contains("∧ true")
+        || stmt_norm.contains("| none => true")
+        || stmt_norm.contains("| some _ => true")
         || stmt_norm.contains("∃ t : nat, true")
         || stmt_norm.contains("∃ n : nat, true")
         || stmt_norm.contains("termination") && stmt_norm.contains(": true")

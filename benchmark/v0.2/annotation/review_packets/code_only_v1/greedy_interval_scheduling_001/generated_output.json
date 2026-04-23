@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzd_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzzz_695",
   "system_id": "code_only_v1",
   "instance_id": "greedy_interval_scheduling_001",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 4905,
-    "prompt_tokens": 1021,
-    "completion_tokens": 627
+    "latency_ms": 5296,
+    "prompt_tokens": 1205,
+    "completion_tokens": 634
   },
   "raw_output_path": "generated/code_only_v1/raw/greedy_interval_scheduling_001.txt",
   "parse_status": {
@@ -18,37 +18,37 @@
   "normalized_obligations": [
     {
       "kind": "postcondition",
-      "lean_statement": "theorem SU2_feasible_witness (intervals : List (Int × Int)) (start_lt_stop : ∀ iv ∈ intervals, iv.1 < iv.2) :\n  let k := interval_scheduling intervals\n  ∃ S : List (Int × Int),\n    (∀ iv, iv ∈ S ↔ iv ∈ intervals) ∧\n    pairwise_nonoverlapping S ∧\n    S.length = k := by\n  admit",
-      "nl_gloss": "The returned count is witnessed by a subset of the input with pairwise non-overlapping intervals of exactly that size.",
+      "lean_statement": "theorem SU2_feasibility_witness {intervals : List (Int × Int)} (hlt : ∀ iv ∈ intervals, iv.1 < iv.2) (k : Nat)\n    (hk : k = interval_scheduling intervals) :\n    ∃ S : List (Int × Int),\n      (S ⊆ intervals) ∧\n      (pairwise_nonoverlapping S) ∧\n      (S.length = k.toNat)",
+      "nl_gloss": "The returned count is witnessed by some subset of the input that is pairwise non-overlapping.",
       "linked_semantic_units": [
         "SU2"
       ]
     },
     {
       "kind": "optimality",
-      "lean_statement": "theorem SU3_maximality (intervals : List (Int × Int)) (start_lt_stop : ∀ iv ∈ intervals, iv.1 < iv.2) :\n  let k := interval_scheduling intervals\n  ∀ T : List (Int × Int),\n    (∀ iv, iv ∈ T → iv ∈ intervals) →\n    pairwise_nonoverlapping T →\n    T.length ≤ k := by\n  admit",
-      "nl_gloss": "Optimality: no pairwise non-overlapping subset of the input is strictly larger than the greedy result.",
+      "lean_statement": "theorem SU3_optimality {intervals : List (Int × Int)} (hlt : ∀ iv ∈ intervals, iv.1 < iv.2)\n    (k : Nat) (hk : k = interval_scheduling intervals) :\n    ∀ T : List (Int × Int),\n      (T ⊆ intervals) →\n      pairwise_nonoverlapping T →\n      T.length ≤ k",
+      "nl_gloss": "No pairwise non-overlapping subset of the input is strictly larger than the returned count.",
       "linked_semantic_units": [
         "SU3"
       ]
     },
     {
       "kind": "postcondition",
-      "lean_statement": "theorem SU5_empty_input : interval_scheduling ([] : List (Int × Int)) = 0 := by\n  admit",
-      "nl_gloss": "Empty input yields result 0.",
+      "lean_statement": "theorem SU5_empty_input : interval_scheduling ([] : List (Int × Int)) = 0",
+      "nl_gloss": "Empty input: the result is 0 when the input is empty.",
       "linked_semantic_units": [
         "SU5"
       ]
     },
     {
       "kind": "auxiliary",
-      "lean_statement": "theorem SU4_endpoint_convention (a b c d : Int) :\n  (b = c) → pairwise_nonoverlapping [(a,b),(c,d)] := by\n  admit",
-      "nl_gloss": "Endpoint convention for half-open intervals: intervals sharing only an endpoint are treated as non-overlapping.",
+      "lean_statement": "theorem SU4_endpoint_convention {a b : Int × Int}\n    (ha : a.1 < a.2) (hb : b.1 < b.2) :\n    (a.2 ≤ b.1) → nonoverlapping a b",
+      "nl_gloss": "Endpoint convention: intervals sharing only an endpoint are non-overlapping (using [start,end) so a.2 = b.1 is allowed).",
       "linked_semantic_units": [
         "SU4"
       ]
     }
   ],
-  "prompt_hash": "sha256:92c1c21bc2183668718086155e21ccd70a14d6d78c9673e079364dd71bedffa8",
-  "seed": 123
+  "prompt_hash": "sha256:df623ade8e3e086c9705329bfe0196d34520ccafb0241cabff4fdc9eaa9365ed",
+  "seed": 95
 }

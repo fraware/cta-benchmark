@@ -2,33 +2,27 @@
   "obligations": [
     {
       "kind": "postcondition",
-      "lean_statement": "theorem merge_sort_length_preserving (arr : List Int) : (merge_sort arr).length = arr.length",
-      "nl_gloss": "The output length equals the input length (no elements are dropped or added).",
+      "lean_statement": "theorem merge_sort_length_preserved (arr : List Int) : (mergeSort arr).length = arr.length",
+      "nl_gloss": "The merge sort output has the same length as the input.",
       "linked_semantic_units": [
         "SU1"
       ]
     },
     {
       "kind": "postcondition",
-      "lean_statement": "theorem merge_sort_sorted_nondec (arr : List Int) : Sorted (fun a b : Int => a ≤ b) (merge_sort arr)",
-      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "lean_statement": "theorem merge_sort_sorted (arr : List Int) : Sorted (· ≤ ·) (mergeSort arr)",
+      "nl_gloss": "The merge sort output is sorted in nondecreasing order.",
       "linked_semantic_units": [
         "SU2"
       ]
     },
     {
       "kind": "postcondition",
-      "lean_statement": "theorem merge_sort_permutation (arr : List Int) : (merge_sort arr).Multiset = arr.Multiset",
-      "nl_gloss": "The output is a permutation of the input (same multiset of elements).",
+      "lean_statement": "theorem merge_sort_permutation (arr : List Int) : mergeSort arr ~ arr",
+      "nl_gloss": "The merge sort output is a permutation of the input (same multiset).",
       "linked_semantic_units": [
         "SU3"
       ]
-    },
-    {
-      "kind": "termination",
-      "lean_statement": "theorem merge_sort_terminates (arr : List Int) : WellFounded (measure (fun xs => xs.length))",
-      "nl_gloss": "Top-down recursion terminates by decreasing list length on each split.",
-      "linked_semantic_units": []
     }
   ]
 }

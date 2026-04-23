@@ -24,6 +24,11 @@ Hard constraints:
 - Do not use `by trivial` in benchmark-facing theorems.
 - Never write benchmark-facing theorems of the form `P -> True`, `P â§ True`, or `â x, True`.
 - For preconditions, the theorem statement itself must assert the required predicate (sortedness, bounds, nonnegativity, start<stop), not imply `True`.
+- Do not emit standalone tautological precondition theorems (for example `h : P â¢ P`).
+- Prefer encoding preconditions as hypotheses on benchmark-facing postcondition/optimality theorems.
+- For interval scheduling witness theorems, use subset direction (`iv â S â iv â intervals`), never biconditional membership with all inputs.
+- For BFS path witnesses, encode edges from consecutive vertices `u = p[i]`, `v = p[i+1]` with condition `v â adj[u]`; never use malformed self-membership like `p.get? i â adj[p.get? i]`.
+- For Dijkstra with `Nat` weights, avoid redundant `w â¥ 0` assumptions and keep source-anchor obligations linked only to source semantics.
 - Do not promote off-spec extras into benchmark-facing obligations (e.g. stability when not required).
 - Avoid pseudo-definitions, proof sketches, and decorative pseudo-code in theorem slots.
 - Each benchmark-facing theorem should be direct and specific, not only an indirect setup lemma.

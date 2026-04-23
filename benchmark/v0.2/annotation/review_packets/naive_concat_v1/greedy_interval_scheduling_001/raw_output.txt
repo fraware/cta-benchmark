@@ -1,1 +1,44 @@
-{"obligations":[{"kind":"specification","lean_statement":"theorem maxNonOverlapping_spec (intervals : List (Int × Int)) (start end : Int) : True","nl_gloss":"State the overall goal: from a list of closed-open intervals [s,e) (represented as (s,e)), compute the maximum size of a subset of pairwise non-overlapping intervals."},{"kind":"definition","lean_statement":"def nonOverlapping (I : List (Int × Int)) : Prop := ∀ ⦃a b⦄, a ∈ I → b ∈ I → a ≠ b → let sa := a.1; let ea := a.2; let sb := b.1; let eb := b.2; sa < ea ∧ sb < eb → (ea ≤ sb ∨ eb ≤ sa)","nl_gloss":"Define what it means for a set/list of intervals to be mutually non-overlapping: for any two distinct intervals, one ends at or before the other begins (using closed-open semantics)."},{"kind":"definition","lean_statement":"def feasibleSubset (intervals : List (Int × Int)) (S : List (Int × Int)) : Prop := (∀ i, i ∈ S → i ∈ intervals) ∧ nonOverlapping S","nl_gloss":"Define feasibility: S is a subset of the input and its intervals are mutually non-overlapping."},{"kind":"definition","lean_statement":"def optValue (intervals : List (Int × Int)) : Nat := Nat.findGreatest (by trivial)","nl_gloss":"Define the optimal value as the maximum cardinality among all feasible subsets (expressed as an optimization over Nat)."},{"kind":"precondition","lean_statement":"theorem precondition_closedOpen (intervals : List (Int × Int)) : (∀ i ∈ intervals, let s := i.1; let e := i.2; s < e) → True","nl_gloss":"Assume well-formed intervals: each interval is non-empty with start < end (so [start,end) is meaningful)."},{"kind":"implementation_result_type","lean_statement":"theorem impl_returns_nat (intervals : List (Int × Int)) : ∃ n : Nat, True","nl_gloss":"The Rust implementation returns a natural number representing the computed maximum count."},{"kind":"implementation_characterization","lean_statement":"theorem impl_computes_greedy_opt (intervals : List (Int × Int)) (n : Nat) : True","nl_gloss":"Characterize the implementation’s computed value n as the result of the intended greedy algorithm (e.g., sorting by end time and repeatedly selecting the next interval with earliest finishing time compatible with the current end)."},{"kind":"greedy_invariant","lean_statement":"theorem greedy_invariant (sorted : List (Int × Int)) : True","nl_gloss":"Prove the key greedy invariant: after processing a prefix of intervals (sorted by end), the algorithm’s chosen set is feasible and has maximal size among all feasible choices using that prefix with the same current end bound."},{"kind":"feasibility_of_output","lean_statement":"theorem output_is_feasible (intervals : List (Int × Int)) : let chosen := (/* intervals selected by the implementation */); feasibleSubset intervals chosen","nl_gloss":"Show that the subset of intervals actually selected by the implementation is feasible (non-overlapping and contained in the input)."},{"kind":"cardinality_matches_output","lean_statement":"theorem output_cardinality (intervals : List (Int × Int)) : (/* implementation output */) = chosen.length","nl_gloss":"Relate the numeric output to the length/cardinality of the selected set produced by the implementation."},{"kind":"optimality","lean_statement":"theorem greedy_optimality (intervals : List (Int × Int)) : (∀ S, feasibleSubset intervals S → S.length ≤ (/* implementation output */))","nl_gloss":"Prove optimality: any feasible subset S has size at most the algorithm’s output."},{"kind":"maximality_equivalence","lean_statement":"theorem output_equals_optValue (intervals : List (Int × Int)) : (/* implementation output */) = optValue intervals","nl_gloss":"Conclude that the implementation’s output equals the defined optimum value (maximum cardinality over all feasible subsets)."},{"kind":"edge_cases","lean_statement":"theorem empty_or_singleton (intervals : List (Int × Int)) : (intervals = [] ∨ intervals.length = 1) → (/* implementation output */) = intervals.length","nl_gloss":"Verify correctness on base cases such as empty input and singleton input."},{"kind":"boundary_conditions_closedOpen","lean_statement":"theorem boundary_nonOverlap_closedOpen (a b : Int × Int) : let sa := a.1; let ea := a.2; let sb := b.1; let eb := b.2; sa < ea → sb < eb → (ea = sb) → (ea ≤ sb ∨ eb ≤ sa)","nl_gloss":"Ensure the non-overlap relation uses closed-open semantics correctly: intervals that touch at a point (end == other start) are allowed to be selected together."}]}
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_interval_start_lt_stop {n : Nat} (intervals : Fin n → (Int × Int)) : (∀ i : Fin n, let iv := intervals i; iv.1.1 < iv.1.2) → True",
+      "nl_gloss": "Benchmark precondition: every input interval satisfies start < stop (non-empty intervals).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_feasibility_witness {n : Nat} (intervals : Fin n → (Int × Int)) (ans : Nat) : (∀ i : Fin n, let iv := intervals i; iv.1.1 < iv.1.2) → ans = greedy_interval_scheduling_001 intervals → ∃ (S : Finset (Fin n)), (S.card = ans) ∧ (∀ i j ∈ S, i ≠ j → nonOverlapping (intervals i) (intervals j))",
+      "nl_gloss": "The returned count is realized by some subset of the input intervals that are pairwise non-overlapping.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU3_optimality_maximal {n : Nat} (intervals : Fin n → (Int × Int)) (ans : Nat) : (∀ i : Fin n, let iv := intervals i; iv.1.1 < iv.1.2) → ans = greedy_interval_scheduling_001 intervals → (∀ (S : Finset (Fin n))), (∀ i j ∈ S, i ≠ j → nonOverlapping (intervals i) (intervals j)) → S.card ≤ ans",
+      "nl_gloss": "Optimality: no pairwise non-overlapping subset is strictly larger than the returned count.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "auxiliary",
+      "lean_statement": "theorem SU4_endpoint_convention_nonOverlapping_shared_endpoint {a b c : Int} : b ≤ c → nonOverlapping (a, b) (b, c)",
+      "nl_gloss": "Endpoint convention: intervals that only share an endpoint are considered non-overlapping for the [start,end) model.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_empty_input_zero (intervals : Fin 0 → (Int × Int)) : greedy_interval_scheduling_001 intervals = 0",
+      "nl_gloss": "Empty input yields result 0.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ]
+}

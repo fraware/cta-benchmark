@@ -1,19 +1,47 @@
 ---
 source: crates/cta_generate/tests/prompt_snapshots.rs
-assertion_line: 87
 expression: rendered
 ---
-You are given an informal statement and a Rust reference implementation of a classical algorithm task. Produce a list of Lean 4 proof obligations that together describe what the task is, what the implementation computes, and the properties that make it correct.
+You are given an informal statement, benchmark semantic units, and a Rust reference implementation. Produce Lean 4 theorem-grade obligations that are benchmark-aligned.
 
 Statement:
 Return the index of `target` in `a`.
+
+Output format:
+- Output a single JSON object with key `obligations`.
+- Each obligation has: `kind`, `lean_statement`, `nl_gloss`, `linked_semantic_units`.
+- `kind` must be one of: precondition, postcondition, optimality, termination, invariant, auxiliary.
+- `linked_semantic_units` must use semantic-unit IDs from the provided list (e.g. SU1, SU2), not free-text labels.
+
+Non-negotiable structure:
+1) First emit 3-6 benchmark-facing obligations only.
+   - These should map directly to semantic task properties.
+   - You must include at least one benchmark-facing theorem for every critical semantic unit ID.
+   - Prefer kinds: precondition, postcondition, optimality, termination.
+2) Then emit optional auxiliary/internal lemmas.
+   - Use kind auxiliary (or invariant when truly loop-invariant scaffolding).
+   - Keep auxiliary minimal (0-2 unless absolutely necessary).
+
+Hard constraints:
+- Never emit vacuous theorem bodies (e.g. `True`, `... : True := by trivial`, prose that encodes no proposition).
+- Do not use `by trivial` in benchmark-facing theorems.
+- Never write benchmark-facing theorems of the form `P -> True`, `P â§ True`, or `â x, True`.
+- For preconditions, the theorem statement itself must assert the required predicate (sortedness, bounds, nonnegativity, start<stop), not imply `True`.
+- Do not promote off-spec extras into benchmark-facing obligations (e.g. stability when not required).
+- Avoid pseudo-definitions, proof sketches, and decorative pseudo-code in theorem slots.
+- Each benchmark-facing theorem should be direct and specific, not only an indirect setup lemma.
+
+Quality bar:
+- One direct theorem per required semantic property when possible.
+- Lean statements should look like proper theorem/lemma contracts, not comments.
+- Keep wording concise and formal; use `nl_gloss` only to clarify intent.
+
+Semantic units (authoritative target):
+```json
+{{semantic_units}}
+```
 
 Reference implementation:
 ```rust
 pub fn binary_search(a: &[i64], target: i64) -> Option<usize> { /* ... */ }
 ```
-
-Rules:
-- Output a single JSON object with key `obligations`.
-- Each obligation has: `kind`, `lean_statement`, `nl_gloss`.
-- Prefer decomposed obligations over a single theorem.

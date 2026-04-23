@@ -1,39 +1,48 @@
 {
   "obligations": [
     {
-      "kind": "spec",
-      "lean_statement": "theorem spec_sort_multiset (xs : List Int) : Multiset.ofList (sort xs) = Multiset.ofList xs",
-      "nl_gloss": "The output contains exactly the same elements as the input, counting multiplicities (multiset preservation)."
+      "kind": "precondition",
+      "lean_statement": "theorem merge_sort_precondition (arr : List Int) : True := by\n  trivial",
+      "nl_gloss": "No input preconditions are required: merge sort works for any list of integers.",
+      "linked_semantic_units": []
     },
     {
-      "kind": "spec",
-      "lean_statement": "theorem spec_sort_sorted (xs : List Int) : Sorted (· ≤ ·) (sort xs)",
-      "nl_gloss": "The output list is sorted in nondecreasing order."
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_length_preserved (arr : List Int) : length (merge_sort arr) = length arr",
+      "nl_gloss": "The output has the same length as the input.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "spec",
-      "lean_statement": "theorem spec_sort_length (xs : List Int) : (sort xs).length = xs.length",
-      "nl_gloss": "The output has the same length as the input (follows from multiset preservation, but can be required explicitly)."
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_sorted_nondec (arr : List Int) : Sorted (· ≤ ·) (merge_sort arr)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
     },
     {
-      "kind": "spec",
-      "lean_statement": "theorem spec_sort_perm (xs : List Int) : xs ~p sort xs",
-      "nl_gloss": "The output is a permutation of the input (permutation equivalence induced by multiset equality)."
-    },
-    {
-      "kind": "impl",
-      "lean_statement": "theorem impl_correctness (xs : List Int) : Multiset.ofList (sort xs) = Multiset.ofList xs ∧ Sorted (· ≤ ·) (sort xs)",
-      "nl_gloss": "Combines the two main correctness properties: multiset preservation and sortedness."
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_permutation (arr : List Int) : merge_sort arr ~p arr",
+      "nl_gloss": "The output is a permutation of the input (same multiset of elements).",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
       "kind": "termination",
-      "lean_statement": "theorem impl_terminates (xs : List Int) : ∃ n : Nat, sort xs = sortAux n xs",
-      "nl_gloss": "The implementation terminates / is well-founded (expressed via an auxiliary bounded recursion or well-founded measure)."
+      "lean_statement": "theorem merge_sort_terminates (arr : List Int) : Acc (fun a b => length b < length a) arr",
+      "nl_gloss": "Top-down merge sort terminates because recursive calls are on strictly smaller lists.",
+      "linked_semantic_units": []
     },
     {
-      "kind": "impl",
-      "lean_statement": "theorem impl_pure (xs : List Int) : sort xs = sort xs",
-      "nl_gloss": "The implementation is deterministic/pure with respect to the input (no hidden state); useful when mapping from Rust to Lean."
+      "kind": "optimality",
+      "lean_statement": "theorem merge_sort_output_length_optimal (arr : List Int) : length (merge_sort arr) = length arr",
+      "nl_gloss": "The algorithm returns exactly one element per input element (no loss or duplication).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     }
   ]
 }

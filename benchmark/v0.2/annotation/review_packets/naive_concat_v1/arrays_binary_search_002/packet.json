@@ -5,7 +5,7 @@
   "domain": "arrays",
   "difficulty": "easy",
   "instance_path": "benchmark/v0.2/instances/arrays/arrays_binary_search_002",
-  "generated_output_path": "runs/run_2026_04_22_naive_concat_v1_eval_full_001/generated/naive_concat_v1/arrays_binary_search_002.json",
+  "generated_output_path": "runs/run_2026_04_23_naive_concat_v1_eval_zzzzzz_clean_001/generated/naive_concat_v1/arrays_binary_search_002.json",
   "informal_statement": {
     "text": "Given a sorted slice of integers in nondecreasing order and a target value, return Some(i) where arr[i] == target, or None if the target is absent. If multiple indices match, returning any valid index is acceptable.",
     "preconditions": [
@@ -95,93 +95,51 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "precondition",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), True",
-      "nl_gloss": "No additional global preconditions beyond having an array and a target; the key assumptions are stated in later obligations.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_some_implies_bounds_and_eq {arr : Array Int} {target : Int} {i : Nat} : SortedNondecreasing (arr.toList) -> binary_search arr target = some i -> i < arr.size -> arr[i] = target",
+      "nl_gloss": "If the function returns Some(i), then i is within bounds and arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2",
+        "SU1"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "precondition",
-      "lean_statement": "∀ (arr : Array Int), SortedNondecreasing arr",
-      "nl_gloss": "The input slice/array is sorted in nondecreasing order (i.e., for all i<j, arr[i] ≤ arr[j]).",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_none_implies_absent {arr : Array Int} {target : Int} : SortedNondecreasing (arr.toList) -> binary_search arr target = none -> ¬ (∃ i : Nat, i < arr.size ∧ arr[i] = target)",
+      "nl_gloss": "If the function returns None, then the target does not occur anywhere in the array.",
+      "linked_semantic_units": [
+        "SU3",
+        "SU1"
+      ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; r = Option Nat ∧ (r = none ↔ ¬ (∃ i : Nat, i < arr.size ∧ arr[i] = target))",
-      "nl_gloss": "The result is an Option index; it is None exactly when the target does not occur anywhere in the array.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 3,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; (∃ i : Nat, i < arr.size ∧ arr[i] = target) → (∃ k : Nat, k < arr.size ∧ rust_reference arr target = some k ∧ arr[k] = target)",
-      "nl_gloss": "If the target occurs in the array, the implementation returns Some(k) for some valid index k where arr[k] = target.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; r = some k → k < arr.size",
-      "nl_gloss": "Any returned index is within bounds of the array.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 5,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; r = some k → arr[k] = target",
-      "nl_gloss": "If the implementation returns Some(k), then the element at that index equals the target.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let r := rust_reference arr target; r = none → ¬ (∃ i : Nat, i < arr.size ∧ arr[i] = target)",
-      "nl_gloss": "If the implementation returns None, then there is no index containing the target.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 7,
-      "kind": "unknown",
-      "lean_statement": "For the internal loop/recursion of rust_reference, there exists a natural-number variant that strictly decreases on each iteration and is bounded below by 0",
-      "nl_gloss": "The algorithm terminates (e.g., binary search loop decreases the search interval size).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 8,
-      "kind": "invariant",
-      "lean_statement": "For the internal loop/recursion with search bounds lo hi, maintain: (∀ i : Nat, i < arr.size → (i < lo ∨ i ≥ hi) → arr[i] ≠ target) ∧ lo ≤ hi",
-      "nl_gloss": "",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 9,
-      "kind": "invariant",
-      "lean_statement": "For the internal loop/recursion, maintain that the target can only be in the current interval: (∃ i : Nat, i < arr.size ∧ arr[i] = target) → (lo ≤ i ∧ i < hi)",
-      "nl_gloss": "Loop invariant: if the target exists, then it lies within the current search interval.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 10,
-      "kind": "unknown",
-      "lean_statement": "Assuming SortedNondecreasing arr and the loop invariant, after choosing mid and updating bounds based on comparison with target, the invariant is preserved",
-      "nl_gloss": "The binary-search step using sortedness preserves the invariant and shrinks the interval correctly.",
-      "linked_semantic_units": [],
+      "kind": "termination",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU4_binary_search_terminates {arr : Array Int} {target : Int} : SortedNondecreasing (arr.toList) -> Terminates (binary_search arr target)",
+      "nl_gloss": "The binary search loop terminates (the search interval shrinks each iteration).",
+      "linked_semantic_units": [
+        "SU4",
+        "SU1"
+      ],
       "raw_source": "model"
     }
   ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
   "lean_check": {
     "elaborated": null,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/arrays_binary_search_002/lean_diagnostics.json"

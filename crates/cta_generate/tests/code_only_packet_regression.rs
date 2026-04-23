@@ -74,7 +74,9 @@ fn assert_no_true_theorems(instance_id: &str, packet: &Value) {
                 && !stmt.contains(": true := by trivial")
                 && !stmt.contains("-> true")
                 && !stmt.contains("→ true")
-                && !stmt.contains("∧ true"),
+                && !stmt.contains("∧ true")
+                && !stmt.contains("| none => true")
+                && !stmt.contains("| some _ => true"),
             "{instance_id}: benchmark-facing obligation is vacuous: {stmt}"
         );
     }
@@ -142,6 +144,8 @@ fn assert_quality_summary_matches_content(instance_id: &str, packet: &Value) {
             || stmt.contains("-> true")
             || stmt.contains("→ true")
             || stmt.contains("∧ true")
+            || stmt.contains("| none => true")
+            || stmt.contains("| some _ => true")
             || stmt.contains("placeholder")
             || gloss.contains("placeholder")
             || (gloss.contains("represents") && gloss.contains("need to"))
@@ -196,6 +200,110 @@ fn assert_benchmark_facing_cap(instance_id: &str, packet: &Value) {
     );
 }
 
+fn assert_no_tautological_or_universal_preconditions(instance_id: &str, packet: &Value) {
+    for ob in benchmark_facing(packet) {
+        let kind = ob["kind"].as_str().unwrap_or("");
+        if kind != "precondition" {
+            continue;
+        }
+        let stmt = ob["lean_statement"]
+            .as_str()
+            .unwrap_or("")
+            .to_ascii_lowercase();
+        assert!(
+            !stmt.contains(":= h"),
+            "{instance_id}: precondition is tautological by direct hypothesis return"
+        );
+        if instance_id == "arrays_binary_search_002" {
+            assert!(
+                !stmt.contains("theorem su1_sorted_nondec")
+                    || stmt.contains("→")
+                    || stmt.contains("->")
+                    || stmt.contains("(h")
+                    || stmt.contains("(hsorted"),
+                "{instance_id}: sortedness precondition must be an assumption/contract, not a universal fact"
+            );
+        }
+    }
+}
+
+fn assert_instance_specific_fixes(instance_id: &str, packet: &Value) {
+    let bf = benchmark_facing(packet);
+    let bf_text = bf
+        .iter()
+        .map(|ob| ob["lean_statement"].as_str().unwrap_or("").to_ascii_lowercase())
+        .collect::<Vec<_>>()
+        .join("\n");
+    match instance_id {
+        "greedy_interval_scheduling_001" => {
+            assert!(
+                !bf_text.contains("∀ iv, iv ∈ s ↔ iv ∈ intervals"),
+                "{instance_id}: witness theorem incorrectly equates selection with all intervals"
+            );
+        }
+        "graph_bfs_shortest_path_001" => {
+            assert!(
+                !bf_text.contains("p.get? i ∈ adj[p.get? i]"),
+                "{instance_id}: malformed path-edge adjacency remains in witness/minimality theorem"
+            );
+        }
+        "graph_dijkstra_001" => {
+            let source = bf
+                .iter()
+                .find(|ob| {
+                    ob["linked_semantic_units"]
+                        .as_array()
+                        .map(|arr| {
+                            arr.len() == 1 && arr[0].as_str().unwrap_or("") == "SU3"
+                        })
+                        .unwrap_or(false)
+                })
+                .expect("dijkstra source theorem present");
+            let links = source["linked_semantic_units"]
+                .as_array()
+                .expect("linked_semantic_units array")
+                .iter()
+                .filter_map(|v| v.as_str())
+                .collect::<Vec<_>>();
+            assert_eq!(
+                links,
+                vec!["SU3"],
+                "{instance_id}: source theorem must link only directly covered source semantic unit"
+            );
+        }
+        "trees_bst_insert_001" => {
+            let has_bf_precondition = bf
+                .iter()
+                .any(|ob| ob["kind"].as_str().unwrap_or("") == "precondition");
+            assert!(
+                !has_bf_precondition,
+                "{instance_id}: tautological BST precondition must not remain benchmark-facing"
+            );
+        }
+        _ => {}
+    }
+}
+
+fn assert_quality_summary_final_content(instance_id: &str, packet: &Value) {
+    assert_eq!(
+        packet["quality_summary"]["vacuous_theorems_present"].as_bool(),
+        Some(false),
+        "{instance_id}: vacuous_theorems_present must be false"
+    );
+    assert_eq!(
+        packet["quality_summary"]["off_spec_theorems_present"].as_bool(),
+        Some(false),
+        "{instance_id}: off_spec_theorems_present must be false"
+    );
+    assert_eq!(
+        packet["quality_summary"]["critical_units_only_indirectly_covered"]
+            .as_array()
+            .map(|v| v.is_empty()),
+        Some(true),
+        "{instance_id}: critical_units_only_indirectly_covered must be empty"
+    );
+}
+
 #[test]
 fn regression_target_packets_are_benchmark_aligned() {
     let targets = [
@@ -211,8 +319,11 @@ fn regression_target_packets_are_benchmark_aligned() {
         let packet = load_packet(instance_id);
         assert_schema_consistency(instance_id, &packet);
         assert_quality_summary_matches_content(instance_id, &packet);
+        assert_quality_summary_final_content(instance_id, &packet);
         assert_no_true_theorems(instance_id, &packet);
         assert_no_off_spec_theorems(instance_id, &packet);
+        assert_no_tautological_or_universal_preconditions(instance_id, &packet);
+        assert_instance_specific_fixes(instance_id, &packet);
         assert_direct_critical_coverage(instance_id, &packet);
         assert_benchmark_facing_cap(instance_id, &packet);
     }

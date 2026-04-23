@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzb_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzzz_695",
   "system_id": "code_only_v1",
   "instance_id": "sorting_merge_sort_001",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 2685,
-    "prompt_tokens": 947,
-    "completion_tokens": 330
+    "latency_ms": 1939,
+    "prompt_tokens": 1199,
+    "completion_tokens": 243
   },
   "raw_output_path": "generated/code_only_v1/raw/sorting_merge_sort_001.txt",
   "parse_status": {
@@ -18,35 +18,29 @@
   "normalized_obligations": [
     {
       "kind": "postcondition",
-      "lean_statement": "theorem merge_sort_length_preserving (arr : List Int) : (merge_sort arr).length = arr.length",
-      "nl_gloss": "The output length equals the input length (no elements are dropped or added).",
+      "lean_statement": "theorem merge_sort_length_preserved (arr : List Int) : (mergeSort arr).length = arr.length",
+      "nl_gloss": "The merge sort output has the same length as the input.",
       "linked_semantic_units": [
         "SU1"
       ]
     },
     {
       "kind": "postcondition",
-      "lean_statement": "theorem merge_sort_sorted_nondec (arr : List Int) : Sorted (fun a b : Int => a ≤ b) (merge_sort arr)",
-      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "lean_statement": "theorem merge_sort_sorted (arr : List Int) : Sorted (· ≤ ·) (mergeSort arr)",
+      "nl_gloss": "The merge sort output is sorted in nondecreasing order.",
       "linked_semantic_units": [
         "SU2"
       ]
     },
     {
       "kind": "postcondition",
-      "lean_statement": "theorem merge_sort_permutation (arr : List Int) : (merge_sort arr).Multiset = arr.Multiset",
-      "nl_gloss": "The output is a permutation of the input (same multiset of elements).",
+      "lean_statement": "theorem merge_sort_permutation (arr : List Int) : mergeSort arr ~ arr",
+      "nl_gloss": "The merge sort output is a permutation of the input (same multiset).",
       "linked_semantic_units": [
         "SU3"
       ]
-    },
-    {
-      "kind": "termination",
-      "lean_statement": "theorem merge_sort_terminates (arr : List Int) : WellFounded (measure (fun xs => xs.length))",
-      "nl_gloss": "Top-down recursion terminates by decreasing list length on each split.",
-      "linked_semantic_units": []
     }
   ],
-  "prompt_hash": "sha256:41421330c85d347cf8114da7cc38e9b25921409117dfb817c6da9ed176523e85",
-  "seed": 19
+  "prompt_hash": "sha256:17c74954985cd9f67673f01b8f844bec6a053c66310cddac91d78f1621a2f2ce",
+  "seed": 95
 }

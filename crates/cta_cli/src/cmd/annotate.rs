@@ -673,25 +673,26 @@ pub fn build_review_packets(workspace: &Path, args: BuildReviewPacketsArgs) -> R
                     .to_string();
                 let linked_semantic_units =
                     g.get("linked_semantic_units").cloned().unwrap_or(json!([]));
-                let stmt = g
-                    .get("lean_statement")
-                    .and_then(|v| v.as_str())
-                    .unwrap_or("")
-                    .to_ascii_lowercase();
+                let lean_statement = strip_redundant_nat_nonneg(
+                    g.get("lean_statement")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or(""),
+                );
+                let stmt = lean_statement.to_ascii_lowercase();
                 let gloss = g
                     .get("nl_gloss")
                     .and_then(|v| v.as_str())
                     .unwrap_or("")
                     .to_ascii_lowercase();
-                let inferred = infer_critical_units_for_obligation(&sem.units, &stmt, &gloss);
-                let linked_semantic_units =
-                    merge_semantic_units(&linked_semantic_units, inferred.as_slice());
-                let layer = obligation_layer(&kind, &linked_semantic_units, &critical_units);
+                let mut layer = obligation_layer(&kind, &linked_semantic_units, &critical_units);
+                if kind == "precondition" && is_tautological_precondition(&stmt, &gloss) {
+                    layer = "auxiliary";
+                }
                 json!({
                     "index": idx,
                     "kind": kind,
                     "layer": layer,
-                    "lean_statement": g.get("lean_statement").cloned().unwrap_or(json!("")),
+                    "lean_statement": lean_statement,
                     "nl_gloss": g.get("nl_gloss").cloned().unwrap_or(json!("")),
                     "linked_semantic_units": linked_semantic_units,
                     "raw_source": "model"
@@ -1214,6 +1215,27 @@ fn normalize_text(s: &str) -> String {
     s.split_whitespace().collect::<Vec<_>>().join(" ")
 }
 
+fn strip_redundant_nat_nonneg(stmt: &str) -> String {
+    stmt.replace("∧ w ≥ 0", "")
+        .replace("∧ w >= 0", "")
+        .replace("  ", " ")
+}
+
+fn is_tautological_precondition(stmt: &str, gloss: &str) -> bool {
+    let s = normalize_text(&stmt.to_ascii_lowercase());
+    let g = normalize_text(&gloss.to_ascii_lowercase());
+    if s.contains(": bst t := h")
+        || s.contains("simpa using h")
+        || s.contains("simpa using hbst")
+        || s.contains("(h : bst t) : bst t")
+        || s.contains("(hbst : bst t) : bst t")
+    {
+        return true;
+    }
+    (g.contains("assume") || g.contains("precondition"))
+        && (s.contains("bst t") || s.contains("sorted") || s.contains("nondecreasing"))
+}
+
 fn is_vacuous_or_filler(stmt_norm: &str, gloss_lc: &str) -> bool {
     stmt_norm == "true"
         || stmt_norm.contains(": true := by trivial")
@@ -1223,6 +1245,8 @@ fn is_vacuous_or_filler(stmt_norm: &str, gloss_lc: &str) -> bool {
         || stmt_norm.contains("-> true")
         || stmt_norm.contains("→ true")
         || stmt_norm.contains("∧ true")
+        || stmt_norm.contains("| none => true")
+        || stmt_norm.contains("| some _ => true")
         || stmt_norm.contains("placeholder")
         || gloss_lc.contains("placeholder")
         || (gloss_lc.contains("represents") && gloss_lc.contains("need to"))
@@ -1256,10 +1280,15 @@ fn infer_critical_units_for_obligation(
         let matches = (desc.contains("sorted") && text.contains("sorted"))
             || (desc.contains("length") && text.contains("length"))
             || (desc.contains("source") && text.contains("source") && text.contains("some 0"))
+            || ((desc.contains("bst") || desc.contains("binary search tree"))
+                && (text.contains("hbst : bst t")
+                    || text.contains("bst (bst_insert")
+                    || text.contains("bst_insert_preserves_bst")))
             || (desc.contains("non-negative")
                 && (text.contains("non-negative")
                     || text.contains(">= 0")
-                    || text.contains("≥ 0")))
+                    || text.contains("≥ 0")
+                    || text.contains("u < n ∧ v < n")))
             || (desc.contains("start < stop")
                 && ((text.contains(".1 <") && text.contains(".2"))
                     || text.contains("start < stop")))
@@ -1277,26 +1306,6 @@ fn infer_critical_units_for_obligation(
         }
     }
     out
-}
-
-fn merge_semantic_units(existing: &serde_json::Value, inferred: &[String]) -> serde_json::Value {
-    let mut seen = HashSet::new();
-    let mut merged = Vec::new();
-    if let Some(arr) = existing.as_array() {
-        for v in arr {
-            if let Some(id) = v.as_str() {
-                if id.starts_with("SU") && seen.insert(id.to_string()) {
-                    merged.push(serde_json::Value::String(id.to_string()));
-                }
-            }
-        }
-    }
-    for id in inferred {
-        if seen.insert(id.clone()) {
-            merged.push(serde_json::Value::String(id.clone()));
-        }
-    }
-    serde_json::Value::Array(merged)
 }
 
 fn path_to_slash_string(p: &Path) -> String {

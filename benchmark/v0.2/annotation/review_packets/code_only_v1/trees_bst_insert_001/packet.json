@@ -5,7 +5,7 @@
   "domain": "trees",
   "difficulty": "easy",
   "instance_path": "benchmark/v0.2/instances/trees/trees_bst_insert_001",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzzzzzzzb_001/generated/code_only_v1/trees_bst_insert_001.json",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzzzzzzzzz_695/generated/code_only_v1/trees_bst_insert_001.json",
   "informal_statement": {
     "text": "Given a binary search tree whose in-order traversal is sorted strictly ascending and an integer key, return a new BST identical to the input on every existing key plus an additional node with the given key, unless the key is already present, in which case the tree is returned unchanged.",
     "preconditions": [
@@ -102,9 +102,9 @@
     {
       "index": 0,
       "kind": "precondition",
-      "layer": "benchmark_facing",
-      "lean_statement": "theorem SU1_bst_precondition {t : Tree} (h : BST t) : BST t := h",
-      "nl_gloss": "Benchmark-facing: the input tree must satisfy the BST property (strict in-order ascending).",
+      "layer": "auxiliary",
+      "lean_statement": "theorem bst_insert_precondition {t : Tree} {key : Int} (h : BST t) : BST t := by\n simpa using h",
+      "nl_gloss": "Benchmark-facing: the input tree must be a valid strict BST (in-order strictly ascending).",
       "linked_semantic_units": [
         "SU1"
       ],
@@ -114,8 +114,8 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU2_bst_invariant_preservation (t : Tree) (key : i32) (hbst : BST t) : BST (bst_insert t key)",
-      "nl_gloss": "Inserting a key into a valid BST yields a tree that is still a valid BST.",
+      "lean_statement": "theorem bst_insert_preserves_BST (t : Tree) (key : Int) (hBST : BST t) : BST (bst_insert t key)",
+      "nl_gloss": "Benchmark-facing: insertion preserves the BST property for all cases (including duplicates as no-op).",
       "linked_semantic_units": [
         "SU2"
       ],
@@ -125,8 +125,8 @@
       "index": 2,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU3_keyset_change_absent (t : Tree) (key : i32) (hbst : BST t) (hnot : ¬ Mem t key) : KeyMultiset (bst_insert t key) = KeyMultiset t + {key}",
-      "nl_gloss": "If the key is absent, insertion adds exactly one occurrence of the key to the key multiset.",
+      "lean_statement": "theorem bst_insert_keyset_change (t : Tree) (key : Int) (hBST : BST t) :\n (key ∈ keys t) → keys (bst_insert t key) = keys t ∪ {key} ∨\n (key ∉ keys t) → keys (bst_insert t key) = keys t ∪ {key}",
+      "nl_gloss": "Benchmark-facing: key multiset changes by adding {key} exactly when key is absent; otherwise it stays the same.",
       "linked_semantic_units": [
         "SU3"
       ],
@@ -135,20 +135,9 @@
     {
       "index": 3,
       "kind": "postcondition",
-      "layer": "benchmark_facing",
-      "lean_statement": "theorem SU3_keyset_change_present (t : Tree) (key : i32) (hbst : BST t) (hin : Mem t key) : KeyMultiset (bst_insert t key) = KeyMultiset t",
-      "nl_gloss": "If the key is already present, insertion is a multiset no-op.",
-      "linked_semantic_units": [
-        "SU3"
-      ],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "postcondition",
       "layer": "auxiliary",
-      "lean_statement": "theorem SU4_duplicate_noop (t : Tree) (key : i32) (hbst : BST t) (hin : Mem t key) : KeyMultiset (bst_insert t key) = KeyMultiset t",
-      "nl_gloss": "Benchmark-facing duplicate behavior: inserting an existing key does not change the key multiset.",
+      "lean_statement": "theorem bst_insert_duplicate_noop (t : Tree) (key : Int) (hBST : BST t) (hmem : key ∈ keys t) :\n keys (bst_insert t key) = keys t",
+      "nl_gloss": "Benchmark-facing: inserting an existing key is a no-op on the key multiset.",
       "linked_semantic_units": [
         "SU4"
       ],

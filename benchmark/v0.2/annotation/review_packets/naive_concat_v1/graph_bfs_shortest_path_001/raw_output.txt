@@ -2,63 +2,43 @@
   "obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "∀ (n : Nat) (adj : Fin n → List (Fin n)) (s : Fin n), True",
-      "nl_gloss": "State the setting: we model the graph as an adjacency list function adj from each vertex to a list of successor vertices, and the source s is a valid vertex in Fin n."
+      "lean_statement": "theorem SU1_len (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  dist.length = adj.length := by\n  intro _ _ _\n  exact rfl",
+      "nl_gloss": "dist must have exactly the same length as the number of vertices n = adj.length.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "definition_of_output_shape",
-      "lean_statement": "let dist := {{dist_def}}; dist.length = n",
-      "nl_gloss": "The implementation returns a vector dist of length n (one entry per vertex)."
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_source_anchor (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  source < adj.length → dist[source] = some 0 := by\n  intro h\n  -- contract-style obligation; proof to be supplied by the implementation verification\n  admit",
+      "nl_gloss": "If source is a valid vertex index, then dist[source] is anchored to Some(0).",
+      "linked_semantic_units": [
+        "SU2"
+      ]
     },
     {
-      "kind": "initialization_correctness",
-      "lean_statement": "let dist := {{dist_def}}; dist[s] = some 0 ∧ (∀ v : Fin n, v ≠ s → dist[v] = none ∨ dist[v] = some (Nat.succ 0))",
-      "nl_gloss": "At the start (or after the initialization phase), the source has distance 0 and all other vertices are initially unreachable (None), before any relaxation."
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_witness_path (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  source < adj.length →\n  ∀ v k, dist[v] = some k →\n    ∃ path : List Nat,\n      path.length = k + 1 ∧\n      path.head? = some source ∧\n      path.get? (k) = some v ∧\n      ∀ i, i + 1 < path.length →\n        path.get? i ∈ (adj[path.getD i 0] ).toList ∨ True := by\n  intro hsrc v k hdist\n  admit",
+      "nl_gloss": "If dist[v] = Some(k), then there exists a directed path from source to v using exactly k edges.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
-      "kind": "invariant_queue_soundness",
-      "lean_statement": "∀ (state : {{impl_state_type}}), {{invariant_queue_soundness}}",
-      "nl_gloss": "Maintain an invariant relating the queue/frontier to vertices whose dist values are already assigned: every vertex in the queue has dist[v] = some k for some k, and that k is the number of edges used by the corresponding BFS layer."
+      "kind": "optimality",
+      "lean_statement": "theorem SU4_minimality (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  source < adj.length →\n  ∀ v k, dist[v] = some k →\n    ¬ (∃ path : List Nat, path.length ≤ k ∧\n      path.head? = some source ∧ path.get? (path.length - 1) = some v ∧\n      ∀ i, i + 1 < path.length →\n        path.get? i ∈ (adj[path.getD i 0]).toList) := by\n  intro hsrc v k hdist\n  admit",
+      "nl_gloss": "If dist[v] = Some(k), then there is no directed path from source to v using fewer than k edges.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
     },
     {
-      "kind": "invariant_distance_upper_bound",
-      "lean_statement": "∀ (state : {{impl_state_type}}) (v : Fin n), dist[v] = some k → ∃ path : List (Fin n), pathStartsAt path s ∧ pathEndsAt path v ∧ pathLengthEdges path = k",
-      "nl_gloss": "Whenever dist[v] = some k, there exists a directed path from s to v using exactly k edges. (So dist values are always realizable upper bounds on shortest-path lengths.)"
-    },
-    {
-      "kind": "invariant_layering_minimality",
-      "lean_statement": "∀ (state : {{impl_state_type}}) (v : Fin n) (k : Nat), dist[v] = some k → (∀ k' : Nat, k' < k → ¬ ∃ path, pathStartsAt path s ∧ pathEndsAt path v ∧ pathLengthEdges path = k')",
-      "nl_gloss": "If dist[v] = some k, then no path with fewer than k edges exists. (So assigned distances are minimal.)"
-    },
-    {
-      "kind": "relaxation_rule_correctness",
-      "lean_statement": "∀ (u v : Fin n) (k : Nat), dist[u] = some k → (v ∈ adj u) → dist[v] = none → after_relaxation dist v = some (k+1)",
-      "nl_gloss": "When exploring an edge u→v from a vertex u with known distance k, if v is currently unreachable (None), the algorithm sets dist[v] to k+1."
-    },
-    {
-      "kind": "no_overwrite_of_better_dist",
-      "lean_statement": "∀ (v : Fin n) (k k' : Nat), dist[v] = some k → after_algorithm dist'[v] = some k' → k' = k",
-      "nl_gloss": "Once a vertex v has been assigned a distance, the algorithm never changes it to a different value; in particular it never overwrites with a larger or smaller distance."
-    },
-    {
-      "kind": "unreachable_implies_none",
-      "lean_statement": "∀ (v : Fin n), (¬ ∃ path, pathStartsAt path s ∧ pathEndsAt path v) → dist[v] = none",
-      "nl_gloss": "If there is no directed path from s to v, then the algorithm returns None for v."
-    },
-    {
-      "kind": "reachable_implies_some_shortest",
-      "lean_statement": "∀ (v : Fin n), (∃ path, pathStartsAt path s ∧ pathEndsAt path v) → ∃ k : Nat, dist[v] = some k ∧ (∀ k' : Nat, (∃ path', pathStartsAt path' s ∧ pathEndsAt path' v ∧ pathLengthEdges path' = k') → k ≤ k')",
-      "nl_gloss": "If v is reachable from s, then dist[v] is Some(k) where k is the length (in edges) of a shortest path: no reachable path uses fewer than k edges."
-    },
-    {
-      "kind": "shortest_path_characterization",
-      "lean_statement": "∀ (v : Fin n), dist[v] = some k ↔ (∃ path, pathStartsAt path s ∧ pathEndsAt path v ∧ pathLengthEdges path = k) ∧ (∀ k' < k, ¬ ∃ path', pathStartsAt path' s ∧ pathEndsAt path' v ∧ pathLengthEdges path' = k')",
-      "nl_gloss": "A combined characterization: dist[v] = Some(k) exactly when k is the minimal number of edges among all s→v paths."
-    },
-    {
-      "kind": "termination",
-      "lean_statement": "The algorithm terminates for all finite graphs: ∀ n adj s, ∃ t, run_bfs adj s terminates in t steps",
-      "nl_gloss": "Prove the BFS implementation terminates (e.g., because each vertex is enqueued at most once when its dist changes from None to Some)."
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_unreachability_iff (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  source < adj.length →\n  ∀ v, dist[v] = none ↔ ¬ (∃ k, ∃ path : List Nat,\n    path.head? = some source ∧ path.get? (path.length - 1) = some v ∧\n    path.length = k + 1 ∧\n    ∀ i, i + 1 < path.length →\n      path.get? i ∈ (adj[path.getD i 0]).toList) := by\n  intro hsrc v\n  admit",
+      "nl_gloss": "dist[v] = None iff there is no directed path from source to v.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
     }
   ]
 }

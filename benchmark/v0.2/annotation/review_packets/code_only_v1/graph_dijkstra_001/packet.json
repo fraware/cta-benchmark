@@ -5,7 +5,7 @@
   "domain": "graph",
   "difficulty": "medium",
   "instance_path": "benchmark/v0.2/instances/graph/graph_dijkstra_001",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzzzzzzzt_002/generated/code_only_v1/graph_dijkstra_001.json",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzzzzzzzzz_695/generated/code_only_v1/graph_dijkstra_001.json",
   "informal_statement": {
     "text": "Given a directed graph with non-negative integer edge weights, a source vertex, and a vertex count n, return a vector dist of length n where dist[v] is the length of the shortest path from source to v, or None if no such path exists.",
     "preconditions": [
@@ -134,11 +134,10 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem graph_dijkstra_001_size (n : Nat) (source : Nat) (edges : List (Nat × Nat × Nat)) :\n  (∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n ∧ w ≥ 0) →\n  (dijkstra n source edges).length = n",
+      "lean_statement": "theorem dijkstra_size {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) : (dijkstra n source edges).length = n := by\n sorry",
       "nl_gloss": "The returned distance vector has length n.",
       "linked_semantic_units": [
-        "SU2",
-        "SU1"
+        "SU2"
       ],
       "raw_source": "model"
     },
@@ -146,14 +145,10 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem graph_dijkstra_001_source_some (n : Nat) (source : Nat) (edges : List (Nat × Nat × Nat)) :\n  (∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n ∧ w ≥ 0) →\n  source < n →\n  (dijkstra n source edges)[source] = some 0",
-      "nl_gloss": "The source vertex is assigned distance 0.",
+      "lean_statement": "theorem dijkstra_source_zero {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) : (dijkstra n source edges)[source]? = some (0 : Nat) := by\n sorry",
+      "nl_gloss": "The source distance is exactly Some(0).",
       "linked_semantic_units": [
-        "SU3",
-        "SU1",
-        "SU4",
-        "SU5",
-        "SU6"
+        "SU3"
       ],
       "raw_source": "model"
     },
@@ -161,11 +156,10 @@
       "index": 2,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem graph_dijkstra_001_achievable (n : Nat) (source : Nat) (edges : List (Nat × Nat × Nat)) :\n  (∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n ∧ w ≥ 0) →\n  source < n →\n  ∀ v : Nat, v < n →\n    (dijkstra n source edges)[v] = some d →\n    ∃ path, path.from = source ∧ path.to = v ∧ path.totalWeight = d",
-      "nl_gloss": "If dist[v] is Some(d), then there exists a path from source to v with total weight d.",
+      "lean_statement": "theorem dijkstra_achievable {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) {v d : Nat} (hd : (dijkstra n source edges)[v]? = some d) : ∃ p : List Nat, p ≠ [] ∧ p.head? = some source ∧ p.get? (p.length - 1) = some v ∧ (∀ i : Nat, i + 1 < p.length → let u := p.get! i; let w := p.get! (i+1); ∃ wgt : Nat, (u,w,wgt) ∈ edges) ∧ (pathWeight p edges = d) := by\n sorry",
+      "nl_gloss": "If dist[v] = Some(d), then there exists a path from source to v with total weight d.",
       "linked_semantic_units": [
-        "SU4",
-        "SU1"
+        "SU4"
       ],
       "raw_source": "model"
     },
@@ -173,11 +167,10 @@
       "index": 3,
       "kind": "optimality",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem graph_dijkstra_001_optimal (n : Nat) (source : Nat) (edges : List (Nat × Nat × Nat)) :\n  (∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n ∧ w ≥ 0) →\n  source < n →\n  ∀ v : Nat, v < n →\n    (dijkstra n source edges)[v] = some d →\n    ¬ (∃ path, path.from = source ∧ path.to = v ∧ path.totalWeight < d)",
-      "nl_gloss": "If dist[v] is Some(d), then no path from source to v has total weight strictly less than d.",
+      "lean_statement": "theorem dijkstra_optimal {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) {v d : Nat} (hd : (dijkstra n source edges)[v]? = some d) : ∀ d' : Nat, (∃ p : List Nat, p ≠ [] ∧ p.head? = some source ∧ p.get? (p.length - 1) = some v ∧ pathWeight p edges = d') → ¬ (d' < d) := by\n sorry",
+      "nl_gloss": "If dist[v] = Some(d), no path from source to v has total weight less than d.",
       "linked_semantic_units": [
-        "SU5",
-        "SU1"
+        "SU5"
       ],
       "raw_source": "model"
     },
@@ -185,23 +178,21 @@
       "index": 4,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem graph_dijkstra_001_unreachable (n : Nat) (source : Nat) (edges : List (Nat × Nat × Nat)) :\n  (∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n ∧ w ≥ 0) →\n  source < n →\n  ∀ v : Nat, v < n →\n    (dijkstra n source edges)[v] = none →\n    ¬ (∃ path, path.from = source ∧ path.to = v)",
-      "nl_gloss": "If dist[v] is None, then v is unreachable from source.",
+      "lean_statement": "theorem dijkstra_unreachable {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) {v : Nat} (hv : (dijkstra n source edges)[v]? = none) : ¬ (∃ p : List Nat, p ≠ [] ∧ p.head? = some source ∧ p.get? (p.length - 1) = some v ∧ (∃ d : Nat, pathWeight p edges = d)) := by\n sorry",
+      "nl_gloss": "If dist[v] = None, then there is no path from source to v.",
       "linked_semantic_units": [
-        "SU6",
-        "SU1"
+        "SU6"
       ],
       "raw_source": "model"
     },
     {
       "index": 5,
       "kind": "termination",
-      "layer": "benchmark_facing",
-      "lean_statement": "theorem graph_dijkstra_001_termination (n : Nat) (source : Nat) (edges : List (Nat × Nat × Nat)) :\n  (∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n ∧ w ≥ 0) →\n  source < n →\n  dijkstra_terminates n source edges",
-      "nl_gloss": "Dijkstra's loop terminates on every valid input.",
+      "layer": "auxiliary",
+      "lean_statement": "theorem dijkstra_terminates {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) : Termination (dijkstra n source edges) := by\n sorry",
+      "nl_gloss": "Dijkstra terminates on every valid input.",
       "linked_semantic_units": [
-        "SU7",
-        "SU1"
+        "SU7"
       ],
       "raw_source": "model"
     }

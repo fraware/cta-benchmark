@@ -1,64 +1,36 @@
 {
   "obligations": [
     {
-      "kind": "definition/contract",
-      "lean_statement": "def InsertSpec (t : BST α) (k : α) : Prop :=\n  (∀ x, x ∈ (insert t k) ↔ (x ∈ t ∨ x = k)) ∧\n  (∀ x, x ∈ t → x ∈ insert t k) ∧\n  (k ∈ t → insert t k = t) ∧\n  (¬ (k ∈ t) → k ∈ insert t k) ∧\n  (∀ x, x ≠ k → (x ∈ t ↔ x ∈ insert t k))",
-      "nl_gloss": "State the intended membership behavior: inserting k adds k if absent, otherwise leaves the tree unchanged; all other keys preserve membership."
-    },
-    {
       "kind": "precondition",
-      "lean_statement": "∀ t : BST α, IsBST t → StrictSortedInorder t",
-      "nl_gloss": "Assume the input tree is a valid BST whose in-order traversal is strictly ascending (equivalently, no duplicates and BST ordering holds)."
+      "lean_statement": "theorem SU1_bst_inorder_strictly_ascending_precondition (t : Tree) : IsBST t → InorderStrictAsc t",
+      "nl_gloss": "Assume the input tree is a valid BST with strictly ascending in-order traversal.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "well_formedness of output",
-      "lean_statement": "∀ t : BST α, IsBST t → IsBST (insert t k)",
-      "nl_gloss": "Prove the algorithm returns a BST when given a BST."
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_bst_invariant_preservation (t : Tree) (key : Int) : IsBST t → IsBST (bst_insert t key)",
+      "nl_gloss": "The insertion result remains a valid BST.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
     },
     {
-      "kind": "inorder sortedness preservation",
-      "lean_statement": "∀ t : BST α, StrictSortedInorder t → StrictSortedInorder (insert t k)",
-      "nl_gloss": "Prove the in-order traversal of the output remains strictly sorted."
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_keyset_change_union_or_unchanged (t : Tree) (key : Int) : IsBST t → (if Mem t key then KeyMultiset (bst_insert t key) = KeyMultiset t else KeyMultiset (bst_insert t key) = KeyMultiset t ⊎ {key})",
+      "nl_gloss": "If the key is absent, the output key multiset is the input multiset union {key}; if present, it is unchanged.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
-      "kind": "structural recursion / termination",
-      "lean_statement": "termination_by insert t k => size t\n\n-- and/or\n-- measure decreases on recursive calls",
-      "nl_gloss": "Show the implementation terminates (e.g., by decreasing tree size on recursive calls)."
-    },
-    {
-      "kind": "key comparison cases (left/right/equals)",
-      "lean_statement": "∀ t : BST α, IsBST t →\n  (k = rootKey t → insert t k = t) ∧\n  (k < rootKey t → insert t k = mkNode (rootKey t) (insert (leftSub t) k) (rightSub t)) ∧\n  (k > rootKey t → insert t k = mkNode (rootKey t) (leftSub t) (insert (rightSub t) k))",
-      "nl_gloss": "Match the algorithm’s behavior to BST insertion logic: equality returns unchanged; less-than recurses left; greater-than recurses right."
-    },
-    {
-      "kind": "membership correctness (soundness)",
-      "lean_statement": "∀ t : BST α, IsBST t → ∀ x : α,\n  x ∈ insert t k → (x ∈ t ∨ x = k)",
-      "nl_gloss": "If a key appears in the output, it must have been in the input or be the inserted key."
-    },
-    {
-      "kind": "membership correctness (completeness)",
-      "lean_statement": "∀ t : BST α, IsBST t → ∀ x : α,\n  (x ∈ t ∨ x = k) → x ∈ insert t k",
-      "nl_gloss": "Every key from the input remains present, and the inserted key is present when appropriate."
-    },
-    {
-      "kind": "no-duplicate / idempotence on existing key",
-      "lean_statement": "∀ t : BST α, IsBST t → k ∈ t → insert t k = t",
-      "nl_gloss": "If the key already exists, insertion is a no-op (tree unchanged)."
-    },
-    {
-      "kind": "freshness when key absent",
-      "lean_statement": "∀ t : BST α, IsBST t → ¬ (k ∈ t) → k ∈ insert t k",
-      "nl_gloss": "If the key is not present, the output contains the new key."
-    },
-    {
-      "kind": "preservation of other keys",
-      "lean_statement": "∀ t : BST α, IsBST t → ∀ x : α,\n  x ≠ k → (x ∈ insert t k ↔ x ∈ t)",
-      "nl_gloss": "All keys other than k have exactly the same membership in input and output."
-    },
-    {
-      "kind": "multiset/size relation (optional but typical)",
-      "lean_statement": "∀ t : BST α, IsBST t →\n  (k ∈ t → size (keys (insert t k)) = size (keys t)) ∧\n  (¬ (k ∈ t) → size (keys (insert t k)) = size (keys t) + 1)",
-      "nl_gloss": "Quantify the effect on the number of stored keys: unchanged if k exists; otherwise exactly one new node is added."
+      "kind": "postcondition",
+      "lean_statement": "theorem SU4_duplicate_noop_keymultiset (t : Tree) (key : Int) : IsBST t → Mem t key → KeyMultiset (bst_insert t key) = KeyMultiset t",
+      "nl_gloss": "Inserting an existing key does not change the multiset of keys.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
     }
   ]
 }
