@@ -80,6 +80,90 @@ fn assert_no_true_theorems(instance_id: &str, packet: &Value) {
     }
 }
 
+fn assert_schema_consistency(instance_id: &str, packet: &Value) {
+    let qs = packet
+        .get("quality_summary")
+        .and_then(|v| v.as_object())
+        .expect("quality_summary object");
+    for key in [
+        "critical_units_covered_by_direct_theorems",
+        "critical_units_only_indirectly_covered",
+        "off_spec_theorems_present",
+        "vacuous_theorems_present",
+    ] {
+        assert!(
+            qs.contains_key(key),
+            "{instance_id}: quality_summary missing `{key}`"
+        );
+    }
+    for (idx, ob) in packet["generated_obligations"]
+        .as_array()
+        .expect("generated_obligations array")
+        .iter()
+        .enumerate()
+    {
+        for key in [
+            "index",
+            "kind",
+            "layer",
+            "lean_statement",
+            "nl_gloss",
+            "linked_semantic_units",
+        ] {
+            assert!(
+                ob.get(key).is_some(),
+                "{instance_id}: obligation {idx} missing `{key}`"
+            );
+        }
+        let layer = ob["layer"].as_str().unwrap_or("");
+        assert!(
+            layer == "benchmark_facing" || layer == "auxiliary",
+            "{instance_id}: obligation {idx} has invalid layer `{layer}`"
+        );
+    }
+}
+
+fn assert_quality_summary_matches_content(instance_id: &str, packet: &Value) {
+    let bf = benchmark_facing(packet);
+    let mut vacuous = false;
+    let mut off_spec = false;
+    for ob in &bf {
+        let stmt = ob["lean_statement"]
+            .as_str()
+            .unwrap_or("")
+            .to_ascii_lowercase()
+            .split_whitespace()
+            .collect::<Vec<_>>()
+            .join(" ");
+        let gloss = ob["nl_gloss"].as_str().unwrap_or("").to_ascii_lowercase();
+        if stmt == "true"
+            || stmt.contains(": true := by trivial")
+            || stmt.contains(": prop := by trivial")
+            || stmt.contains("-> true")
+            || stmt.contains("→ true")
+            || stmt.contains("∧ true")
+            || stmt.contains("placeholder")
+            || gloss.contains("placeholder")
+            || (gloss.contains("represents") && gloss.contains("need to"))
+        {
+            vacuous = true;
+        }
+        if stmt.contains("stable") || stmt.contains("stability") || gloss.contains("stability") {
+            off_spec = true;
+        }
+    }
+    assert_eq!(
+        packet["quality_summary"]["vacuous_theorems_present"].as_bool(),
+        Some(vacuous),
+        "{instance_id}: vacuous flag mismatch"
+    );
+    assert_eq!(
+        packet["quality_summary"]["off_spec_theorems_present"].as_bool(),
+        Some(off_spec),
+        "{instance_id}: off-spec flag mismatch"
+    );
+}
+
 fn assert_no_off_spec_theorems(instance_id: &str, packet: &Value) {
     for ob in benchmark_facing(packet) {
         let stmt = ob["lean_statement"]
@@ -125,6 +209,8 @@ fn regression_target_packets_are_benchmark_aligned() {
 
     for instance_id in targets {
         let packet = load_packet(instance_id);
+        assert_schema_consistency(instance_id, &packet);
+        assert_quality_summary_matches_content(instance_id, &packet);
         assert_no_true_theorems(instance_id, &packet);
         assert_no_off_spec_theorems(instance_id, &packet);
         assert_direct_critical_coverage(instance_id, &packet);

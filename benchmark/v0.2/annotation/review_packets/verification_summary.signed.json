@@ -1,13 +1,13 @@
 {
   "signature": {
     "algorithm": "sha256",
-    "value": "c2c154c01be4805ccdb7c7d487c5064ce3ac34cf6d7874920a1869ba204d537f"
+    "value": "fa076c64f2a57d31f6ab22f651039a6d092d4507572e53e2aa8ea47ba42caec2"
   },
   "verification": {
     "benchmark_version": "v0.2",
     "packets_root": "benchmark/v0.2/annotation/review_packets",
     "schema_path": "schemas/review_packet.schema.json",
-    "generated_at": "2026-04-23T07:56:07.7625291Z",
+    "generated_at": "2026-04-23T09:17:42.8242952Z",
     "total_packets": 93,
     "passed_packets": 93,
     "failed_packets": 0,
@@ -22,7 +22,7 @@
         "instance_id": "arrays_binary_search_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_binary_search_002/packet.json",
-        "sha256": "ffb4c007e4f846a0505a45cd06455df7bf8169d0b1c0f565ef749ac4541bcbd1"
+        "sha256": "b48c3fbb9404b9c6f966db89832f93e40ae7cf5b3ad2edc1b5f8e7de4c6d8d88"
       },
       {
         "instance_id": "arrays_max_subarray_001",

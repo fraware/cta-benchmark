@@ -1119,6 +1119,16 @@ fn build_quality_summary(
         })
         .filter_map(|u| u.get("id").and_then(|id| id.as_str()).map(str::to_string))
         .collect();
+    let optional_units: HashSet<String> = semantic_units
+        .iter()
+        .filter(|u| {
+            u.get("criticality")
+                .and_then(|c| c.as_str())
+                .map(|c| c == "optional")
+                .unwrap_or(false)
+        })
+        .filter_map(|u| u.get("id").and_then(|id| id.as_str()).map(str::to_string))
+        .collect();
 
     let mut covered_direct = HashSet::new();
     let mut covered_indirect = HashSet::new();
@@ -1134,22 +1144,35 @@ fn build_quality_summary(
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_ascii_lowercase();
+        let stmt_norm = normalize_text(&stmt);
         let gloss = ob
             .get("nl_gloss")
             .and_then(|v| v.as_str())
             .unwrap_or("")
             .to_ascii_lowercase();
-        if stmt.trim() == "true" || stmt.contains(": true := by trivial") {
-            vacuous_theorems_present = true;
-        }
-        if stmt.contains("stable") || stmt.contains("stability") || gloss.contains("stability") {
-            off_spec_theorems_present = true;
-        }
         let linked = ob
             .get("linked_semantic_units")
             .and_then(|v| v.as_array())
             .cloned()
             .unwrap_or_default();
+        let linked_ids: Vec<String> = linked
+            .iter()
+            .filter_map(|v| v.as_str().map(str::to_string))
+            .collect();
+        if layer == "benchmark_facing" {
+            if is_vacuous_or_filler(&stmt_norm, &gloss) {
+                vacuous_theorems_present = true;
+            }
+            let linked_only_optional =
+                !linked_ids.is_empty() && linked_ids.iter().all(|id| optional_units.contains(id));
+            if stmt_norm.contains("stable")
+                || stmt_norm.contains("stability")
+                || gloss.contains("stability")
+                || linked_only_optional
+            {
+                off_spec_theorems_present = true;
+            }
+        }
         for su in linked {
             if let Some(id) = su.as_str() {
                 if layer == "benchmark_facing" {
@@ -1185,6 +1208,24 @@ fn build_quality_summary(
         "off_spec_theorems_present": off_spec_theorems_present,
         "vacuous_theorems_present": vacuous_theorems_present
     })
+}
+
+fn normalize_text(s: &str) -> String {
+    s.split_whitespace().collect::<Vec<_>>().join(" ")
+}
+
+fn is_vacuous_or_filler(stmt_norm: &str, gloss_lc: &str) -> bool {
+    stmt_norm == "true"
+        || stmt_norm.contains(": true := by trivial")
+        || stmt_norm.contains(": true := by simp")
+        || stmt_norm.contains(": prop := by trivial")
+        || stmt_norm.contains(": prop := by simp")
+        || stmt_norm.contains("-> true")
+        || stmt_norm.contains("→ true")
+        || stmt_norm.contains("∧ true")
+        || stmt_norm.contains("placeholder")
+        || gloss_lc.contains("placeholder")
+        || (gloss_lc.contains("represents") && gloss_lc.contains("need to"))
 }
 
 fn infer_critical_units_for_obligation(

@@ -116,8 +116,11 @@ fn is_vacuous_obligation(ob: &GeneratedObligation) -> bool {
     let stmt = ob.lean_statement.trim().to_ascii_lowercase();
     let stmt_norm = stmt.split_whitespace().collect::<Vec<_>>().join(" ");
     if stmt_norm == "true"
+        || stmt_norm.contains(": true")
         || stmt_norm.contains(": true := by trivial")
         || stmt_norm.contains(": true := by simp")
+        || stmt_norm.contains(": prop := by trivial")
+        || stmt_norm.contains(": prop := by simp")
         || stmt_norm.contains("-> true")
         || stmt_norm.contains("→ true")
         || stmt_norm.contains("∧ true")
@@ -131,6 +134,8 @@ fn is_vacuous_obligation(ob: &GeneratedObligation) -> bool {
     gloss.contains("no precondition")
         || gloss.contains("no preconditions")
         || gloss.contains("always true")
+        || gloss.contains("placeholder")
+        || (gloss.contains("represents") && gloss.contains("need to"))
 }
 
 fn is_off_spec_extra(ob: &GeneratedObligation) -> bool {
@@ -387,6 +392,18 @@ Let me know if you need changes."#;
         let raw = r#"{"obligations":[
             {"kind":"termination","lean_statement":"theorem t : P -> True := by intro; trivial","nl_gloss":""},
             {"kind":"postcondition","lean_statement":"theorem good : P -> Q := by sorry","nl_gloss":""}
+        ]}"#;
+        let (obs, st) = normalize_response(raw);
+        assert!(st.ok);
+        assert_eq!(obs.len(), 1);
+        assert_eq!(obs[0].kind, "postcondition");
+    }
+
+    #[test]
+    fn drops_prop_trivial_and_placeholder_gloss() {
+        let raw = r#"{"obligations":[
+            {"kind":"precondition","lean_statement":"theorem pre : Prop := by trivial","nl_gloss":"placeholder for future proof"},
+            {"kind":"postcondition","lean_statement":"theorem real : x = x := by rfl","nl_gloss":"actual theorem"}
         ]}"#;
         let (obs, st) = normalize_response(raw);
         assert!(st.ok);
