@@ -52,5 +52,7 @@ without a deliberate update. Paper-track adjudication additionally relies on
 `cta annotate verify-review-packets` (signed
 `verification_summary.signed.json`) and the `cta_generate` packet regression
 tests (`code_only_packet_regression`, `family_packet_regression`,
-`naive_concat_packet_regression`) so curated review obligations stay aligned with
-benchmark scaffolds before they enter the canonical annotation pack.
+`naive_concat_packet_regression`, `full_method_priority1_packet_regression`,
+`full_method_priority2_packet_regression`, `review_packet_lean_lint`) so
+curated review obligations stay aligned with benchmark scaffolds before they
+enter the canonical annotation pack.

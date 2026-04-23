@@ -85,7 +85,13 @@ disjoint. See `docs/paper_readiness.md`.
 - Scaffolds declare types, signatures, and instance-local aliases over the
   `CTA.Core.Checkers` predicate library (`IsPermutation`, `InBounds`,
   `SortedLE`, `NonNegative`, `SameMultiset`). They never contain
-  executable logic.
+  executable reference implementations (only declarative types and
+  properties).
+- Prefer `opaque` for unknown implementations. Use `axiom` when Lean cannot
+  synthesize required instances for a stub signature (for example a
+  function-valued model like `bstInsert : Tree → Int → Tree`).
+- Core `List` in this project does not provide `List.sum`; prefer
+  `List.foldl` for summing `List Nat` inside scaffold definitions.
 - Reusable vocabulary lives in `lean/CTA/Core/Checkers.lean`. Scaffolds
   re-export a handful of names under the instance's own namespace
   (`Sorted`, `IsPerm`, `IndexValid`, …) so that generated obligations
@@ -103,12 +109,16 @@ Those directories hold JSON review packets (`packet.json`) validated by
 semantics, two-layer obligations, and `quality_summary` expectations are
 documented in `docs/annotation_manual.md`; mechanical guards live in
 `crates/cta_generate/tests/code_only_packet_regression.rs`,
-`family_packet_regression.rs`, and `naive_concat_packet_regression.rs`.
+`family_packet_regression.rs`, `naive_concat_packet_regression.rs`,
+`full_method_priority1_packet_regression.rs`,
+`full_method_priority2_packet_regression.rs`, and
+`review_packet_lean_lint.rs`.
 
 ## Prohibited patterns
 
 - No `unsafe` blocks in reference Rust.
 - No external crate dependencies in reference Rust.
 - No macro-heavy reference code; prefer explicit loops and branches.
-- No scaffold that hard-codes executable definitions; use `opaque` markers.
+- No scaffold that hard-codes executable reference algorithms; use `opaque`
+  or `axiom` as above for declarative stubs only.
 - No ambiguous edge cases whose adjudication depends on the reader.

@@ -8,6 +8,7 @@ version, and regenerate paper reports.
 1. Confirm every instance under `benchmark/v0.1/instances/**` passes:
    - `cta validate benchmark --version v0.1 --release`
    - `cta benchmark lint --version v0.1`
+   - `lake build` from `lean/` (full scaffold elaboration)
 2. Regenerate the benchmark manifest:
    `cta benchmark manifest --version v0.1`.
 3. Commit the manifest. `content_hash` must not change after this commit

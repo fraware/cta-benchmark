@@ -14,6 +14,9 @@ in the same test run that touched the code:
 | `crates/cta_generate/tests/code_only_packet_regression.rs`  | Curated `code_only_v1` review packets stay schema-consistent and theorem-hygienic |
 | `crates/cta_generate/tests/family_packet_regression.rs`     | Cross-instance `code_only_v1` template guards (BFS, binary search, LCA, …)        |
 | `crates/cta_generate/tests/naive_concat_packet_regression.rs` | Canonical `naive_concat_v1` exemplar packet shapes                              |
+| `crates/cta_generate/tests/full_method_priority1_packet_regression.rs` | Curated `full_method_v1` graph packets (BFS, Dijkstra `PathWeight`, coin optimality direction) |
+| `crates/cta_generate/tests/full_method_priority2_packet_regression.rs` | Selected `full_method_v1` packets: vacuity flags, knapsack/LCA/binary-search shapes |
+| `crates/cta_generate/tests/review_packet_lean_lint.rs`        | All `review_packets/**/packet.json` files with `benchmark_facing` obligations |
 
 Hard rules:
 

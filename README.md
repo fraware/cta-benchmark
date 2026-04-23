@@ -249,7 +249,7 @@ Every push runs:
   emitted `run_manifest.json` and `results_bundle.json`.
 - `cargo-deny check --all-features` and `cargo audit --deny warnings`
   (see `.github/workflows/supply-chain.yml`).
-- `lake build` over the Lean project.
+- `lake build` in `lean/` over the full `CTA` Lean project (scaffolds must compile).
 
 Snapshot tests in `crates/cta_reports` and `crates/cta_generate` pin the
 exact CSV/Markdown/LaTeX shape of every report artifact and the rendered
@@ -298,6 +298,9 @@ Run these after any change to prompts, normalizers, or committed `packet.json` f
 cargo test -p cta_generate --test code_only_packet_regression
 cargo test -p cta_generate --test family_packet_regression
 cargo test -p cta_generate --test naive_concat_packet_regression
+cargo test -p cta_generate --test full_method_priority1_packet_regression
+cargo test -p cta_generate --test full_method_priority2_packet_regression
+cargo test -p cta_generate --test review_packet_lean_lint
 cargo run -p cta_cli -- annotate verify-review-packets \
   --benchmark-version v0.2 \
   --packets-root benchmark/v0.2/annotation/review_packets \
@@ -312,6 +315,14 @@ Regression suites pin this contract for focused cleanup packets:
 - `crates/cta_generate/tests/code_only_packet_regression.rs`
 - `crates/cta_generate/tests/naive_concat_packet_regression.rs`
 - `crates/cta_generate/tests/family_packet_regression.rs`
+- `crates/cta_generate/tests/full_method_priority1_packet_regression.rs` and `full_method_priority2_packet_regression.rs` (curated `full_method_v1` graph + knapsack + LCA + binary-search packets)
+- `crates/cta_generate/tests/review_packet_lean_lint.rs` (repo-wide static checks on every `review_packets/**/packet.json` with explicit `layer: "benchmark_facing"`)
+
+### Lean scaffolds (`lean/CTA/Benchmark/**`)
+
+- Every instance `scaffold.lean` under `benchmark/**/instances/` and every v0.2 `annotation/review_packets/**/scaffold.lean` copy for that instance must remain **byte-identical** to the canonical module under `lean/CTA/Benchmark/...`. `cta benchmark lint --version <v>` enforces this.
+- Prefer **`opaque`** for underspecified reference functions and predicates. Use **`axiom`** instead when Lean would otherwise require evidence such as `Inhabited` for a function-valued stub (for example declarative `bstInsert` or `subtreeRootedAt` signatures).
+- This toolchain’s prelude **`List`** does not ship `List.sum`; sums over `List Nat` in scaffolds should use **`List.foldl`** (see `Decomposes` in the coin-change canonical modules).
 
 ### Gold template packet families
 

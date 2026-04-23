@@ -51,6 +51,16 @@ cargo run -p cta_cli -- reports package --benchmark-version v0.2 --canonical-run
 cargo test -p cta_generate --test code_only_packet_regression
 cargo test -p cta_generate --test family_packet_regression
 cargo test -p cta_generate --test naive_concat_packet_regression
+cargo test -p cta_generate --test full_method_priority1_packet_regression
+cargo test -p cta_generate --test full_method_priority2_packet_regression
+cargo test -p cta_generate --test review_packet_lean_lint
+
+# 3d. Lean scaffolds (when touching lean/CTA/Benchmark/** or any scaffold.lean)
+cd lean
+lake build
+cd ..
+cargo run -p cta_cli -- benchmark lint --version v0.1
+cargo run -p cta_cli -- benchmark lint --version v0.2
 
 # 4. end-to-end experiment smoke test (stub provider, offline)
 cargo run -p cta_cli -- experiment --config configs/experiments/pilot_v1.json --dry-run
@@ -114,9 +124,12 @@ cargo audit --deny warnings
       `configs/prompts/naive_concat_v1.json`, `crates/cta_generate/src/normalize.rs`,
       or any `benchmark/v0.2/annotation/review_packets/**/packet.json`:
       run `cargo test -p cta_generate --test code_only_packet_regression`,
-      `cargo test -p cta_generate --test family_packet_regression`, and
+      `cargo test -p cta_generate --test family_packet_regression`,
       (when `naive_concat_v1` packets change)
-      `cargo test -p cta_generate --test naive_concat_packet_regression`, then
+      `cargo test -p cta_generate --test naive_concat_packet_regression`,
+      `cargo test -p cta_generate --test full_method_priority1_packet_regression`,
+      `cargo test -p cta_generate --test full_method_priority2_packet_regression`, and
+      `cargo test -p cta_generate --test review_packet_lean_lint`, then
       `cta annotate verify-review-packets` for `v0.2` and commit the updated
       `benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
       when that file is part of your change set.

@@ -92,6 +92,9 @@ These rules are enforced by CI or by the benchmark linter:
 - No run is reportable without a manifest.
 - No metric name may change after `metrics_v2` freeze.
 - No generated Lean file is committed into benchmark gold directories.
+- Canonical Lean scaffolds under `lean/CTA/Benchmark/**` must compile (`lake build`
+  in `lean/`) and stay byte-identical to every checked-in `scaffold.lean` for
+  the same instance (`cta benchmark lint` enforces parity per benchmark version).
 - No schema-breaking change without a version bump.
 - No silent prompt changes: prompt hash must change and be recorded.
 - No annotation overwrite; adjudicated outputs are append-only per version.

@@ -122,8 +122,12 @@ values.
 **Batch markdown** under `annotation/task_board/batches/` or similar paths is
 for queueing and checklists only. It is not a substitute for a valid
 `packet.json` plus `annotate verify-review-packets` and, when you change packet
-shape or prompts, the `cta_generate` packet regression tests documented in
-`README.md` and `docs/release_process.md`.
+shape or prompts, the `cta_generate` tests documented in `README.md` and
+`docs/release_process.md` (`code_only_packet_regression`,
+`family_packet_regression`, `naive_concat_packet_regression`,
+`full_method_priority1_packet_regression`,
+`full_method_priority2_packet_regression`, and repo-wide
+`review_packet_lean_lint`).
 
 ## Hygiene
 

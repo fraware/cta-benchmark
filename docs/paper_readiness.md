@@ -119,6 +119,9 @@ Then validate the batch and refresh release gates:
 3. When `packet.json` content, prompts, or normalizers changed in the same change set, run:
    - `cargo test -p cta_generate --test code_only_packet_regression`
    - `cargo test -p cta_generate --test family_packet_regression`
+   - `cargo test -p cta_generate --test full_method_priority1_packet_regression`
+   - `cargo test -p cta_generate --test full_method_priority2_packet_regression`
+   - `cargo test -p cta_generate --test review_packet_lean_lint`
 4. `cargo run -p cta_cli -- annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
 
 ## Gold-audit workbook
