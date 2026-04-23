@@ -71,6 +71,28 @@ For automation, the fail-fast orchestrator chains these gates:
 `paper-orchestrate` now enforces `annotate verify-review-packets` automatically
 before `reports package`, and exits non-zero if packet verification fails.
 
+## Code-only remediation protocol
+
+When `code_only_v1` packets show scaffold-heavy or vacuous obligations, run
+this targeted remediation loop before broad benchmark refresh:
+
+1. Tighten prompt constraints in `configs/prompts/code_only_v1.json`:
+   - benchmark-facing obligations first
+   - optional auxiliary obligations second
+   - no vacuous theorem forms (`True`, `P -> True`, `P ∧ True`, `∃ x, True`)
+   - no off-spec promotion in benchmark-facing output
+2. Tighten normalizer filtering (`crates/cta_generate/src/normalize.rs`):
+   - drop vacuous obligations
+   - demote off-spec extras to auxiliary
+3. Regenerate only the scoped packet set with `cta generate --instances ...`.
+4. Rebuild scoped packets with `cta annotate build-review-packets --pairs ...`.
+5. Run packet regression and schema gates:
+   - `cargo test -p cta_generate --test code_only_packet_regression`
+   - `cta annotate verify-review-packets ...`
+
+Focus-first policy: do not broaden instance scope until the targeted packet
+set is clean under both regression checks and packet schema verification.
+
 ## Schema evolution
 
 - Additive, non-breaking changes (new optional fields): bump the schema to

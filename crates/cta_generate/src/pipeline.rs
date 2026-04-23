@@ -36,10 +36,11 @@ pub struct GenerateParams {
 ///
 /// The specific placeholders produced depend on [`PromptKind`]:
 /// - `text_only`: `{{informal_statement}}`
-/// - `code_only`: `{{reference_rs}}` (and `{{rust_reference}}`, an alias used by
-///   checked-in prompt templates for historical reasons)
+/// - `code_only`: `{{reference_rs}}`, `{{rust_reference}}` (alias), and
+///   `{{semantic_units}}`
 /// - `naive_concat`: informal statement plus both `{{reference_rs}}` and
-///   `{{rust_reference}}` (same file content for each key)
+///   `{{rust_reference}}` (same file content for each key), plus
+///   `{{semantic_units}}`
 /// - `full_method`: `{{problem_summary}}`, `{{semantic_units}}`,
 ///   `{{rust_summary}}`, `{{lean_scaffold}}`
 ///
@@ -65,6 +66,7 @@ pub fn build_context(
         }
         PromptKind::CodeOnly => {
             let code = read_if_exists(&reference_rs_path)?;
+            let semantic_units = read_if_exists(semantic_units_path)?;
             if code.trim().is_empty() {
                 return Err(GenerateError::MissingReferenceRust {
                     path: reference_rs_path,
@@ -74,10 +76,12 @@ pub fn build_context(
             // duplicates the same bytes so templates using either key render
             // verbatim Rust (see `configs/prompts/code_only_v1.json`).
             ctx.insert("reference_rs", code.clone())
-                .insert("rust_reference", code);
+                .insert("rust_reference", code)
+                .insert("semantic_units", semantic_units);
         }
         PromptKind::NaiveConcat => {
             let code = read_if_exists(&reference_rs_path)?;
+            let semantic_units = read_if_exists(semantic_units_path)?;
             if code.trim().is_empty() {
                 return Err(GenerateError::MissingReferenceRust {
                     path: reference_rs_path,
@@ -85,7 +89,8 @@ pub fn build_context(
             }
             ctx.insert("informal_statement", informal_statement)
                 .insert("reference_rs", code.clone())
-                .insert("rust_reference", code);
+                .insert("rust_reference", code)
+                .insert("semantic_units", semantic_units);
         }
         PromptKind::FullMethod => {
             let code = read_if_exists(&reference_rs_path)?;

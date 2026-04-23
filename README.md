@@ -258,6 +258,31 @@ form of every prompt template. Property-based tests in
 LLM-output normalizer never panics and only accepts well-formed
 obligations.
 
+### Code-only obligation quality gate
+
+`code_only_v1` now enforces a strict two-layer obligation model:
+
+- benchmark-facing layer: only direct theorems used for semantic-faithfulness scoring
+- auxiliary layer: proof scaffolding (invariants, helper lemmas, termination machinery)
+
+The generator/normalizer pipeline applies the following fail-closed rules:
+
+- strict template rendering (`render_strict`) with no unresolved placeholders
+- required non-empty `reference.rs` for `code_only_v1` / `naive_concat_v1`
+- vacuous theorem rejection (`True`, `P -> True`, `P ∧ True`, `∃ x, True`, trivial wrappers)
+- off-spec theorem demotion (for example stability claims when stability is optional)
+- benchmark-facing-first ordering in normalized obligations
+
+Review packets include per-packet QA metadata under `quality_summary`:
+
+- `critical_units_covered_by_direct_theorems`
+- `critical_units_only_indirectly_covered`
+- `off_spec_theorems_present`
+- `vacuous_theorems_present`
+
+The benchmark-facing layer is expected to stay compact (typically <= 6 theorems)
+and sufficient for evaluating semantic faithfulness without auxiliary lemmas.
+
 ## Documentation
 
 - `docs/architecture.md` — components, crate boundaries, artifact flow

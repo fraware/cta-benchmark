@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzs_001",
   "system_id": "code_only_v1",
   "instance_id": "arrays_binary_search_002",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 6727,
-    "prompt_tokens": 301,
-    "completion_tokens": 823
+    "latency_ms": 5649,
+    "prompt_tokens": 1043,
+    "completion_tokens": 691
   },
   "raw_output_path": "generated/code_only_v1/raw/arrays_binary_search_002.txt",
   "parse_status": {
@@ -18,53 +18,45 @@
   "normalized_obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), True",
-      "nl_gloss": "No explicit precondition is asserted by the implementation. The only required property for correctness is that the input slice is sorted nondecreasing, but the code itself does not enforce it.",
-      "linked_semantic_units": []
+      "lean_statement": "theorem SU1_sorted_nondec (arr : Array Int) : Prop := by\n  -- placeholder contract head; benchmark-facing obligations should assert the predicate directly\n  trivial",
+      "nl_gloss": "The input slice is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "precondition",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), Sorted (fun i j => arr[i] ≤ arr[j]) (List.ofFn (fun k => arr[k]) ) → True",
-      "nl_gloss": "Assume the array is sorted in nondecreasing order (i.e., for i < j, arr[i] ≤ arr[j]). This is the standard precondition for binary search correctness.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_some_implies_index_and_eq\n  (arr : Array Int) (target : Int) (i : Nat)\n  (hsorted : ∀ ⦃a b : Nat⦄, a ≤ b → b < arr.size → a < arr.size → arr[a] ≤ arr[b])\n  (hret : binary_search_spec arr target = some i)\n  : i < arr.size ∧ arr[i] = target := by\n  -- contract obligation\n  admit",
+      "nl_gloss": "If the search returns Some(i), then i is in-bounds and arr[i] equals target.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_none_implies_not_in_array\n  (arr : Array Int) (target : Int)\n  (hsorted : ∀ ⦃a b : Nat⦄, a ≤ b → b < arr.size → a < arr.size → arr[a] ≤ arr[b])\n  (hret : binary_search_spec arr target = none)\n  : ¬ (∃ i : Nat, i < arr.size ∧ arr[i] = target) := by\n  admit",
+      "nl_gloss": "If the search returns None, then target does not occur anywhere in the array.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
       "kind": "termination",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let n := arr.size; ∀ lo hi : Nat, lo ≤ hi ∧ hi ≤ n → (measure (hi - lo) decreases in each loop iteration)",
-      "nl_gloss": "The loop terminates: with lo < hi, each iteration strictly decreases the interval length hi - lo by moving lo up or hi down.",
-      "linked_semantic_units": []
+      "lean_statement": "theorem SU4_terminates\n  (arr : Array Int) (target : Int)\n  : Terminates (fun _ => binary_search_impl arr target) := by\n  admit",
+      "nl_gloss": "The binary search loop terminates for all inputs by shrinking the interval each iteration.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
     },
     {
-      "kind": "invariant",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let n := arr.size; ∀ lo hi : Nat, lo ≤ hi ∧ hi ≤ n → (∀ k : Nat, k < lo ∨ k ≥ hi → arr[k] ≠ target)",
-      "nl_gloss": "Loop invariant: at any point, all indices outside the current search interval [lo, hi) cannot contain the target.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let n := arr.size; ∀ lo hi : Nat, lo ≤ hi ∧ hi ≤ n → (∀ k, k < lo ∨ k ≥ hi → arr[k] ≠ target) → let mid := lo + (hi - lo)/2; (arr[mid] < target → (∀ k, k < (mid+1) ∨ k ≥ hi → arr[k] ≠ target)) ∧ (arr[mid] > target → (∀ k, k < lo ∨ k ≥ mid → arr[k] ≠ target))",
-      "nl_gloss": "If the invariant holds before an iteration, it is preserved after updating lo := mid+1 when arr[mid] < target, or hi := mid when arr[mid] > target. (The equality case returns immediately.)",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let n := arr.size; ∀ i : Nat, i < n → (binary_search arr target = some i) → arr[i] = target",
-      "nl_gloss": "If the function returns Some(i), then the returned index i is within bounds and the element at that index equals the target.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), let n := arr.size; SortedNondecreasing arr → (binary_search arr target = none) → ∀ i : Nat, i < n → arr[i] ≠ target",
-      "nl_gloss": "If the function returns None, then the target does not occur anywhere in the array.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "∀ (arr : Array Int) (target : Int), SortedNondecreasing arr → (binary_search arr target = some i ↔ ∃ j, j < arr.size ∧ arr[j] = target ∧ i = j) ∨ (binary_search arr target = none ↔ ¬ ∃ j, j < arr.size ∧ arr[j] = target)",
-      "nl_gloss": "Overall functional specification: for sorted nondecreasing arrays, the result is Some(i) exactly when the target exists (at some index), otherwise None.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_duplicates_not_unique_required\n  (arr : Array Int) (target : Int)\n  (hsorted : ∀ ⦃a b : Nat⦄, a ≤ b → b < arr.size → a < arr.size → arr[a] ≤ arr[b])\n  (hret : binary_search_spec arr target = some 0)\n  : arr.size > 0 → arr[0] = target := by\n  admit",
+      "nl_gloss": "The specification allows returning any matching index when duplicates exist (uniqueness is not required).",
+      "linked_semantic_units": [
+        "SU5"
+      ]
     }
   ],
-  "prompt_hash": "sha256:c3c09b8580ee8866758038d7a7c15035fff82ca6cda8ca39835fccecaa8a43ce",
-  "seed": 0
+  "prompt_hash": "sha256:5b0d88b10fdc0337be158dc021426260acd5400569cb2fb9bc4d338695ae2807",
+  "seed": 3141
 }

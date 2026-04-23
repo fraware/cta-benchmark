@@ -1,13 +1,13 @@
 {
   "signature": {
     "algorithm": "sha256",
-    "value": "88dae5f801a094acae32405e42a3894c58f7eda81b10d1fe3de2aee21f5a4cc7"
+    "value": "c2c154c01be4805ccdb7c7d487c5064ce3ac34cf6d7874920a1869ba204d537f"
   },
   "verification": {
     "benchmark_version": "v0.2",
     "packets_root": "benchmark/v0.2/annotation/review_packets",
     "schema_path": "schemas/review_packet.schema.json",
-    "generated_at": "2026-04-22T22:42:31.3228231Z",
+    "generated_at": "2026-04-23T07:56:07.7625291Z",
     "total_packets": 93,
     "passed_packets": 93,
     "failed_packets": 0,
@@ -22,7 +22,7 @@
         "instance_id": "arrays_binary_search_002",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_binary_search_002/packet.json",
-        "sha256": "84c30656b22eaa366ec3f86cce26e94e2908e54df211790f295a047ed830a45b"
+        "sha256": "ffb4c007e4f846a0505a45cd06455df7bf8169d0b1c0f565ef749ac4541bcbd1"
       },
       {
         "instance_id": "arrays_max_subarray_001",
@@ -64,7 +64,7 @@
         "instance_id": "graph_bfs_shortest_path_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_bfs_shortest_path_001/packet.json",
-        "sha256": "98d225d24350ec529f48f3ea8259fe930d7e8e03b38288479d5d60ff11d4ce58"
+        "sha256": "7ceeadcd9f30bb74dc7e436c9f7fabc0725cda9195d1f72d70c4c588c300f1eb"
       },
       {
         "instance_id": "graph_bfs_shortest_path_002",
@@ -76,7 +76,7 @@
         "instance_id": "graph_dijkstra_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_001/packet.json",
-        "sha256": "80bf09d8b86a140f1f166209a85c70da4b6764982ac1effdb93ba8d51f97698c"
+        "sha256": "d0b72fbbd9ee085dc832f4e9f0dc176dd2aac1a01864199647a0893addd1cbfb"
       },
       {
         "instance_id": "graph_dijkstra_002",
@@ -100,7 +100,7 @@
         "instance_id": "greedy_interval_scheduling_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_001/packet.json",
-        "sha256": "c209dc0f3c69d046b16795b1a5a841d193acaebf4213c7919a79c2be9be01a61"
+        "sha256": "39c6ce1ec4a790fdb6288512637009e17d4dcc323d1abe79429df21222f85a31"
       },
       {
         "instance_id": "greedy_interval_scheduling_002",
@@ -124,7 +124,7 @@
         "instance_id": "sorting_merge_sort_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_merge_sort_001/packet.json",
-        "sha256": "96e89d6d31410b22bbc187f60211a8118ecd2af1ac313a2f72c3dc5ae2b56766"
+        "sha256": "b26e80341ed28043a6fa6f33b55ec23f517eacda674e062d220684b30fc37692"
       },
       {
         "instance_id": "sorting_merge_sort_002",
@@ -136,7 +136,7 @@
         "instance_id": "trees_bst_insert_001",
         "system_id": "code_only_v1",
         "packet_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/trees_bst_insert_001/packet.json",
-        "sha256": "bcada24a35a31ee1b1bb9054a5f73c27ce3991d2dec0d7267502dbcf36e34ba3"
+        "sha256": "cf10d337381bd4799c8d7360ffd5d7016b4b83d9dc911c077f373df25fd534eb"
       },
       {
         "instance_id": "trees_bst_insert_002",

@@ -650,6 +650,56 @@ pub fn build_review_packets(workspace: &Path, args: BuildReviewPacketsArgs) -> R
             "{\"available\":false}",
         )?;
 
+        let critical_units: HashSet<String> = sem
+            .units
+            .iter()
+            .filter(|u| {
+                u.get("criticality")
+                    .and_then(|c| c.as_str())
+                    .map(|c| c == "critical")
+                    .unwrap_or(false)
+            })
+            .filter_map(|u| u.get("id").and_then(|id| id.as_str()).map(str::to_string))
+            .collect();
+        let generated_obligations = generated
+            .normalized_obligations
+            .iter()
+            .enumerate()
+            .map(|(idx, g)| {
+                let kind = g
+                    .get("kind")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("unknown")
+                    .to_string();
+                let linked_semantic_units =
+                    g.get("linked_semantic_units").cloned().unwrap_or(json!([]));
+                let stmt = g
+                    .get("lean_statement")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("")
+                    .to_ascii_lowercase();
+                let gloss = g
+                    .get("nl_gloss")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("")
+                    .to_ascii_lowercase();
+                let inferred = infer_critical_units_for_obligation(&sem.units, &stmt, &gloss);
+                let linked_semantic_units =
+                    merge_semantic_units(&linked_semantic_units, inferred.as_slice());
+                let layer = obligation_layer(&kind, &linked_semantic_units, &critical_units);
+                json!({
+                    "index": idx,
+                    "kind": kind,
+                    "layer": layer,
+                    "lean_statement": g.get("lean_statement").cloned().unwrap_or(json!("")),
+                    "nl_gloss": g.get("nl_gloss").cloned().unwrap_or(json!("")),
+                    "linked_semantic_units": linked_semantic_units,
+                    "raw_source": "model"
+                })
+            })
+            .collect::<Vec<_>>();
+        let quality_summary = build_quality_summary(&sem.units, &generated_obligations);
+
         let packet = json!({
             "benchmark_version": args.benchmark_version.as_str(),
             "instance_id": pair.instance_id,
@@ -661,16 +711,8 @@ pub fn build_review_packets(workspace: &Path, args: BuildReviewPacketsArgs) -> R
             "informal_statement": instance_record.informal_statement,
             "semantic_units": sem.units,
             "reference_obligations": refs.obligations,
-            "generated_obligations": generated.normalized_obligations.iter().enumerate().map(|(idx, g)| {
-                json!({
-                    "index": idx,
-                    "kind": g.get("kind").cloned().unwrap_or(json!("unknown")),
-                    "lean_statement": g.get("lean_statement").cloned().unwrap_or(json!("")),
-                    "nl_gloss": g.get("nl_gloss").cloned().unwrap_or(json!("")),
-                    "linked_semantic_units": g.get("linked_semantic_units").cloned().unwrap_or(json!([])),
-                    "raw_source": "model"
-                })
-            }).collect::<Vec<_>>(),
+            "generated_obligations": generated_obligations,
+            "quality_summary": quality_summary,
             "lean_check": {
                 "elaborated": serde_json::Value::Null,
                 "diagnostics_path": normalize_workspace_path(workspace, &packet_dir.join("lean_diagnostics.json"))
@@ -1034,6 +1076,186 @@ fn normalize_workspace_path(workspace: &Path, p: &Path) -> String {
     p.strip_prefix(workspace)
         .map(|r| r.to_string_lossy().replace('\\', "/"))
         .unwrap_or_else(|_| p.to_string_lossy().replace('\\', "/"))
+}
+
+fn obligation_layer(
+    kind: &str,
+    linked_semantic_units: &serde_json::Value,
+    critical_units: &HashSet<String>,
+) -> &'static str {
+    let has_critical_links = linked_semantic_units
+        .as_array()
+        .map(|a| {
+            a.iter().any(|v| {
+                v.as_str()
+                    .map(|id| critical_units.contains(id))
+                    .unwrap_or(false)
+            })
+        })
+        .unwrap_or(false);
+    if has_critical_links
+        && matches!(
+            kind,
+            "precondition" | "postcondition" | "optimality" | "termination"
+        )
+    {
+        "benchmark_facing"
+    } else {
+        "auxiliary"
+    }
+}
+
+fn build_quality_summary(
+    semantic_units: &[serde_json::Value],
+    generated_obligations: &[serde_json::Value],
+) -> serde_json::Value {
+    let critical_units: Vec<String> = semantic_units
+        .iter()
+        .filter(|u| {
+            u.get("criticality")
+                .and_then(|c| c.as_str())
+                .map(|c| c == "critical")
+                .unwrap_or(false)
+        })
+        .filter_map(|u| u.get("id").and_then(|id| id.as_str()).map(str::to_string))
+        .collect();
+
+    let mut covered_direct = HashSet::new();
+    let mut covered_indirect = HashSet::new();
+    let mut off_spec_theorems_present = false;
+    let mut vacuous_theorems_present = false;
+    for ob in generated_obligations {
+        let layer = ob
+            .get("layer")
+            .and_then(|v| v.as_str())
+            .unwrap_or("auxiliary");
+        let stmt = ob
+            .get("lean_statement")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_ascii_lowercase();
+        let gloss = ob
+            .get("nl_gloss")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_ascii_lowercase();
+        if stmt.trim() == "true" || stmt.contains(": true := by trivial") {
+            vacuous_theorems_present = true;
+        }
+        if stmt.contains("stable") || stmt.contains("stability") || gloss.contains("stability") {
+            off_spec_theorems_present = true;
+        }
+        let linked = ob
+            .get("linked_semantic_units")
+            .and_then(|v| v.as_array())
+            .cloned()
+            .unwrap_or_default();
+        for su in linked {
+            if let Some(id) = su.as_str() {
+                if layer == "benchmark_facing" {
+                    covered_direct.insert(id.to_string());
+                } else {
+                    covered_indirect.insert(id.to_string());
+                }
+            }
+        }
+        let inferred = infer_critical_units_for_obligation(semantic_units, &stmt, &gloss);
+        for id in inferred {
+            if layer == "benchmark_facing" {
+                covered_direct.insert(id);
+            } else {
+                covered_indirect.insert(id);
+            }
+        }
+    }
+    let critical_units_covered_by_direct_theorems: Vec<String> = critical_units
+        .iter()
+        .filter(|id| covered_direct.contains(*id))
+        .cloned()
+        .collect();
+    let critical_units_only_indirectly_covered: Vec<String> = critical_units
+        .iter()
+        .filter(|id| !covered_direct.contains(*id) && covered_indirect.contains(*id))
+        .cloned()
+        .collect();
+
+    json!({
+        "critical_units_covered_by_direct_theorems": critical_units_covered_by_direct_theorems,
+        "critical_units_only_indirectly_covered": critical_units_only_indirectly_covered,
+        "off_spec_theorems_present": off_spec_theorems_present,
+        "vacuous_theorems_present": vacuous_theorems_present
+    })
+}
+
+fn infer_critical_units_for_obligation(
+    semantic_units: &[serde_json::Value],
+    statement_lc: &str,
+    gloss_lc: &str,
+) -> Vec<String> {
+    let text = format!("{statement_lc} {gloss_lc}");
+    let mut out = Vec::new();
+    for su in semantic_units {
+        let id = match su.get("id").and_then(|v| v.as_str()) {
+            Some(v) => v,
+            None => continue,
+        };
+        let critical = su
+            .get("criticality")
+            .and_then(|v| v.as_str())
+            .map(|v| v == "critical")
+            .unwrap_or(false);
+        if !critical {
+            continue;
+        }
+        let desc = su
+            .get("description")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_ascii_lowercase();
+        let matches = (desc.contains("sorted") && text.contains("sorted"))
+            || (desc.contains("length") && text.contains("length"))
+            || (desc.contains("source") && text.contains("source") && text.contains("some 0"))
+            || (desc.contains("non-negative")
+                && (text.contains("non-negative")
+                    || text.contains(">= 0")
+                    || text.contains("≥ 0")))
+            || (desc.contains("start < stop")
+                && ((text.contains(".1 <") && text.contains(".2"))
+                    || text.contains("start < stop")))
+            || (desc.contains("pairwise non-overlapping")
+                && (text.contains("pairwise") || text.contains("non-overlapping")))
+            || (desc.contains("optimality")
+                && (text.contains("optimality")
+                    || text.contains("no path")
+                    || text.contains("strictly larger")))
+            || (desc.contains("unreachability")
+                && (text.contains("none")
+                    && (text.contains("no path") || text.contains("unreachable"))));
+        if matches {
+            out.push(id.to_string());
+        }
+    }
+    out
+}
+
+fn merge_semantic_units(existing: &serde_json::Value, inferred: &[String]) -> serde_json::Value {
+    let mut seen = HashSet::new();
+    let mut merged = Vec::new();
+    if let Some(arr) = existing.as_array() {
+        for v in arr {
+            if let Some(id) = v.as_str() {
+                if id.starts_with("SU") && seen.insert(id.to_string()) {
+                    merged.push(serde_json::Value::String(id.to_string()));
+                }
+            }
+        }
+    }
+    for id in inferred {
+        if seen.insert(id.clone()) {
+            merged.push(serde_json::Value::String(id.clone()));
+        }
+    }
+    serde_json::Value::Array(merged)
 }
 
 fn path_to_slash_string(p: &Path) -> String {

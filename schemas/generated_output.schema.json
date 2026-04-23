@@ -62,6 +62,7 @@
             "lean_lex_error",
             "missing_fields",
             "empty_output",
+            "empty_obligations",
             "other"
           ]
         },

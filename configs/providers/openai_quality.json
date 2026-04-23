@@ -1,0 +1,15 @@
+{
+  "name": "openai",
+  "model": "gpt-5.4-medium",
+  "endpoint": "https://api.openai.com/v1/chat/completions",
+  "auth_env": "OPENAI_API_KEY",
+  "request_defaults": {
+    "temperature": 0.1,
+    "max_tokens": 3072,
+    "response_format": "json_object"
+  },
+  "rate_limit": {
+    "requests_per_minute": 30,
+    "max_concurrent": 2
+  }
+}

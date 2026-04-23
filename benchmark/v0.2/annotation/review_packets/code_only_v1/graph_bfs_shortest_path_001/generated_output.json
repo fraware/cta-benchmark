@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzb_001",
   "system_id": "code_only_v1",
   "instance_id": "graph_bfs_shortest_path_001",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 11830,
-    "prompt_tokens": 401,
-    "completion_tokens": 1208
+    "latency_ms": 7090,
+    "prompt_tokens": 1119,
+    "completion_tokens": 913
   },
   "raw_output_path": "generated/code_only_v1/raw/graph_bfs_shortest_path_001.txt",
   "parse_status": {
@@ -18,59 +18,45 @@
   "normalized_obligations": [
     {
       "kind": "precondition",
-      "lean_statement": "theorem bfs_shortest_path_precond (adj : List (List Nat)) (source : Nat) : True := by trivial",
-      "nl_gloss": "No explicit precondition is required by the implementation; it handles out-of-bounds `source` by returning all `None`.",
-      "linked_semantic_units": []
+      "lean_statement": "theorem bfs_shortest_path_length_eq (adj : Array (List Nat)) (source : Nat) :\n  let dist := bfs_shortest_path adj source\n  dist.length = adj.length",
+      "nl_gloss": "The returned distance vector has the same length as the adjacency structure (dist is indexed by vertices).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "def bfsDist (adj : List (List Nat)) (source : Nat) : List (Option Nat) := by\n  -- model of the Rust function result\n  admit",
-      "nl_gloss": "Define a Lean function `bfsDist` that corresponds to the Rust implementation’s output `dist`.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_source_anchor (adj : Array (List Nat)) (source : Nat) :\n  let dist := bfs_shortest_path adj source\n  source < adj.length → dist[source]? = some 0",
+      "nl_gloss": "If the source index is in bounds, the distance at the source is exactly 0.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "theorem bfs_shortest_path_length (adj : List (List Nat)) (source : Nat) :\n  (bfsDist adj source).length = adj.length := by\n  -- corresponds to `let n = adj.len(); vec![None; n]`\n  admit",
-      "nl_gloss": "The result vector has length equal to `adj.len()`.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_witness (adj : Array (List Nat)) (source : Nat) (v : Nat) :\n  let dist := bfs_shortest_path adj source\n  v < adj.length →\n  (∃ k : Nat, dist[v]? = some k) →\n  ∃ k : Nat, ∃ p : List Nat,\n    p.length = k + 1 ∧\n    p.head? = some source ∧\n    p.get? k = some v ∧\n    (∀ i : Nat, i + 1 < p.length →\n      p.get? i ∈ adj[p.get? i] ∧ p.get? (i+1) ∈ adj[p.get? i])",
+      "nl_gloss": "Whenever dist[v] = Some(k), there exists a directed path from source to v using exactly k edges (k+1 vertices).",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "theorem bfs_shortest_path_oob_source (adj : List (List Nat)) (source : Nat)\n  (h : source ≥ adj.length) :\n  bfsDist adj source = List.replicate adj.length none := by\n  -- corresponds to `if source >= n { return dist; }`\n  admit",
-      "nl_gloss": "If `source` is not a valid vertex index, the function returns a vector of `None` for all vertices.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_minimality (adj : Array (List Nat)) (source : Nat) (v : Nat) :\n  let dist := bfs_shortest_path adj source\n  v < adj.length →\n  (∃ k : Nat, dist[v]? = some k) →\n  ∀ m : Nat,\n    (∃ p : List Nat,\n      p.length = m + 1 ∧\n      p.head? = some source ∧\n      p.get? m = some v ∧\n      (∀ i : Nat, i + 1 < p.length →\n        p.get? i ∈ adj[p.get? i] ∧ p.get? (i+1) ∈ adj[p.get? i])) →\n    k ≤ m",
+      "nl_gloss": "If dist[v] = Some(k), then no directed path from source to v can use fewer than k edges.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "theorem bfs_shortest_path_init (adj : List (List Nat)) (source : Nat)\n  (h : source < adj.length) :\n  (bfsDist adj source).get? source = some (some 0) := by\n  -- corresponds to `dist[source] = Some(0)`\n  admit",
-      "nl_gloss": "For in-bounds `source`, the distance to `source` is `Some 0`.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "theorem bfs_shortest_path_sound_reachable (adj : List (List Nat)) (source v : Nat)\n  (h : v < adj.length) :\n  match (bfsDist adj source).get? v with\n  | some (some k) =>\n      ∃ path : List Nat,\n        path.length = k + 1 ∧\n        path.head? = some source ∧\n        path.get? k = some v ∧\n        (∀ i j, i < k ∧ j = i+1 →\n          let a := path.get! i\n          let b := path.get! j\n          b ∈ (adj.get! a))\n  | _ => True := by\n  -- if dist[v]=Some k then there is a walk of exactly k edges from source to v\n  admit",
-      "nl_gloss": "If the algorithm returns `Some k` for vertex `v`, then `v` is reachable from `source` by a path of exactly `k` edges.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "theorem bfs_shortest_path_minimal (adj : List (List Nat)) (source v : Nat)\n  (h : v < adj.length) :\n  match (bfsDist adj source).get? v with\n  | some (some k) =>\n      ∀ k' : Nat,\n        (∃ path : List Nat,\n          path.length = k' + 1 ∧\n          path.head? = some source ∧\n          path.get? k' = some v ∧\n          (∀ i j, i < k' ∧ j = i+1 →\n            let a := path.get! i\n            let b := path.get! j\n            b ∈ (adj.get! a))) →\n        k ≤ k'\n  | _ => True := by\n  -- BFS explores in nondecreasing distance; first time discovered gives shortest length\n  admit",
-      "nl_gloss": "If the algorithm returns `Some k` for `v`, then no path from `source` to `v` uses fewer than `k` edges.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "theorem bfs_shortest_path_complete_unreachable (adj : List (List Nat)) (source v : Nat)\n  (h : v < adj.length) :\n  (bfsDist adj source).get? v = some none ↔\n    ¬ (∃ k : Nat,\n        ∃ path : List Nat,\n          path.length = k + 1 ∧\n          path.head? = some source ∧\n          path.get? k = some v ∧\n          (∀ i j, i < k ∧ j = i+1 →\n            let a := path.get! i\n            let b := path.get! j\n            b ∈ (adj.get! a))) := by\n  -- vertices not discovered by BFS are unreachable\n  admit",
-      "nl_gloss": "A vertex is marked `None` exactly when it is unreachable from `source` by any finite number of edges.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "termination",
-      "lean_statement": "theorem bfs_shortest_path_terminates (adj : List (List Nat)) (source : Nat) :\n  True := by trivial",
-      "nl_gloss": "The Rust loop terminates because each vertex is enqueued at most once when its distance is first set from `None` to `Some`.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_unreachability (adj : Array (List Nat)) (source : Nat) (v : Nat) :\n  let dist := bfs_shortest_path adj source\n  v < adj.length →\n  (dist[v]? = none ↔ ¬ ∃ k : Nat, ∃ p : List Nat,\n    p.length = k + 1 ∧\n    p.head? = some source ∧\n    p.get? k = some v ∧\n    (∀ i : Nat, i + 1 < p.length →\n      p.get? i ∈ adj[p.get? i] ∧ p.get? (i+1) ∈ adj[p.get? i]))",
+      "nl_gloss": "dist[v] is None exactly when there is no directed path from source to v.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
     }
   ],
-  "prompt_hash": "sha256:faf6e15a43adbf32adf2e89371d241fce548b3c0e20b24203fa024ae462a1a4f",
-  "seed": 0
+  "prompt_hash": "sha256:456a0cab523318a7d36142d1d81591ddb106242939c514a1095d7589a8ab595e",
+  "seed": 19
 }

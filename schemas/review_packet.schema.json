@@ -51,11 +51,36 @@
         "properties": {
           "index": { "type": "integer", "minimum": 0 },
           "kind": { "type": "string" },
+          "layer": { "type": "string", "enum": ["benchmark_facing", "auxiliary"] },
           "lean_statement": { "type": "string", "minLength": 1 },
           "nl_gloss": { "type": "string" },
           "linked_semantic_units": { "type": "array", "items": { "type": "string" } },
           "raw_source": { "type": "string", "const": "model" }
         }
+      }
+    },
+    "quality_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "critical_units_covered_by_direct_theorems",
+        "critical_units_only_indirectly_covered",
+        "off_spec_theorems_present",
+        "vacuous_theorems_present"
+      ],
+      "properties": {
+        "critical_units_covered_by_direct_theorems": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^SU[0-9]+$" },
+          "uniqueItems": true
+        },
+        "critical_units_only_indirectly_covered": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^SU[0-9]+$" },
+          "uniqueItems": true
+        },
+        "off_spec_theorems_present": { "type": "boolean" },
+        "vacuous_theorems_present": { "type": "boolean" }
       }
     },
     "lean_check": {

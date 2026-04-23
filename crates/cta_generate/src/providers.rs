@@ -112,7 +112,8 @@ impl Provider for StubProvider {
         // - is deterministic under a fixed seed,
         // - does not pretend to be faithful (metrics will score it low).
         let raw = format!(
-            "{{\"obligations\": [{{\"kind\": \"structural\", \"lean_statement\": \"True\", \"nl_gloss\": \"stub obligation for seed {}\"}}]}}",
+            "{{\"obligations\": [{{\"kind\": \"structural\", \"lean_statement\": \"theorem stub_seed_{} : 0 = 0 := by rfl\", \"nl_gloss\": \"stub obligation for seed {}\"}}]}}",
+            req.seed,
             req.seed
         );
         let (obligations, parse_status) = normalize_response(&raw);

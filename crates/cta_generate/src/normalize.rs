@@ -69,6 +69,7 @@ pub fn normalize_response(raw: &str) -> (Vec<GeneratedObligation>, ParseStatus) 
             }
         }
     }
+    let out = sanitize_obligations(out);
 
     if out.is_empty() {
         return (
@@ -81,6 +82,70 @@ pub fn normalize_response(raw: &str) -> (Vec<GeneratedObligation>, ParseStatus) 
     }
 
     (out, ParseStatus::ok())
+}
+
+fn sanitize_obligations(obligations: Vec<GeneratedObligation>) -> Vec<GeneratedObligation> {
+    let mut benchmark_facing = Vec::new();
+    let mut auxiliary = Vec::new();
+    for mut ob in obligations {
+        if is_vacuous_obligation(&ob) || is_prose_filler_obligation(&ob) {
+            continue;
+        }
+        if is_off_spec_extra(&ob) {
+            ob.kind = "auxiliary".to_string();
+            ob.linked_semantic_units.clear();
+        }
+        if is_benchmark_facing_kind(&ob.kind) {
+            benchmark_facing.push(ob);
+        } else {
+            auxiliary.push(ob);
+        }
+    }
+    benchmark_facing.extend(auxiliary);
+    benchmark_facing
+}
+
+fn is_benchmark_facing_kind(kind: &str) -> bool {
+    matches!(
+        kind,
+        "precondition" | "postcondition" | "optimality" | "termination"
+    )
+}
+
+fn is_vacuous_obligation(ob: &GeneratedObligation) -> bool {
+    let stmt = ob.lean_statement.trim().to_ascii_lowercase();
+    let stmt_norm = stmt.split_whitespace().collect::<Vec<_>>().join(" ");
+    if stmt_norm == "true"
+        || stmt_norm.contains(": true := by trivial")
+        || stmt_norm.contains(": true := by simp")
+        || stmt_norm.contains("-> true")
+        || stmt_norm.contains("→ true")
+        || stmt_norm.contains("∧ true")
+        || stmt_norm.contains("∃ t : nat, true")
+        || stmt_norm.contains("∃ n : nat, true")
+        || stmt_norm.contains("termination") && stmt_norm.contains(": true")
+    {
+        return true;
+    }
+    let gloss = ob.nl_gloss.to_ascii_lowercase();
+    gloss.contains("no precondition")
+        || gloss.contains("no preconditions")
+        || gloss.contains("always true")
+}
+
+fn is_off_spec_extra(ob: &GeneratedObligation) -> bool {
+    let stmt = ob.lean_statement.to_ascii_lowercase();
+    let gloss = ob.nl_gloss.to_ascii_lowercase();
+    stmt.contains("stable") || stmt.contains("stability") || gloss.contains("stability")
+}
+
+fn is_prose_filler_obligation(ob: &GeneratedObligation) -> bool {
+    let stmt = ob.lean_statement.trim();
+    // Reject obvious prose-only filler accidentally emitted into theorem slots.
+    let has_logical_tokens = [":", "∀", "∃", "->", "→", "↔", "="]
+        .iter()
+        .any(|t| stmt.contains(t));
+    !has_logical_tokens && stmt.split_whitespace().count() > 10
 }
 
 fn parse_loose(raw: &str) -> std::result::Result<serde_json::Value, String> {
@@ -223,7 +288,7 @@ mod tests {
     #[test]
     fn parses_object_form() {
         let raw = r#"{"obligations": [
-            {"kind":"postcondition","lean_statement":"True","nl_gloss":"g"}
+            {"kind":"postcondition","lean_statement":"theorem ok : 0 = 0 := by rfl","nl_gloss":"g"}
         ]}"#;
         let (obs, ok) = normalize_response(raw);
         assert!(ok.ok);
@@ -289,5 +354,43 @@ Let me know if you need changes."#;
         let (obs, ok) = normalize_response(raw);
         assert!(ok.ok);
         assert_eq!(obs[0].confidence, Some(1.0));
+    }
+
+    #[test]
+    fn drops_vacuous_true_obligations() {
+        let raw = r#"{"obligations":[
+            {"kind":"precondition","lean_statement":"True","nl_gloss":"filler"},
+            {"kind":"postcondition","lean_statement":"theorem ok : x = x := by rfl","nl_gloss":""}
+        ]}"#;
+        let (obs, st) = normalize_response(raw);
+        assert!(st.ok);
+        assert_eq!(obs.len(), 1);
+        assert_eq!(obs[0].kind, "postcondition");
+    }
+
+    #[test]
+    fn demotes_stability_to_auxiliary() {
+        let raw = r#"{"obligations":[
+            {"kind":"postcondition","lean_statement":"theorem stable_sort : stable xs ys := by sorry","nl_gloss":"stability"},
+            {"kind":"postcondition","lean_statement":"theorem perm : perm xs ys := by sorry","nl_gloss":""}
+        ]}"#;
+        let (obs, st) = normalize_response(raw);
+        assert!(st.ok);
+        assert_eq!(obs.len(), 2);
+        assert_eq!(obs[0].kind, "postcondition");
+        assert_eq!(obs[1].kind, "auxiliary");
+        assert!(obs[1].linked_semantic_units.is_empty());
+    }
+
+    #[test]
+    fn drops_implication_to_true_placeholders() {
+        let raw = r#"{"obligations":[
+            {"kind":"termination","lean_statement":"theorem t : P -> True := by intro; trivial","nl_gloss":""},
+            {"kind":"postcondition","lean_statement":"theorem good : P -> Q := by sorry","nl_gloss":""}
+        ]}"#;
+        let (obs, st) = normalize_response(raw);
+        assert!(st.ok);
+        assert_eq!(obs.len(), 1);
+        assert_eq!(obs[0].kind, "postcondition");
     }
 }

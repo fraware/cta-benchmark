@@ -1,15 +1,15 @@
 {
   "schema_version": "schema_v1",
-  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzb_001",
   "system_id": "code_only_v1",
   "instance_id": "trees_bst_insert_001",
   "provider_metadata": {
     "name": "openai",
     "model": "gpt-5.4-nano",
     "model_version": "gpt-5.4-nano-2026-03-17",
-    "latency_ms": 9107,
-    "prompt_tokens": 304,
-    "completion_tokens": 1046
+    "latency_ms": 3962,
+    "prompt_tokens": 945,
+    "completion_tokens": 499
   },
   "raw_output_path": "generated/code_only_v1/raw/trees_bst_insert_001.txt",
   "parse_status": {
@@ -17,60 +17,46 @@
   },
   "normalized_obligations": [
     {
-      "kind": "unknown",
-      "lean_statement": "inductive Tree : Type\n| Nil : Tree\n| Node : Tree → Int → Tree → Tree",
-      "nl_gloss": "Define the same immutable binary search tree datatype as in the Rust code (Nil or Node(left, key, right)).",
-      "linked_semantic_units": []
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_bst_precondition {t : Tree} (h : BST t) : BST t := h",
+      "nl_gloss": "Benchmark-facing: the input tree must satisfy the BST property (strict in-order ascending).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "def bstInsert : Tree → Int → Tree\n| Tree.Nil, key => Tree.Node Tree.Nil key Tree.Nil\n| Tree.Node left k right, key =>\n    if key < k then Tree.Node (bstInsert left key) k right\n    else if key > k then Tree.Node left k (bstInsert right key)\n    else Tree.Node left k right",
-      "nl_gloss": "State the Lean definition of bst insertion matching the Rust pattern match and the three-way comparison (less/greater/no-op on equality).",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_bst_invariant_preservation (t : Tree) (key : i32) (hbst : BST t) : BST (bst_insert t key)",
+      "nl_gloss": "Inserting a key into a valid BST yields a tree that is still a valid BST.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
     },
     {
-      "kind": "termination",
-      "lean_statement": "theorem bstInsert_terminates (t : Tree) (key : Int) : True := by trivial",
-      "nl_gloss": "The recursive definition is structurally recursive on the input tree (so it terminates). (In Lean, this is typically discharged by the termination checker; here we record the obligation as a trivial placeholder.)",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_keyset_change_absent (t : Tree) (key : i32) (hbst : BST t) (hnot : ¬ Mem t key) : KeyMultiset (bst_insert t key) = KeyMultiset t + {key}",
+      "nl_gloss": "If the key is absent, insertion adds exactly one occurrence of the key to the key multiset.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "def BST : Tree → Prop\n| Tree.Nil => True\n| Tree.Node l k r => BST l ∧ BST r ∧ (∀ x, x ∈ keys l → x < k) ∧ (∀ x, x ∈ keys r → k < x)\n\n-- where keys collects all stored keys\n\ndef keys : Tree → Set Int\n| Tree.Nil => ∅\n| Tree.Node l k r => keys l ∪ {k} ∪ keys r\n\ntheorem bstInsert_preserves_BST : ∀ t key, BST t → BST (bstInsert t key)",
-      "nl_gloss": "If the input tree satisfies the binary search tree ordering invariant, then inserting a key preserves that invariant.",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_keyset_change_present (t : Tree) (key : i32) (hbst : BST t) (hin : Mem t key) : KeyMultiset (bst_insert t key) = KeyMultiset t",
+      "nl_gloss": "If the key is already present, insertion is a multiset no-op.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
     },
     {
-      "kind": "unknown",
-      "lean_statement": "theorem bstInsert_eq (t : Tree) (k : Int) :\n  (∃ l r, t = Tree.Node l k r) → bstInsert t k = t",
-      "nl_gloss": "If the tree already contains a node with the same key at the root, insertion is a no-op (matches the `else` branch when `key == k`).",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "theorem mem_keys_insert : ∀ t key, key ∈ keys (bstInsert t key) := by\n  intro t key\n  -- proof by induction on t following the Rust cases\n  admit",
-      "nl_gloss": "After insertion, the inserted key is present in the resulting tree.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "theorem mem_keys_other : ∀ t key x,\n  x ≠ key → (x ∈ keys t ↔ x ∈ keys (bstInsert t key)) := by\n  intro t key x hx\n  -- proof by induction on t following the Rust comparisons\n  admit",
-      "nl_gloss": "For any key x different from the inserted key, insertion does not remove it; it remains present iff it was present before.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "theorem insert_only_changes_one_branch : ∀ t key,\n  match t with\n  | Tree.Nil => True\n  | Tree.Node l k r =>\n      (key < k → bstInsert t key = Tree.Node (bstInsert l key) k r) ∧\n      (key > k → bstInsert t key = Tree.Node l k (bstInsert r key)) ∧\n      (key = k → bstInsert t key = Tree.Node l k r)",
-      "nl_gloss": "The implementation only recurses into the left subtree when `key < k`, into the right subtree when `key > k`, and otherwise leaves the node unchanged.",
-      "linked_semantic_units": []
-    },
-    {
-      "kind": "unknown",
-      "lean_statement": "theorem bstInsert_correct : ∀ t key,\n  keys (bstInsert t key) = keys t ∪ {key} := by\n  intro t key\n  -- proof by induction on t using the three-way comparison\n  admit",
-      "nl_gloss": "The set of keys in the resulting tree equals the original set plus the inserted key (duplicates do not add new nodes).",
-      "linked_semantic_units": []
+      "kind": "postcondition",
+      "lean_statement": "theorem SU4_duplicate_noop (t : Tree) (key : i32) (hbst : BST t) (hin : Mem t key) : KeyMultiset (bst_insert t key) = KeyMultiset t",
+      "nl_gloss": "Benchmark-facing duplicate behavior: inserting an existing key does not change the key multiset.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
     }
   ],
-  "prompt_hash": "sha256:03b56b14b7766774ffb6e74be582107e75f8211b75e1e038f000a47d6ec28b07",
-  "seed": 0
+  "prompt_hash": "sha256:4eabf89efdf72ffe1fc75e5123e57f2e338b5df7b5a490fccf64365bd32022f4",
+  "seed": 19
 }
