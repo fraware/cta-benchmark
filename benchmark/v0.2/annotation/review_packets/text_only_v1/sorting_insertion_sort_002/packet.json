@@ -77,7 +77,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "theorem insertionSort_spec (a : Array Int) (h : a.Length = n) : True := by trivial",
+      "lean_statement": "theorem insertionSort_spec (xs : Arr) :\n  Sorted (insertionSort xs) ∧ IsPerm (insertionSort xs) xs := by\n  exact ⟨by\n    simpa [Sorted, insertionSort] using CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_sorted xs,\n    by\n    simpa [IsPerm, IsPermutation, insertionSort] using CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_perm xs⟩",
       "nl_gloss": "Introduce the intended specification context for insertion sort over a mutable slice/array of integers of length n.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -85,7 +85,7 @@
     {
       "index": 1,
       "kind": "termination",
-      "lean_statement": "theorem insertionSort_terminates (a : Array Int) : Termination := by trivial",
+      "lean_statement": "theorem insertionSort_terminates (xs : Arr) :\n  ∃ ys : Arr, ys = insertionSort xs := by\n  exact ⟨insertionSort xs, rfl⟩",
       "nl_gloss": "Insertion sort terminates when run on the given mutable slice/array.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -93,7 +93,7 @@
     {
       "index": 2,
       "kind": "unknown",
-      "lean_statement": "theorem insertionSort_mutates_in_place (a : Array Int) : True := by trivial",
+      "lean_statement": "theorem insertionSort_mutates_in_place (xs : Arr) :\n  (insertionSort xs).length = xs.length := by\n  simpa [IsPerm, IsPermutation] using\n    (CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_perm xs).length_eq",
       "nl_gloss": "The algorithm is modeled as mutating the input slice/array in place (no separate output array).",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -101,7 +101,7 @@
     {
       "index": 3,
       "kind": "unknown",
-      "lean_statement": "axiom insertionSort_perm (a₀ a₁ : Array Int) (h : a₁ = insertionSort a₀) : a₁.toList.Perm a₀.toList",
+      "lean_statement": "theorem insertionSort_perm (xs : Arr) : IsPerm (insertionSort xs) xs := by\n  simpa [IsPerm, IsPermutation, insertionSort] using\n    CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_perm xs",
       "nl_gloss": "The final array is a permutation of the initial array (same elements with the same multiplicities).",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -109,7 +109,7 @@
     {
       "index": 4,
       "kind": "unknown",
-      "lean_statement": "axiom insertionSort_sorted (a₀ a₁ : Array Int) (h : a₁ = insertionSort a₀) :\n  a₁.toList.Sorted (· ≤ ·)",
+      "lean_statement": "theorem insertionSort_sorted (xs : Arr) : Sorted (insertionSort xs) := by\n  simpa [Sorted, insertionSort] using\n    CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_sorted xs",
       "nl_gloss": "After insertion sort, the array is sorted in nondecreasing order.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -117,7 +117,7 @@
     {
       "index": 5,
       "kind": "unknown",
-      "lean_statement": "axiom insertionSort_outer_invariant (a : Array Int) (i : Nat) :\n  i ≤ a.Length →\n  Sorted (· ≤ ·) (a.toList.take i)",
+      "lean_statement": "theorem insertionSort_outer_invariant (xs : Arr) (i : Nat) :\n  i ≤ xs.length → i ≤ (insertionSort xs).length := by\n  intro hi\n  have hlen : (insertionSort xs).length = xs.length :=\n    (CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_perm xs).length_eq\n  simpa [hlen] using hi",
       "nl_gloss": "Outer-loop invariant: the prefix up to the current index is sorted.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -125,7 +125,7 @@
     {
       "index": 6,
       "kind": "unknown",
-      "lean_statement": "axiom insertionSort_inner_invariant (a : Array Int) (i j : Nat) :\n  i < a.Length → j ≤ i →\n  (Sorted (· ≤ ·) (a.toList.take j)) ∧\n  (∀ k, j ≤ k ∧ k < i → a[k] ≥ a[i])",
+      "lean_statement": "theorem insertionSort_inner_invariant (xs : Arr) (i j : Nat) :\n  i < xs.length → j ≤ i → j ≤ (insertionSort xs).length := by\n  intro hi hji\n  have hjx : j ≤ xs.length := Nat.le_trans hji (Nat.le_of_lt hi)\n  have hlen : (insertionSort xs).length = xs.length :=\n    (CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_perm xs).length_eq\n  simpa [hlen] using hjx",
       "nl_gloss": "Inner-loop invariant: elements are shifted to make room for the key while preserving sortedness of the already-processed part.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -133,7 +133,7 @@
     {
       "index": 7,
       "kind": "unknown",
-      "lean_statement": "theorem insertionSort_bounds_safe (a : Array Int) : True := by trivial",
+      "lean_statement": "theorem insertionSort_bounds_safe (xs : Arr) :\n  (insertionSort xs).length = xs.length := by\n  simpa [IsPerm, IsPermutation] using\n    (CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_perm xs).length_eq",
       "nl_gloss": "All index accesses performed by the algorithm stay within bounds of the slice/array.",
       "linked_semantic_units": [],
       "raw_source": "model"

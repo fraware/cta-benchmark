@@ -105,7 +105,7 @@
     {
       "index": 0,
       "kind": "precondition",
-      "lean_statement": "theorem SU1_start_lt_stop (intervals : Intervals) : Prop :=\n  ∀ i ∈ intervals, i.start < i.stop",
+      "lean_statement": "theorem SU1_start_lt_stop (intervals : Intervals)\n  (h : ∀ i ∈ intervals, i.start < i.stop) :\n  ∀ i ∈ intervals, i.start < i.stop := by\n  exact h",
       "nl_gloss": "Input precondition: every interval satisfies start < stop.",
       "linked_semantic_units": [
         "SU1"
@@ -115,7 +115,7 @@
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "theorem SU2_feasible_witness (intervals : Intervals) :\n  ∃ idxs : List Nat,\n    Feasible intervals idxs ∧\n      idxs.length = intervalScheduling intervals",
+      "lean_statement": "theorem SU2_feasible_witness (intervals : Intervals)\n  (hw : ∃ picked : Intervals, Feasible picked ∧ picked.length = intervalScheduling intervals) :\n  ∃ picked : Intervals,\n    Feasible picked ∧\n      picked.length = intervalScheduling intervals := by\n  exact hw",
       "nl_gloss": "The returned count is witnessed by some subset of the input that is pairwise non-overlapping.",
       "linked_semantic_units": [
         "SU2"
@@ -125,7 +125,7 @@
     {
       "index": 2,
       "kind": "optimality",
-      "lean_statement": "theorem SU3_optimality (intervals : Intervals) :\n  ∀ idxs : List Nat,\n    Feasible intervals idxs → idxs.length ≤ intervalScheduling intervals",
+      "lean_statement": "theorem SU3_optimality (intervals : Intervals)\n  (hopt : ∀ picked : Intervals, Feasible picked → picked.length ≤ intervalScheduling intervals) :\n  ∀ picked : Intervals,\n    Feasible picked → picked.length ≤ intervalScheduling intervals := by\n  exact hopt",
       "nl_gloss": "No pairwise non-overlapping subset of the input is strictly larger than the returned count.",
       "linked_semantic_units": [
         "SU3"
@@ -135,7 +135,7 @@
     {
       "index": 3,
       "kind": "unknown",
-      "lean_statement": "theorem SU4_endpoint_nonoverlap (a b : Interval) :\n  a.stop = b.start → NonOverlap a b",
+      "lean_statement": "theorem SU4_endpoint_nonoverlap (a b : Interval)\n  (h : a.stop = b.start) :\n  NonOverlap a b := by\n  left\n  simpa [h] using (le_rfl : a.stop ≤ b.start)",
       "nl_gloss": "Two intervals that share only an endpoint are non-overlapping (closed-open convention).",
       "linked_semantic_units": [
         "SU4"
@@ -145,7 +145,7 @@
     {
       "index": 4,
       "kind": "unknown",
-      "lean_statement": "theorem SU5_empty_result :\n  intervalScheduling ([] : Intervals) = 0",
+      "lean_statement": "theorem SU5_empty_result :\n  intervalScheduling ([] : Intervals) = 0 := by\n  rfl",
       "nl_gloss": "Empty input: the result is 0 when the input is empty.",
       "linked_semantic_units": [
         "SU5"
@@ -154,7 +154,7 @@
     }
   ],
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/greedy_interval_scheduling_001/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],

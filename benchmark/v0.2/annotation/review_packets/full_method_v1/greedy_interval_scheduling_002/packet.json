@@ -105,7 +105,7 @@
     {
       "index": 0,
       "kind": "precondition",
-      "lean_statement": "theorem SU1_start_lt_stop (intervals : Intervals) :\n  (∀ i ∈ intervals, i.start < i.stop) →\n  True := by\n  intro h\n  trivial",
+      "lean_statement": "theorem SU1_start_lt_stop (intervals : Intervals)\n  (h : ∀ i ∈ intervals, i.start < i.stop) :\n  ∀ i ∈ intervals, i.start < i.stop := by\n  exact h",
       "nl_gloss": "If every interval in the input satisfies start < stop, then the precondition holds (used to rule out empty intervals).",
       "linked_semantic_units": [
         "SU1"
@@ -115,7 +115,7 @@
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "axiom SU2_feasible_witness_exists (intervals : Intervals) :\n  ∃ sel : List Nat,\n    Feasible intervals sel ∧\n      intervalScheduling intervals = sel.length",
+      "lean_statement": "axiom SU2_feasible_witness_exists (intervals : Intervals) :\n  ∃ sel : Intervals,\n    Feasible sel ∧\n      intervalScheduling intervals = sel.length",
       "nl_gloss": "There exists a selection of indices that is pairwise non-overlapping, and its cardinality equals the algorithm’s returned maximum count.",
       "linked_semantic_units": [
         "SU2"
@@ -125,7 +125,7 @@
     {
       "index": 2,
       "kind": "optimality",
-      "lean_statement": "axiom SU3_optimality (intervals : Intervals) :\n  ∀ sel : List Nat,\n    Feasible intervals sel →\n      sel.length ≤ intervalScheduling intervals",
+      "lean_statement": "axiom SU3_optimality (intervals : Intervals) :\n  ∀ sel : Intervals,\n    Feasible sel →\n      sel.length ≤ intervalScheduling intervals",
       "nl_gloss": "For any pairwise non-overlapping selection, its size is at most the returned value (optimality).",
       "linked_semantic_units": [
         "SU3"
@@ -164,7 +164,7 @@
     }
   ],
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/greedy_interval_scheduling_002/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],

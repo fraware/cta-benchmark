@@ -1,1 +1,15 @@
-{"available":false}
+{
+  "available": true,
+  "elaborates": true,
+  "success": true,
+  "exit_code": 0,
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_bst_insert_001/packet_elab_check.lean"
+  ],
+  "check_file": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_bst_insert_001/packet_elab_check.lean",
+  "stdout": "",
+  "stderr": ""
+}

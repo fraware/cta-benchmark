@@ -98,7 +98,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "theorem spec_sort (xs : List Int) : True := by trivial",
+      "lean_statement": "theorem spec_sort (xs : Arr) :\n  Sorted (mergeSort xs) ∧ IsPerm (mergeSort xs) xs := by\n  exact ⟨by\n    simpa [Sorted, mergeSort] using CTA.Benchmark.Sorting.MergeSortTheory.mergeSort_sorted xs,\n    by\n    simpa [IsPerm, IsPermutation, mergeSort] using CTA.Benchmark.Sorting.MergeSortTheory.mergeSort_perm xs⟩",
       "nl_gloss": "Introduce the specification context for sorting a list of integers.",
       "linked_semantic_units": [],
       "raw_source": "model"

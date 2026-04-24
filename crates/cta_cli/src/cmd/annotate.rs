@@ -1,5 +1,6 @@
 use std::collections::{BTreeMap, HashSet};
 use std::path::{Path, PathBuf};
+use std::process::Command;
 
 use anyhow::{Context, Result};
 use clap::Args;
@@ -746,6 +747,7 @@ pub fn build_review_packets(workspace: &Path, args: BuildReviewPacketsArgs) -> R
             &lean_diagnostics_path,
             &generated_obligations,
             &scaffold_src,
+            None,
         );
 
         let packet = json!({
@@ -1104,6 +1106,16 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
                     packet_path.display()
                 )
             })?;
+        let instance_id = packet
+            .get("instance_id")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string();
+        let system_id = packet
+            .get("system_id")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string();
         let is_wave1_family = instance_id_from_packet_path(packet_path)
             .map(|iid| {
                 iid.contains("greedy_interval_scheduling")
@@ -1125,23 +1137,25 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
                 packet_obj.insert("generated_obligations".to_string(), json!(obligations.clone()));
             }
         }
+        let elaboration = if is_m1_target_packet(&system_id, &instance_id) {
+            run_packet_elaboration(workspace, packet_dir, &scaffold_src, &obligations)
+                .with_context(|| {
+                    format!(
+                        "running packet elaboration for {}/{}",
+                        system_id, instance_id
+                    )
+                })?
+        } else {
+            None
+        };
         let lean_check = build_lean_check(
             workspace,
             packet_dir,
             &diagnostics_path,
             &obligations,
             &scaffold_src,
+            elaboration.as_ref(),
         );
-        let instance_id = packet
-            .get("instance_id")
-            .and_then(|v| v.as_str())
-            .unwrap_or("")
-            .to_string();
-        let system_id = packet
-            .get("system_id")
-            .and_then(|v| v.as_str())
-            .unwrap_or("")
-            .to_string();
         let family = packet
             .get("domain")
             .and_then(|v| v.as_str())
@@ -1184,8 +1198,29 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
             if !diagnostics_exists {
                 violations.push("elaborated packet is missing diagnostics file".to_string());
             }
+            if diagnostics_exists && diagnostics_only_unavailable(workspace, &diagnostics_rel) {
+                violations
+                    .push("elaborated packet diagnostics is only {\"available\":false}".to_string());
+            }
             if !(proof_mode == "axiom_backed" || proof_mode == "definition_backed") {
                 violations.push("elaborated packet has invalid proof_mode".to_string());
+            }
+        }
+        if args.strict_m1 && is_m1_target_packet(&system_id, &instance_id) {
+            if !elaborated {
+                violations.push("M1 target packet must have elaborated = true".to_string());
+            }
+            if admit_count != 0 {
+                violations.push("M1 target packet must have admit_count = 0".to_string());
+            }
+            if !diagnostics_exists {
+                violations.push("M1 target packet must have diagnostics file".to_string());
+            } else if diagnostics_only_unavailable(workspace, &diagnostics_rel) {
+                violations
+                    .push("M1 target packet diagnostics must contain real Lean output".to_string());
+            }
+            if proof_mode != "definition_backed" && proof_mode != "axiom_backed" {
+                violations.push("M1 target packet has invalid proof_mode".to_string());
             }
         }
         let Some(packet_obj) = packet.as_object_mut() else {
@@ -1879,15 +1914,20 @@ fn build_lean_check(
     diagnostics_path: &Path,
     generated_obligations: &[serde_json::Value],
     scaffold_src: &str,
+    elaboration: Option<&ElaborationResult>,
 ) -> serde_json::Value {
     let admit_count = count_admit_or_sorry(generated_obligations);
-    let trusted_symbols = extract_trusted_symbols(scaffold_src);
+    let trusted_symbols = extract_trusted_symbols(workspace, scaffold_src);
     let proof_mode = if trusted_symbols.is_empty() {
         "definition_backed"
     } else {
         "axiom_backed"
     };
-    let elaborated = infer_elaborated_from_diagnostics(diagnostics_path).unwrap_or(false) && admit_count == 0;
+    let elaborated = elaboration
+        .map(|e| e.success)
+        .or_else(|| infer_elaborated_from_diagnostics(diagnostics_path))
+        .unwrap_or(false)
+        && admit_count == 0;
     json!({
         "elaborated": elaborated,
         "diagnostics_path": normalize_workspace_path(workspace, &packet_dir.join("lean_diagnostics.json")),
@@ -1907,6 +1947,106 @@ fn infer_elaborated_from_diagnostics(path: &Path) -> Option<bool> {
         return Some(false);
     }
     None
+}
+
+#[derive(Debug, Clone)]
+struct ElaborationResult {
+    success: bool,
+}
+
+fn is_m1_target_packet(system_id: &str, instance_id: &str) -> bool {
+    matches!(
+        (system_id, instance_id),
+        ("full_method_v1", "graph_dijkstra_002")
+            | ("full_method_v1", "graph_bfs_shortest_path_002")
+            | ("full_method_v1", "greedy_coin_change_canonical_002")
+            | ("full_method_v1", "trees_lowest_common_ancestor_001")
+            | ("full_method_v1", "trees_lowest_common_ancestor_002")
+            | ("full_method_v1", "greedy_interval_scheduling_001")
+            | ("full_method_v1", "greedy_interval_scheduling_002")
+            | ("full_method_v1", "sorting_insertion_sort_001")
+            | ("full_method_v1", "sorting_insertion_sort_002")
+            | ("full_method_v1", "sorting_merge_sort_001")
+            | ("full_method_v1", "sorting_merge_sort_002")
+            | ("full_method_v1", "trees_bst_insert_001")
+            | ("full_method_v1", "trees_bst_insert_002")
+    )
+}
+
+fn run_packet_elaboration(
+    workspace: &Path,
+    packet_dir: &Path,
+    scaffold_src: &str,
+    generated_obligations: &[serde_json::Value],
+) -> Result<Option<ElaborationResult>> {
+    let diagnostics_path = packet_dir.join("lean_diagnostics.json");
+    let source = build_packet_check_source(scaffold_src, generated_obligations);
+    let check_file = packet_dir.join("packet_elab_check.lean");
+    std::fs::write(&check_file, source)
+        .with_context(|| format!("writing {}", check_file.display()))?;
+    let lean_root = workspace.join("lean");
+    let _ = Command::new("lake")
+        .arg("build")
+        .current_dir(&lean_root)
+        .output();
+    let output = Command::new("lake")
+        .arg("env")
+        .arg("lean")
+        .arg(&check_file)
+        .current_dir(&lean_root)
+        .output()
+        .with_context(|| format!("running lake env lean for {}", check_file.display()))?;
+    let success = output.status.success();
+    let diagnostics = json!({
+        "available": true,
+        "elaborates": success,
+        "success": success,
+        "exit_code": output.status.code(),
+        "command": ["lake", "env", "lean", normalize_workspace_path(workspace, &check_file)],
+        "check_file": normalize_workspace_path(workspace, &check_file),
+        "stdout": String::from_utf8_lossy(&output.stdout),
+        "stderr": String::from_utf8_lossy(&output.stderr),
+    });
+    std::fs::write(&diagnostics_path, serde_json::to_vec_pretty(&diagnostics)?)
+        .with_context(|| format!("writing {}", diagnostics_path.display()))?;
+    let _ = std::fs::remove_file(&check_file);
+    Ok(Some(ElaborationResult { success }))
+}
+
+fn build_packet_check_source(scaffold_src: &str, generated_obligations: &[serde_json::Value]) -> String {
+    let statements = generated_obligations
+        .iter()
+        .filter_map(|o| o.get("lean_statement").and_then(|v| v.as_str()))
+        .collect::<Vec<_>>()
+        .join("\n\n");
+    let mut lines: Vec<&str> = scaffold_src.lines().collect();
+    let end_line = lines
+        .iter()
+        .rposition(|l| l.trim_start().starts_with("end "))
+        .map(|idx| lines.remove(idx).to_string());
+    let mut out = String::new();
+    out.push_str(&lines.join("\n"));
+    out.push_str("\n\n");
+    out.push_str("-- Generated packet obligations for elaboration check.\n");
+    out.push_str(&statements);
+    out.push('\n');
+    if let Some(end) = end_line {
+        out.push('\n');
+        out.push_str(&end);
+        out.push('\n');
+    }
+    out
+}
+
+fn diagnostics_only_unavailable(workspace: &Path, diagnostics_rel: &str) -> bool {
+    let diagnostics_abs = workspace.join(diagnostics_rel);
+    let Ok(raw) = std::fs::read_to_string(diagnostics_abs) else {
+        return false;
+    };
+    let Ok(v) = serde_json::from_str::<serde_json::Value>(&raw) else {
+        return false;
+    };
+    v.get("available").and_then(|x| x.as_bool()) == Some(false)
 }
 
 fn count_admit_or_sorry(generated_obligations: &[serde_json::Value]) -> u64 {
@@ -2017,8 +2157,14 @@ fn axiomize_embedded_theorem_blocks(stmt: &str) -> String {
     out.join("\n")
 }
 
-fn extract_trusted_symbols(scaffold_src: &str) -> Vec<String> {
+fn extract_trusted_symbols(workspace: &Path, scaffold_src: &str) -> Vec<String> {
     let mut out = Vec::<String>::new();
+    let mut visited = HashSet::<String>::new();
+    for module in extract_import_modules(scaffold_src) {
+        if module.starts_with("CTA.Benchmark.") {
+            collect_trusted_symbols_from_module(workspace, &module, &mut visited, &mut out);
+        }
+    }
     for line in scaffold_src.lines() {
         let trimmed = line.trim_start();
         let mut parts = if let Some(rest) = trimmed.strip_prefix("opaque ") {
@@ -2042,6 +2188,61 @@ fn extract_trusted_symbols(scaffold_src: &str) -> Vec<String> {
     out.sort();
     out.dedup();
     out
+}
+
+fn extract_import_modules(src: &str) -> Vec<String> {
+    src.lines()
+        .filter_map(|line| {
+            let trimmed = line.trim();
+            trimmed
+                .strip_prefix("import ")
+                .map(str::trim)
+                .map(str::to_string)
+        })
+        .collect()
+}
+
+fn collect_trusted_symbols_from_module(
+    workspace: &Path,
+    module: &str,
+    visited: &mut HashSet<String>,
+    out: &mut Vec<String>,
+) {
+    if !visited.insert(module.to_string()) {
+        return;
+    }
+    let path = workspace
+        .join("lean")
+        .join(module.replace('.', "/"))
+        .with_extension("lean");
+    let Ok(src) = std::fs::read_to_string(&path) else {
+        return;
+    };
+    for line in src.lines() {
+        let trimmed = line.trim_start();
+        let mut parts = if let Some(rest) = trimmed.strip_prefix("opaque ") {
+            rest.split_whitespace()
+        } else if let Some(rest) = trimmed.strip_prefix("axiom ") {
+            rest.split_whitespace()
+        } else {
+            continue;
+        };
+        if let Some(raw) = parts.next() {
+            let name = raw
+                .split(|c: char| c == ':' || c == '(')
+                .next()
+                .unwrap_or(raw)
+                .trim();
+            if !name.is_empty() {
+                out.push(name.to_string());
+            }
+        }
+    }
+    for imported in extract_import_modules(&src) {
+        if imported.starts_with("CTA.Benchmark.") {
+            collect_trusted_symbols_from_module(workspace, &imported, visited, out);
+        }
+    }
 }
 
 fn is_tautological_precondition(stmt: &str, gloss: &str) -> bool {
@@ -2228,7 +2429,7 @@ opaque dijkstra : Nat → Nat
 axiom PathWeight : Prop
 def helper : Nat := 0
         "#;
-        let got = extract_trusted_symbols(src);
+        let got = extract_trusted_symbols(Path::new("."), src);
         assert_eq!(got, vec!["PathWeight".to_string(), "dijkstra".to_string()]);
     }
 

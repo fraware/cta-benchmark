@@ -112,7 +112,7 @@
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "axiom SU2_output_is_bst (t : Tree) (k : Int) (h : IsBst t) : IsBst (bstInsert t k)",
+      "lean_statement": "theorem SU2_output_is_bst (t : Tree) (k : Int) (h : IsBst t) :\n    IsBst (bstInsert t k) :=\n  CTA.Benchmark.Trees.BstInsertTheory.bstInsert_preserves_bst t k h",
       "nl_gloss": "The output of bstInsert is also a valid BST (in-order traversal remains strictly ascending).",
       "linked_semantic_units": [
         "SU2"
@@ -122,7 +122,7 @@
     {
       "index": 2,
       "kind": "unknown",
-      "lean_statement": "axiom SU3_keyset_union_when_absent (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∉ keys t) : keys (bstInsert t k) = k :: keys t",
+      "lean_statement": "theorem SU3_keyset_union_when_absent (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∉ keys t) : (keys (bstInsert t k)).Perm (k :: keys t) :=\n  CTA.Benchmark.Trees.BstInsertTheory.keys_bstInsert_perm_of_not_mem t k hbst hk",
       "nl_gloss": "If the key k is not already present, the output key multiset equals the input keys with one additional k.",
       "linked_semantic_units": [
         "SU3"
@@ -132,7 +132,7 @@
     {
       "index": 3,
       "kind": "unknown",
-      "lean_statement": "axiom SU3_keyset_unchanged_when_present (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∈ keys t) : keys (bstInsert t k) = keys t",
+      "lean_statement": "theorem SU3_keyset_unchanged_when_present (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∈ keys t) : keys (bstInsert t k) = keys t :=\n  CTA.Benchmark.Trees.BstInsertTheory.keys_bstInsert_eq_of_mem t k hbst hk",
       "nl_gloss": "If the key k is already present, the output key multiset equals the input key multiset.",
       "linked_semantic_units": [
         "SU3"
@@ -151,7 +151,7 @@
     }
   ],
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_bst_insert_002/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],

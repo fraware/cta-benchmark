@@ -77,7 +77,7 @@
     {
       "index": 0,
       "kind": "postcondition",
-      "lean_statement": "∀ (xs : Arr), Sorted (insertionSort xs)",
+      "lean_statement": "theorem SU1_sorted (xs : Arr) : Sorted (insertionSort xs) := by\n  simpa [Sorted, insertionSort] using\n    CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_sorted xs",
       "nl_gloss": "For every input list xs, the output of insertionSort is sorted in nondecreasing order.",
       "linked_semantic_units": [
         "SU1"
@@ -87,7 +87,7 @@
     {
       "index": 1,
       "kind": "postcondition",
-      "lean_statement": "∀ (xs : Arr), IsPerm xs (insertionSort xs)",
+      "lean_statement": "theorem SU2_permutation (xs : Arr) : IsPerm xs (insertionSort xs) := by\n  simpa [IsPerm, IsPermutation, insertionSort] using\n    (List.Perm.symm (CTA.Benchmark.Sorting.InsertionSortTheory.insertionSort_perm xs))",
       "nl_gloss": "For every input list xs, the output is a permutation of xs (same multiset of elements, including duplicates).",
       "linked_semantic_units": [
         "SU2"
@@ -97,7 +97,7 @@
     {
       "index": 2,
       "kind": "termination",
-      "lean_statement": "∀ (xs : Arr), ∃ ys : Arr, ys = insertionSort xs",
+      "lean_statement": "theorem SU3_termination (xs : Arr) :\n  ∃ ys : Arr, ys = insertionSort xs := by\n  exact ⟨insertionSort xs, rfl⟩",
       "nl_gloss": "For every input xs, insertionSort produces some output list (i.e., it terminates / is defined on all inputs).",
       "linked_semantic_units": [
         "SU3"
@@ -106,7 +106,7 @@
     }
   ],
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_insertion_sort_001/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],

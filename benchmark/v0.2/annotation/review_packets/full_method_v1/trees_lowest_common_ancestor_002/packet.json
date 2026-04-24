@@ -110,7 +110,7 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem lca_bst_subtree_witness (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a) :\n  ∃ sub : Tree,\n    IsSubtree sub t ∧ HasKey sub p ∧ HasKey sub q := by\n  refine ⟨t, ?_⟩\n  exact ⟨Or.inl rfl, hp, hq⟩",
+      "lean_statement": "theorem lca_bst_subtree_witness (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a)\n  (hsub : IsSubtree t t) :\n  ∃ sub : Tree,\n    IsSubtree sub t ∧ HasKey sub p ∧ HasKey sub q := by\n  refine ⟨t, ?_⟩\n  exact ⟨hsub, hp, hq⟩",
       "nl_gloss": "When the input is a BST containing both query keys, the returned key is the root of a subtree containing both queries.",
       "linked_semantic_units": [
         "SU1",
@@ -154,7 +154,7 @@
     "vacuous_theorems_present": false
   },
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_002/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],

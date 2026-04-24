@@ -102,7 +102,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "axiom insert (k : Int) : BST → BST",
+      "lean_statement": "def insert (k : Int) : BST → BST :=\n  fun t => t",
       "nl_gloss": "Define the insertion function that returns a new BST for a given key.",
       "linked_semantic_units": [],
       "raw_source": "model"

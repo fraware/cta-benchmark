@@ -98,7 +98,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "theorem mergeSort_length (xs : Arr) : (mergeSort xs).length = xs.length := by\n  simpa using (rfl : (mergeSort xs).length = xs.length)",
+      "lean_statement": "theorem mergeSort_length (xs : Arr) : (mergeSort xs).length = xs.length :=\n  CTA.Benchmark.Sorting.MergeSortTheory.mergeSort_length xs",
       "nl_gloss": "The output list has the same length as the input list.",
       "linked_semantic_units": [
         "SU1"
@@ -108,7 +108,7 @@
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "theorem mergeSort_sorted (xs : Arr) : xsSorted (mergeSort xs) := by\n  simpa using (rfl : xsSorted (mergeSort xs))",
+      "lean_statement": "theorem mergeSort_sorted (xs : Arr) : Sorted (mergeSort xs) := by\n  simpa [Sorted, mergeSort] using\n    CTA.Benchmark.Sorting.MergeSortTheory.mergeSort_sorted xs",
       "nl_gloss": "The output list is sorted in nondecreasing order.",
       "linked_semantic_units": [
         "SU2"
@@ -118,7 +118,7 @@
     {
       "index": 2,
       "kind": "unknown",
-      "lean_statement": "theorem mergeSort_perm (xs : Arr) : mergeSort xs ~ xs := by\n  simpa using (rfl : mergeSort xs ~ xs)",
+      "lean_statement": "theorem mergeSort_perm (xs : Arr) : IsPerm (mergeSort xs) xs := by\n  simpa [IsPerm, IsPermutation, mergeSort] using\n    CTA.Benchmark.Sorting.MergeSortTheory.mergeSort_perm xs",
       "nl_gloss": "The output list is a permutation of the input list (same multiset of elements).",
       "linked_semantic_units": [
         "SU3"
@@ -127,7 +127,7 @@
     }
   ],
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_merge_sort_002/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],

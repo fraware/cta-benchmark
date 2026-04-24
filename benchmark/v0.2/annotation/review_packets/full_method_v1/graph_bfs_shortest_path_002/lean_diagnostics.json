@@ -1,1 +1,15 @@
-{"available":false}
+{
+  "available": true,
+  "elaborates": true,
+  "success": true,
+  "exit_code": 0,
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_002/packet_elab_check.lean"
+  ],
+  "check_file": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_002/packet_elab_check.lean",
+  "stdout": "C:\\Users\\mateo\\cta-benchmark\\benchmark/v0.2/annotation/review_packets\\full_method_v1\\graph_bfs_shortest_path_002\\packet_elab_check.lean:26:5: warning: unused variable `hs`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`\nC:\\Users\\mateo\\cta-benchmark\\benchmark/v0.2/annotation/review_packets\\full_method_v1\\graph_bfs_shortest_path_002\\packet_elab_check.lean:32:5: warning: unused variable `hv`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`\nC:\\Users\\mateo\\cta-benchmark\\benchmark/v0.2/annotation/review_packets\\full_method_v1\\graph_bfs_shortest_path_002\\packet_elab_check.lean:33:5: warning: unused variable `hk`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`\nC:\\Users\\mateo\\cta-benchmark\\benchmark/v0.2/annotation/review_packets\\full_method_v1\\graph_bfs_shortest_path_002\\packet_elab_check.lean:59:5: warning: unused variable `hv`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`\nC:\\Users\\mateo\\cta-benchmark\\benchmark/v0.2/annotation/review_packets\\full_method_v1\\graph_bfs_shortest_path_002\\packet_elab_check.lean:60:5: warning: unused variable `hk`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`\nC:\\Users\\mateo\\cta-benchmark\\benchmark/v0.2/annotation/review_packets\\full_method_v1\\graph_bfs_shortest_path_002\\packet_elab_check.lean:90:5: warning: unused variable `hv`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`\n",
+  "stderr": ""
+}

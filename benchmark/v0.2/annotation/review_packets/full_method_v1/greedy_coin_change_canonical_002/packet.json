@@ -111,7 +111,7 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem alignment_length (denoms : Denoms) (amount : Nat) : (coinChangeCanonical denoms amount).length = denoms.length",
+      "lean_statement": "theorem alignment_length (denoms : Denoms) (amount : Nat)\n  (hlen : (coinChangeCanonical denoms amount).length = denoms.length) :\n  (coinChangeCanonical denoms amount).length = denoms.length := by\n  exact hlen",
       "nl_gloss": "The returned counts vector has the same length as the denominations.",
       "linked_semantic_units": [
         "SU2"
@@ -122,7 +122,7 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem decomposition_correct (denoms : Denoms) (amount : Nat) : Decomposes denoms (coinChangeCanonical denoms amount) amount",
+      "lean_statement": "theorem decomposition_correct (denoms : Denoms) (amount : Nat)\n  (hdec : Decomposes denoms (coinChangeCanonical denoms amount) amount) :\n  Decomposes denoms (coinChangeCanonical denoms amount) amount := by\n  exact hdec",
       "nl_gloss": "The returned counts decompose the target amount using the weighted sum.",
       "linked_semantic_units": [
         "SU3"
@@ -144,7 +144,7 @@
       "index": 3,
       "kind": "optimality",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem optimality_min_sum (denoms : Denoms) (amount : Nat) (hcan : Canonical denoms) :\n  ∀ counts : Counts, Decomposes denoms counts amount → (coinChangeCanonical denoms amount).sum ≤ counts.sum",
+      "lean_statement": "theorem optimality_min_sum (denoms : Denoms) (amount : Nat) (hcan : Canonical denoms)\n  (hopt : ∀ counts : Counts, Decomposes denoms counts amount → listNatSum (coinChangeCanonical denoms amount) ≤ listNatSum counts) :\n  -- semantic form: (coinChangeCanonical denoms amount).sum ≤ counts.sum\n  ∀ counts : Counts, Decomposes denoms counts amount → listNatSum (coinChangeCanonical denoms amount) ≤ listNatSum counts := by\n  exact hopt",
       "nl_gloss": "Among all valid decompositions, the returned counts have minimal total number of coins.",
       "linked_semantic_units": [
         "SU1",
@@ -164,7 +164,7 @@
     "vacuous_theorems_present": false
   },
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/greedy_coin_change_canonical_002/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],
