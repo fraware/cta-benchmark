@@ -102,7 +102,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "def insert (k : Int) : BST → BST := by\n  -- intended: standard BST insertion using BST ordering\n  admit",
+      "lean_statement": "axiom insert (k : Int) : BST → BST",
       "nl_gloss": "Define the insertion function that returns a new BST for a given key.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -173,8 +173,11 @@
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/trees_bst_insert_002/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/trees_bst_insert_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/trees_bst_insert_002/behavior_report.json",

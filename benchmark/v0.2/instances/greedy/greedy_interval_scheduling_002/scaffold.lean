@@ -4,30 +4,26 @@ Scaffold for instance `greedy_interval_scheduling_002`.
 
 import CTA.Core.Prelude
 import CTA.Core.Types
+import CTA.Benchmark.Greedy.IntervalSchedulingTheory
 
 namespace CTA.Benchmark.Greedy.IntervalScheduling002
 
 open CTA.Core
+open CTA.Benchmark.Greedy.IntervalSchedulingTheory
 
-/-- A closed-open interval `[start, end)`. -/
-structure Interval where
-  start : Int
-  stop : Int
-  deriving Repr, DecidableEq
+/-- Family-level interval model reused across interval-scheduling packets. -/
+abbrev Interval := IntervalSchedulingTheory.Interval
 
-/-- A list of intervals. -/
-abbrev Intervals := List Interval
+/-- Family-level interval collection type. -/
+abbrev Intervals := IntervalSchedulingTheory.Intervals
 
-/-- Two intervals are non-overlapping if one ends at or before the other
-    starts. Sharing only an endpoint counts as non-overlapping. -/
-def NonOverlap (a b : Interval) : Prop :=
-  a.stop ≤ b.start ∨ b.stop ≤ a.start
+/-- Shared non-overlap semantics (closed-open endpoint compatible). -/
+abbrev NonOverlap := IntervalSchedulingTheory.NonOverlap
 
-/-- A selection of indices is pairwise non-overlapping relative to an
-    interval list; reference-only relation. -/
-opaque Feasible : Intervals → List Nat → Prop
+/-- Shared feasibility predicate used by benchmark-facing obligations. -/
+abbrev Feasible := IntervalSchedulingTheory.Feasible
 
-/-- Declarative model of the reference `interval_scheduling`. -/
-opaque intervalScheduling : Intervals → Nat
+/-- Shared definition-backed interval scheduling model. -/
+abbrev intervalScheduling := IntervalSchedulingTheory.intervalScheduling
 
 end CTA.Benchmark.Greedy.IntervalScheduling002

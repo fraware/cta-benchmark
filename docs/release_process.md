@@ -61,7 +61,10 @@ Use this sequence as the authoritative release path:
    - `cta validate benchmark --version v0.2 --release`
 5. Run review-packet audit gate (must pass before packaging):
    - `cta annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
-6. Run experiment and package paper artifacts:
+6. Refresh Lean proof-status and enforce strict M1 contract:
+   - `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+   - expected current output baseline: `m2_ready_packets = 93 / 93`, empty global proof worklist
+7. Run experiment and package paper artifacts:
    - `cta experiment --config configs/experiments/benchmark_v1.json`
    - `cta reports package --benchmark-version v0.2 --canonical-run-ids <run_id_1>,<run_id_2>,...`
 
@@ -69,8 +72,9 @@ For automation, the fail-fast orchestrator chains these gates:
 
 `cta benchmark paper-orchestrate --benchmark-version v0.2 --canonical-run-ids <run_ids>`
 
-`paper-orchestrate` now enforces `annotate verify-review-packets` automatically
-before `reports package`, and exits non-zero if packet verification fails.
+`paper-orchestrate` now enforces both `annotate verify-review-packets` and
+`annotate refresh-lean-check --strict-m1` automatically before `reports package`,
+and exits non-zero if either gate fails.
 
 ## Code-only remediation protocol
 

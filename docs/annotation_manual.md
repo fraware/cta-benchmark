@@ -129,6 +129,16 @@ shape or prompts, the `cta_generate` tests documented in `README.md` and
 `full_method_priority2_packet_regression`, and repo-wide
 `review_packet_lean_lint`).
 
+For Lean proof-completion tracking, each packet should carry a refreshed
+`lean_check` block (`elaborated`, `admit_count`, `proof_mode`,
+`axiom_dependencies`, `diagnostics_path`) maintained by:
+
+- `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+
+At the current repository baseline, this strict gate reports complete closure
+for `v0.2` review packets (`m2_ready_packets = 93 / 93`, empty global
+proof worklist).
+
 ## Hygiene
 
 - Never edit a previously submitted annotation. Submit a new one.

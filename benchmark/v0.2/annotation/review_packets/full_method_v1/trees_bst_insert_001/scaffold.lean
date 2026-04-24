@@ -4,28 +4,26 @@ Scaffold for instance `trees_bst_insert_001`.
 
 import CTA.Core.Prelude
 import CTA.Core.Types
+import CTA.Benchmark.Trees.BstInsertTheory
 
 namespace CTA.Benchmark.Trees.BstInsert001
 
 open CTA.Core
+open CTA.Benchmark.Trees.BstInsertTheory
 
-/-- Binary tree with integer keys. -/
-inductive Tree where
-  | nil : Tree
-  | node : Tree → Int → Tree → Tree
-  deriving Repr, DecidableEq
+/-- Family-level tree model reused across BST-insert packets. -/
+abbrev Tree := BstInsertTheory.Tree
 
-/-- In-order traversal. -/
-opaque inorder : Tree → List Int
+/-- Shared in-order projection. -/
+abbrev inorder := BstInsertTheory.inorder
 
-/-- BST invariant: in-order traversal is strictly ascending. -/
-def IsBst (t : Tree) : Prop :=
-  (inorder t).Pairwise (· < ·)
+/-- Shared BST invariant. -/
+abbrev IsBst := BstInsertTheory.IsBst
 
-/-- Set of keys present in the tree. -/
-opaque keys : Tree → List Int
+/-- Shared key projection. -/
+abbrev keys := BstInsertTheory.keys
 
-/-- Declarative model of the reference `bst_insert`. -/
-axiom bstInsert : Tree → Int → Tree
+/-- Shared insertion operator. -/
+abbrev bstInsert := BstInsertTheory.bstInsert
 
 end CTA.Benchmark.Trees.BstInsert001

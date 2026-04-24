@@ -87,9 +87,10 @@ disjoint. See `docs/paper_readiness.md`.
   `SortedLE`, `NonNegative`, `SameMultiset`). They never contain
   executable reference implementations (only declarative types and
   properties).
-- Prefer `opaque` for unknown implementations. Use `axiom` when Lean cannot
-  synthesize required instances for a stub signature (for example a
-  function-valued model like `bstInsert : Tree → Int → Tree`).
+- Prefer definition-backed family theory modules with per-instance `abbrev`
+  aliases over packet-local `opaque` declarations.
+- Use `axiom` only as a transitional interface mechanism and track those
+  packets through `lean_check.proof_mode = "axiom_backed"` in review packets.
 - Core `List` in this project does not provide `List.sum`; prefer
   `List.foldl` for summing `List Nat` inside scaffold definitions.
 - Reusable vocabulary lives in `lean/CTA/Core/Checkers.lean`. Scaffolds
@@ -99,6 +100,9 @@ disjoint. See `docs/paper_readiness.md`.
   to trace back to the shared definition.
 - Generated files never overwrite scaffold files; they live under
   `runs/<run_id>/lean_generated/...`.
+
+Current repository baseline: `v0.2` review packets are fully proof-complete
+under strict refresh (`m2_ready_packets = 93 / 93`).
 
 ## Annotation review packets (`v0.2+`)
 
@@ -120,5 +124,6 @@ documented in `docs/annotation_manual.md`; mechanical guards live in
 - No external crate dependencies in reference Rust.
 - No macro-heavy reference code; prefer explicit loops and branches.
 - No scaffold that hard-codes executable reference algorithms; use `opaque`
-  or `axiom` as above for declarative stubs only.
+  only when intentionally preserving an abstract interface; the default is
+  centralized definition-backed family theory.
 - No ambiguous edge cases whose adjudication depends on the reader.

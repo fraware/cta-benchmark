@@ -69,7 +69,7 @@
     {
       "id": "obl_001",
       "kind": "postcondition",
-      "lean_statement": "\u2200 (ivs : Intervals), (\u2200 i \u2208 ivs, i.start < i.stop) \u2192 \u2203 (sel : List Nat), Feasible ivs sel \u2227 sel.length = intervalScheduling ivs",
+      "lean_statement": "∀ (ivs : Intervals), (∀ i ∈ ivs, i.start < i.stop) → ∃ (sel : List Nat), Feasible ivs sel ∧ sel.length = intervalScheduling ivs",
       "nl_gloss": "When every input interval has strictly positive length, there exists a feasible selection whose size equals the returned count.",
       "linked_semantic_units": [
         "SU1",
@@ -81,7 +81,7 @@
     {
       "id": "obl_002",
       "kind": "postcondition",
-      "lean_statement": "\u2200 (ivs : Intervals) (sel : List Nat), (\u2200 i \u2208 ivs, i.start < i.stop) \u2192 Feasible ivs sel \u2192 sel.length \u2264 intervalScheduling ivs",
+      "lean_statement": "∀ (ivs : Intervals) (sel : List Nat), (∀ i ∈ ivs, i.start < i.stop) → Feasible ivs sel → sel.length ≤ intervalScheduling ivs",
       "nl_gloss": "When every input interval has strictly positive length, no feasible selection is strictly larger than the returned count.",
       "linked_semantic_units": [
         "SU3"
@@ -92,7 +92,7 @@
     {
       "id": "obl_003",
       "kind": "postcondition",
-      "lean_statement": "\u2200 (a b : Interval), a.stop = b.start \u2192 NonOverlap a b",
+      "lean_statement": "∀ (a b : Interval), a.stop = b.start → NonOverlap a b",
       "nl_gloss": "Intervals touching at a single endpoint are non-overlapping.",
       "linked_semantic_units": [
         "SU4"
@@ -139,7 +139,7 @@
       "index": 3,
       "kind": "postcondition",
       "layer": "auxiliary",
-      "lean_statement": "theorem SU5_empty_input : interval_scheduling ([] : List (Int \u00d7 Int)) = 0",
+      "lean_statement": "theorem SU5_empty_input : interval_scheduling ([] : List (Int × Int)) = 0",
       "nl_gloss": "Empty-input theorem.",
       "linked_semantic_units": [
         "SU5"
@@ -158,8 +158,11 @@
     "vacuous_theorems_present": false
   },
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_002/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/greedy_interval_scheduling_002/behavior_report.json",

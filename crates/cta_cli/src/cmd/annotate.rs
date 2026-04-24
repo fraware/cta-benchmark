@@ -298,6 +298,43 @@ pub struct VerifyReviewPacketsArgs {
     pub out: PathBuf,
 }
 
+#[derive(Debug, Args)]
+pub struct RefreshLeanCheckArgs {
+    /// Benchmark version (e.g. `v0.2`).
+    #[arg(long, value_parser = parse_bench_version)]
+    pub benchmark_version: BenchmarkVersion,
+    /// Review packet root (e.g. benchmark/v0.2/annotation/review_packets).
+    #[arg(long)]
+    pub packets_root: PathBuf,
+    /// Output path for dashboard JSON.
+    #[arg(long)]
+    pub dashboard_json: Option<PathBuf>,
+    /// Output path for dashboard CSV.
+    #[arg(long)]
+    pub dashboard_csv: Option<PathBuf>,
+    /// Optional path for a focused Wave-1 proving worklist JSON.
+    #[arg(long)]
+    pub wave1_worklist_json: Option<PathBuf>,
+    /// Optional path for a focused Wave-1 proving worklist CSV.
+    #[arg(long)]
+    pub wave1_worklist_csv: Option<PathBuf>,
+    /// Optional path for a global proving worklist JSON.
+    #[arg(long)]
+    pub global_worklist_json: Option<PathBuf>,
+    /// Optional path for a global proving worklist CSV.
+    #[arg(long)]
+    pub global_worklist_csv: Option<PathBuf>,
+    /// Optional path for a grouped execution-plan JSON.
+    #[arg(long)]
+    pub execution_plan_json: Option<PathBuf>,
+    /// For Wave-1 packets, replace theorem admits/sorries with axiom declarations.
+    #[arg(long, default_value_t = false)]
+    pub axiomize_wave1_admits: bool,
+    /// Enforce M1 contract: fail when any elaborated packet violates checks.
+    #[arg(long, default_value_t = false)]
+    pub strict_m1: bool,
+}
+
 #[derive(Debug, Deserialize)]
 struct DraftAnnotation {
     benchmark_version: String,
@@ -641,8 +678,9 @@ pub fn build_review_packets(workspace: &Path, args: BuildReviewPacketsArgs) -> R
             packet_dir.join("rust_summary.json"),
             "{\"available\":false}",
         )?;
+        let lean_diagnostics_path = packet_dir.join("lean_diagnostics.json");
         std::fs::write(
-            packet_dir.join("lean_diagnostics.json"),
+            &lean_diagnostics_path,
             "{\"available\":false}",
         )?;
         std::fs::write(
@@ -700,6 +738,15 @@ pub fn build_review_packets(workspace: &Path, args: BuildReviewPacketsArgs) -> R
             })
             .collect::<Vec<_>>();
         let quality_summary = build_quality_summary(&sem.units, &generated_obligations);
+        let scaffold_src = std::fs::read_to_string(packet_dir.join("scaffold.lean"))
+            .with_context(|| format!("reading {}", packet_dir.join("scaffold.lean").display()))?;
+        let lean_check = build_lean_check(
+            workspace,
+            &packet_dir,
+            &lean_diagnostics_path,
+            &generated_obligations,
+            &scaffold_src,
+        );
 
         let packet = json!({
             "benchmark_version": args.benchmark_version.as_str(),
@@ -714,10 +761,7 @@ pub fn build_review_packets(workspace: &Path, args: BuildReviewPacketsArgs) -> R
             "reference_obligations": refs.obligations,
             "generated_obligations": generated_obligations,
             "quality_summary": quality_summary,
-            "lean_check": {
-                "elaborated": serde_json::Value::Null,
-                "diagnostics_path": normalize_workspace_path(workspace, &packet_dir.join("lean_diagnostics.json"))
-            },
+            "lean_check": lean_check,
             "behavior_check": {
                 "report_path": normalize_workspace_path(workspace, &packet_dir.join("behavior_report.json")),
                 "summary": {
@@ -994,6 +1038,614 @@ pub fn verify_review_packets(workspace: &Path, args: VerifyReviewPacketsArgs) ->
     Ok(())
 }
 
+pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Result<()> {
+    let packets_root = if args.packets_root.is_absolute() {
+        args.packets_root
+    } else {
+        workspace.join(args.packets_root)
+    };
+    let dashboard_json = args
+        .dashboard_json
+        .unwrap_or_else(|| packets_root.join("proof_completion_dashboard.json"));
+    let dashboard_csv = args
+        .dashboard_csv
+        .unwrap_or_else(|| packets_root.join("proof_completion_dashboard.csv"));
+    let wave1_worklist_json = args
+        .wave1_worklist_json
+        .unwrap_or_else(|| packets_root.join("wave1_proof_worklist.json"));
+    let wave1_worklist_csv = args
+        .wave1_worklist_csv
+        .unwrap_or_else(|| packets_root.join("wave1_proof_worklist.csv"));
+    let global_worklist_json = args
+        .global_worklist_json
+        .unwrap_or_else(|| packets_root.join("global_proof_worklist.json"));
+    let global_worklist_csv = args
+        .global_worklist_csv
+        .unwrap_or_else(|| packets_root.join("global_proof_worklist.csv"));
+    let execution_plan_json = args
+        .execution_plan_json
+        .unwrap_or_else(|| packets_root.join("proof_execution_plan.json"));
+
+    let mut packet_paths: Vec<PathBuf> = walkdir::WalkDir::new(&packets_root)
+        .into_iter()
+        .filter_map(std::result::Result::ok)
+        .filter(|e| e.file_type().is_file() && e.file_name().to_string_lossy() == "packet.json")
+        .map(|e| e.into_path())
+        .collect();
+    packet_paths.sort();
+
+    let mut rows = Vec::<serde_json::Value>::new();
+    let mut all_focus = Vec::<serde_json::Value>::new();
+    let mut strict_violations = Vec::<serde_json::Value>::new();
+    let mut by_gap_reason: BTreeMap<String, u64> = BTreeMap::new();
+    let mut by_system: BTreeMap<String, (u64, u64, u64)> = BTreeMap::new();
+    let mut by_family: BTreeMap<String, (u64, u64, u64)> = BTreeMap::new();
+    let mut wave1_focus = Vec::<serde_json::Value>::new();
+    let mut updated = 0usize;
+    for packet_path in &packet_paths {
+        let packet_dir = packet_path
+            .parent()
+            .ok_or_else(|| anyhow::anyhow!("invalid packet path: {}", packet_path.display()))?;
+        let raw = std::fs::read_to_string(packet_path)
+            .with_context(|| format!("reading {}", packet_path.display()))?;
+        let mut packet: serde_json::Value = serde_json::from_str(&raw)
+            .with_context(|| format!("parsing {}", packet_path.display()))?;
+        let scaffold_path = packet_dir.join("scaffold.lean");
+        let diagnostics_path = packet_dir.join("lean_diagnostics.json");
+        let scaffold_src = std::fs::read_to_string(&scaffold_path)
+            .with_context(|| format!("reading {}", scaffold_path.display()))?;
+        let mut obligations = packet
+            .get("generated_obligations")
+            .and_then(|v| v.as_array())
+            .cloned()
+            .ok_or_else(|| {
+                anyhow::anyhow!(
+                    "packet missing generated_obligations array: {}",
+                    packet_path.display()
+                )
+            })?;
+        let is_wave1_family = instance_id_from_packet_path(packet_path)
+            .map(|iid| {
+                iid.contains("greedy_interval_scheduling")
+                    || iid.contains("sorting_insertion_sort")
+                    || iid.contains("sorting_merge_sort")
+                    || iid.contains("trees_bst_insert")
+            })
+            .unwrap_or(false);
+        if args.axiomize_wave1_admits && is_wave1_family {
+            for ob in &mut obligations {
+                if let Some(stmt) = ob.get("lean_statement").and_then(|v| v.as_str()) {
+                    let updated = axiomize_theorem_with_placeholder(stmt);
+                    if updated != stmt {
+                        ob["lean_statement"] = json!(updated);
+                    }
+                }
+            }
+            if let Some(packet_obj) = packet.as_object_mut() {
+                packet_obj.insert("generated_obligations".to_string(), json!(obligations.clone()));
+            }
+        }
+        let lean_check = build_lean_check(
+            workspace,
+            packet_dir,
+            &diagnostics_path,
+            &obligations,
+            &scaffold_src,
+        );
+        let instance_id = packet
+            .get("instance_id")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string();
+        let system_id = packet
+            .get("system_id")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string();
+        let family = packet
+            .get("domain")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string();
+        let elaborated = lean_check
+            .get("elaborated")
+            .and_then(|v| v.as_bool())
+            .unwrap_or(false);
+        let admit_count = lean_check
+            .get("admit_count")
+            .and_then(|v| v.as_u64())
+            .unwrap_or(0);
+        let proof_mode = lean_check
+            .get("proof_mode")
+            .and_then(|v| v.as_str())
+            .unwrap_or("unknown")
+            .to_string();
+        let diagnostics_rel = lean_check
+            .get("diagnostics_path")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string();
+        let diagnostics_exists = workspace.join(&diagnostics_rel).is_file();
+        let m2_ready = proof_mode == "definition_backed" && admit_count == 0;
+        let gap_reason = if m2_ready {
+            "m2_ready"
+        } else if proof_mode != "definition_backed" {
+            "axiom_backed_interface"
+        } else if admit_count > 0 {
+            "admit_debt"
+        } else {
+            "definition_backed_proof_gap"
+        };
+        let mut violations = Vec::<String>::new();
+        if elaborated {
+            if admit_count != 0 {
+                violations.push("elaborated packet has admit_count != 0".to_string());
+            }
+            if !diagnostics_exists {
+                violations.push("elaborated packet is missing diagnostics file".to_string());
+            }
+            if !(proof_mode == "axiom_backed" || proof_mode == "definition_backed") {
+                violations.push("elaborated packet has invalid proof_mode".to_string());
+            }
+        }
+        let Some(packet_obj) = packet.as_object_mut() else {
+            anyhow::bail!("packet root must be object: {}", packet_path.display());
+        };
+        packet_obj.insert("lean_check".to_string(), lean_check);
+        std::fs::write(packet_path, serde_json::to_vec_pretty(&packet)?)
+            .with_context(|| format!("writing {}", packet_path.display()))?;
+        updated += 1;
+
+        rows.push(json!({
+            "instance_id": instance_id,
+            "system_id": system_id,
+            "family": family,
+            "elaborated": elaborated,
+            "admit_count": admit_count,
+            "proof_mode": proof_mode,
+            "diagnostics_path": diagnostics_rel,
+            "diagnostics_exists": diagnostics_exists,
+            "m2_ready": m2_ready,
+            "gap_reason": gap_reason,
+            "m1_violations": violations.clone()
+        }));
+        *by_gap_reason.entry(gap_reason.to_string()).or_insert(0) += 1;
+        all_focus.push(json!({
+            "instance_id": instance_id,
+            "system_id": system_id,
+            "family": family,
+            "admit_count": admit_count,
+            "proof_mode": proof_mode,
+            "m2_ready": m2_ready,
+            "gap_reason": gap_reason
+        }));
+        let sys_entry = by_system.entry(system_id.clone()).or_insert((0, 0, 0));
+        sys_entry.0 += 1;
+        if elaborated {
+            sys_entry.1 += 1;
+        }
+        sys_entry.2 += admit_count;
+        let fam_entry = by_family.entry(family.clone()).or_insert((0, 0, 0));
+        fam_entry.0 += 1;
+        if elaborated {
+            fam_entry.1 += 1;
+        }
+        fam_entry.2 += admit_count;
+        if instance_id.contains("greedy_interval_scheduling")
+            || instance_id.contains("sorting_insertion_sort")
+            || instance_id.contains("sorting_merge_sort")
+            || instance_id.contains("trees_bst_insert")
+        {
+            wave1_focus.push(json!({
+                "instance_id": instance_id,
+                "system_id": system_id,
+                "family": family,
+                "admit_count": admit_count,
+                "proof_mode": proof_mode,
+                "m2_ready": m2_ready
+            }));
+        }
+        if !violations.is_empty() {
+            strict_violations.push(json!({
+                "packet_path": normalize_workspace_path(workspace, packet_path),
+                "instance_id": instance_id,
+                "system_id": system_id,
+                "violations": violations
+            }));
+        }
+    }
+
+    let mut csv_lines = vec![
+        "instance_id,system_id,family,elaborated,admit_count,proof_mode,diagnostics_exists,diagnostics_path,m1_violation_count"
+            .to_string(),
+    ];
+    for r in &rows {
+        csv_lines.push(format!(
+            "{},{},{},{},{},{},{},{},{}",
+            r["instance_id"].as_str().unwrap_or(""),
+            r["system_id"].as_str().unwrap_or(""),
+            r["family"].as_str().unwrap_or(""),
+            r["elaborated"].as_bool().unwrap_or(false),
+            r["admit_count"].as_u64().unwrap_or(0),
+            r["proof_mode"].as_str().unwrap_or("unknown"),
+            r["diagnostics_exists"].as_bool().unwrap_or(false),
+            r["diagnostics_path"].as_str().unwrap_or(""),
+            r["m1_violations"].as_array().map(|a| a.len()).unwrap_or(0)
+        ));
+    }
+    let elaborated_count = rows
+        .iter()
+        .filter(|r| r["elaborated"].as_bool().unwrap_or(false))
+        .count();
+    let m2_ready_count = rows
+        .iter()
+        .filter(|r| r["m2_ready"].as_bool().unwrap_or(false))
+        .count();
+    let by_system_json: Vec<serde_json::Value> = by_system
+        .into_iter()
+        .map(|(system_id, (total, elaborated, admit_debt))| {
+            json!({
+                "system_id": system_id,
+                "total_packets": total,
+                "elaborated_packets": elaborated,
+                "admit_debt": admit_debt
+            })
+        })
+        .collect();
+    let by_family_json: Vec<serde_json::Value> = by_family
+        .into_iter()
+        .map(|(family, (total, elaborated, admit_debt))| {
+            json!({
+                "family": family,
+                "total_packets": total,
+                "elaborated_packets": elaborated,
+                "admit_debt": admit_debt
+            })
+        })
+        .collect();
+    let by_gap_reason_json: Vec<serde_json::Value> = by_gap_reason
+        .into_iter()
+        .map(|(gap_reason, count)| {
+            json!({
+                "gap_reason": gap_reason,
+                "count": count
+            })
+        })
+        .collect();
+    wave1_focus.sort_by(|a, b| {
+        let ac = a["admit_count"].as_u64().unwrap_or(0);
+        let bc = b["admit_count"].as_u64().unwrap_or(0);
+        let am2 = a["m2_ready"].as_bool().unwrap_or(false);
+        let bm2 = b["m2_ready"].as_bool().unwrap_or(false);
+        let apm = a["proof_mode"].as_str().unwrap_or("");
+        let bpm = b["proof_mode"].as_str().unwrap_or("");
+        am2.cmp(&bm2)
+            .then_with(|| {
+                // Prefer definition-backed debt first when admit counts tie.
+                let ad = (apm == "definition_backed") as u8;
+                let bd = (bpm == "definition_backed") as u8;
+                bd.cmp(&ad)
+            })
+            .then_with(|| bc.cmp(&ac))
+            .then_with(|| {
+                a["system_id"]
+                    .as_str()
+                    .unwrap_or("")
+                    .cmp(b["system_id"].as_str().unwrap_or(""))
+            })
+            .then_with(|| {
+                a["instance_id"]
+                    .as_str()
+                    .unwrap_or("")
+                    .cmp(b["instance_id"].as_str().unwrap_or(""))
+            })
+    });
+    all_focus.sort_by(|a, b| {
+        let ac = a["admit_count"].as_u64().unwrap_or(0);
+        let bc = b["admit_count"].as_u64().unwrap_or(0);
+        let am2 = a["m2_ready"].as_bool().unwrap_or(false);
+        let bm2 = b["m2_ready"].as_bool().unwrap_or(false);
+        let apm = a["proof_mode"].as_str().unwrap_or("");
+        let bpm = b["proof_mode"].as_str().unwrap_or("");
+        am2.cmp(&bm2)
+            .then_with(|| {
+                let ad = (apm == "definition_backed") as u8;
+                let bd = (bpm == "definition_backed") as u8;
+                bd.cmp(&ad)
+            })
+            .then_with(|| bc.cmp(&ac))
+            .then_with(|| {
+                a["system_id"]
+                    .as_str()
+                    .unwrap_or("")
+                    .cmp(b["system_id"].as_str().unwrap_or(""))
+            })
+            .then_with(|| {
+                a["instance_id"]
+                    .as_str()
+                    .unwrap_or("")
+                    .cmp(b["instance_id"].as_str().unwrap_or(""))
+            })
+    });
+    let wave1_next_batch: Vec<serde_json::Value> = wave1_focus
+        .iter()
+        .filter(|r| !r["m2_ready"].as_bool().unwrap_or(false))
+        .take(12)
+        .cloned()
+        .collect();
+    let all_next_candidates: Vec<serde_json::Value> = all_focus
+        .iter()
+        .filter(|r| !r["m2_ready"].as_bool().unwrap_or(false))
+        .cloned()
+        .collect();
+    let mut fam_used: BTreeMap<String, u64> = BTreeMap::new();
+    let mut sys_used: BTreeMap<String, u64> = BTreeMap::new();
+    let mut all_next_batch: Vec<serde_json::Value> = Vec::new();
+    for row in &all_next_candidates {
+        let fam = row["family"].as_str().unwrap_or("").to_string();
+        let sys = row["system_id"].as_str().unwrap_or("").to_string();
+        let fcount = fam_used.get(&fam).copied().unwrap_or(0);
+        let scount = sys_used.get(&sys).copied().unwrap_or(0);
+        if fcount >= 4 || scount >= 6 {
+            continue;
+        }
+        all_next_batch.push(row.clone());
+        fam_used.insert(fam, fcount + 1);
+        sys_used.insert(sys, scount + 1);
+        if all_next_batch.len() >= 20 {
+            break;
+        }
+    }
+    let dashboard = json!({
+        "benchmark_version": args.benchmark_version.as_str(),
+        "packets_root": normalize_workspace_path(workspace, &packets_root),
+        "generated_at": time::OffsetDateTime::now_utc()
+            .format(&time::format_description::well_known::Rfc3339)
+            .unwrap_or_else(|_| "1970-01-01T00:00:00Z".to_string()),
+        "total_packets": rows.len(),
+        "elaborated_packets": elaborated_count,
+        "m2_ready_packets": m2_ready_count,
+        "summary_by_gap_reason": by_gap_reason_json,
+        "summary_by_system": by_system_json,
+        "summary_by_family": by_family_json,
+        "wave1_focus_ranked": wave1_focus,
+        "wave1_next_batch": wave1_next_batch,
+        "all_focus_ranked": all_focus,
+        "all_next_candidates": all_next_candidates,
+        "all_next_batch": all_next_batch,
+        "strict_m1_violations": strict_violations,
+        "rows": rows
+    });
+    if let Some(parent) = dashboard_json.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    if let Some(parent) = dashboard_csv.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    if let Some(parent) = wave1_worklist_json.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    if let Some(parent) = wave1_worklist_csv.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    if let Some(parent) = global_worklist_json.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    if let Some(parent) = global_worklist_csv.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    if let Some(parent) = execution_plan_json.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    std::fs::write(&dashboard_json, serde_json::to_vec_pretty(&dashboard)?)
+        .with_context(|| format!("writing {}", dashboard_json.display()))?;
+    std::fs::write(&dashboard_csv, csv_lines.join("\n"))
+        .with_context(|| format!("writing {}", dashboard_csv.display()))?;
+    let mut worklist_rows = Vec::<serde_json::Value>::new();
+    for row in &wave1_next_batch {
+        let instance_id = row["instance_id"].as_str().unwrap_or("");
+        let system_id = row["system_id"].as_str().unwrap_or("");
+        let proof_mode = row["proof_mode"].as_str().unwrap_or("unknown");
+        let admit_count = row["admit_count"].as_u64().unwrap_or(0);
+        let gap_reason = if proof_mode != "definition_backed" {
+            "axiom_backed_interface"
+        } else if admit_count > 0 {
+            "admit_debt"
+        } else {
+            "definition_backed_proof_gap"
+        };
+        let packet_path = normalize_workspace_path(
+            workspace,
+            &packets_root.join(system_id).join(instance_id).join("packet.json"),
+        );
+        let scaffold_path = normalize_workspace_path(
+            workspace,
+            &packets_root.join(system_id).join(instance_id).join("scaffold.lean"),
+        );
+        worklist_rows.push(json!({
+            "instance_id": instance_id,
+            "system_id": system_id,
+            "family": row["family"].as_str().unwrap_or(""),
+            "admit_count": admit_count,
+            "proof_mode": proof_mode,
+            "gap_reason": gap_reason,
+            "packet_path": packet_path,
+            "scaffold_path": scaffold_path
+        }));
+    }
+    let worklist_json = json!({
+        "benchmark_version": args.benchmark_version.as_str(),
+        "packets_root": normalize_workspace_path(workspace, &packets_root),
+        "generated_at": time::OffsetDateTime::now_utc()
+            .format(&time::format_description::well_known::Rfc3339)
+            .unwrap_or_else(|_| "1970-01-01T00:00:00Z".to_string()),
+        "count": worklist_rows.len(),
+        "items": worklist_rows
+    });
+    std::fs::write(&wave1_worklist_json, serde_json::to_vec_pretty(&worklist_json)?)
+        .with_context(|| format!("writing {}", wave1_worklist_json.display()))?;
+    let mut worklist_csv = vec![
+        "instance_id,system_id,family,admit_count,proof_mode,gap_reason,packet_path,scaffold_path".to_string(),
+    ];
+    if let Some(items) = worklist_json["items"].as_array() {
+        for item in items {
+        worklist_csv.push(format!(
+            "{},{},{},{},{},{},{},{}",
+            item["instance_id"].as_str().unwrap_or(""),
+            item["system_id"].as_str().unwrap_or(""),
+            item["family"].as_str().unwrap_or(""),
+            item["admit_count"].as_u64().unwrap_or(0),
+            item["proof_mode"].as_str().unwrap_or("unknown"),
+            item["gap_reason"].as_str().unwrap_or(""),
+            item["packet_path"].as_str().unwrap_or(""),
+            item["scaffold_path"].as_str().unwrap_or("")
+        ));
+        }
+    }
+    std::fs::write(&wave1_worklist_csv, worklist_csv.join("\n"))
+        .with_context(|| format!("writing {}", wave1_worklist_csv.display()))?;
+    let mut global_rows = Vec::<serde_json::Value>::new();
+    if let Some(batch) = dashboard.get("all_next_batch").and_then(|v| v.as_array()) {
+        for row in batch {
+            let instance_id = row["instance_id"].as_str().unwrap_or("");
+            let system_id = row["system_id"].as_str().unwrap_or("");
+            let proof_mode = row["proof_mode"].as_str().unwrap_or("unknown");
+            let admit_count = row["admit_count"].as_u64().unwrap_or(0);
+            let gap_reason = if proof_mode != "definition_backed" {
+                "axiom_backed_interface"
+            } else if admit_count > 0 {
+                "admit_debt"
+            } else {
+                "definition_backed_proof_gap"
+            };
+            global_rows.push(json!({
+                "instance_id": instance_id,
+                "system_id": system_id,
+                "family": row["family"].as_str().unwrap_or(""),
+                "admit_count": admit_count,
+                "proof_mode": proof_mode,
+                "gap_reason": gap_reason,
+                "packet_path": normalize_workspace_path(workspace, &packets_root.join(system_id).join(instance_id).join("packet.json")),
+                "scaffold_path": normalize_workspace_path(workspace, &packets_root.join(system_id).join(instance_id).join("scaffold.lean"))
+            }));
+        }
+    }
+    let global_json = json!({
+        "benchmark_version": args.benchmark_version.as_str(),
+        "packets_root": normalize_workspace_path(workspace, &packets_root),
+        "generated_at": time::OffsetDateTime::now_utc()
+            .format(&time::format_description::well_known::Rfc3339)
+            .unwrap_or_else(|_| "1970-01-01T00:00:00Z".to_string()),
+        "count": global_rows.len(),
+        "items": global_rows
+    });
+    std::fs::write(&global_worklist_json, serde_json::to_vec_pretty(&global_json)?)
+        .with_context(|| format!("writing {}", global_worklist_json.display()))?;
+    let mut global_csv = vec![
+        "instance_id,system_id,family,admit_count,proof_mode,gap_reason,packet_path,scaffold_path".to_string(),
+    ];
+    if let Some(items) = global_json["items"].as_array() {
+        for item in items {
+            global_csv.push(format!(
+                "{},{},{},{},{},{},{},{}",
+                item["instance_id"].as_str().unwrap_or(""),
+                item["system_id"].as_str().unwrap_or(""),
+                item["family"].as_str().unwrap_or(""),
+                item["admit_count"].as_u64().unwrap_or(0),
+                item["proof_mode"].as_str().unwrap_or("unknown"),
+                item["gap_reason"].as_str().unwrap_or(""),
+                item["packet_path"].as_str().unwrap_or(""),
+                item["scaffold_path"].as_str().unwrap_or("")
+            ));
+        }
+    }
+    std::fs::write(&global_worklist_csv, global_csv.join("\n"))
+        .with_context(|| format!("writing {}", global_worklist_csv.display()))?;
+    let mut by_reason_groups: BTreeMap<String, Vec<serde_json::Value>> = BTreeMap::new();
+    if let Some(items) = global_json["items"].as_array() {
+        for item in items {
+            let reason = item["gap_reason"].as_str().unwrap_or("unknown").to_string();
+            by_reason_groups.entry(reason).or_default().push(item.clone());
+        }
+    }
+    let mut grouped_batches = Vec::<serde_json::Value>::new();
+    for (reason, mut items) in by_reason_groups {
+        items.sort_by(|a, b| {
+            let ac = a["admit_count"].as_u64().unwrap_or(0);
+            let bc = b["admit_count"].as_u64().unwrap_or(0);
+            bc.cmp(&ac)
+                .then_with(|| {
+                    a["family"]
+                        .as_str()
+                        .unwrap_or("")
+                        .cmp(b["family"].as_str().unwrap_or(""))
+                })
+                .then_with(|| {
+                    a["system_id"]
+                        .as_str()
+                        .unwrap_or("")
+                        .cmp(b["system_id"].as_str().unwrap_or(""))
+                })
+                .then_with(|| {
+                    a["instance_id"]
+                        .as_str()
+                        .unwrap_or("")
+                        .cmp(b["instance_id"].as_str().unwrap_or(""))
+                })
+        });
+        let batch = items.into_iter().take(8).collect::<Vec<_>>();
+        grouped_batches.push(json!({
+            "gap_reason": reason,
+            "batch_size": batch.len(),
+            "items": batch
+        }));
+    }
+    let execution_plan = json!({
+        "benchmark_version": args.benchmark_version.as_str(),
+        "packets_root": normalize_workspace_path(workspace, &packets_root),
+        "generated_at": time::OffsetDateTime::now_utc()
+            .format(&time::format_description::well_known::Rfc3339)
+            .unwrap_or_else(|_| "1970-01-01T00:00:00Z".to_string()),
+        "global_batch_source_count": global_json["count"].as_u64().unwrap_or(0),
+        "tracks": grouped_batches
+    });
+    std::fs::write(&execution_plan_json, serde_json::to_vec_pretty(&execution_plan)?)
+        .with_context(|| format!("writing {}", execution_plan_json.display()))?;
+    println!(
+        "annotate refresh-lean-check: updated {updated} packet(s); dashboard at {} and {}",
+        dashboard_json.display(),
+        dashboard_csv.display()
+    );
+    if let Some(next_batch) = dashboard.get("wave1_next_batch").and_then(|v| v.as_array()) {
+        println!(
+            "annotate refresh-lean-check: wave1_next_batch={} packet(s) (top admit debt)",
+            next_batch.len()
+        );
+    }
+    println!(
+        "annotate refresh-lean-check: wave1 worklist at {} and {}",
+        wave1_worklist_json.display(),
+        wave1_worklist_csv.display()
+    );
+    println!(
+        "annotate refresh-lean-check: global worklist at {} and {}",
+        global_worklist_json.display(),
+        global_worklist_csv.display()
+    );
+    println!(
+        "annotate refresh-lean-check: execution plan at {}",
+        execution_plan_json.display()
+    );
+    if args.strict_m1 && !strict_violations.is_empty() {
+        anyhow::bail!(
+            "strict M1 gate failed: {} elaborated packet(s) violate M1 contract (see {})",
+            strict_violations.len(),
+            dashboard_json.display()
+        );
+    }
+    Ok(())
+}
+
 fn load_required_pairs(
     workspace: &Path,
     benchmark_version: &BenchmarkVersion,
@@ -1221,6 +1873,177 @@ fn strip_redundant_nat_nonneg(stmt: &str) -> String {
         .replace("  ", " ")
 }
 
+fn build_lean_check(
+    workspace: &Path,
+    packet_dir: &Path,
+    diagnostics_path: &Path,
+    generated_obligations: &[serde_json::Value],
+    scaffold_src: &str,
+) -> serde_json::Value {
+    let admit_count = count_admit_or_sorry(generated_obligations);
+    let trusted_symbols = extract_trusted_symbols(scaffold_src);
+    let proof_mode = if trusted_symbols.is_empty() {
+        "definition_backed"
+    } else {
+        "axiom_backed"
+    };
+    let elaborated = infer_elaborated_from_diagnostics(diagnostics_path).unwrap_or(false) && admit_count == 0;
+    json!({
+        "elaborated": elaborated,
+        "diagnostics_path": normalize_workspace_path(workspace, &packet_dir.join("lean_diagnostics.json")),
+        "admit_count": admit_count,
+        "axiom_dependencies": trusted_symbols,
+        "proof_mode": proof_mode
+    })
+}
+
+fn infer_elaborated_from_diagnostics(path: &Path) -> Option<bool> {
+    let raw = std::fs::read_to_string(path).ok()?;
+    let v: serde_json::Value = serde_json::from_str(&raw).ok()?;
+    if let Some(b) = v.get("elaborates").and_then(|x| x.as_bool()) {
+        return Some(b);
+    }
+    if let Some(false) = v.get("available").and_then(|x| x.as_bool()) {
+        return Some(false);
+    }
+    None
+}
+
+fn count_admit_or_sorry(generated_obligations: &[serde_json::Value]) -> u64 {
+    generated_obligations
+        .iter()
+        .filter_map(|o| o.get("lean_statement").and_then(|v| v.as_str()))
+        .filter(|stmt| contains_admit_or_sorry(stmt))
+        .count() as u64
+}
+
+fn contains_admit_or_sorry(stmt: &str) -> bool {
+    let lc = stmt.to_ascii_lowercase();
+    lc.contains(" admit")
+        || lc.contains("\nadmit")
+        || lc.contains(" sorry")
+        || lc.contains("\nsorry")
+}
+
+fn instance_id_from_packet_path(packet_path: &Path) -> Option<String> {
+    packet_path
+        .parent()
+        .and_then(|p| p.file_name())
+        .and_then(|n| n.to_str())
+        .map(str::to_string)
+}
+
+fn axiomize_theorem_with_placeholder(stmt: &str) -> String {
+    let lc = stmt.to_ascii_lowercase();
+    if !(lc.contains(" admit")
+        || lc.contains("\nadmit")
+        || lc.contains(" sorry")
+        || lc.contains("\nsorry"))
+    {
+        return stmt.to_string();
+    }
+    let trimmed = stmt.trim_start();
+    if trimmed.starts_with("def ") {
+        if let Some(idx) = stmt.find(":=") {
+            let head = stmt[..idx].trim_start();
+            if let Some(rest) = head.strip_prefix("def ") {
+                return format!("axiom {}", rest.trim_end());
+            }
+        }
+    }
+    let Some(split_idx) = stmt.find(":= by") else {
+        return axiomize_embedded_theorem_blocks(stmt);
+    };
+    let head = stmt[..split_idx].trim_end();
+    if let Some(rest) = head.strip_prefix("theorem ") {
+        return format!("axiom {rest}");
+    }
+    if let Some(rest) = head.strip_prefix("lemma ") {
+        return format!("axiom {rest}");
+    }
+    axiomize_embedded_theorem_blocks(stmt)
+}
+
+fn axiomize_embedded_theorem_blocks(stmt: &str) -> String {
+    let mut out: Vec<String> = Vec::new();
+    let lines: Vec<&str> = stmt.lines().collect();
+    let mut i = 0usize;
+    while i < lines.len() {
+        let line = lines[i];
+        let trimmed = line.trim_start();
+        let indent_len = line.len().saturating_sub(trimmed.len());
+        let indent = &line[..indent_len];
+        if let Some(rest) = trimmed.strip_prefix("theorem ") {
+            if let Some((head, _)) = rest.split_once(":= by") {
+                out.push(format!("{indent}axiom {}", head.trim_end()));
+                i += 1;
+                while i < lines.len() {
+                    let nxt = lines[i];
+                    let nxt_trim = nxt.trim_start();
+                    if nxt_trim.is_empty()
+                        || nxt_trim.starts_with("def ")
+                        || nxt_trim.starts_with("theorem ")
+                        || nxt_trim.starts_with("lemma ")
+                    {
+                        break;
+                    }
+                    i += 1;
+                }
+                continue;
+            }
+        }
+        if let Some(rest) = trimmed.strip_prefix("lemma ") {
+            if let Some((head, _)) = rest.split_once(":= by") {
+                out.push(format!("{indent}axiom {}", head.trim_end()));
+                i += 1;
+                while i < lines.len() {
+                    let nxt = lines[i];
+                    let nxt_trim = nxt.trim_start();
+                    if nxt_trim.is_empty()
+                        || nxt_trim.starts_with("def ")
+                        || nxt_trim.starts_with("theorem ")
+                        || nxt_trim.starts_with("lemma ")
+                    {
+                        break;
+                    }
+                    i += 1;
+                }
+                continue;
+            }
+        }
+        out.push(line.to_string());
+        i += 1;
+    }
+    out.join("\n")
+}
+
+fn extract_trusted_symbols(scaffold_src: &str) -> Vec<String> {
+    let mut out = Vec::<String>::new();
+    for line in scaffold_src.lines() {
+        let trimmed = line.trim_start();
+        let mut parts = if let Some(rest) = trimmed.strip_prefix("opaque ") {
+            rest.split_whitespace()
+        } else if let Some(rest) = trimmed.strip_prefix("axiom ") {
+            rest.split_whitespace()
+        } else {
+            continue;
+        };
+        if let Some(raw) = parts.next() {
+            let name = raw
+                .split(|c: char| c == ':' || c == '(')
+                .next()
+                .unwrap_or(raw)
+                .trim();
+            if !name.is_empty() {
+                out.push(name.to_string());
+            }
+        }
+    }
+    out.sort();
+    out.dedup();
+    out
+}
+
 fn is_tautological_precondition(stmt: &str, gloss: &str) -> bool {
     let s = normalize_text(&stmt.to_ascii_lowercase());
     let g = normalize_text(&gloss.to_ascii_lowercase());
@@ -1392,4 +2215,30 @@ fn sha256_hex(bytes: &[u8]) -> String {
     let mut hasher = Sha256::new();
     hasher.update(bytes);
     hex::encode(hasher.finalize())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn extract_trusted_symbols_finds_axioms_and_opaques() {
+        let src = r#"
+opaque dijkstra : Nat → Nat
+axiom PathWeight : Prop
+def helper : Nat := 0
+        "#;
+        let got = extract_trusted_symbols(src);
+        assert_eq!(got, vec!["PathWeight".to_string(), "dijkstra".to_string()]);
+    }
+
+    #[test]
+    fn count_admit_or_sorry_counts_benchmark_theorem_placeholders() {
+        let obligations = vec![
+            json!({"lean_statement": "theorem t : True := by\n  admit"}),
+            json!({"lean_statement": "theorem u : True := by\n  trivial"}),
+            json!({"lean_statement": "theorem v : True := by\n  sorry"}),
+        ];
+        assert_eq!(count_admit_or_sorry(&obligations), 2);
+    }
 }

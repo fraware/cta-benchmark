@@ -98,7 +98,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "theorem mergeSort_length (xs : Arr) : (mergeSort xs).length = xs.length := by\n  -- proof obligation: instantiate with semantic layer\n  admit",
+      "lean_statement": "axiom mergeSort_length (xs : Arr) : (mergeSort xs).length = xs.length",
       "nl_gloss": "The output list has the same length as the input list.",
       "linked_semantic_units": [
         "SU1"
@@ -108,7 +108,7 @@
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "theorem mergeSort_sorted (xs : Arr) : xs.Sorted (· ≤ ·) (mergeSort xs) := by\n  -- proof obligation: instantiate with semantic layer\n  admit",
+      "lean_statement": "axiom mergeSort_sorted (xs : Arr) : xs.Sorted (· ≤ ·) (mergeSort xs)",
       "nl_gloss": "The output list is sorted in nondecreasing order.",
       "linked_semantic_units": [
         "SU2"
@@ -118,7 +118,7 @@
     {
       "index": 2,
       "kind": "unknown",
-      "lean_statement": "theorem mergeSort_perm (xs : Arr) : mergeSort xs ~ xs := by\n  -- proof obligation: instantiate with semantic layer\n  admit",
+      "lean_statement": "axiom mergeSort_perm (xs : Arr) : mergeSort xs ~ xs",
       "nl_gloss": "The output list is a permutation of the input list (same multiset of elements).",
       "linked_semantic_units": [
         "SU3"
@@ -128,7 +128,7 @@
     {
       "index": 3,
       "kind": "unknown",
-      "lean_statement": "theorem mergeSort_sorted_adjacent (xs : Arr) :\n    (mergeSort xs).Pairwise (· ≤ ·) := by\n  -- proof obligation: instantiate with semantic layer\n  admit",
+      "lean_statement": "axiom mergeSort_sorted_adjacent (xs : Arr) :\n    (mergeSort xs).Pairwise (· ≤ ·)",
       "nl_gloss": "A consequence of nondecreasing sortedness: every earlier element is ≤ every later element (pairwise nondecreasing).",
       "linked_semantic_units": [
         "SU2"
@@ -137,8 +137,11 @@
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_merge_sort_001/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_merge_sort_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_merge_sort_001/behavior_report.json",

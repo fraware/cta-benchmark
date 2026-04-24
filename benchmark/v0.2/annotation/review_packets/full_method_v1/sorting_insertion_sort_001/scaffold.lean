@@ -5,26 +5,23 @@ Scaffold for instance `sorting_insertion_sort_001`.
 import CTA.Core.Prelude
 import CTA.Core.Types
 import CTA.Core.Checkers
+import CTA.Benchmark.Sorting.InsertionSortTheory
 
 namespace CTA.Benchmark.Sorting.InsertionSort001
 
 open CTA.Core
+open CTA.Benchmark.Sorting.InsertionSortTheory
 
-/-- Input/output slice model. -/
-abbrev Arr := List Int
+/-- Family-level list model reused across insertion-sort packets. -/
+abbrev Arr := InsertionSortTheory.Arr
 
-/-- Declarative model of the reference `insertion_sort`: returns the sorted
-    permutation of its input. Left opaque for the semantic layer. -/
-opaque insertionSort : Arr → Arr
+/-- Shared insertion-sort algorithm symbol. -/
+abbrev insertionSort := InsertionSortTheory.insertionSort
 
-/-- Permutation predicate, exposed under this instance's namespace so that
-    generated obligations spell the "output is a permutation of the input"
-    property the same way across every sorting benchmark. -/
-abbrev IsPerm (xs ys : Arr) : Prop := IsPermutation xs ys
+/-- Shared permutation predicate for benchmark-facing obligations. -/
+abbrev IsPerm := InsertionSortTheory.IsPerm
 
-/-- Sortedness predicate, re-exported so generated obligations can refer to
-    `Sorted` without having to know that the underlying definition lives in
-    `CTA.Core`. -/
-abbrev Sorted (xs : Arr) : Prop := SortedLE xs
+/-- Shared sortedness predicate for benchmark-facing obligations. -/
+abbrev Sorted := InsertionSortTheory.Sorted
 
 end CTA.Benchmark.Sorting.InsertionSort001

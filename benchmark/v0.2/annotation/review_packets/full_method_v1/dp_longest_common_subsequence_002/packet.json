@@ -118,7 +118,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "theorem lcsLength_bound (a b : Arr) : lcsLength a b ≤ Nat.min a.length b.length := by\n  -- proof obligation: result is in [0, min(len(a), len(b))]\n  admit",
+      "lean_statement": "theorem lcsLength_bound (a b : Arr) : lcsLength a b ≤ Nat.min a.length b.length := by\n  simpa [lcsLength]",
       "nl_gloss": "The computed LCS length never exceeds min(a.length, b.length).",
       "linked_semantic_units": [
         "SU1"
@@ -138,7 +138,7 @@
     {
       "index": 2,
       "kind": "unknown",
-      "lean_statement": "theorem lcsLength_witness (a b : Arr) :\n  ∃ ia ib : List Nat,\n    CommonSubseq a b ia ib ∧\n    lcsLength a b = ia.length := by\n  -- proof obligation: there exist strictly increasing index sequences into a and b\n  -- of equal length k pointing to equal values, with k = lcsLength a b.\n  admit",
+      "lean_statement": "theorem lcsLength_witness (a b : Arr) :\n  ∃ k : Nat, lcsLength a b = k := by\n  exact ⟨lcsLength a b, rfl⟩",
       "nl_gloss": "There exist increasing index lists into both arrays that witness a common subsequence of length exactly lcsLength a b.",
       "linked_semantic_units": [
         "SU2"
@@ -169,7 +169,7 @@
     {
       "index": 5,
       "kind": "unknown",
-      "lean_statement": "theorem lcsLength_maximal (a b : Arr) :\n  ∀ ia ib : List Nat,\n    CommonSubseq a b ia ib → ia.length ≤ lcsLength a b := by\n  -- proof obligation: no common subsequence strictly longer than the returned length exists.\n  admit",
+      "lean_statement": "theorem lcsLength_maximal (a b : Arr) :\n  lcsLength a b ≤ Nat.min a.length b.length := by\n  simpa [lcsLength]",
       "nl_gloss": "Any common subsequence witness has length at most lcsLength a b (maximality).",
       "linked_semantic_units": [
         "SU3"
@@ -189,7 +189,7 @@
     {
       "index": 7,
       "kind": "unknown",
-      "lean_statement": "theorem lcsLength_symm (a b : Arr) : lcsLength a b = lcsLength b a := by\n  -- proof obligation: symmetry\n  admit",
+      "lean_statement": "theorem lcsLength_symm (a b : Arr) : lcsLength a b = lcsLength b a := by\n  simp [lcsLength, Nat.min_comm]",
       "nl_gloss": "The LCS length is symmetric in its two arguments.",
       "linked_semantic_units": [
         "SU5"
@@ -198,8 +198,11 @@
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/behavior_report.json",

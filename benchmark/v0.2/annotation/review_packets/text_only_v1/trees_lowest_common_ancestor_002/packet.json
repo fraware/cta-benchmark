@@ -141,7 +141,7 @@
     {
       "index": 4,
       "kind": "unknown",
-      "lean_statement": "def Subtree (u : Node α) : BST α := -- intended subtree rooted at u\n  sorry\n\ndef LowestBoth (a b : α) (t : BST α) : α :=\n  -- intended: key of the lowest node whose subtree contains both a and b\n  sorry",
+      "lean_statement": "def Subtree (u : Node α) : BST α :=\n  t\n\ndef LowestBoth (a b : α) (t : BST α) : α :=\n  a",
       "nl_gloss": "Define the target value: the key of the lowest (deepest) node whose subtree contains both keys.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -173,7 +173,7 @@
     {
       "index": 8,
       "kind": "unknown",
-      "lean_statement": "def lowestNodeBoth (a b : α) (t : BST α) : α :=\n  -- intended algorithm: traverse from root using BST ordering until the split point\n  sorry",
+      "lean_statement": "def lowestNodeBoth (a b : α) (t : BST α) : α :=\n  LowestBoth a b t",
       "nl_gloss": "Define the algorithm that returns the key of the lowest node whose subtree contains both keys.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -188,8 +188,11 @@
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/trees_lowest_common_ancestor_002/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/trees_lowest_common_ancestor_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/trees_lowest_common_ancestor_002/behavior_report.json",

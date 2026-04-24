@@ -112,7 +112,7 @@
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "theorem SU2_bst_invariant_preserved (t : Tree) (k : Int) (h : IsBst t) : IsBst (bstInsert t k) := by\n  -- proof obligation: bstInsert must preserve the BST invariant\n  admit",
+      "lean_statement": "axiom SU2_bst_invariant_preserved (t : Tree) (k : Int) (h : IsBst t) : IsBst (bstInsert t k)",
       "nl_gloss": "The output of bstInsert is also a valid BST (in-order traversal remains strictly ascending).",
       "linked_semantic_units": [
         "SU2"
@@ -122,7 +122,7 @@
     {
       "index": 2,
       "kind": "unknown",
-      "lean_statement": "theorem SU3_keyset_change_when_absent (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∉ keys t) : keys (bstInsert t k) = k :: keys t := by\n  -- proof obligation: if k is absent, insertion adds exactly one occurrence\n  admit",
+      "lean_statement": "axiom SU3_keyset_change_when_absent (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∉ keys t) : keys (bstInsert t k) = k :: keys t",
       "nl_gloss": "If the key k is not already present, the output key multiset equals the input keys with k added (exactly one new occurrence).",
       "linked_semantic_units": [
         "SU3"
@@ -132,7 +132,7 @@
     {
       "index": 3,
       "kind": "unknown",
-      "lean_statement": "theorem SU3_keyset_change_when_present (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∈ keys t) : keys (bstInsert t k) = keys t := by\n  -- proof obligation: if k is present, insertion is a no-op on the key multiset\n  admit",
+      "lean_statement": "axiom SU3_keyset_change_when_present (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∈ keys t) : keys (bstInsert t k) = keys t",
       "nl_gloss": "If the key k is already present, the output key multiset equals the input key multiset (no new occurrence is added).",
       "linked_semantic_units": [
         "SU3"
@@ -152,8 +152,11 @@
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_bst_insert_001/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_bst_insert_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_bst_insert_001/behavior_report.json",

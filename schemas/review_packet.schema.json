@@ -89,7 +89,17 @@
       "required": ["elaborated", "diagnostics_path"],
       "properties": {
         "elaborated": { "type": ["boolean", "null"] },
-        "diagnostics_path": { "type": "string", "minLength": 1 }
+        "diagnostics_path": { "type": "string", "minLength": 1 },
+        "admit_count": { "type": "integer", "minimum": 0 },
+        "axiom_dependencies": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "proof_mode": {
+          "type": "string",
+          "enum": ["axiom_backed", "definition_backed"]
+        }
       }
     },
     "behavior_check": {

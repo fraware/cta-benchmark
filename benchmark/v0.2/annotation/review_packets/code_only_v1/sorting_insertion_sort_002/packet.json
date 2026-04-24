@@ -118,8 +118,11 @@
     "vacuous_theorems_present": false
   },
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/behavior_report.json",

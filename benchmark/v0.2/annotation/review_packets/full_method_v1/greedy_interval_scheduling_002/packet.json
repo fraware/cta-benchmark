@@ -115,7 +115,7 @@
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "theorem SU2_feasible_witness_exists (intervals : Intervals) :\n  ∃ sel : List Nat,\n    Feasible intervals sel ∧\n      intervalScheduling intervals = sel.length := by\n  classical\n  -- Placeholder: the proof obligation requires existence of a feasible subset whose size equals the returned value.\n  admit",
+      "lean_statement": "axiom SU2_feasible_witness_exists (intervals : Intervals) :\n  ∃ sel : List Nat,\n    Feasible intervals sel ∧\n      intervalScheduling intervals = sel.length",
       "nl_gloss": "There exists a selection of indices that is pairwise non-overlapping, and its cardinality equals the algorithm’s returned maximum count.",
       "linked_semantic_units": [
         "SU2"
@@ -125,7 +125,7 @@
     {
       "index": 2,
       "kind": "optimality",
-      "lean_statement": "theorem SU3_optimality (intervals : Intervals) :\n  ∀ sel : List Nat,\n    Feasible intervals sel →\n      sel.length ≤ intervalScheduling intervals := by\n  classical\n  -- Placeholder: no feasible non-overlapping subset can be larger than the returned count.\n  admit",
+      "lean_statement": "axiom SU3_optimality (intervals : Intervals) :\n  ∀ sel : List Nat,\n    Feasible intervals sel →\n      sel.length ≤ intervalScheduling intervals",
       "nl_gloss": "For any pairwise non-overlapping selection, its size is at most the returned value (optimality).",
       "linked_semantic_units": [
         "SU3"
@@ -155,7 +155,7 @@
     {
       "index": 5,
       "kind": "unknown",
-      "lean_statement": "theorem SU5_empty_returns_zero :\n  intervalScheduling ([] : Intervals) = 0 := by\n  -- Placeholder: the algorithm returns 0 on empty input.\n  admit",
+      "lean_statement": "axiom SU5_empty_returns_zero :\n  intervalScheduling ([] : Intervals) = 0",
       "nl_gloss": "When the input list of intervals is empty, the returned maximum number of non-overlapping intervals is 0.",
       "linked_semantic_units": [
         "SU5"
@@ -164,8 +164,11 @@
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/greedy_interval_scheduling_002/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/greedy_interval_scheduling_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/greedy_interval_scheduling_002/behavior_report.json",

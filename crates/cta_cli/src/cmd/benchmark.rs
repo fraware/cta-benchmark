@@ -302,7 +302,7 @@ pub fn paper_orchestrate(workspace: &Path, args: PaperOrchestrateArgs) -> Result
         },
     )?;
 
-    println!("orchestrate: phase 4/6 validate benchmark --release");
+    println!("orchestrate: phase 4/7 validate benchmark --release");
     validate::benchmark(
         workspace,
         validate::BenchmarkArgs {
@@ -313,7 +313,75 @@ pub fn paper_orchestrate(workspace: &Path, args: PaperOrchestrateArgs) -> Result
         },
     )?;
 
-    println!("orchestrate: phase 5/6 annotate verify-review-packets");
+    println!("orchestrate: phase 5/7 annotate refresh-lean-check (strict M1)");
+    let proof_dashboard_json = review_packets_root.join("proof_completion_dashboard.json");
+    let proof_dashboard_csv = review_packets_root.join("proof_completion_dashboard.csv");
+    let wave1_worklist_json = review_packets_root.join("wave1_proof_worklist.json");
+    let wave1_worklist_csv = review_packets_root.join("wave1_proof_worklist.csv");
+    let global_worklist_json = review_packets_root.join("global_proof_worklist.json");
+    let global_worklist_csv = review_packets_root.join("global_proof_worklist.csv");
+    let execution_plan_json = review_packets_root.join("proof_execution_plan.json");
+    annotate::refresh_lean_check(
+        workspace,
+        annotate::RefreshLeanCheckArgs {
+            benchmark_version: args.benchmark_version.clone(),
+            packets_root: review_packets_root.clone(),
+            dashboard_json: Some(proof_dashboard_json.clone()),
+            dashboard_csv: Some(proof_dashboard_csv.clone()),
+            wave1_worklist_json: Some(wave1_worklist_json.clone()),
+            wave1_worklist_csv: Some(wave1_worklist_csv.clone()),
+            global_worklist_json: Some(global_worklist_json.clone()),
+            global_worklist_csv: Some(global_worklist_csv.clone()),
+            execution_plan_json: Some(execution_plan_json.clone()),
+            axiomize_wave1_admits: false,
+            strict_m1: true,
+        },
+    )?;
+    if let Ok(raw) = std::fs::read_to_string(&proof_dashboard_json) {
+        if let Ok(v) = serde_json::from_str::<serde_json::Value>(&raw) {
+            let elaborated = v
+                .get("elaborated_packets")
+                .and_then(|x| x.as_u64())
+                .unwrap_or(0);
+            let total = v.get("total_packets").and_then(|x| x.as_u64()).unwrap_or(0);
+            let violations = v
+                .get("strict_m1_violations")
+                .and_then(|x| x.as_array())
+                .map(|a| a.len())
+                .unwrap_or(0);
+            println!(
+                "orchestrate: proof readiness elaborated={}/{} strict_m1_violations={}",
+                elaborated, total, violations
+            );
+            println!(
+                "orchestrate: proof dashboard json={} csv={}",
+                proof_dashboard_json.display(),
+                proof_dashboard_csv.display()
+            );
+            if let Some(batch) = v.get("wave1_next_batch").and_then(|x| x.as_array()) {
+                println!(
+                    "orchestrate: wave1 next proving batch={} json={} csv={}",
+                    batch.len(),
+                    wave1_worklist_json.display(),
+                    wave1_worklist_csv.display()
+                );
+            }
+            if let Some(batch) = v.get("all_next_batch").and_then(|x| x.as_array()) {
+                println!(
+                    "orchestrate: global next proving batch={} json={} csv={}",
+                    batch.len(),
+                    global_worklist_json.display(),
+                    global_worklist_csv.display()
+                );
+            }
+            println!(
+                "orchestrate: grouped execution plan={}",
+                execution_plan_json.display()
+            );
+        }
+    }
+
+    println!("orchestrate: phase 6/7 annotate verify-review-packets");
     annotate::verify_review_packets(
         workspace,
         annotate::VerifyReviewPacketsArgs {
@@ -324,7 +392,7 @@ pub fn paper_orchestrate(workspace: &Path, args: PaperOrchestrateArgs) -> Result
         },
     )?;
 
-    println!("orchestrate: phase 6/6 reports package");
+    println!("orchestrate: phase 7/7 reports package");
     reports::package(
         workspace,
         reports::PackageArgs {

@@ -9,20 +9,22 @@ else. Generated obligations import this file and reference its names.
 import CTA.Core.Prelude
 import CTA.Core.Types
 import CTA.Core.Util
+import CTA.Benchmark.Arrays.MaxSubarrayTheory
 
 namespace CTA.Benchmark.Arrays.MaxSubarray002
 
 open CTA.Core
+open CTA.Benchmark.Arrays.MaxSubarrayTheory
 
 /-- Input slice abstracted as `List Int`. -/
-abbrev Arr := List Int
+abbrev Arr := MaxSubarrayTheory.Arr
 
 /-- The declarative target: the maximum sum over all contiguous non-empty
     subslices of `arr`. Left opaque so obligations reason about it abstractly. -/
-opaque maxSubarray : Arr → Int
+abbrev maxSubarray := MaxSubarrayTheory.maxSubarray
 
 /-- Sum of a contiguous slice `arr.drop i |>.take (j - i)`; semantic helper
     for obligations that need to mention the witnessed subslice sum. -/
-opaque sliceSum : Arr → Nat → Nat → Int
+abbrev sliceSum := MaxSubarrayTheory.sliceSum
 
 end CTA.Benchmark.Arrays.MaxSubarray002

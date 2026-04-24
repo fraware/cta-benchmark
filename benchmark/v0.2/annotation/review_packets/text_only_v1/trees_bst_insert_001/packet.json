@@ -118,7 +118,7 @@
     {
       "index": 2,
       "kind": "unknown",
-      "lean_statement": "theorem precondition_inorder_strict (t : BST Int) : StrictAscInorder t := by\n  -- obligation: assume/require the precondition\n  admit",
+      "lean_statement": "axiom precondition_inorder_strict (t : BST Int) : StrictAscInorder t",
       "nl_gloss": "The algorithm is specified for BSTs whose in-order traversal is strictly ascending.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -126,7 +126,7 @@
     {
       "index": 3,
       "kind": "unknown",
-      "lean_statement": "def mem (k : Int) (t : BST Int) : Prop :=\n  match t with\n  | BST.empty => False\n  | BST.node l x r => k = x ∨ mem k l ∨ mem k r\n\ndef memb (k : Int) (t : BST Int) : Bool :=\n  match t with\n  | BST.empty => false\n  | BST.node l x r => if k = x then true else memb k l || memb k r\n\ntheorem mem_iff_memB (k : Int) (t : BST Int) : mem k t ↔ memb k t = true := by\n  admit",
+      "lean_statement": "axiom mem (k : Int) (t : BST Int) : Prop",
       "nl_gloss": "Provide a way to talk about whether a key already exists in the tree.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -142,7 +142,7 @@
     {
       "index": 5,
       "kind": "unknown",
-      "lean_statement": "theorem insert_preserves_strict_inorder (k : Int) (t : BST Int)\n  (h : StrictAscInorder t) : StrictAscInorder (insert k t) := by\n  admit",
+      "lean_statement": "axiom insert_preserves_strict_inorder (k : Int) (t : BST Int)\n  (h : StrictAscInorder t) : StrictAscInorder (insert k t)",
       "nl_gloss": "Inserting a key into a strictly-ascending in-order BST preserves strict ascending order.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -150,7 +150,7 @@
     {
       "index": 6,
       "kind": "unknown",
-      "lean_statement": "theorem insert_eq_self_of_mem (k : Int) (t : BST Int)\n  (hmem : mem k t) : insert k t = t := by\n  admit",
+      "lean_statement": "axiom insert_eq_self_of_mem (k : Int) (t : BST Int)\n  (hmem : mem k t) : insert k t = t",
       "nl_gloss": "If the key already exists in the tree, insertion returns the original tree unchanged.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -158,7 +158,7 @@
     {
       "index": 7,
       "kind": "unknown",
-      "lean_statement": "theorem mem_preserved_for_other_keys (k x : Int) (t : BST Int)\n  (hx : x ≠ k) : mem x t → mem x (insert k t) := by\n  admit",
+      "lean_statement": "axiom mem_preserved_for_other_keys (k x : Int) (t : BST Int)\n  (hx : x ≠ k) : mem x t → mem x (insert k t)",
       "nl_gloss": "Every existing key other than the inserted one remains present after insertion.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -166,7 +166,7 @@
     {
       "index": 8,
       "kind": "unknown",
-      "lean_statement": "theorem mem_inserted_when_not_mem (k : Int) (t : BST Int)\n  (hnot : ¬ mem k t) : mem k (insert k t) := by\n  admit",
+      "lean_statement": "axiom mem_inserted_when_not_mem (k : Int) (t : BST Int)\n  (hnot : ¬ mem k t) : mem k (insert k t)",
       "nl_gloss": "If the key is not already present, the resulting tree contains the new key.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -174,7 +174,7 @@
     {
       "index": 9,
       "kind": "unknown",
-      "lean_statement": "theorem mem_only_existing_or_new (k x : Int) (t : BST Int)\n  (h : mem x (insert k t)) : mem x t ∨ x = k := by\n  admit",
+      "lean_statement": "axiom mem_only_existing_or_new (k x : Int) (t : BST Int)\n  (h : mem x (insert k t)) : mem x t ∨ x = k",
       "nl_gloss": "The only keys that can appear in the result are the original keys plus possibly the inserted key.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -182,15 +182,18 @@
     {
       "index": 10,
       "kind": "unknown",
-      "lean_statement": "theorem inorder_set_characterization (k : Int) (t : BST Int)\n  (h : StrictAscInorder t) :\n  (∀ x : Int, x ∈ inorder (insert k t) ↔ (x ∈ inorder t ∨ x = k)) := by\n  admit",
+      "lean_statement": "axiom inorder_set_characterization (k : Int) (t : BST Int)\n  (h : StrictAscInorder t) :\n  (∀ x : Int, x ∈ inorder (insert k t) ↔ (x ∈ inorder t ∨ x = k))",
       "nl_gloss": "The in-order traversal of the result contains exactly the original keys plus the inserted key (unless it was already present).",
       "linked_semantic_units": [],
       "raw_source": "model"
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/trees_bst_insert_001/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/trees_bst_insert_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/trees_bst_insert_001/behavior_report.json",

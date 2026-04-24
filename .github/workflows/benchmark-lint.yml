@@ -53,3 +53,25 @@ jobs:
 
       - name: benchmark lint v0.1 (authoring heuristics, strict)
         run: cargo run -p cta_cli --quiet -- benchmark lint --version v0.1 --strict-authoring --json
+
+      - name: refresh lean-check v0.2 (strict M1 gate)
+        run: |
+          cargo run -p cta_cli --quiet -- annotate refresh-lean-check \
+            --benchmark-version v0.2 \
+            --packets-root benchmark/v0.2/annotation/review_packets \
+            --strict-m1
+
+      - name: upload proof completion dashboard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-completion-dashboard-benchmark-lint
+          path: |
+            benchmark/v0.2/annotation/review_packets/proof_completion_dashboard.json
+            benchmark/v0.2/annotation/review_packets/proof_completion_dashboard.csv
+            benchmark/v0.2/annotation/review_packets/wave1_proof_worklist.json
+            benchmark/v0.2/annotation/review_packets/wave1_proof_worklist.csv
+            benchmark/v0.2/annotation/review_packets/global_proof_worklist.json
+            benchmark/v0.2/annotation/review_packets/global_proof_worklist.csv
+            benchmark/v0.2/annotation/review_packets/proof_execution_plan.json
+          if-no-files-found: error

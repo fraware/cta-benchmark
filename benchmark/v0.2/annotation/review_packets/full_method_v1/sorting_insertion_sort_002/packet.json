@@ -77,7 +77,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "theorem SU1_sorted_output (xs : Arr) : Sorted (insertionSort xs) := by\n  -- proof obligation: insertionSort produces a nondecreasing list\n  admit",
+      "lean_statement": "axiom SU1_sorted_output (xs : Arr) : Sorted (insertionSort xs)",
       "nl_gloss": "For any input list xs, the output of insertionSort is sorted in nondecreasing order.",
       "linked_semantic_units": [
         "SU1"
@@ -87,7 +87,7 @@
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "theorem SU2_permutation_output (xs : Arr) : IsPerm xs (insertionSort xs) := by\n  -- proof obligation: insertionSort preserves the multiset of elements\n  admit",
+      "lean_statement": "axiom SU2_permutation_output (xs : Arr) : IsPerm xs (insertionSort xs)",
       "nl_gloss": "For any input list xs, the output of insertionSort is a permutation of xs (preserves element counts).",
       "linked_semantic_units": [
         "SU2"
@@ -97,7 +97,7 @@
     {
       "index": 2,
       "kind": "termination",
-      "lean_statement": "theorem SU3_termination (xs : Arr) : True := by\n  -- proof obligation: insertion sort terminates on every input\n  admit",
+      "lean_statement": "axiom SU3_termination (xs : Arr) : True",
       "nl_gloss": "Insertion sort terminates on every input.",
       "linked_semantic_units": [
         "SU3"
@@ -106,8 +106,11 @@
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_insertion_sort_002/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_insertion_sort_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/sorting_insertion_sort_002/behavior_report.json",

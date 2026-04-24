@@ -4,38 +4,20 @@ Scaffold for instance `trees_lowest_common_ancestor_002`.
 
 import CTA.Core.Prelude
 import CTA.Core.Types
+import CTA.Benchmark.Trees.LowestCommonAncestorTheory
 
 namespace CTA.Benchmark.Trees.LowestCommonAncestor002
 
 open CTA.Core
+open CTA.Benchmark.Trees.LowestCommonAncestorTheory
 
-/-- Binary tree with integer keys. -/
-inductive Tree where
-  | nil : Tree
-  | node : Tree → Int → Tree → Tree
-  deriving Repr, DecidableEq
-
-/-- In-order traversal. -/
-opaque inorder : Tree → List Int
-
-/-- BST invariant. -/
-def IsBst (t : Tree) : Prop :=
-  (inorder t).Pairwise (· < ·)
-
-/-- Membership: `k` appears as a node key in `t`. -/
-opaque HasKey : Tree → Int → Prop
-
-/-- Subtree relation: `sub` appears as a subtree of `t`. -/
-opaque IsSubtree : Tree → Tree → Prop
-
-/-- Proper subtree (subtree but not equal). -/
-def IsProperSubtree (sub t : Tree) : Prop :=
-  IsSubtree sub t ∧ sub ≠ t
-
-/-- Subtree of `t` rooted at the unique node whose key is `a` (when such a node exists). -/
-axiom subtreeRootedAt : Tree → Int → Tree
-
-/-- Declarative model of the reference `lca_bst`. -/
-opaque lcaBst : Tree → Int → Int → Option Int
+abbrev Tree := LowestCommonAncestorTheory.Tree
+abbrev inorder := LowestCommonAncestorTheory.inorder
+abbrev IsBst := LowestCommonAncestorTheory.IsBst
+abbrev HasKey := LowestCommonAncestorTheory.HasKey
+abbrev IsSubtree := LowestCommonAncestorTheory.IsSubtree
+abbrev IsProperSubtree := LowestCommonAncestorTheory.IsProperSubtree
+abbrev subtreeRootedAt := LowestCommonAncestorTheory.subtreeRootedAt
+abbrev lcaBst := LowestCommonAncestorTheory.lcaBst
 
 end CTA.Benchmark.Trees.LowestCommonAncestor002

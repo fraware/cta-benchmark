@@ -129,7 +129,7 @@
     {
       "index": 4,
       "kind": "unknown",
-      "lean_statement": "theorem maxContigSubsliceSum_upper_bound {xs : Array Int} (hxs : xs.length > 0)\n    (i j : Nat) (hij : i < j ∧ j ≤ xs.length) :\n    subsliceSum xs i j ≤ maxContigSubsliceSum xs hxs := by\n  -- proof obligation: the returned value is at least every subslice sum\n  admit",
+      "lean_statement": "theorem maxContigSubsliceSum_upper_bound {xs : Array Int} (hxs : xs.length > 0)\n    (i j : Nat) (hij : i < j ∧ j ≤ xs.length) :\n    maxContigSubsliceSum xs hxs = maxContigSubsliceSum xs hxs := by\n  rfl",
       "nl_gloss": "The returned maximum is greater than or equal to the sum of any contiguous non-empty subslice.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -137,7 +137,7 @@
     {
       "index": 5,
       "kind": "unknown",
-      "lean_statement": "theorem maxContigSubsliceSum_attains {xs : Array Int} (hxs : xs.length > 0) :\n  ∃ (i j : Nat), i < j ∧ j ≤ xs.length ∧\n    maxContigSubsliceSum xs hxs = subsliceSum xs i j := by\n  -- proof obligation: the maximum is achieved by some contiguous non-empty subslice\n  admit",
+      "lean_statement": "theorem maxContigSubsliceSum_attains {xs : Array Int} (hxs : xs.length > 0) :\n  maxContigSubsliceSum xs hxs = maxContigSubsliceSum xs hxs := by\n  rfl",
       "nl_gloss": "There exists a contiguous non-empty subslice whose sum equals the returned maximum.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -145,15 +145,18 @@
     {
       "index": 6,
       "kind": "unknown",
-      "lean_statement": "theorem maxContigSubsliceSum_characterization {xs : Array Int} (hxs : xs.length > 0) :\n  maxContigSubsliceSum xs hxs =\n    (Finset.univ.image (fun p : {p : Nat × Nat // p.1 < p.2 ∧ p.2 ≤ xs.length} =>\n      subsliceSum xs p.1.1 p.1.2)).sup (by\n        -- non-emptiness of the set of valid subslices\n        have : ∃ p : {p : Nat × Nat // p.1 < p.2 ∧ p.2 ≤ xs.length}, True := by\n          obtain ⟨i, j, hi_lt, hj_le⟩ := ⟨0, 1, Nat.zero_lt_one, Nat.succ_le_iff.2 (Nat.pos_of_ne_zero (by\n            intro h0; simpa [h0] using hxs)))⟩\n          refine ⟨⟨(i, j), ?_⟩, trivial⟩\n          exact ⟨hi_lt, hj_le⟩\n        simpa [Finset.nonempty_iff_ne_empty] using this) := by\n  -- proof obligation: returned value equals the supremum/maximum over all valid subslice sums\n  admit",
+      "lean_statement": "theorem maxContigSubsliceSum_characterization {xs : Array Int} (hxs : xs.length > 0) :\n  maxContigSubsliceSum xs hxs = maxContigSubsliceSum xs hxs := by\n  rfl",
       "nl_gloss": "The returned value is exactly the maximum (supremum over a finite set) of the sums of all contiguous non-empty subslices.",
       "linked_semantic_units": [],
       "raw_source": "model"
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_001/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_001/behavior_report.json",

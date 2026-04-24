@@ -4,30 +4,19 @@ Scaffold for instance `greedy_interval_scheduling_001`.
 
 import CTA.Core.Prelude
 import CTA.Core.Types
+import CTA.Benchmark.Greedy.IntervalSchedulingTheory
 
 namespace CTA.Benchmark.Greedy.IntervalScheduling001
 
 open CTA.Core
+open CTA.Benchmark.Greedy.IntervalSchedulingTheory
 
-/-- A closed-open interval `[start, end)`. -/
-structure Interval where
-  start : Int
-  stop : Int
-  deriving Repr, DecidableEq
+abbrev Interval := IntervalSchedulingTheory.Interval
+abbrev Intervals := IntervalSchedulingTheory.Intervals
+abbrev NonOverlap := IntervalSchedulingTheory.NonOverlap
+abbrev Feasible := IntervalSchedulingTheory.Feasible
 
-/-- A list of intervals. -/
-abbrev Intervals := List Interval
-
-/-- Two intervals are non-overlapping if one ends at or before the other
-    starts. Sharing only an endpoint counts as non-overlapping. -/
-def NonOverlap (a b : Interval) : Prop :=
-  a.stop ≤ b.start ∨ b.stop ≤ a.start
-
-/-- A selection of indices is pairwise non-overlapping relative to an
-    interval list; reference-only relation. -/
-opaque Feasible : Intervals → List Nat → Prop
-
-/-- Declarative model of the reference `interval_scheduling`. -/
-opaque intervalScheduling : Intervals → Nat
+/-- Shared definition-backed interval scheduling model. -/
+abbrev intervalScheduling := IntervalSchedulingTheory.intervalScheduling
 
 end CTA.Benchmark.Greedy.IntervalScheduling001

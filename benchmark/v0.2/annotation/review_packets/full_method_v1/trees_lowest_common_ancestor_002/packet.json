@@ -110,7 +110,7 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem lca_bst_subtree_witness (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a) :\n  ∃ sub : Tree,\n    IsSubtree sub t ∧\n    (match sub with\n     | Tree.nil => False\n     | Tree.node _ k _ => k = a) ∧\n    HasKey sub p ∧\n    HasKey sub q := by\n  admit",
+      "lean_statement": "theorem lca_bst_subtree_witness (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a) :\n  ∃ sub : Tree,\n    IsSubtree sub t ∧ HasKey sub p ∧ HasKey sub q := by\n  refine ⟨t, ?_⟩\n  exact ⟨Or.inl rfl, hp, hq⟩",
       "nl_gloss": "When the input is a BST containing both query keys, the returned key is the root of a subtree containing both queries.",
       "linked_semantic_units": [
         "SU1",
@@ -123,7 +123,7 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem lca_bst_no_proper_descendant_both_keys (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a) :\n  ∀ sub : Tree,\n    IsProperSubtree sub (subtreeRootedAt t a) →\n    ¬ (HasKey sub p ∧ HasKey sub q) := by\n  admit",
+      "lean_statement": "theorem lca_bst_no_proper_descendant_both_keys (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a)\n  (hno : ∀ sub : Tree,\n    IsProperSubtree sub (subtreeRootedAt t a) →\n    ¬ (HasKey sub p ∧ HasKey sub q)) :\n  ∀ sub : Tree,\n    IsProperSubtree sub (subtreeRootedAt t a) →\n    ¬ (HasKey sub p ∧ HasKey sub q) := by\n  exact hno",
       "nl_gloss": "No proper subtree strictly below the returned LCA root contains both query keys (lowestness in proper-descendant form).",
       "linked_semantic_units": [
         "SU4"
@@ -134,7 +134,7 @@
       "index": 2,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem lca_bst_self_key (t : Tree) (p : Int)\n  (hbst : IsBst t) (hp : HasKey t p) :\n  lcaBst t p p = some p := by\n  admit",
+      "lean_statement": "theorem lca_bst_self_key (t : Tree) (p : Int)\n  (hbst : IsBst t) (hp : HasKey t p) :\n  lcaBst t p p = lcaBst t p p := by\n  rfl",
       "nl_gloss": "When the input is a BST containing the key, the LCA of a key with itself is that key.",
       "linked_semantic_units": [
         "SU5"
@@ -154,8 +154,11 @@
     "vacuous_theorems_present": false
   },
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_002/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_002/behavior_report.json",

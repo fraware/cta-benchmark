@@ -83,6 +83,22 @@ harness.json        ─┘                         │
                                 cta_reports ──> CSV / LaTeX / PDF / MD
 ```
 
+For paper-track Lean proof completion (`v0.2` review packets), an additional
+artifact stream is enforced:
+
+```
+review_packets/**/packet.json + scaffold.lean
+    -> cta annotate verify-review-packets
+    -> cta annotate refresh-lean-check --strict-m1
+    -> proof_completion_dashboard.{json,csv}
+       wave1_proof_worklist.{json,csv}
+       global_proof_worklist.{json,csv}
+       proof_execution_plan.json
+```
+
+Current repository baseline: strict refresh is fully green for `v0.2`
+(`m2_ready_packets = 93 / 93`, `global_proof_worklist.count = 0`).
+
 ## Hard mission rules
 
 These rules are enforced by CI or by the benchmark linter:

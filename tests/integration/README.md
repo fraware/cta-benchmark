@@ -17,6 +17,8 @@ green on every push.
 | `cta_generate/tests/code_only_packet_regression.rs`     | Curated `code_only_v1` review `packet.json` set: schema-adjacent checks, layers, vacuity, per-instance theorem hygiene |
 | `cta_generate/tests/family_packet_regression.rs`        | Cross-instance template coherence (BFS adjacency, binary-search success shape, LCA, coin change, LCS)                 |
 | `cta_generate/tests/naive_concat_packet_regression.rs`| Canonical `naive_concat_v1` exemplar packets                                                                            |
+| `cta_generate/tests/full_method_priority1_packet_regression.rs` | Curated `full_method_v1` high-priority packet regression set                                                    |
+| `cta_generate/tests/full_method_priority2_packet_regression.rs` | Curated `full_method_v1` secondary packet regression set                                                        |
 | `cta_generate/tests/review_packet_lean_lint.rs`        | Repo-wide `review_packets/**/packet.json` static checks (vacuity shells, Dijkstra `PathWeight`, coin `≤`, LCA shape on curated systems) |
 
 End-to-end CLI orchestration is additionally exercised by
@@ -28,6 +30,10 @@ End-to-end CLI orchestration is additionally exercised by
 4. `cta experiment --config configs/experiments/pilot_v1.json --dry-run`
 5. `cta experiment --config configs/experiments/pilot_v1.json`
 6. `cta validate file --schema {run_manifest, results_bundle} --path <...>`
+7. `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+
+Current baseline expectation for this gate: `m2_ready_packets = 93 / 93` and
+`global_proof_worklist.count = 0`.
 
 No integration test reaches the network; every provider call goes
 through `StubProvider`, and `OpenAiProvider` / `AnthropicProvider` are

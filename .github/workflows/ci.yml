@@ -47,6 +47,28 @@ jobs:
       - name: cta validate benchmark v0.1
         run: cargo run -p cta_cli --quiet -- validate benchmark --version v0.1 --release
 
+      - name: cta refresh lean-check v0.2 (strict M1 gate)
+        run: |
+          cargo run -p cta_cli --quiet -- annotate refresh-lean-check \
+            --benchmark-version v0.2 \
+            --packets-root benchmark/v0.2/annotation/review_packets \
+            --strict-m1
+
+      - name: upload proof completion dashboard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-completion-dashboard-ci
+          path: |
+            benchmark/v0.2/annotation/review_packets/proof_completion_dashboard.json
+            benchmark/v0.2/annotation/review_packets/proof_completion_dashboard.csv
+            benchmark/v0.2/annotation/review_packets/wave1_proof_worklist.json
+            benchmark/v0.2/annotation/review_packets/wave1_proof_worklist.csv
+            benchmark/v0.2/annotation/review_packets/global_proof_worklist.json
+            benchmark/v0.2/annotation/review_packets/global_proof_worklist.csv
+            benchmark/v0.2/annotation/review_packets/proof_execution_plan.json
+          if-no-files-found: error
+
       - name: cta experiment dry-run (pilot_v1)
         run: cargo run -p cta_cli --quiet -- experiment --config configs/experiments/pilot_v1.json --dry-run
 

@@ -89,6 +89,30 @@ This does three things in order:
 The release is green only when missing annotation pairs are zero and gold
 signoff is valid.
 
+## Lean proof-completion burn-down (`v0.2`)
+
+After each packet/scaffold migration wave, run:
+
+- `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+
+This gate refreshes `lean_check` metadata and emits:
+
+- `proof_completion_dashboard.json/csv`
+- `wave1_proof_worklist.json/csv`
+- `global_proof_worklist.json/csv`
+- `proof_execution_plan.json`
+
+Use `proof_execution_plan.json` as the source of truth for next proving tracks.
+Priority order is:
+- discharge `admit_debt` in definition-backed families,
+- then migrate `axiom_backed_interface` families to definition-backed interfaces,
+- then rerun strict refresh until the global worklist is empty.
+
+Current repository snapshot is fully burned down for `v0.2` review packets:
+- `m2_ready_packets = 93 / 93`,
+- `summary_by_gap_reason = {m2_ready: 93}`,
+- `global_proof_worklist.count = 0`.
+
 ## Human review packet workflow
 
 For each batch CSV, generate structured review packet templates:

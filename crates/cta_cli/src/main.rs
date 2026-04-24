@@ -125,6 +125,8 @@ enum AnnotateCmd {
     IngestDraft(cmd::annotate::IngestDraftArgs),
     /// Validate all review packet packet.json files and emit signed summary.
     VerifyReviewPackets(cmd::annotate::VerifyReviewPacketsArgs),
+    /// Recompute lean_check metadata and emit proof dashboard.
+    RefreshLeanCheck(cmd::annotate::RefreshLeanCheckArgs),
 }
 
 #[derive(Debug, Subcommand)]
@@ -201,6 +203,9 @@ fn main() -> ExitCode {
         }
         Command::Annotate(AnnotateCmd::VerifyReviewPackets(a)) => {
             cmd::annotate::verify_review_packets(&workspace, a)
+        }
+        Command::Annotate(AnnotateCmd::RefreshLeanCheck(a)) => {
+            cmd::annotate::refresh_lean_check(&workspace, a)
         }
         Command::Metrics(MetricsCmd::Compute(a)) => cmd::metrics::compute(&workspace, a),
         Command::Reports(ReportsCmd::Build(a)) => cmd::reports::build(&workspace, a),

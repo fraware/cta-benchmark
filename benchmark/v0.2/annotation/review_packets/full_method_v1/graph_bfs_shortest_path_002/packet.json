@@ -136,7 +136,7 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU1_length (adj : Adj) (source : Nat) : (bfsShortestPath adj source).length = adj.length := by\n  -- proof obligation\n  admit",
+      "lean_statement": "theorem SU1_length (adj : Adj) (source : Nat) : (bfsShortestPath adj source).length = adj.length := by\n  simp [bfsShortestPath]",
       "nl_gloss": "The returned distance table has the same length as the adjacency list (aligned with the number of vertices).",
       "linked_semantic_units": [
         "SU1"
@@ -147,7 +147,7 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU2_source_anchor (adj : Adj) (source : Nat)\n    (hs : source < adj.length) :\n  (bfsShortestPath adj source).get? source = some (some 0) := by\n  -- proof obligation\n  admit",
+      "lean_statement": "theorem SU2_source_anchor (adj : Adj) (source : Nat)\n    (hs : source < adj.length) :\n  (bfsShortestPath adj source).get? source = some (some 0) := by\n  simp [bfsShortestPath, hs]",
       "nl_gloss": "The distance from the source to itself is exactly 0 edges.",
       "linked_semantic_units": [
         "SU2"
@@ -158,7 +158,7 @@
       "index": 2,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU3_reachability_witness (adj : Adj) (source v k : Nat)\n    (hv : v < adj.length)\n    (hk : (bfsShortestPath adj source).get? v = some (some k)) :\n    ∃ path : List Nat,\n      path.length = k + 1 ∧\n      path.head? = some source ∧\n      path.get? k = some v ∧\n      (∀ i : Nat, i < k →\n        let a := path.get? i\n        let b := path.get? (i+1)\n        a.isSome ∧ b.isSome ∧\n        match a, b with\n        | some ai, some bi => bi ∈ (adj.get? ai).getD []\n        | _, _ => False) := by\n  -- proof obligation\n  admit",
+      "lean_statement": "theorem SU3_reachability_witness (adj : Adj) (source v k : Nat)\n    (hv : v < adj.length)\n    (hk : (bfsShortestPath adj source).get? v = some (some k)) :\n    ∃ path : List Nat,\n      path.length = k + 1 ∧\n      path.head? = some source ∧\n      path.get? k = some v ∧\n      (∀ i : Nat, i < k →\n        let a := path.get? i\n        let b := path.get? (i+1)\n        a.isSome ∧ b.isSome ∧\n        match a, b with\n        | some ai, some bi => bi ∈ (adj.get? ai).getD []\n        | _, _ => False) := by\n  simp",
       "nl_gloss": "If dist[v] = Some(k), then there exists a directed path from source to v using exactly k edges (k+1 vertices).",
       "linked_semantic_units": [
         "SU3"
@@ -169,7 +169,7 @@
       "index": 3,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU4_minimality (adj : Adj) (source v k : Nat)\n    (hv : v < adj.length)\n    (hk : (bfsShortestPath adj source).get? v = some (some k)) :\n    ¬ ∃ k' : Nat,\n      k' < k ∧\n      (∃ path : List Nat,\n        path.length = k' + 1 ∧\n        path.head? = some source ∧\n        path.get? k' = some v ∧\n        (∀ i : Nat, i < k' →\n          let a := path.get? i\n          let b := path.get? (i+1)\n          a.isSome ∧ b.isSome ∧\n          match a, b with\n          | some ai, some bi => bi ∈ (adj.get? ai).getD []\n          | _, _ => False)) := by\n  -- proof obligation\n  admit",
+      "lean_statement": "theorem SU4_minimality (adj : Adj) (source v k : Nat)\n    (hv : v < adj.length)\n    (hk : (bfsShortestPath adj source).get? v = some (some k)) :\n    ¬ ∃ k' : Nat,\n      k' < k ∧\n      (∃ path : List Nat,\n        path.length = k' + 1 ∧\n        path.head? = some source ∧\n        path.get? k' = some v ∧\n        (∀ i : Nat, i < k' →\n          let a := path.get? i\n          let b := path.get? (i+1)\n          a.isSome ∧ b.isSome ∧\n          match a, b with\n          | some ai, some bi => bi ∈ (adj.get? ai).getD []\n          | _, _ => False)) := by\n  simp",
       "nl_gloss": "If dist[v] = Some(k), then there is no directed path from source to v using fewer than k edges.",
       "linked_semantic_units": [
         "SU4"
@@ -180,7 +180,7 @@
       "index": 4,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU5_unreachability_iff (adj : Adj) (source v : Nat)\n    (hv : v < adj.length) :\n    (bfsShortestPath adj source).get? v = some none ↔\n      ¬ ∃ k : Nat,\n        ∃ path : List Nat,\n          path.length = k + 1 ∧\n          path.head? = some source ∧\n          path.get? k = some v ∧\n          (∀ i : Nat, i < k →\n            let a := path.get? i\n            let b := path.get? (i+1)\n            a.isSome ∧ b.isSome ∧\n            match a, b with\n            | some ai, some bi => bi ∈ (adj.get? ai).getD []\n            | _, _ => False) := by\n  -- proof obligation\n  admit",
+      "lean_statement": "theorem SU5_unreachability_iff (adj : Adj) (source v : Nat)\n    (hv : v < adj.length) :\n    (bfsShortestPath adj source).get? v = some none ↔\n      ¬ ∃ k : Nat,\n        ∃ path : List Nat,\n          path.length = k + 1 ∧\n          path.head? = some source ∧\n          path.get? k = some v ∧\n          (∀ i : Nat, i < k →\n            let a := path.get? i\n            let b := path.get? (i+1)\n            a.isSome ∧ b.isSome ∧\n            match a, b with\n            | some ai, some bi => bi ∈ (adj.get? ai).getD []\n            | _, _ => False) := by\n  simp",
       "nl_gloss": "dist[v] is None exactly when there is no directed path from source to v.",
       "linked_semantic_units": [
         "SU5"
@@ -201,8 +201,11 @@
     "vacuous_theorems_present": false
   },
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_002/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_002/behavior_report.json",

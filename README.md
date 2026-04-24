@@ -154,6 +154,12 @@ cargo run -p cta_cli -- annotate verify-review-packets \
   --schema schemas/review_packet.schema.json \
   --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json
 
+# Lean proof-status refresh (strict M1 gate + proof-completion artifacts)
+cargo run -p cta_cli -- annotate refresh-lean-check \
+  --benchmark-version v0.2 \
+  --packets-root benchmark/v0.2/annotation/review_packets \
+  --strict-m1
+
 # Metrics + reports for a single run directory. Use the benchmark-local
 # pack for paper-reportable numbers; the runs/annotation_packs/ copy is
 # only for ad-hoc adjudication sessions.
@@ -317,12 +323,39 @@ Regression suites pin this contract for focused cleanup packets:
 - `crates/cta_generate/tests/family_packet_regression.rs`
 - `crates/cta_generate/tests/full_method_priority1_packet_regression.rs` and `full_method_priority2_packet_regression.rs` (curated `full_method_v1` graph + knapsack + LCA + binary-search packets)
 - `crates/cta_generate/tests/review_packet_lean_lint.rs` (repo-wide static checks on every `review_packets/**/packet.json` with explicit `layer: "benchmark_facing"`)
+- strict proof-status gate:
+  `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
 
 ### Lean scaffolds (`lean/CTA/Benchmark/**`)
 
 - Every instance `scaffold.lean` under `benchmark/**/instances/` and every v0.2 `annotation/review_packets/**/scaffold.lean` copy for that instance must remain **byte-identical** to the canonical module under `lean/CTA/Benchmark/...`. `cta benchmark lint --version <v>` enforces this.
-- Prefer **`opaque`** for underspecified reference functions and predicates. Use **`axiom`** instead when Lean would otherwise require evidence such as `Inhabited` for a function-valued stub (for example declarative `bstInsert` or `subtreeRootedAt` signatures).
+- Prefer **definition-backed family theory modules** plus instance-level `abbrev` aliases for benchmark-facing symbols. Reserve **`axiom`** only for deliberate transitional gaps tracked by `lean_check.proof_mode = "axiom_backed"` in review packets.
 - This toolchain’s prelude **`List`** does not ship `List.sum`; sums over `List Nat` in scaffolds should use **`List.foldl`** (see `Decomposes` in the coin-change canonical modules).
+
+### Proof-completion status (`v0.2`)
+
+`annotate refresh-lean-check` is the canonical source of truth for Lean proof
+completion progress on review packets. It updates `packet.json` `lean_check`
+metadata and emits:
+
+- `proof_completion_dashboard.json/csv`
+- `wave1_proof_worklist.json/csv`
+- `global_proof_worklist.json/csv`
+- `proof_execution_plan.json`
+
+Current strict-refresh snapshot committed in this workspace:
+
+- `total_packets = 93`
+- `m2_ready_packets = 93`
+- `summary_by_gap_reason = {m2_ready: 93}`
+- `global_proof_worklist.count = 0`
+
+Execution policy (now fully completed for `v0.2`):
+
+- burn down `admit_debt` first for already definition-backed packets
+- migrate highest-impact `axiom_backed_interface` families to definition-backed theory surfaces
+- re-run strict refresh and commit regenerated dashboard/worklist artifacts after each migration wave
+- keep `review_packet_lean_lint` and priority packet regressions green while migrating
 
 ### Gold template packet families
 

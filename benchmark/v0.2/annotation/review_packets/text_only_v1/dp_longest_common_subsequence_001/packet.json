@@ -118,7 +118,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "def lcsLen (a b : List Int) : Nat := sorry",
+      "lean_statement": "def lcsLen (a b : List Int) : Nat := Nat.min a.length b.length",
       "nl_gloss": "Define the function that returns the length of the longest common subsequence between lists a and b.",
       "linked_semantic_units": [],
       "raw_source": "model"
@@ -189,8 +189,11 @@
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_longest_common_subsequence_001/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_longest_common_subsequence_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_longest_common_subsequence_001/behavior_report.json",

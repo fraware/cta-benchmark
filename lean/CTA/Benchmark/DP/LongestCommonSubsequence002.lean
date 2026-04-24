@@ -4,27 +4,16 @@ Scaffold for instance `dp_longest_common_subsequence_002`.
 
 import CTA.Core.Prelude
 import CTA.Core.Types
+import CTA.Benchmark.DP.LongestCommonSubsequenceTheory
 
 namespace CTA.Benchmark.DP.LongestCommonSubsequence002
 
 open CTA.Core
+open CTA.Benchmark.DP.LongestCommonSubsequenceTheory
 
-/-- Integer slice. -/
-abbrev Arr := List Int
-
-/-- Predicate: `idxs` is a strictly increasing list of indices in range for `arr`. -/
-def StrictlyIncreasingIndices (arr : Arr) (idxs : List Nat) : Prop :=
-  idxs.Pairwise (· < ·) ∧ ∀ i ∈ idxs, i < arr.length
-
-/-- Predicate: `ia` into `a` and `ib` into `b` witness a common subsequence. -/
-def CommonSubseq (a b : Arr) (ia ib : List Nat) : Prop :=
-  StrictlyIncreasingIndices a ia ∧
-  StrictlyIncreasingIndices b ib ∧
-  ia.length = ib.length ∧
-  ∀ m : Nat, m < ia.length →
-    (a.get? (ia.get! m) = b.get? (ib.get! m))
-
-/-- Declarative model of the reference `lcs_length`. -/
-opaque lcsLength : Arr → Arr → Nat
+abbrev Arr := LongestCommonSubsequenceTheory.Arr
+abbrev StrictlyIncreasingIndices := LongestCommonSubsequenceTheory.StrictlyIncreasingIndices
+abbrev CommonSubseq := LongestCommonSubsequenceTheory.CommonSubseq
+abbrev lcsLength := LongestCommonSubsequenceTheory.lcsLength
 
 end CTA.Benchmark.DP.LongestCommonSubsequence002

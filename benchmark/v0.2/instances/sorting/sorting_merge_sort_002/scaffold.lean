@@ -4,16 +4,24 @@ Scaffold for instance `sorting_merge_sort_002`.
 
 import CTA.Core.Prelude
 import CTA.Core.Types
+import CTA.Core.Checkers
+import CTA.Benchmark.Sorting.MergeSortTheory
 
 namespace CTA.Benchmark.Sorting.MergeSort002
 
 open CTA.Core
+open CTA.Benchmark.Sorting.MergeSortTheory
 
-/-- Input/output slice model. -/
-abbrev Arr := List Int
+/-- Family-level list model reused across merge-sort packets. -/
+abbrev Arr := MergeSortTheory.Arr
 
-/-- Declarative model of the reference `merge_sort`: returns the sorted
-    permutation of its input. Left opaque for the semantic layer. -/
-opaque mergeSort : Arr → Arr
+/-- Shared merge-sort algorithm symbol. -/
+abbrev mergeSort := MergeSortTheory.mergeSort
+
+/-- Shared permutation predicate for benchmark-facing obligations. -/
+abbrev IsPerm := MergeSortTheory.IsPerm
+
+/-- Shared sortedness predicate for benchmark-facing obligations. -/
+abbrev Sorted := MergeSortTheory.Sorted
 
 end CTA.Benchmark.Sorting.MergeSort002

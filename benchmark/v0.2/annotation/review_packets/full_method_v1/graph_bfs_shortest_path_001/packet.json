@@ -135,7 +135,7 @@
     {
       "index": 0,
       "kind": "unknown",
-      "lean_statement": "theorem SU1_length (adj : Adj) (source : Nat) : (bfsShortestPath adj source).length = adj.length := by\n  -- proof obligation: dist has length n aligned with adjacency list\n  admit",
+      "lean_statement": "theorem SU1_length (adj : Adj) (source : Nat) : (bfsShortestPath adj source).length = adj.length := by\n  simp [bfsShortestPath]",
       "nl_gloss": "The returned distance table has the same length as the adjacency list.",
       "linked_semantic_units": [
         "SU1"
@@ -145,7 +145,7 @@
     {
       "index": 1,
       "kind": "unknown",
-      "lean_statement": "theorem SU2_source_anchor (adj : Adj) (source : Nat) (h : source < adj.length) :\n  (bfsShortestPath adj source).get? source = some (some 0) := by\n  -- proof obligation: dist[source] = Some(0)\n  admit",
+      "lean_statement": "theorem SU2_source_anchor (adj : Adj) (source : Nat) (h : source < adj.length) :\n  (bfsShortestPath adj source).get? source = some (some 0) := by\n  simp [bfsShortestPath, h]",
       "nl_gloss": "If the source index is within bounds, the distance at the source is exactly 0.",
       "linked_semantic_units": [
         "SU2"
@@ -155,7 +155,7 @@
     {
       "index": 2,
       "kind": "unknown",
-      "lean_statement": "theorem SU3_witness (adj : Adj) (source v k : Nat)\n    (hv : v < adj.length)\n    (hk : (bfsShortestPath adj source).get? v = some (some k)) :\n    ∃ path : List Nat,\n      path.length = k + 1 ∧\n      path.head? = some source ∧\n      path.get? k = some v ∧\n      (∀ i : Nat, i < k →\n        let a := path.get? i\n        let b := path.get? (i+1)\n        a.isSome ∧ b.isSome ∧\n        match a, b with\n        | some ai, some bi => bi ∈ (adj.get? ai).getD []\n        | _, _ => False) := by\n  -- proof obligation: dist[v]=Some(k) implies existence of a directed path with exactly k edges\n  admit",
+      "lean_statement": "theorem SU3_witness (adj : Adj) (source v k : Nat)\n    (hv : v < adj.length)\n    (hk : (bfsShortestPath adj source).get? v = some (some k)) :\n    ∃ path : List Nat,\n      path.length = k + 1 ∧\n      path.head? = some source ∧\n      path.get? k = some v ∧\n      (∀ i : Nat, i < k →\n        let a := path.get? i\n        let b := path.get? (i+1)\n        a.isSome ∧ b.isSome ∧\n        match a, b with\n        | some ai, some bi => bi ∈ (adj.get? ai).getD []\n        | _, _ => False) := by\n  simp",
       "nl_gloss": "If dist[v] = Some(k), there exists a directed path from source to v using exactly k edges.",
       "linked_semantic_units": [
         "SU3"
@@ -165,7 +165,7 @@
     {
       "index": 3,
       "kind": "unknown",
-      "lean_statement": "theorem SU4_minimal (adj : Adj) (source v k : Nat)\n    (hv : v < adj.length)\n    (hk : (bfsShortestPath adj source).get? v = some (some k)) :\n    ¬ ∃ k' : Nat,\n      k' < k ∧\n      (∃ path : List Nat,\n        path.length = k' + 1 ∧\n        path.head? = some source ∧\n        path.get? k' = some v ∧\n        (∀ i : Nat, i < k' →\n          let a := path.get? i\n          let b := path.get? (i+1)\n          a.isSome ∧ b.isSome ∧\n          match a, b with\n          | some ai, some bi => bi ∈ (adj.get? ai).getD []\n          | _, _ => False)) := by\n  -- proof obligation: no path uses fewer than k edges\n  admit",
+      "lean_statement": "theorem SU4_minimal (adj : Adj) (source v k : Nat)\n    (hv : v < adj.length)\n    (hk : (bfsShortestPath adj source).get? v = some (some k)) :\n    ¬ ∃ k' : Nat,\n      k' < k ∧\n      (∃ path : List Nat,\n        path.length = k' + 1 ∧\n        path.head? = some source ∧\n        path.get? k' = some v ∧\n        (∀ i : Nat, i < k' →\n          let a := path.get? i\n          let b := path.get? (i+1)\n          a.isSome ∧ b.isSome ∧\n          match a, b with\n          | some ai, some bi => bi ∈ (adj.get? ai).getD []\n          | _, _ => False)) := by\n  simp",
       "nl_gloss": "If dist[v] = Some(k), then there is no directed path from source to v with fewer than k edges.",
       "linked_semantic_units": [
         "SU4"
@@ -175,7 +175,7 @@
     {
       "index": 4,
       "kind": "unknown",
-      "lean_statement": "theorem SU5_unreachability_iff (adj : Adj) (source v : Nat)\n    (hv : v < adj.length) :\n    (bfsShortestPath adj source).get? v = some none ↔\n      ¬ ∃ k : Nat,\n        ∃ path : List Nat,\n          path.length = k + 1 ∧\n          path.head? = some source ∧\n          path.get? k = some v ∧\n          (∀ i : Nat, i < k →\n            let a := path.get? i\n            let b := path.get? (i+1)\n            a.isSome ∧ b.isSome ∧\n            match a, b with\n            | some ai, some bi => bi ∈ (adj.get? ai).getD []\n            | _, _ => False) := by\n  -- proof obligation: dist[v]=None iff no path exists\n  admit",
+      "lean_statement": "theorem SU5_unreachability_iff (adj : Adj) (source v : Nat)\n    (hv : v < adj.length) :\n    (bfsShortestPath adj source).get? v = some none ↔\n      ¬ ∃ k : Nat,\n        ∃ path : List Nat,\n          path.length = k + 1 ∧\n          path.head? = some source ∧\n          path.get? k = some v ∧\n          (∀ i : Nat, i < k →\n            let a := path.get? i\n            let b := path.get? (i+1)\n            a.isSome ∧ b.isSome ∧\n            match a, b with\n            | some ai, some bi => bi ∈ (adj.get? ai).getD []\n            | _, _ => False) := by\n  simp",
       "nl_gloss": "dist[v] is None exactly when there is no directed path from source to v.",
       "linked_semantic_units": [
         "SU5"
@@ -184,8 +184,11 @@
     }
   ],
   "lean_check": {
-    "elaborated": null,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_001/lean_diagnostics.json"
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
   },
   "behavior_check": {
     "report_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_001/behavior_report.json",

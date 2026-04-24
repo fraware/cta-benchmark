@@ -185,6 +185,71 @@ fn assert_lca_directionality(instance_id: &str, joined_bf: &str, packet_path: &P
     }
 }
 
+fn benchmark_facing_statements(packet: &Value) -> Vec<String> {
+    benchmark_facing_obligations(packet)
+        .iter()
+        .map(|o| o["lean_statement"].as_str().unwrap_or("").to_string())
+        .collect()
+}
+
+fn has_admit_or_sorry(stmt: &str) -> bool {
+    let lc = stmt.to_ascii_lowercase();
+    lc.contains(" admit")
+        || lc.contains("\nadmit")
+        || lc.contains(" sorry")
+        || lc.contains("\nsorry")
+}
+
+fn assert_lean_check_shape_and_m1_contract(packet: &Value, packet_path: &Path, instance_id: &str) {
+    let Some(lean_check) = packet.get("lean_check").and_then(|v| v.as_object()) else {
+        panic!("{instance_id}: missing lean_check object");
+    };
+    let diagnostics_rel = lean_check
+        .get("diagnostics_path")
+        .and_then(|v| v.as_str())
+        .unwrap_or_else(|| panic!("{instance_id}: lean_check.diagnostics_path missing or not a string"));
+    let diagnostics_abs = workspace_root().join(diagnostics_rel);
+    let elaborated = lean_check.get("elaborated").and_then(Value::as_bool);
+    let proof_mode = lean_check.get("proof_mode").and_then(Value::as_str);
+    let admit_count = lean_check.get("admit_count").and_then(Value::as_u64);
+    let _axiom_deps = lean_check.get("axiom_dependencies").and_then(Value::as_array);
+
+    // Base schema hardening: when fields are present, they must be valid.
+    if let Some(mode) = proof_mode {
+        assert!(
+            matches!(mode, "axiom_backed" | "definition_backed"),
+            "{instance_id}: lean_check.proof_mode must be axiom_backed|definition_backed ({mode})"
+        );
+    }
+
+    // M1 gate: only enforce strict checks for packets explicitly marked elaborated.
+    if elaborated == Some(true) {
+        assert!(
+            diagnostics_abs.is_file(),
+            "{instance_id}: elaborated packet must have diagnostics file at {}",
+            diagnostics_abs.display()
+        );
+        assert!(
+            proof_mode.is_some(),
+            "{instance_id}: elaborated packet must set lean_check.proof_mode"
+        );
+        let count = admit_count.unwrap_or_else(|| {
+            panic!("{instance_id}: elaborated packet must set lean_check.admit_count")
+        });
+        assert_eq!(
+            count, 0,
+            "{instance_id}: elaborated packet must have admit_count = 0"
+        );
+        for stmt in benchmark_facing_statements(packet) {
+            assert!(
+                !has_admit_or_sorry(&stmt),
+                "{instance_id}: elaborated benchmark-facing theorem contains admit/sorry ({})",
+                packet_path.display()
+            );
+        }
+    }
+}
+
 #[test]
 fn review_packets_benchmark_facing_lean_lints() {
     let root = workspace_root().join("benchmark/v0.2/annotation/review_packets");
@@ -202,6 +267,7 @@ fn review_packets_benchmark_facing_lean_lints() {
         let packet: Value =
             serde_json::from_str(&raw).unwrap_or_else(|e| panic!("parse {}: {e}", path.display()));
         let instance_id = instance_id_from_path(&path);
+        assert_lean_check_shape_and_m1_contract(&packet, &path, &instance_id);
         let joined_bf = benchmark_facing_obligations(&packet)
             .iter()
             .map(|o| {

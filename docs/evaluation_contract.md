@@ -149,6 +149,12 @@ A run is paper-eligible iff **all** of the following hold:
 5. The annotation subset required by the split is complete: two
    independent annotators plus adjudication on any disagreement.
 6. The metrics bundle (`results_bundle.json`) was generated successfully.
+7. For `v0.2` review-packet-driven releases, strict proof-status refresh is
+   green:
+   - `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+
+Current baseline satisfies this gate completely (`m2_ready_packets = 93 / 93`,
+empty global proof worklist).
 
 If any condition fails, the run is stored under `runs/` for
 reproducibility but is not included in paper tables.
