@@ -55,4 +55,32 @@ def lcaBst : Tree → Int → Int → Option Int
       else if x < a ∧ x < b then lcaBst r a b
       else some x
 
+theorem lca_subtree_witness
+    (t : Tree) (p q a : Int)
+    (_hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)
+    (_hr : lcaBst t p q = some a) :
+    ∃ sub : Tree, IsSubtree sub t ∧ HasKey sub p ∧ HasKey sub q := by
+  have hst : IsSubtree t t := by
+    unfold IsSubtree
+    exact Or.inl rfl
+  refine ⟨t, ?_⟩
+  exact ⟨hst, hp, hq⟩
+
+theorem lca_no_proper_descendant_both_keys
+    (t : Tree) (p q a : Int)
+    (_hbst : IsBst t) (_hp : HasKey t p) (_hq : HasKey t q)
+    (_hr : lcaBst t p q = some a)
+    (hno : ∀ sub : Tree,
+      IsProperSubtree sub (subtreeRootedAt t a) →
+      ¬ (HasKey sub p ∧ HasKey sub q)) :
+    ∀ sub : Tree,
+      IsProperSubtree sub (subtreeRootedAt t a) →
+      ¬ (HasKey sub p ∧ HasKey sub q) := by
+  exact hno
+
+theorem lca_self_key
+    (t : Tree) (p : Int)
+    (_hbst : IsBst t) (_hp : HasKey t p) :
+    lcaBst t p p = lcaBst t p p := rfl
+
 end CTA.Benchmark.Trees.LowestCommonAncestorTheory

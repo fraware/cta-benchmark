@@ -164,9 +164,11 @@ fn assert_coin_change_optimality_direction(instance_id: &str, packet: &Value) {
         lc.contains("canonical"),
         "{instance_id}: optimality must mention canonicality explicitly"
     );
+    let greedy_sum_ok = lc.contains(".sum") && lc.contains("coinchangecanonical");
+    let list_nat_sum_ok = lc.contains("listnatsum") && lc.contains("coinchangecanonical");
     assert!(
-        lc.contains("coinchangecanonical") && lc.contains(".sum") && lc.contains("≤"),
-        "{instance_id}: optimality must compare greedy sum against alternatives using `≤`"
+        (greedy_sum_ok || list_nat_sum_ok) && lc.contains("≤"),
+        "{instance_id}: optimality must compare greedy total coin count against alternatives using `≤` (via `.sum` or listNatSum)"
     );
     assert!(
         !lc.contains("counts.sum ≤ (coinchangecanonical")

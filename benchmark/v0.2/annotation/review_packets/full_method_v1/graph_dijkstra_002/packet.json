@@ -134,7 +134,7 @@
       "index": 0,
       "kind": "precondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU1_valid_input_characterization\n  (n source : Nat) (edges : Graph)\n  (hchar : ValidDijkstraInput n source edges ↔\n    (source < n ∧\n     ∀ e ∈ edges,\n       let s := e.1\n       let t := e.2.1\n       let w := e.2.2\n       s < n ∧ t < n ∧ 0 ≤ w)) :\n  ValidDijkstraInput n source edges ↔\n    (source < n ∧\n     ∀ e ∈ edges,\n       let s := e.1\n       let t := e.2.1\n       let w := e.2.2\n       s < n ∧ t < n ∧ 0 ≤ w) := by\n  exact hchar",
+      "lean_statement": "theorem SU1_valid_input_characterization\n  (n source : Nat) (edges : Graph) :\n  ValidDijkstraInput n source edges ↔\n    (source < n ∧\n     ∀ e ∈ edges,\n       let s := e.1\n       let t := e.2.1\n       let w := e.2.2\n       s < n ∧ t < n ∧ 0 ≤ w) := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.valid_input_characterization n source edges",
       "nl_gloss": "Valid Dijkstra inputs are exactly: in-range source, in-range edge endpoints, and nonnegative weights.",
       "linked_semantic_units": [
         "SU1"
@@ -145,7 +145,7 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU2_length\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (hlen : (dijkstra n source edges).length = n) :\n  (dijkstra n source edges).length = n := by\n  exact hlen",
+      "lean_statement": "theorem SU2_length\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges) :\n  (dijkstra n source edges).length = n := by\n  have _hs : source < n :=\n    (CTA.Benchmark.Graph.DijkstraTheory.valid_input_characterization n source edges).1 h |>.1\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_length_correct n source edges",
       "nl_gloss": "The returned distance vector has length n.",
       "linked_semantic_units": [
         "SU1",
@@ -157,7 +157,7 @@
       "index": 2,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU3_source_dist\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (hsrc : (dijkstra n source edges).get? source = some (some 0)) :\n  (dijkstra n source edges).get? source = some (some 0) := by\n  exact hsrc",
+      "lean_statement": "theorem SU3_source_dist\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges) :\n  (dijkstra n source edges).get? source = some (some 0) := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_source_correct n source edges h",
       "nl_gloss": "The source vertex has distance 0.",
       "linked_semantic_units": [
         "SU1",
@@ -169,7 +169,7 @@
       "index": 3,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU4_achievable\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d))\n  (hw : PathWeight edges source v d) :\n  PathWeight edges source v d := by\n  exact hw",
+      "lean_statement": "theorem SU4_achievable\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  PathWeight edges source v d := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_achievable n source edges h v d hv hd",
       "nl_gloss": "If dist[v] = Some(d), then there exists a path from source to v with total weight d.",
       "linked_semantic_units": [
         "SU1",
@@ -181,7 +181,7 @@
       "index": 4,
       "kind": "optimality",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU5_optimal\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d))\n  (hopt : ∀ w, PathWeight edges source v w → d ≤ w) :\n  ∀ w, PathWeight edges source v w → d ≤ w := by\n  exact hopt",
+      "lean_statement": "theorem SU5_optimal\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  ∀ w, PathWeight edges source v w → d ≤ w := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_optimal n source edges h v d hv hd",
       "nl_gloss": "If dist[v] = Some(d), then no path from source to v has total weight less than d.",
       "linked_semantic_units": [
         "SU1",
@@ -193,7 +193,7 @@
       "index": 5,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU6_unreachability\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat)\n  (hv : v < n)\n  (hunreach : (dijkstra n source edges).get? v = some none ↔ ¬ ∃ w, PathWeight edges source v w) :\n  (dijkstra n source edges).get? v = some none ↔\n  ¬ ∃ w, PathWeight edges source v w := by\n  exact hunreach",
+      "lean_statement": "theorem SU6_unreachability\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat)\n  (hv : v < n) :\n  (dijkstra n source edges).get? v = some none ↔\n  ¬ ∃ w, PathWeight edges source v w := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_unreachable_iff n source edges h v hv",
       "nl_gloss": "dist[v] = None exactly when there is no path from source to v (within vertex range).",
       "linked_semantic_units": [
         "SU1",

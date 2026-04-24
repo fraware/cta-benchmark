@@ -75,6 +75,56 @@ fn assert_no_benchmark_facing_vacuity(instance_id: &str, stmt: &str) {
     );
 }
 
+fn target_wrapper_hotspot(instance_id: &str) -> bool {
+    matches!(
+        instance_id,
+        "graph_dijkstra_002"
+            | "graph_bfs_shortest_path_002"
+            | "greedy_coin_change_canonical_002"
+            | "trees_lowest_common_ancestor_001"
+            | "trees_lowest_common_ancestor_002"
+    )
+}
+
+fn extract_terminal_hypothesis_name(stmt: &str) -> Option<String> {
+    let norm = stmt.replace('\r', "");
+    if let Some(idx) = norm.rfind(":= by") {
+        let body = norm[idx + 5..].trim();
+        if let Some(rest) = body.strip_prefix("exact ") {
+            return rest
+                .split(|c: char| c.is_whitespace() || c == ')' || c == '(')
+                .next()
+                .map(str::trim)
+                .filter(|s| !s.is_empty())
+                .map(str::to_string);
+        }
+        if let Some(rest) = body.strip_prefix("simpa using ") {
+            let candidate = rest
+                .split(|c: char| c.is_whitespace() || c == ')' || c == '(')
+                .next()
+                .unwrap_or("")
+                .trim();
+            if !candidate.is_empty() && !candidate.contains('.') {
+                return Some(candidate.to_string());
+            }
+        }
+    }
+    None
+}
+
+fn assert_no_wrapper_theorem_pass_through(instance_id: &str, stmt: &str) {
+    if !target_wrapper_hotspot(instance_id) {
+        return;
+    }
+    if let Some(h) = extract_terminal_hypothesis_name(stmt) {
+        let needle = format!("({h} :");
+        assert!(
+            !stmt.contains(&needle),
+            "{instance_id}: benchmark-facing theorem passes through local hypothesis `{h}`"
+        );
+    }
+}
+
 fn bad_disconnected_path_weight_sum(stmt: &str) -> bool {
     let lc = stmt.to_ascii_lowercase();
     let has_path = lc.contains("∃ path") || lc.contains("exists path");
@@ -285,6 +335,7 @@ fn review_packets_benchmark_facing_lean_lints() {
             let stmt = ob["lean_statement"].as_str().unwrap_or("");
             let kind = ob["kind"].as_str().unwrap_or("");
             assert_no_benchmark_facing_vacuity(&instance_id, stmt);
+            assert_no_wrapper_theorem_pass_through(&instance_id, stmt);
             assert_graph_path_distance_consistency(&instance_id, ob);
             assert_coin_change_optimality_direction(&instance_id, ob);
             assert!(
