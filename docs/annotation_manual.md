@@ -96,6 +96,27 @@ For paper-track batches, use this command sequence:
 5. Enforce review-packet audit gate before packaging:
    - `cta annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
 
+## Rigorous status addendum (`2026-04-24`)
+
+For the six previously high-risk families (`sorting_insertion_sort_{001,002}`,
+`sorting_merge_sort_{001,002}`, `trees_bst_insert_{001,002}`), review packets
+across all four systems (`text_only_v1`, `code_only_v1`, `naive_concat_v1`,
+`full_method_v1`) are now definition-backed and packet-clean under strict
+refresh.
+
+Required verification sequence (run in order):
+
+1. `cargo run -p cta_cli -- annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+2. `cargo test -p cta_generate`
+3. `cargo run -p cta_cli -- annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
+
+Release-facing expectation for this set:
+
+- no `lean_statement` entries beginning with `axiom`,
+- no `lean_check.proof_mode = "axiom_backed"`,
+- no benchmark-facing trivial wrappers (`exact hs/hp/hlen`) or vacuous
+  `True` placeholders in curated packet obligations.
+
 ## Review packet contract (`packet.json`)
 
 Structured review artifacts live under

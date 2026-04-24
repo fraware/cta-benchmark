@@ -19,6 +19,20 @@ cargo run -p cta_cli --quiet -- benchmark lint --version v0.1 --strict-authoring
 CI runs this in `benchmark-lint.yml` on every push and PR that touches
 `benchmark/**`.
 
+## Rigorous addendum (`2026-04-24`)
+
+When curating review-packet obligations for paper-track reporting, apply the
+same bar as gold authoring:
+
+- prefer direct theorem statements over assumption-threaded identity wrappers,
+- reject vacuous forms (`True`, implication-to-`True`, existential witness-only
+  totality claims that add no semantic signal),
+- prefer definition-backed theory references over packet-local trusted symbols.
+
+For `v0.2` target families (`sorting_insertion_sort_{001,002}`,
+`sorting_merge_sort_{001,002}`, `trees_bst_insert_{001,002}`), this bar is now
+enforced in-repo and rechecked by strict refresh plus packet regressions.
+
 ### Shared vocabulary
 
 - A *semantic unit* (SU) is one claim an informal statement makes about

@@ -76,6 +76,19 @@ For automation, the fail-fast orchestrator chains these gates:
 `annotate refresh-lean-check --strict-m1` automatically before `reports package`,
 and exits non-zero if either gate fails.
 
+## Rigorous release note (`2026-04-24`)
+
+Before tagging a paper-track release, explicitly verify target-family hardening
+for `sorting_insertion_sort_{001,002}`, `sorting_merge_sort_{001,002}`, and
+`trees_bst_insert_{001,002}`:
+
+1. no packet `lean_statement` begins with `axiom`,
+2. no packet reports `proof_mode: "axiom_backed"`,
+3. packet obligations avoid benchmark-facing vacuous/trivial theorem forms.
+
+The first two are machine-checkable with `rg`; the third is enforced by review
+packet regression tests plus manual signoff during release prep.
+
 ## Code-only remediation protocol
 
 When `code_only_v1` packets show scaffold-heavy or vacuous obligations, run

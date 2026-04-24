@@ -56,3 +56,10 @@ tests (`code_only_packet_regression`, `family_packet_regression`,
 `full_method_priority2_packet_regression`, `review_packet_lean_lint`) so
 curated review obligations stay aligned with benchmark scaffolds before they
 enter the canonical annotation pack.
+
+## Rigorous status note (`2026-04-24`)
+
+The writing should explicitly call out that the former axiom-backed target
+families (`sorting_insertion_sort_{001,002}`, `sorting_merge_sort_{001,002}`,
+`trees_bst_insert_{001,002}`) are now definition-backed across all four
+baseline systems and pass strict refresh plus packet regression gates.

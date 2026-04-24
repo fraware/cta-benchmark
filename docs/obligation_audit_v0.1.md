@@ -10,6 +10,18 @@ correctness" green-light criterion in `docs/evaluation_contract.md`.
 
 Two rules were applied uniformly across all 12 instances.
 
+## `v0.2` carry-forward note (`2026-04-24`)
+
+The same anti-vacuity principles were applied to curated `v0.2` review packets
+for target families (`sorting_insertion_sort_{001,002}`,
+`sorting_merge_sort_{001,002}`, `trees_bst_insert_{001,002}`):
+
+- remove/replace vacuous benchmark-facing placeholders,
+- replace trusted-interface artifacts (`axiom` packet statements) with
+  theorem-backed statements against concrete family theory definitions.
+
+Validation continues to run through strict refresh and packet regression tests.
+
 ### R1 — drop vacuous existential termination obligations
 
 Statements of the shape `∀ x, ∃ y, f x = y` are vacuously true in total

@@ -113,6 +113,16 @@ Current repository snapshot is fully burned down for `v0.2` review packets:
 - `summary_by_gap_reason = {m2_ready: 93}`,
 - `global_proof_worklist.count = 0`.
 
+Rigorous addendum (`2026-04-24`):
+
+- target families `sorting_insertion_sort_{001,002}`,
+  `sorting_merge_sort_{001,002}`, and `trees_bst_insert_{001,002}` are now
+  definition-backed across `text_only_v1`, `code_only_v1`, `naive_concat_v1`,
+  and `full_method_v1`,
+- packet-level trusted axioms and benchmark-facing vacuous placeholders for
+  this target set have been removed from curated review packets,
+- strict refresh and packet regressions remain green after this hardening pass.
+
 ## Human review packet workflow
 
 For each batch CSV, generate structured review packet templates:

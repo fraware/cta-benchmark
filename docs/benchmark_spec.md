@@ -104,6 +104,15 @@ disjoint. See `docs/paper_readiness.md`.
 Current repository baseline: `v0.2` review packets are fully proof-complete
 under strict refresh (`m2_ready_packets = 93 / 93`).
 
+Additional hardening baseline (`2026-04-24`):
+
+- for target families `sorting_insertion_sort_{001,002}`,
+  `sorting_merge_sort_{001,002}`, and `trees_bst_insert_{001,002}` across all
+  packet systems, no packet obligation uses `axiom` declarations and no packet
+  reports `proof_mode: "axiom_backed"`,
+- curated packet obligations for those families avoid benchmark-facing vacuous
+  placeholders and tautological wrappers.
+
 ## Annotation review packets (`v0.2+`)
 
 Human adjudication for paper-track systems is staged in

@@ -28,6 +28,19 @@ of existing metrics never change meaning once frozen.
 
 All primary metrics are reported as scalars in `[0, 1]` unless noted.
 
+## Rigorous proof-completion checkpoint (`2026-04-24`)
+
+Paper-track quality gates now assume the following for the previously
+axiom-backed target families:
+
+- strict Lean refresh remains green with `--strict-m1`,
+- review packets are definition-backed (`proof_mode = "definition_backed"`),
+- benchmark-facing obligations are non-vacuous and avoid trivial pass-through
+  wrappers.
+
+This is an artifact-quality requirement for reportable runs and complements
+metric definitions rather than replacing them.
+
 ### elaboration_rate
 
 Fraction of instances whose generated Lean file elaborated successfully.

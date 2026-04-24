@@ -99,6 +99,14 @@ review_packets/**/packet.json + scaffold.lean
 Current repository baseline: strict refresh is fully green for `v0.2`
 (`m2_ready_packets = 93 / 93`, `global_proof_worklist.count = 0`).
 
+Definition-backed hardening baseline (`2026-04-24`):
+
+- target families (`sorting_insertion_sort_{001,002}`,
+  `sorting_merge_sort_{001,002}`, `trees_bst_insert_{001,002}`) are
+  definition-backed in all four systems,
+- strict refresh and packet-regression gates remain green after removing
+  residual axiom/trivial obligations for those families.
+
 ## Hard mission rules
 
 These rules are enforced by CI or by the benchmark linter:
