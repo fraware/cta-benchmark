@@ -104,14 +104,21 @@ disjoint. See `docs/paper_readiness.md`.
 Current repository baseline: `v0.2` review packets are fully proof-complete
 under strict refresh (`m2_ready_packets = 93 / 93`).
 
-Additional hardening baseline (`2026-04-24`):
+Additional hardening baseline (`2026-04-24`, updated):
 
-- for target families `sorting_insertion_sort_{001,002}`,
+- For target families `sorting_insertion_sort_{001,002}`,
   `sorting_merge_sort_{001,002}`, and `trees_bst_insert_{001,002}` across all
-  packet systems, no packet obligation uses `axiom` declarations and no packet
-  reports `proof_mode: "axiom_backed"`,
-- curated packet obligations for those families avoid benchmark-facing vacuous
+  review-packet systems, no curated obligation uses `axiom` declarations and no
+  such packet reports `proof_mode: "axiom_backed"`.
+- For **0/1 knapsack** (`dp_knapsack_01_{001,002}`), all four systems reuse
+  `KnapsackTheory` (`lean/CTA/Benchmark/DP/KnapsackTheory.lean`) and carry three
+  aligned `benchmark_facing` theorems in `packet.json`.
+- Curated packet obligations for those families avoid benchmark-facing vacuous
   placeholders and tautological wrappers.
+- **Strict M1** elaboration (`lean_check.elaborated = true` after
+  `annotate refresh-lean-check --strict-m1`) applies only to `(system_id,
+  instance_id)` pairs in `is_m1_target_packet` in `crates/cta_cli/src/cmd/annotate.rs`;
+  other packets may still show `elaborated = false` without failing the gate.
 
 ## Annotation review packets (`v0.2+`)
 
@@ -123,6 +130,7 @@ semantics, two-layer obligations, and `quality_summary` expectations are
 documented in `docs/annotation_manual.md`; mechanical guards live in
 `crates/cta_generate/tests/code_only_packet_regression.rs`,
 `family_packet_regression.rs`, `naive_concat_packet_regression.rs`,
+`text_only_packet_regression.rs`,
 `full_method_priority1_packet_regression.rs`,
 `full_method_priority2_packet_regression.rs`, and
 `review_packet_lean_lint.rs`.

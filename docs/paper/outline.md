@@ -52,14 +52,20 @@ without a deliberate update. Paper-track adjudication additionally relies on
 `cta annotate verify-review-packets` (signed
 `verification_summary.signed.json`) and the `cta_generate` packet regression
 tests (`code_only_packet_regression`, `family_packet_regression`,
-`naive_concat_packet_regression`, `full_method_priority1_packet_regression`,
+`naive_concat_packet_regression`, `text_only_packet_regression`,
+`full_method_priority1_packet_regression`,
 `full_method_priority2_packet_regression`, `review_packet_lean_lint`) so
 curated review obligations stay aligned with benchmark scaffolds before they
 enter the canonical annotation pack.
 
-## Rigorous status note (`2026-04-24`)
+## Rigorous status note (`2026-04-24`, updated)
 
 The writing should explicitly call out that the former axiom-backed target
 families (`sorting_insertion_sort_{001,002}`, `sorting_merge_sort_{001,002}`,
 `trees_bst_insert_{001,002}`) are now definition-backed across all four
-baseline systems and pass strict refresh plus packet regression gates.
+baseline systems, and that **0/1 knapsack** (`dp_knapsack_01_{001,002}`) is
+similarly definition-backed in all four systems via `KnapsackTheory`, with
+strict M1 elaboration enforced for the allowlisted `(system, instance)` pairs
+documented in `docs/annotation_manual.md`. Distinguish experiment-level
+`elaboration_rate` (`docs/evaluation_contract.md`) from review-packet
+`lean_check.elaborated` when discussing metrics vs packet hygiene.

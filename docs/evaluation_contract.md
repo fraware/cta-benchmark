@@ -48,6 +48,16 @@ Fraction of instances whose generated Lean file elaborated successfully.
 Denominator: number of instances in the split.
 Numerator: instances with `elaborated == true`.
 
+This metric is defined for **experiment runs** (`results_bundle` /
+per-instance run artifacts). It is **not** the same field as review-packet
+`packet.json` → `lean_check.elaborated`, which is maintained only under
+`cta annotate refresh-lean-check` and is **required to be true** only for
+`(system_id, instance_id)` pairs on the strict M1 allowlist
+(`is_m1_target_packet` in `crates/cta_cli/src/cmd/annotate.rs`). Other review
+packets may keep `lean_check.elaborated = false` without violating the
+paper-track refresh gate. See `docs/annotation_manual.md` (“Strict M1
+elaboration allowlist”).
+
 ### semantic_faithfulness_mean
 
 Instance-average of `faithfulness_score_i / num_obligations_i` over
@@ -158,7 +168,10 @@ A run is paper-eligible iff **all** of the following hold:
 3. A `run_manifest.json` is present and validates against
    `schemas/run_manifest.schema.json`.
 4. Lean elaboration completed (success or failure, but not timeout) for
-   every instance.
+   every instance in the **experiment run** (generated Lean artifacts under
+   `runs/…`). This is independent of review-packet `lean_check.elaborated`,
+   which is defined only for `benchmark/v0.2/annotation/review_packets/**`
+   and is fully `true` only on the strict M1 allowlist (see above).
 5. The annotation subset required by the split is complete: two
    independent annotators plus adjudication on any disagreement.
 6. The metrics bundle (`results_bundle.json`) was generated successfully.

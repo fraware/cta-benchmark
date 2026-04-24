@@ -154,7 +154,9 @@ cargo run -p cta_cli -- annotate verify-review-packets \
   --schema schemas/review_packet.schema.json \
   --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json
 
-# Lean proof-status refresh (strict M1 gate + proof-completion artifacts)
+# Lean proof-status refresh (strict M1 gate + proof-completion artifacts).
+# M1 full elaboration is required only for (system_id, instance_id) pairs in
+# `is_m1_target_packet` (see `crates/cta_cli/src/cmd/annotate.rs`).
 cargo run -p cta_cli -- annotate refresh-lean-check \
   --benchmark-version v0.2 \
   --packets-root benchmark/v0.2/annotation/review_packets \
@@ -304,6 +306,7 @@ Run these after any change to prompts, normalizers, or committed `packet.json` f
 cargo test -p cta_generate --test code_only_packet_regression
 cargo test -p cta_generate --test family_packet_regression
 cargo test -p cta_generate --test naive_concat_packet_regression
+cargo test -p cta_generate --test text_only_packet_regression
 cargo test -p cta_generate --test full_method_priority1_packet_regression
 cargo test -p cta_generate --test full_method_priority2_packet_regression
 cargo test -p cta_generate --test review_packet_lean_lint
@@ -316,15 +319,20 @@ cargo run -p cta_cli -- annotate verify-review-packets \
 
 **Canonical `code_only_v1` regression roster** (must stay green; source of truth is the `targets` array in `crates/cta_generate/tests/code_only_packet_regression.rs`): `arrays_binary_search_001`, `arrays_binary_search_002`, `arrays_max_subarray_001`, `arrays_max_subarray_002`, `graph_bfs_shortest_path_001`, `graph_bfs_shortest_path_002`, `graph_dijkstra_001`, `graph_dijkstra_002`, `greedy_interval_scheduling_001`, `sorting_insertion_sort_001`, `sorting_insertion_sort_002`, `sorting_merge_sort_001`, `sorting_merge_sort_002`, `trees_bst_insert_001`, `trees_bst_insert_002`, `trees_lowest_common_ancestor_001`, `trees_lowest_common_ancestor_002`, `dp_knapsack_01_001`, `dp_knapsack_01_002`, `dp_longest_common_subsequence_001`.
 
+**Canonical `naive_concat_v1` regression roster** (same idea; `targets` in `crates/cta_generate/tests/naive_concat_packet_regression.rs`): includes `dp_knapsack_01_001` and `dp_knapsack_01_002` alongside the other pilot instances so layers and `quality_summary` cannot rot silently.
+
+**`text_only_v1`:** `crates/cta_generate/tests/text_only_packet_regression.rs` pins migrated pilots that already use `layer` + `quality_summary` (currently both knapsack instances); extend `targets` when additional `text_only_v1` packets are brought up to the same schema.
+
 Regression suites pin this contract for focused cleanup packets:
 
 - `crates/cta_generate/tests/code_only_packet_regression.rs`
 - `crates/cta_generate/tests/naive_concat_packet_regression.rs`
+- `crates/cta_generate/tests/text_only_packet_regression.rs`
 - `crates/cta_generate/tests/family_packet_regression.rs`
 - `crates/cta_generate/tests/full_method_priority1_packet_regression.rs` and `full_method_priority2_packet_regression.rs` (curated `full_method_v1` graph + knapsack + LCA + binary-search packets)
-- `crates/cta_generate/tests/review_packet_lean_lint.rs` (repo-wide static checks on every `review_packets/**/packet.json` with explicit `layer: "benchmark_facing"`)
+- `crates/cta_generate/tests/review_packet_lean_lint.rs` (repo-wide static checks on every `review_packets/**/packet.json`; legacy `graph_dijkstra_001` vacuity exemption is documented in that test file)
 - strict proof-status gate:
-  `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+  `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1` (M1 elaboration required only for `is_m1_target_packet` pairs in `crates/cta_cli/src/cmd/annotate.rs`)
 
 ### Lean scaffolds (`lean/CTA/Benchmark/**`)
 
@@ -357,6 +365,11 @@ Execution policy (now fully completed for `v0.2`):
 - re-run strict refresh and commit regenerated dashboard/worklist artifacts after each migration wave
 - keep `review_packet_lean_lint` and priority packet regressions green while migrating
 
+For **new** theory-backed instances, add the corresponding `(system_id,
+instance_id)` pairs to `is_m1_target_packet` when they must receive full M1
+elaboration on every strict refresh; otherwise `lean_check.elaborated` may
+remain `false` by design.
+
 ### Gold template packet families
 
 The following `naive_concat_v1` packets are the canonical shape exemplars for
@@ -366,6 +379,7 @@ future prompt/normalizer behavior:
 - `naive_concat_v1/sorting_merge_sort_001`
 - `naive_concat_v1/trees_bst_insert_001`
 - `naive_concat_v1/graph_dijkstra_001`
+- `naive_concat_v1/dp_knapsack_01_001` (and the paired `002` id in regression rosters)
 
 For these families, benchmark-facing obligations must remain:
 
@@ -403,6 +417,9 @@ checks for known failure modes:
 - `docs/evaluation_contract.md` — metric definitions, acceptance criteria
 - `docs/release_process.md` — how to freeze / bump versions
 - `docs/paper_readiness.md` — paper-track release gates and run protocol
+- `docs/paper/outline.md` — paper structure and reproducibility checklist
+- `docs/authoring_examples.md` — gold obligation patterns and review-packet bar
+- `docs/obligation_audit_v0.1.md` — archived v0.1 obligation audit (with v0.2 pointers)
 - `SECURITY.md` — reporting vulnerabilities and supply-chain posture
 - `CONTRIBUTING.md` — development loop, coding conventions, PR checklist
 

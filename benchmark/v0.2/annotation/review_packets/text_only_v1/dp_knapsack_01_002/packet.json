@@ -102,71 +102,44 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "unknown",
-      "lean_statement": "def knap (w v : List Nat) (cap : Nat) : Nat := 0",
-      "nl_gloss": "Define the function to be specified (placeholder).",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_value_witness (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) :\n  ∃ sel : Selection,\n    ValidSelection weights sel ∧\n      totalWeight weights sel ≤ capacity ∧\n      totalValue values sel = knapsack01 weights values capacity := by\n  exact knapsack01_feasible_witness weights values capacity halign",
+      "nl_gloss": "When weights and values are length-aligned, there exists a valid feasible selection whose total value equals the returned result.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "precondition",
-      "lean_statement": "∀ (w v : List Nat) (cap : Nat), w.length = v.length → 0 ≤ cap",
-      "nl_gloss": "Assume equal-length weight/value lists and non-negative capacity (Nat already ensures non-negativity).",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_optimality (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) (sel : Selection)\n  (hV : ValidSelection weights sel) (hw : totalWeight weights sel ≤ capacity) :\n  totalValue values sel ≤ knapsack01 weights values capacity := by\n  exact totalValue_le_knapsack01 weights values capacity halign sel hV hw",
+      "nl_gloss": "When weights and values are length-aligned, no valid feasible selection beats the returned result.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU4"
+      ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "precondition",
-      "lean_statement": "∀ (w v : List Nat) (cap : Nat), w.length = v.length → (∀ x ∈ w, True) ∧ (∀ x ∈ v, True)",
-      "nl_gloss": "Weights and values are non-negative (Nat already ensures non-negativity); no additional constraints beyond membership.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 3,
-      "kind": "unknown",
-      "lean_statement": "∀ (w v : List Nat) (cap : Nat) (S : Finset Nat), w.length = v.length →\n  (∀ i ∈ S, i < w.length) →\n  let totalW := (S.sum (fun i => w.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩))\n  let totalV := (S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩))\n  totalW ≤ cap → True",
-      "nl_gloss": "Characterize feasible solutions as subsets of indices within bounds whose total weight is ≤ capacity.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "∀ (w v : List Nat) (cap : Nat) (S : Finset Nat), w.length = v.length →\n  (∀ i ∈ S, i < w.length) →\n  let totalW := S.sum (fun i => w.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n  let totalV := S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n  totalW ≤ cap →\n  totalV ≤ knap w v cap",
-      "nl_gloss": "The returned value is at least the value of any feasible subset (so it is an upper bound on all feasible subset values).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 5,
-      "kind": "unknown",
-      "lean_statement": "∀ (w v : List Nat) (cap : Nat), w.length = v.length →\n  ∃ (S : Finset Nat),\n    (∀ i ∈ S, i < w.length) ∧\n    let totalW := S.sum (fun i => w.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n    let totalV := S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n    totalW ≤ cap ∧ knap w v cap = totalV",
-      "nl_gloss": "There exists a feasible subset whose total value equals the returned maximum.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "unknown",
-      "lean_statement": "∀ (w v : List Nat) (cap : Nat), w.length = v.length →\n  knap w v cap = \n    (Finset.univ.filter (fun i => i < w.length)).sup (fun S =>\n      let totalW := S.sum (fun i => w.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n      let totalV := S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n      if totalW ≤ cap then totalV else 0)",
-      "nl_gloss": "Equate the result with the maximum total value over all feasible subsets (maximality characterization).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 7,
-      "kind": "unknown",
-      "lean_statement": "∀ (w v : List Nat) (cap : Nat) (S : Finset Nat), w.length = v.length →\n  (∀ i ∈ S, i < w.length) →\n  let totalV := S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n  True",
-      "nl_gloss": "Each item can be selected at most once, modeled by using a set of indices (Finset) rather than multisets.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_valid_selection_nodup (weights : Weights) (sel : Selection)\n  (hV : ValidSelection weights sel) : sel.Nodup := by\n  exact hV.1",
+      "nl_gloss": "Any valid selection is 0/1 at the index level: indices are distinct (Nodup is part of ValidSelection).",
+      "linked_semantic_units": [
+        "SU5"
+      ],
       "raw_source": "model"
     }
   ],
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_002/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],
@@ -183,5 +156,16 @@
     "scaffold_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_002/scaffold.lean",
     "reference_rs_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_002/reference.rs",
     "rust_summary_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_002/rust_summary.json"
+  },
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3",
+      "SU4"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
   }
 }

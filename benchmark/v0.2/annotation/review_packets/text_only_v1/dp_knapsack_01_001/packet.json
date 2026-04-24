@@ -102,103 +102,44 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "unknown",
-      "lean_statement": "theorem knapsack_spec (weights values : List Nat) (capacity : Nat)\n  (hlen : weights.length = values.length)\n  (hnonneg : True) : True := by trivial",
-      "nl_gloss": "Set up the problem with equal-length lists of non-negative weights and values and a non-negative capacity.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_value_witness (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) :\n  ∃ sel : Selection,\n    ValidSelection weights sel ∧\n      totalWeight weights sel ≤ capacity ∧\n      totalValue values sel = knapsack01 weights values capacity := by\n  exact knapsack01_feasible_witness weights values capacity halign",
+      "nl_gloss": "When weights and values are length-aligned, there exists a valid feasible selection whose total value equals the returned result.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
+      ],
       "raw_source": "model"
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "def feasibleSubsets (weights values : List Nat) (capacity : Nat) : Set (List Nat) :=\n  { idxs |\n    let n := weights.length\n    idxs.Nodup ∧\n    idxs ⊆ List.range n ∧\n    (sum (idxs.map (fun i => weights.getD i 0))) ≤ capacity ∧\n    (sum (idxs.map (fun i => values.getD i 0))) ≥ 0 }",
-      "nl_gloss": "Define what it means for a subset (represented by distinct indices) to be feasible: indices are within bounds, no repeats, and total weight is within capacity.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_optimality (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) (sel : Selection)\n  (hV : ValidSelection weights sel) (hw : totalWeight weights sel ≤ capacity) :\n  totalValue values sel ≤ knapsack01 weights values capacity := by\n  exact totalValue_le_knapsack01 weights values capacity halign sel hV hw",
+      "nl_gloss": "When weights and values are length-aligned, no valid feasible selection beats the returned result.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU4"
+      ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "unknown",
-      "lean_statement": "def subsetValue (weights values : List Nat) (idxs : List Nat) : Nat :=\n  sum (idxs.map (fun i => values.getD i 0))",
-      "nl_gloss": "Define the total value of a chosen subset (by indices).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 3,
-      "kind": "unknown",
-      "lean_statement": "def subsetWeight (weights values : List Nat) (idxs : List Nat) : Nat :=\n  sum (idxs.map (fun i => weights.getD i 0))",
-      "nl_gloss": "Define the total weight of a chosen subset (by indices).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 4,
-      "kind": "unknown",
-      "lean_statement": "def knapsackAnswer (weights values : List Nat) (capacity : Nat) : Nat :=\n  sSup ( { subsetValue weights values idxs | idxs ∈ feasibleSubsets weights values capacity } )",
-      "nl_gloss": "Define the intended output as the maximum total value among all feasible subsets.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 5,
-      "kind": "unknown",
-      "lean_statement": "theorem feasible_empty (weights values : List Nat) (capacity : Nat) :\n  [] ∈ feasibleSubsets weights values capacity := by\n  simp [feasibleSubsets, subsetWeight, subsetValue]",
-      "nl_gloss": "The empty subset is feasible (weight 0 ≤ capacity), so the maximum is well-defined.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 6,
-      "kind": "unknown",
-      "lean_statement": "theorem knapsackAnswer_is_upper_bound (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  True := by\n  trivial",
-      "nl_gloss": "Any feasible subset’s total value is ≤ the returned answer.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 7,
-      "kind": "unknown",
-      "lean_statement": "theorem knapsackAnswer_attains (weights values : List Nat) (capacity : Nat) :\n  ∃ k : Nat, k = knapsackAnswer weights values capacity := by\n  exact ⟨knapsackAnswer weights values capacity, rfl⟩",
-      "nl_gloss": "There exists a feasible subset whose value equals the returned maximum.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 8,
-      "kind": "unknown",
-      "lean_statement": "theorem feasible_implies_each_item_used_at_most_once (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  idxs.Nodup := by\n  simpa [feasibleSubsets] using (by\n    have := (show idxs ∈ feasibleSubsets weights values capacity from hfeas)\n    simpa [feasibleSubsets] using this)",
-      "nl_gloss": "Feasibility enforces that each item index appears at most once (no repeated selection).",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 9,
-      "kind": "unknown",
-      "lean_statement": "theorem feasible_implies_weight_le_capacity (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  subsetWeight weights values idxs ≤ capacity := by\n  simpa [feasibleSubsets, subsetWeight] using (by\n    have := (show idxs ∈ feasibleSubsets weights values capacity from hfeas)\n    simpa [feasibleSubsets] using this)",
-      "nl_gloss": "Any feasible subset respects the capacity constraint on total weight.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 10,
-      "kind": "unknown",
-      "lean_statement": "theorem feasible_implies_indices_within_length (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  let n := weights.length\n  idxs ⊆ List.range n := by\n  simpa [feasibleSubsets] using (by\n    have := (show idxs ∈ feasibleSubsets weights values capacity from hfeas)\n    simpa [feasibleSubsets] using this)",
-      "nl_gloss": "Chosen indices correspond to valid items within the list length.",
-      "linked_semantic_units": [],
-      "raw_source": "model"
-    },
-    {
-      "index": 11,
-      "kind": "unknown",
-      "lean_statement": "theorem knapsack_correct_for_equal_lengths (weights values : List Nat) (capacity : Nat)\n  (hlen : weights.length = values.length) :\n  knapsackAnswer weights values capacity = knapsackAnswer weights values capacity := by\n  rfl",
-      "nl_gloss": "When weights and values have equal length, the feasibility definition matches the intended subset constraints over items.",
-      "linked_semantic_units": [],
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_valid_selection_nodup (weights : Weights) (sel : Selection)\n  (hV : ValidSelection weights sel) : sel.Nodup := by\n  exact hV.1",
+      "nl_gloss": "Any valid selection is 0/1 at the index level: indices are distinct (Nodup is part of ValidSelection).",
+      "linked_semantic_units": [
+        "SU5"
+      ],
       "raw_source": "model"
     }
   ],
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],
@@ -215,5 +156,16 @@
     "scaffold_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/scaffold.lean",
     "reference_rs_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/reference.rs",
     "rust_summary_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/rust_summary.json"
+  },
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3",
+      "SU4"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
   }
 }

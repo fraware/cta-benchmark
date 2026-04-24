@@ -208,7 +208,10 @@ fn full_method_v1_priority1_semantic_hardening_packets() {
                 .unwrap_or(false)
         })
         .expect("graph_bfs_shortest_path_002: missing SU2 theorem");
-    let su2_stmt = su2["lean_statement"].as_str().unwrap_or("").to_ascii_lowercase();
+    let su2_stmt = su2["lean_statement"]
+        .as_str()
+        .unwrap_or("")
+        .to_ascii_lowercase();
     assert!(
         su2_stmt.contains("source < adj.length"),
         "graph_bfs_shortest_path_002: SU2 source anchor must guard with source < adj.length"

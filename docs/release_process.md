@@ -76,18 +76,29 @@ For automation, the fail-fast orchestrator chains these gates:
 `annotate refresh-lean-check --strict-m1` automatically before `reports package`,
 and exits non-zero if either gate fails.
 
-## Rigorous release note (`2026-04-24`)
+## Rigorous release note (`2026-04-24`, updated)
 
-Before tagging a paper-track release, explicitly verify target-family hardening
-for `sorting_insertion_sort_{001,002}`, `sorting_merge_sort_{001,002}`, and
-`trees_bst_insert_{001,002}`:
+Before tagging a paper-track release, explicitly verify curated hardening for:
+
+- `sorting_insertion_sort_{001,002}`, `sorting_merge_sort_{001,002}`,
+  `trees_bst_insert_{001,002}` (all four review-packet systems), and
+- `dp_knapsack_01_{001,002}` (all four systems, aligned with
+  `lean/CTA/Benchmark/DP/KnapsackTheory.lean`).
+
+Checklist:
 
 1. no packet `lean_statement` begins with `axiom`,
-2. no packet reports `proof_mode: "axiom_backed"`,
+2. no curated release candidate reports `proof_mode: "axiom_backed"` where
+   the bar is definition-backed completion,
 3. packet obligations avoid benchmark-facing vacuous/trivial theorem forms.
 
-The first two are machine-checkable with `rg`; the third is enforced by review
-packet regression tests plus manual signoff during release prep.
+The first two are machine-checkable with `rg`; the third is enforced by
+`review_packet_lean_lint` and the focused regression tests plus manual signoff
+during release prep. Full **M1 elaboration** (`lean_check.elaborated = true`)
+is required only for pairs in `is_m1_target_packet`
+(`crates/cta_cli/src/cmd/annotate.rs`); run
+`annotate refresh-lean-check … --strict-m1` and confirm zero M1 violations in
+`proof_completion_dashboard.csv`.
 
 ## Code-only remediation protocol
 
@@ -116,6 +127,10 @@ and DP, including both Dijkstra instances, both knapsack instances, LCS `001`,
 both LCA instances, `trees_bst_insert_002`, and both insertion-sort ids). Extend
 that array when you add a new first-class exemplar packet so it cannot silently
 rot.
+
+The `naive_concat_packet_regression` `targets` array includes the same style of
+pilot list (including both knapsack instances) so naive-concat gold packets
+cannot drift on layers, `quality_summary`, or vacuity.
 
 `code_only_packet_regression` must fail on each of the following malformed cases:
 
@@ -164,6 +179,7 @@ Apply the same quality discipline to `naive_concat_v1`:
 4. Rebuild scoped packets with `cta annotate build-review-packets --pairs ...`.
 5. Run focused regression and packet verification:
    - `cargo test -p cta_generate --test naive_concat_packet_regression`
+   - `cargo test -p cta_generate --test text_only_packet_regression`
    - `cta annotate verify-review-packets ...`
 
 As with `code_only_v1`, do not broaden to full-system refresh until the

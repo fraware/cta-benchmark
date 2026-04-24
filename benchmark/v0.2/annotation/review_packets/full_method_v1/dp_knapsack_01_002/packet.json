@@ -104,7 +104,7 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem knapsack01_value_witness (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) :\n  ∃ sel : Selection, ValidSelection weights sel ∨ ¬ ValidSelection weights sel := by\n  refine ⟨[] , ?_⟩\n  exact Classical.em (ValidSelection weights [])",
+      "lean_statement": "theorem knapsack01_value_witness (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) :\n  ∃ sel : Selection,\n    ValidSelection weights sel ∧\n      totalWeight weights sel ≤ capacity ∧\n      totalValue values sel = knapsack01 weights values capacity := by\n  exact knapsack01_feasible_witness weights values capacity halign",
       "nl_gloss": "When weights and values are length-aligned, there exists a valid feasible selection whose total value equals the returned result.",
       "linked_semantic_units": [
         "SU1",
@@ -118,7 +118,7 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem knapsack01_optimality (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) (sel : Selection)\n  (hV : ValidSelection weights sel) (hw : totalWeight weights sel ≤ capacity)\n  (hbound : totalValue values sel ≤ knapsack01 weights values capacity) :\n  totalValue values sel ≤ knapsack01 weights values capacity := by\n  exact hbound",
+      "lean_statement": "theorem knapsack01_optimality (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) (sel : Selection)\n  (hV : ValidSelection weights sel) (hw : totalWeight weights sel ≤ capacity) :\n  totalValue values sel ≤ knapsack01 weights values capacity := by\n  exact totalValue_le_knapsack01 weights values capacity halign sel hV hw",
       "nl_gloss": "When weights and values are length-aligned, no valid feasible selection beats the returned result.",
       "linked_semantic_units": [
         "SU1",
@@ -150,7 +150,7 @@
     "vacuous_theorems_present": false
   },
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/dp_knapsack_01_002/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],

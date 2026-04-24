@@ -51,6 +51,7 @@ cargo run -p cta_cli -- reports package --benchmark-version v0.2 --canonical-run
 cargo test -p cta_generate --test code_only_packet_regression
 cargo test -p cta_generate --test family_packet_regression
 cargo test -p cta_generate --test naive_concat_packet_regression
+cargo test -p cta_generate --test text_only_packet_regression
 cargo test -p cta_generate --test full_method_priority1_packet_regression
 cargo test -p cta_generate --test full_method_priority2_packet_regression
 cargo test -p cta_generate --test review_packet_lean_lint
@@ -61,6 +62,17 @@ lake build
 cd ..
 cargo run -p cta_cli -- benchmark lint --version v0.1
 cargo run -p cta_cli -- benchmark lint --version v0.2
+
+# 3e. review-packet Lean proof status (when touching review `packet.json`,
+#     `scaffold.lean` copies, `lean/CTA/Benchmark/**` used by packets, or
+#     `is_m1_target_packet` in `crates/cta_cli/src/cmd/annotate.rs`)
+cargo run -p cta_cli -- annotate refresh-lean-check \
+  --benchmark-version v0.2 \
+  --packets-root benchmark/v0.2/annotation/review_packets \
+  --strict-m1
+# Commit refreshed `packet.json` lean_check blocks, `lean_diagnostics.json`,
+# and aggregate outputs (`proof_completion_*`, worklists) if this command
+# changes them. See `docs/annotation_manual.md` (Strict M1 elaboration allowlist).
 
 # 4. end-to-end experiment smoke test (stub provider, offline)
 cargo run -p cta_cli -- experiment --config configs/experiments/pilot_v1.json --dry-run
@@ -121,15 +133,24 @@ cargo audit --deny warnings
 - [ ] If adding or changing an evaluated quantity, bumped the relevant
       contract version.
 - [ ] If the PR touches `configs/prompts/code_only_v1.json`,
-      `configs/prompts/naive_concat_v1.json`, `crates/cta_generate/src/normalize.rs`,
-      or any `benchmark/v0.2/annotation/review_packets/**/packet.json`:
+      `configs/prompts/naive_concat_v1.json`, `configs/prompts/text_only_v1.json`,
+      `configs/prompts/full_method_v1.json`, `crates/cta_generate/src/normalize.rs`,
+      `crates/cta_cli/src/cmd/annotate.rs` (especially `is_m1_target_packet`),
+      `lean/CTA/Benchmark/**` modules referenced by review scaffolds, or any
+      `benchmark/v0.2/annotation/review_packets/**/packet.json`:
       run `cargo test -p cta_generate --test code_only_packet_regression`,
       `cargo test -p cta_generate --test family_packet_regression`,
       (when `naive_concat_v1` packets change)
       `cargo test -p cta_generate --test naive_concat_packet_regression`,
+      `cargo test -p cta_generate --test text_only_packet_regression`,
       `cargo test -p cta_generate --test full_method_priority1_packet_regression`,
       `cargo test -p cta_generate --test full_method_priority2_packet_regression`, and
       `cargo test -p cta_generate --test review_packet_lean_lint`, then
       `cta annotate verify-review-packets` for `v0.2` and commit the updated
       `benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
-      when that file is part of your change set.
+      when that file is part of your change set; then run
+      `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+      and commit any regenerated `lean_check` / `lean_diagnostics.json` /
+      `proof_completion_*` / worklist artifacts. New theory-backed pairs that
+      must always pass full elaboration belong in `is_m1_target_packet`; see
+      `docs/annotation_manual.md`.

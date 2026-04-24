@@ -85,6 +85,13 @@ precondition.
   `ws.length = vs.length →`.
 - SU1 (alignment) is now covered by the existence postcondition.
 
+**Paper-track forward pointer (`v0.2`):** Review packets for
+`dp_knapsack_01_{001,002}` in all four systems (`text_only_v1`, `code_only_v1`,
+`naive_concat_v1`, `full_method_v1`) now mirror the same `KnapsackTheory`-backed
+`benchmark_facing` obligations and strict M1 elaboration when listed in
+`is_m1_target_packet`. See `docs/annotation_manual.md` and
+`lean/CTA/Benchmark/DP/KnapsackTheory.lean`.
+
 ### `dp/dp_longest_common_subsequence_001`
 
 - No rewrites applied. All obligations are postconditions with

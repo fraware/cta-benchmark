@@ -3,8 +3,8 @@ arrays_binary_search_001,code_only_v1,arrays,false,0,definition_backed,true,benc
 arrays_binary_search_002,code_only_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_binary_search_002/lean_diagnostics.json,0
 arrays_max_subarray_001,code_only_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_001/lean_diagnostics.json,0
 arrays_max_subarray_002,code_only_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/arrays_max_subarray_002/lean_diagnostics.json,0
-dp_knapsack_01_001,code_only_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_001/lean_diagnostics.json,0
-dp_knapsack_01_002,code_only_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_002/lean_diagnostics.json,0
+dp_knapsack_01_001,code_only_v1,dp,true,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_001/lean_diagnostics.json,0
+dp_knapsack_01_002,code_only_v1,dp,true,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_002/lean_diagnostics.json,0
 dp_longest_common_subsequence_001,code_only_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/dp_longest_common_subsequence_001/lean_diagnostics.json,0
 dp_longest_common_subsequence_002,code_only_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/dp_longest_common_subsequence_002/lean_diagnostics.json,0
 graph_bfs_shortest_path_001,code_only_v1,graph,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/code_only_v1/graph_bfs_shortest_path_001/lean_diagnostics.json,0
@@ -27,8 +27,8 @@ arrays_binary_search_001,full_method_v1,arrays,false,0,definition_backed,true,be
 arrays_binary_search_002,full_method_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_binary_search_002/lean_diagnostics.json,0
 arrays_max_subarray_001,full_method_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_max_subarray_001/lean_diagnostics.json,0
 arrays_max_subarray_002,full_method_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/arrays_max_subarray_002/lean_diagnostics.json,0
-dp_knapsack_01_001,full_method_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/dp_knapsack_01_001/lean_diagnostics.json,0
-dp_knapsack_01_002,full_method_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/dp_knapsack_01_002/lean_diagnostics.json,0
+dp_knapsack_01_001,full_method_v1,dp,true,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/dp_knapsack_01_001/lean_diagnostics.json,0
+dp_knapsack_01_002,full_method_v1,dp,true,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/dp_knapsack_01_002/lean_diagnostics.json,0
 dp_longest_common_subsequence_001,full_method_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_001/lean_diagnostics.json,0
 dp_longest_common_subsequence_002,full_method_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/lean_diagnostics.json,0
 graph_bfs_shortest_path_001,full_method_v1,graph,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_001/lean_diagnostics.json,0
@@ -51,8 +51,8 @@ arrays_binary_search_001,naive_concat_v1,arrays,false,0,definition_backed,true,b
 arrays_binary_search_002,naive_concat_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/arrays_binary_search_002/lean_diagnostics.json,0
 arrays_max_subarray_001,naive_concat_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/arrays_max_subarray_001/lean_diagnostics.json,0
 arrays_max_subarray_002,naive_concat_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/arrays_max_subarray_002/lean_diagnostics.json,0
-dp_knapsack_01_001,naive_concat_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/dp_knapsack_01_001/lean_diagnostics.json,0
-dp_knapsack_01_002,naive_concat_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/dp_knapsack_01_002/lean_diagnostics.json,0
+dp_knapsack_01_001,naive_concat_v1,dp,true,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/dp_knapsack_01_001/lean_diagnostics.json,0
+dp_knapsack_01_002,naive_concat_v1,dp,true,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/dp_knapsack_01_002/lean_diagnostics.json,0
 dp_longest_common_subsequence_001,naive_concat_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/dp_longest_common_subsequence_001/lean_diagnostics.json,0
 dp_longest_common_subsequence_002,naive_concat_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/dp_longest_common_subsequence_002/lean_diagnostics.json,0
 graph_bfs_shortest_path_001,naive_concat_v1,graph,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/naive_concat_v1/graph_bfs_shortest_path_001/lean_diagnostics.json,0
@@ -74,8 +74,8 @@ trees_lowest_common_ancestor_002,naive_concat_v1,trees,false,0,definition_backed
 arrays_binary_search_002,text_only_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_binary_search_002/lean_diagnostics.json,0
 arrays_max_subarray_001,text_only_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_001/lean_diagnostics.json,0
 arrays_max_subarray_002,text_only_v1,arrays,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/arrays_max_subarray_002/lean_diagnostics.json,0
-dp_knapsack_01_001,text_only_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/lean_diagnostics.json,0
-dp_knapsack_01_002,text_only_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_002/lean_diagnostics.json,0
+dp_knapsack_01_001,text_only_v1,dp,true,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_001/lean_diagnostics.json,0
+dp_knapsack_01_002,text_only_v1,dp,true,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/dp_knapsack_01_002/lean_diagnostics.json,0
 dp_longest_common_subsequence_001,text_only_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/dp_longest_common_subsequence_001/lean_diagnostics.json,0
 dp_longest_common_subsequence_002,text_only_v1,dp,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/dp_longest_common_subsequence_002/lean_diagnostics.json,0
 graph_bfs_shortest_path_001,text_only_v1,graph,false,0,definition_backed,true,benchmark/v0.2/annotation/review_packets/text_only_v1/graph_bfs_shortest_path_001/lean_diagnostics.json,0

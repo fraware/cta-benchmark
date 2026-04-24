@@ -99,12 +99,19 @@ review_packets/**/packet.json + scaffold.lean
 Current repository baseline: strict refresh is fully green for `v0.2`
 (`m2_ready_packets = 93 / 93`, `global_proof_worklist.count = 0`).
 
-Definition-backed hardening baseline (`2026-04-24`):
+Definition-backed hardening baseline (`2026-04-24`, updated):
 
-- target families (`sorting_insertion_sort_{001,002}`,
+- Target families (`sorting_insertion_sort_{001,002}`,
   `sorting_merge_sort_{001,002}`, `trees_bst_insert_{001,002}`) are
-  definition-backed in all four systems,
-- strict refresh and packet-regression gates remain green after removing
+  definition-backed in all four review-packet systems.
+- **0/1 knapsack** (`dp_knapsack_01_{001,002}`) uses the shared module
+  `lean/CTA/Benchmark/DP/KnapsackTheory.lean` in all four systems; curated
+  `packet.json` files carry three `benchmark_facing` theorems aligned with that
+  theory.
+- **Strict M1** full elaboration is enforced only for `(system_id, instance_id)`
+  pairs listed in `is_m1_target_packet` (`crates/cta_cli/src/cmd/annotate.rs`);
+  see `docs/annotation_manual.md` for the operator contract.
+- Strict refresh and packet-regression gates remain green after removing
   residual axiom/trivial obligations for those families.
 
 ## Hard mission rules

@@ -75,20 +75,19 @@ fn assert_no_benchmark_facing_vacuity(instance_id: &str, stmt: &str) {
     );
 }
 
-/// Wrapper pass-through lint: all `full_method_v1` benchmark-facing theorems (except legacy
-/// `graph_dijkstra_001`, which is exempt alongside vacuity checks). Other systems stay on
-/// lighter checks until migrated.
+/// Wrapper pass-through lint: benchmark-facing theorems under `full_method_v1`,
+/// `code_only_v1`, `naive_concat_v1`, and `text_only_v1` (except legacy `graph_dijkstra_001`,
+/// which is exempt alongside vacuity checks).
 fn wrapper_theorem_lint_applicable(packet_path: &Path, instance_id: &str) -> bool {
-    // Legacy / stubbed instances: obligations still evolve toward theory-backed proofs.
-    if matches!(
-        instance_id,
-        "graph_dijkstra_001" | "dp_knapsack_01_001" | "dp_knapsack_01_002"
-    ) {
+    // Legacy instance: obligations still evolve toward theory-backed proofs.
+    if instance_id == "graph_dijkstra_001" {
         return false;
     }
-    packet_path
-        .to_string_lossy()
-        .contains("full_method_v1")
+    let ps = packet_path.to_string_lossy();
+    ps.contains("full_method_v1")
+        || ps.contains("code_only_v1")
+        || ps.contains("naive_concat_v1")
+        || ps.contains("text_only_v1")
 }
 
 fn extract_terminal_hypothesis_name(stmt: &str) -> Option<String> {
@@ -142,9 +141,7 @@ fn rfl_proof_credibility_flag(kind: &str, stmt: &str) -> bool {
         return false;
     }
     let lc = stmt.to_ascii_lowercase();
-    lc.contains("by rfl")
-        || lc.contains(", rfl⟩")
-        || (lc.contains("simpa") && lc.contains("rfl"))
+    lc.contains("by rfl") || lc.contains(", rfl⟩") || (lc.contains("simpa") && lc.contains("rfl"))
 }
 
 fn assert_graph_path_distance_consistency(instance_id: &str, ob: &Value) {
@@ -192,12 +189,11 @@ fn assert_coin_change_optimality_direction(instance_id: &str, ob: &Value) {
     if ob["kind"].as_str() != Some("optimality") {
         return;
     }
-    let linked = ob["linked_semantic_units"].as_array().cloned().unwrap_or_default();
-    if !linked
-        .iter()
-        .filter_map(|v| v.as_str())
-        .any(|s| s == "SU4")
-    {
+    let linked = ob["linked_semantic_units"]
+        .as_array()
+        .cloned()
+        .unwrap_or_default();
+    if !linked.iter().filter_map(|v| v.as_str()).any(|s| s == "SU4") {
         return;
     }
     let lc = ob["lean_statement"]
@@ -262,12 +258,16 @@ fn assert_lean_check_shape_and_m1_contract(packet: &Value, packet_path: &Path, i
     let diagnostics_rel = lean_check
         .get("diagnostics_path")
         .and_then(|v| v.as_str())
-        .unwrap_or_else(|| panic!("{instance_id}: lean_check.diagnostics_path missing or not a string"));
+        .unwrap_or_else(|| {
+            panic!("{instance_id}: lean_check.diagnostics_path missing or not a string")
+        });
     let diagnostics_abs = workspace_root().join(diagnostics_rel);
     let elaborated = lean_check.get("elaborated").and_then(Value::as_bool);
     let proof_mode = lean_check.get("proof_mode").and_then(Value::as_str);
     let admit_count = lean_check.get("admit_count").and_then(Value::as_u64);
-    let _axiom_deps = lean_check.get("axiom_dependencies").and_then(Value::as_array);
+    let _axiom_deps = lean_check
+        .get("axiom_dependencies")
+        .and_then(Value::as_array);
 
     // Base schema hardening: when fields are present, they must be valid.
     if let Some(mode) = proof_mode {
@@ -318,7 +318,8 @@ fn review_packets_benchmark_facing_lean_lints() {
     );
 
     for path in paths {
-        let raw = fs::read_to_string(&path).unwrap_or_else(|e| panic!("read {}: {e}", path.display()));
+        let raw =
+            fs::read_to_string(&path).unwrap_or_else(|e| panic!("read {}: {e}", path.display()));
         let packet: Value =
             serde_json::from_str(&raw).unwrap_or_else(|e| panic!("parse {}: {e}", path.display()));
         let instance_id = instance_id_from_path(&path);

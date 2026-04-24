@@ -680,10 +680,7 @@ pub fn build_review_packets(workspace: &Path, args: BuildReviewPacketsArgs) -> R
             "{\"available\":false}",
         )?;
         let lean_diagnostics_path = packet_dir.join("lean_diagnostics.json");
-        std::fs::write(
-            &lean_diagnostics_path,
-            "{\"available\":false}",
-        )?;
+        std::fs::write(&lean_diagnostics_path, "{\"available\":false}")?;
         std::fs::write(
             packet_dir.join("behavior_report.json"),
             "{\"available\":false}",
@@ -1134,7 +1131,10 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
                 }
             }
             if let Some(packet_obj) = packet.as_object_mut() {
-                packet_obj.insert("generated_obligations".to_string(), json!(obligations.clone()));
+                packet_obj.insert(
+                    "generated_obligations".to_string(),
+                    json!(obligations.clone()),
+                );
             }
         }
         let elaboration = if is_m1_target_packet(&system_id, &instance_id) {
@@ -1199,8 +1199,9 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
                 violations.push("elaborated packet is missing diagnostics file".to_string());
             }
             if diagnostics_exists && diagnostics_only_unavailable(workspace, &diagnostics_rel) {
-                violations
-                    .push("elaborated packet diagnostics is only {\"available\":false}".to_string());
+                violations.push(
+                    "elaborated packet diagnostics is only {\"available\":false}".to_string(),
+                );
             }
             if !(proof_mode == "axiom_backed" || proof_mode == "definition_backed") {
                 violations.push("elaborated packet has invalid proof_mode".to_string());
@@ -1491,11 +1492,17 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
         };
         let packet_path = normalize_workspace_path(
             workspace,
-            &packets_root.join(system_id).join(instance_id).join("packet.json"),
+            &packets_root
+                .join(system_id)
+                .join(instance_id)
+                .join("packet.json"),
         );
         let scaffold_path = normalize_workspace_path(
             workspace,
-            &packets_root.join(system_id).join(instance_id).join("scaffold.lean"),
+            &packets_root
+                .join(system_id)
+                .join(instance_id)
+                .join("scaffold.lean"),
         );
         worklist_rows.push(json!({
             "instance_id": instance_id,
@@ -1517,24 +1524,28 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
         "count": worklist_rows.len(),
         "items": worklist_rows
     });
-    std::fs::write(&wave1_worklist_json, serde_json::to_vec_pretty(&worklist_json)?)
-        .with_context(|| format!("writing {}", wave1_worklist_json.display()))?;
+    std::fs::write(
+        &wave1_worklist_json,
+        serde_json::to_vec_pretty(&worklist_json)?,
+    )
+    .with_context(|| format!("writing {}", wave1_worklist_json.display()))?;
     let mut worklist_csv = vec![
-        "instance_id,system_id,family,admit_count,proof_mode,gap_reason,packet_path,scaffold_path".to_string(),
+        "instance_id,system_id,family,admit_count,proof_mode,gap_reason,packet_path,scaffold_path"
+            .to_string(),
     ];
     if let Some(items) = worklist_json["items"].as_array() {
         for item in items {
-        worklist_csv.push(format!(
-            "{},{},{},{},{},{},{},{}",
-            item["instance_id"].as_str().unwrap_or(""),
-            item["system_id"].as_str().unwrap_or(""),
-            item["family"].as_str().unwrap_or(""),
-            item["admit_count"].as_u64().unwrap_or(0),
-            item["proof_mode"].as_str().unwrap_or("unknown"),
-            item["gap_reason"].as_str().unwrap_or(""),
-            item["packet_path"].as_str().unwrap_or(""),
-            item["scaffold_path"].as_str().unwrap_or("")
-        ));
+            worklist_csv.push(format!(
+                "{},{},{},{},{},{},{},{}",
+                item["instance_id"].as_str().unwrap_or(""),
+                item["system_id"].as_str().unwrap_or(""),
+                item["family"].as_str().unwrap_or(""),
+                item["admit_count"].as_u64().unwrap_or(0),
+                item["proof_mode"].as_str().unwrap_or("unknown"),
+                item["gap_reason"].as_str().unwrap_or(""),
+                item["packet_path"].as_str().unwrap_or(""),
+                item["scaffold_path"].as_str().unwrap_or("")
+            ));
         }
     }
     std::fs::write(&wave1_worklist_csv, worklist_csv.join("\n"))
@@ -1574,10 +1585,14 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
         "count": global_rows.len(),
         "items": global_rows
     });
-    std::fs::write(&global_worklist_json, serde_json::to_vec_pretty(&global_json)?)
-        .with_context(|| format!("writing {}", global_worklist_json.display()))?;
+    std::fs::write(
+        &global_worklist_json,
+        serde_json::to_vec_pretty(&global_json)?,
+    )
+    .with_context(|| format!("writing {}", global_worklist_json.display()))?;
     let mut global_csv = vec![
-        "instance_id,system_id,family,admit_count,proof_mode,gap_reason,packet_path,scaffold_path".to_string(),
+        "instance_id,system_id,family,admit_count,proof_mode,gap_reason,packet_path,scaffold_path"
+            .to_string(),
     ];
     if let Some(items) = global_json["items"].as_array() {
         for item in items {
@@ -1600,7 +1615,10 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
     if let Some(items) = global_json["items"].as_array() {
         for item in items {
             let reason = item["gap_reason"].as_str().unwrap_or("unknown").to_string();
-            by_reason_groups.entry(reason).or_default().push(item.clone());
+            by_reason_groups
+                .entry(reason)
+                .or_default()
+                .push(item.clone());
         }
     }
     let mut grouped_batches = Vec::<serde_json::Value>::new();
@@ -1644,8 +1662,11 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
         "global_batch_source_count": global_json["count"].as_u64().unwrap_or(0),
         "tracks": grouped_batches
     });
-    std::fs::write(&execution_plan_json, serde_json::to_vec_pretty(&execution_plan)?)
-        .with_context(|| format!("writing {}", execution_plan_json.display()))?;
+    std::fs::write(
+        &execution_plan_json,
+        serde_json::to_vec_pretty(&execution_plan)?,
+    )
+    .with_context(|| format!("writing {}", execution_plan_json.display()))?;
     println!(
         "annotate refresh-lean-check: updated {updated} packet(s); dashboard at {} and {}",
         dashboard_json.display(),
@@ -1970,6 +1991,14 @@ fn is_m1_target_packet(system_id: &str, instance_id: &str) -> bool {
             | ("full_method_v1", "sorting_merge_sort_002")
             | ("full_method_v1", "trees_bst_insert_001")
             | ("full_method_v1", "trees_bst_insert_002")
+            | ("full_method_v1", "dp_knapsack_01_001")
+            | ("full_method_v1", "dp_knapsack_01_002")
+            | ("code_only_v1", "dp_knapsack_01_001")
+            | ("code_only_v1", "dp_knapsack_01_002")
+            | ("naive_concat_v1", "dp_knapsack_01_001")
+            | ("naive_concat_v1", "dp_knapsack_01_002")
+            | ("text_only_v1", "dp_knapsack_01_001")
+            | ("text_only_v1", "dp_knapsack_01_002")
     )
 }
 
@@ -2013,7 +2042,10 @@ fn run_packet_elaboration(
     Ok(Some(ElaborationResult { success }))
 }
 
-fn build_packet_check_source(scaffold_src: &str, generated_obligations: &[serde_json::Value]) -> String {
+fn build_packet_check_source(
+    scaffold_src: &str,
+    generated_obligations: &[serde_json::Value],
+) -> String {
     let statements = generated_obligations
         .iter()
         .filter_map(|o| o.get("lean_statement").and_then(|v| v.as_str()))

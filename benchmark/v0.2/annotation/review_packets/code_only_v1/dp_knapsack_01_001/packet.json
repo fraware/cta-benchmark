@@ -104,7 +104,7 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU1_feasible_witness (ws : Weights) (vs : Values) (cap : Nat)\n  (hal : ws.length = vs.length) :\n  ∃ sel : Selection,\n    ValidSelection ws sel ∧\n    totalWeight ws sel ≤ cap ∧\n    totalValue vs sel = knapsack01 ws vs cap",
+      "lean_statement": "theorem SU1_feasible_witness (ws : Weights) (vs : Values) (cap : Nat)\n  (hal : ws.length = vs.length) :\n  ∃ sel : Selection,\n    ValidSelection ws sel ∧\n    totalWeight ws sel ≤ cap ∧\n    totalValue vs sel = knapsack01 ws vs cap := by\n  exact knapsack01_feasible_witness ws vs cap hal",
       "nl_gloss": "When weights and values align, some valid selection achieves the returned optimum within the capacity.",
       "linked_semantic_units": [
         "SU1",
@@ -118,10 +118,21 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU4_global_optimal (ws : Weights) (vs : Values) (cap : Nat) (sel : Selection)\n  (hal : ws.length = vs.length)\n  (hv : ValidSelection ws sel)\n  (hw : totalWeight ws sel ≤ cap) :\n  totalValue vs sel ≤ knapsack01 ws vs cap",
+      "lean_statement": "theorem SU4_global_optimal (ws : Weights) (vs : Values) (cap : Nat) (sel : Selection)\n  (hal : ws.length = vs.length)\n  (hv : ValidSelection ws sel)\n  (hw : totalWeight ws sel ≤ cap) :\n  totalValue vs sel ≤ knapsack01 ws vs cap := by\n  exact totalValue_le_knapsack01 ws vs cap hal sel hv hw",
       "nl_gloss": "No feasible selection within the capacity beats the returned optimum.",
       "linked_semantic_units": [
         "SU4"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem knapsack01_valid_selection_nodup (weights : Weights) (sel : Selection)\n  (hV : ValidSelection weights sel) : sel.Nodup := by\n  exact hV.1",
+      "nl_gloss": "Any valid selection is 0/1 at the index level: indices are distinct (Nodup is part of ValidSelection).",
+      "linked_semantic_units": [
+        "SU5"
       ],
       "raw_source": "model"
     }
@@ -138,7 +149,7 @@
     "vacuous_theorems_present": false
   },
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/dp_knapsack_01_001/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],

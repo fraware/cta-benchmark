@@ -30,8 +30,14 @@ same bar as gold authoring:
 - prefer definition-backed theory references over packet-local trusted symbols.
 
 For `v0.2` target families (`sorting_insertion_sort_{001,002}`,
-`sorting_merge_sort_{001,002}`, `trees_bst_insert_{001,002}`), this bar is now
-enforced in-repo and rechecked by strict refresh plus packet regressions.
+`sorting_merge_sort_{001,002}`, `trees_bst_insert_{001,002}`), plus **0/1
+knapsack** (`dp_knapsack_01_{001,002}`) in all four review-packet systems, this
+bar is enforced in-repo and rechecked by `cargo test -p cta_generate`,
+`review_packet_lean_lint`, and `annotate refresh-lean-check --strict-m1` for
+M1-allowlisted pairs. Knapsack gold obligations should cite
+`knapsack01_feasible_witness`, `totalValue_le_knapsack01`, and
+`ValidSelection`-derived facts from `lean/CTA/Benchmark/DP/KnapsackTheory.lean`
+rather than ad hoc list or `Fin n` encodings inside packets.
 
 ### Shared vocabulary
 

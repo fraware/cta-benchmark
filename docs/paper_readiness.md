@@ -113,15 +113,22 @@ Current repository snapshot is fully burned down for `v0.2` review packets:
 - `summary_by_gap_reason = {m2_ready: 93}`,
 - `global_proof_worklist.count = 0`.
 
-Rigorous addendum (`2026-04-24`):
+Rigorous addendum (`2026-04-24`, updated):
 
-- target families `sorting_insertion_sort_{001,002}`,
-  `sorting_merge_sort_{001,002}`, and `trees_bst_insert_{001,002}` are now
+- Target families `sorting_insertion_sort_{001,002}`,
+  `sorting_merge_sort_{001,002}`, and `trees_bst_insert_{001,002}` are
   definition-backed across `text_only_v1`, `code_only_v1`, `naive_concat_v1`,
-  and `full_method_v1`,
-- packet-level trusted axioms and benchmark-facing vacuous placeholders for
-  this target set have been removed from curated review packets,
-- strict refresh and packet regressions remain green after this hardening pass.
+  and `full_method_v1`.
+- **0/1 knapsack** (`dp_knapsack_01_{001,002}`) matches the same bar in all four
+  systems, with proofs centralized in `lean/CTA/Benchmark/DP/KnapsackTheory.lean`
+  and three `benchmark_facing` theorems per packet.
+- Packet-level trusted axioms and benchmark-facing vacuous placeholders for
+  these curated sets have been removed; `graph_dijkstra_001` remains on a
+  separate migration track (vacuity lint exemption in
+  `review_packet_lean_lint.rs`).
+- Strict refresh (`--strict-m1`) and `cargo test -p cta_generate` remain green;
+  M1 elaboration is required only for pairs listed in `is_m1_target_packet`
+  (`crates/cta_cli/src/cmd/annotate.rs`).
 
 ## Human review packet workflow
 
@@ -153,6 +160,8 @@ Then validate the batch and refresh release gates:
 3. When `packet.json` content, prompts, or normalizers changed in the same change set, run:
    - `cargo test -p cta_generate --test code_only_packet_regression`
    - `cargo test -p cta_generate --test family_packet_regression`
+   - `cargo test -p cta_generate --test naive_concat_packet_regression`
+   - `cargo test -p cta_generate --test text_only_packet_regression`
    - `cargo test -p cta_generate --test full_method_priority1_packet_regression`
    - `cargo test -p cta_generate --test full_method_priority2_packet_regression`
    - `cargo test -p cta_generate --test review_packet_lean_lint`

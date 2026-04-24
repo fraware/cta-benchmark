@@ -1,3 +1,11 @@
+//! Curated `text_only_v1` review packets that already use the same
+//! `benchmark_facing` / `auxiliary` layering and `quality_summary` shape as
+//! `code_only_v1` / `naive_concat_v1` gold rosters.
+//!
+//! Most legacy `text_only_v1` packets still omit `quality_summary` and use
+//! `kind: "unknown"` without `layer`; extend the `targets` list only when a
+//! packet is migrated to that schema.
+
 use std::collections::HashSet;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -18,7 +26,7 @@ fn packet_path(instance_id: &str) -> PathBuf {
         .join("v0.2")
         .join("annotation")
         .join("review_packets")
-        .join("naive_concat_v1")
+        .join("text_only_v1")
         .join(instance_id)
         .join("packet.json")
 }
@@ -165,16 +173,7 @@ fn assert_benchmark_facing_cap(instance_id: &str, packet: &Value) {
 
 #[test]
 fn regression_target_packets_are_benchmark_aligned() {
-    let targets = [
-        "arrays_binary_search_002",
-        "graph_dijkstra_001",
-        "graph_bfs_shortest_path_001",
-        "greedy_interval_scheduling_001",
-        "sorting_merge_sort_001",
-        "trees_bst_insert_001",
-        "dp_knapsack_01_001",
-        "dp_knapsack_01_002",
-    ];
+    let targets = ["dp_knapsack_01_001", "dp_knapsack_01_002"];
 
     for instance_id in targets {
         let packet = load_packet(instance_id);
