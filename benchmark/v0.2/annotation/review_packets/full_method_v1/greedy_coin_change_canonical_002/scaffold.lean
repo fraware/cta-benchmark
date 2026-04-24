@@ -17,11 +17,4 @@ abbrev Canonical := CoinChangeCanonicalTheory.Canonical
 abbrev Decomposes := CoinChangeCanonicalTheory.Decomposes
 abbrev coinChangeCanonical := CoinChangeCanonicalTheory.coinChangeCanonical
 
-namespace List
-
-def sum (xs : List Nat) : Nat :=
-  CoinChangeCanonicalTheory.listNatSum xs
-
-end List
-
 end CTA.Benchmark.Greedy.CoinChangeCanonical002

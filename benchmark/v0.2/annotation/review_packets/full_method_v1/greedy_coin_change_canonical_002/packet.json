@@ -111,7 +111,7 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem alignment_length (denoms : Denoms) (amount : Nat) :\n  (coinChangeCanonical denoms amount).length = denoms.length := by\n  simpa using CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.coinChange_alignment denoms amount",
+      "lean_statement": "theorem alignment_length (denoms : Denoms) (amount : Nat) :\n  (coinChangeCanonical denoms amount).length = denoms.length := by\n  exact CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.coinChange_alignment denoms amount",
       "nl_gloss": "The returned counts vector has the same length as the denominations.",
       "linked_semantic_units": [
         "SU2"
@@ -122,7 +122,7 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem decomposition_correct (denoms : Denoms) (amount : Nat)\n  (hhead : denoms.head? = some 1) :\n  Decomposes denoms (coinChangeCanonical denoms amount) amount := by\n  simpa using CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.coinChange_decomposition denoms amount hhead",
+      "lean_statement": "theorem decomposition_correct (denoms : Denoms) (amount : Nat)\n  (hhead : denoms.head? = some 1) :\n  Decomposes denoms (coinChangeCanonical denoms amount) amount := by\n  exact CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.coinChange_decomposition denoms amount hhead",
       "nl_gloss": "The returned counts decompose the target amount using the weighted sum.",
       "linked_semantic_units": [
         "SU3"
@@ -133,7 +133,7 @@
       "index": 2,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem nonnegativity_counts (denoms : Denoms) (amount : Nat) :\n  ∀ i : Fin (coinChangeCanonical denoms amount).length,\n    0 ≤ (coinChangeCanonical denoms amount).get i := by\n  simpa using CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.coinChange_nonnegative denoms amount",
+      "lean_statement": "theorem nonnegativity_counts (denoms : Denoms) (amount : Nat) :\n  ∀ i : Fin (coinChangeCanonical denoms amount).length,\n    0 ≤ (coinChangeCanonical denoms amount).get i := by\n  exact CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.coinChange_nonnegative denoms amount",
       "nl_gloss": "Every count entry is non-negative.",
       "linked_semantic_units": [
         "SU5"
@@ -144,7 +144,7 @@
       "index": 3,
       "kind": "optimality",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem optimality_min_sum (denoms : Denoms) (amount : Nat) (hcan : Canonical denoms) :\n  ∀ counts : Counts, Decomposes denoms counts amount → listNatSum (coinChangeCanonical denoms amount) ≤ listNatSum counts := by\n  simpa using CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.coinChange_optimal denoms amount hcan",
+      "lean_statement": "theorem optimality_min_sum (denoms : Denoms) (amount : Nat) (hcan : Canonical denoms) :\n  ∀ counts : Counts, Decomposes denoms counts amount → (coinChangeCanonical denoms amount).sum ≤ counts.sum := by\n  intro counts hdec\n  have h0 := CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.coinChange_optimal denoms amount hcan counts hdec\n  rw [CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.listNatSum_eq_sum, CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.listNatSum_eq_sum] at h0\n  exact h0",
       "nl_gloss": "Among all valid decompositions, the returned counts have minimal total number of coins.",
       "linked_semantic_units": [
         "SU1",

@@ -76,6 +76,7 @@ fn assert_no_benchmark_facing_vacuity(instance_id: &str, stmt: &str) {
 }
 
 fn target_wrapper_hotspot(instance_id: &str) -> bool {
+    // M1 proof-milestone subset (full rollout across all instances is tracked separately).
     matches!(
         instance_id,
         "graph_dijkstra_002"

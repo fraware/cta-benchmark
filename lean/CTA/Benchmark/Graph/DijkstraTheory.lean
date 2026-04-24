@@ -96,7 +96,7 @@ theorem dijkstra_optimal
   subst hd0
   intro w hw
   rcases hw with ⟨_, hw0⟩
-  simpa [hw0]
+  simp [hw0]
 
 theorem dijkstra_unreachable_iff
     (n source : Nat) (edges : Graph) (_h : ValidDijkstraInput n source edges)

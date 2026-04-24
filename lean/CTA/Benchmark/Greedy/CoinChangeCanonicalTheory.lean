@@ -20,6 +20,22 @@ def listNatSum : List Nat → Nat
   | [] => 0
   | x :: xs => x + listNatSum xs
 
+end CTA.Benchmark.Greedy.CoinChangeCanonicalTheory
+
+namespace List
+
+/-- Sum of a `List Nat`; matches `CoinChangeCanonicalTheory.listNatSum` (dot notation for obligations). -/
+def sum (xs : List Nat) : Nat :=
+  CTA.Benchmark.Greedy.CoinChangeCanonicalTheory.listNatSum xs
+
+end List
+
+namespace CTA.Benchmark.Greedy.CoinChangeCanonicalTheory
+
+open CTA.Core
+
+theorem listNatSum_eq_sum (xs : List Nat) : listNatSum xs = List.sum xs := rfl
+
 /-- Predicate: `counts` decomposes `amount` against `denoms`. -/
 def Decomposes (denoms : Denoms) (counts : Counts) (amount : Nat) : Prop :=
   counts.length = denoms.length ∧
