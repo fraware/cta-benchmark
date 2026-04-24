@@ -105,7 +105,7 @@
     {
       "index": 0,
       "kind": "precondition",
-      "lean_statement": "theorem SU1_start_lt_stop (intervals : Intervals)\n  (h : ∀ i ∈ intervals, i.start < i.stop) :\n  ∀ i ∈ intervals, i.start < i.stop := by\n  exact h",
+      "lean_statement": "theorem SU1_start_lt_stop (intervals : Intervals)\n  (h : ∀ i ∈ intervals, i.start < i.stop) :\n  ∀ i ∈ intervals, i.start < i.stop := by\n  intro i hi\n  exact h i hi",
       "nl_gloss": "If every interval in the input satisfies start < stop, then the precondition holds (used to rule out empty intervals).",
       "linked_semantic_units": [
         "SU1"

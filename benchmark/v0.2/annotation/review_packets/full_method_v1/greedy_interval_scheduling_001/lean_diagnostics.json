@@ -10,6 +10,6 @@
     "benchmark/v0.2/annotation/review_packets/full_method_v1/greedy_interval_scheduling_001/packet_elab_check.lean"
   ],
   "check_file": "benchmark/v0.2/annotation/review_packets/full_method_v1/greedy_interval_scheduling_001/packet_elab_check.lean",
-  "stdout": "C:\\Users\\mateo\\cta-benchmark\\benchmark/v0.2/annotation/review_packets/full_method_v1\\greedy_interval_scheduling_001\\packet_elab_check.lean:53:2: warning: try 'simp' instead of 'simpa'\nnote: this linter can be disabled with `set_option linter.unnecessarySimpa false`\n",
+  "stdout": "C:\\Users\\mateo\\cta-benchmark\\benchmark/v0.2/annotation/review_packets/full_method_v1\\greedy_interval_scheduling_001\\packet_elab_check.lean:54:2: warning: try 'simp' instead of 'simpa'\nnote: this linter can be disabled with `set_option linter.unnecessarySimpa false`\n",
   "stderr": ""
 }

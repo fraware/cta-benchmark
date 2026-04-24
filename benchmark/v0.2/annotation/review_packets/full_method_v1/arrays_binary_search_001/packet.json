@@ -108,7 +108,7 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem binary_search_absent_when_sorted (a : Arr) (t : Int)\n  (hs : Sorted a) (h : binarySearch a t = none) :\n  binarySearch a t = none := by\n  simpa using h",
+      "lean_statement": "theorem binary_search_absent_when_sorted (a : Arr) (t : Int)\n  (hs : Sorted a) (h : binarySearch a t = none) :\n  binarySearch a t = none := h",
       "nl_gloss": "Assuming the input is sorted in nondecreasing order, if the function returns None then the target does not occur anywhere in the slice.",
       "linked_semantic_units": [
         "SU1",

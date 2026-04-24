@@ -75,16 +75,20 @@ fn assert_no_benchmark_facing_vacuity(instance_id: &str, stmt: &str) {
     );
 }
 
-fn target_wrapper_hotspot(instance_id: &str) -> bool {
-    // M1 proof-milestone subset (full rollout across all instances is tracked separately).
-    matches!(
+/// Wrapper pass-through lint: all `full_method_v1` benchmark-facing theorems (except legacy
+/// `graph_dijkstra_001`, which is exempt alongside vacuity checks). Other systems stay on
+/// lighter checks until migrated.
+fn wrapper_theorem_lint_applicable(packet_path: &Path, instance_id: &str) -> bool {
+    // Legacy / stubbed instances: obligations still evolve toward theory-backed proofs.
+    if matches!(
         instance_id,
-        "graph_dijkstra_002"
-            | "graph_bfs_shortest_path_002"
-            | "greedy_coin_change_canonical_002"
-            | "trees_lowest_common_ancestor_001"
-            | "trees_lowest_common_ancestor_002"
-    )
+        "graph_dijkstra_001" | "dp_knapsack_01_001" | "dp_knapsack_01_002"
+    ) {
+        return false;
+    }
+    packet_path
+        .to_string_lossy()
+        .contains("full_method_v1")
 }
 
 fn extract_terminal_hypothesis_name(stmt: &str) -> Option<String> {
@@ -113,8 +117,8 @@ fn extract_terminal_hypothesis_name(stmt: &str) -> Option<String> {
     None
 }
 
-fn assert_no_wrapper_theorem_pass_through(instance_id: &str, stmt: &str) {
-    if !target_wrapper_hotspot(instance_id) {
+fn assert_no_wrapper_theorem_pass_through(packet_path: &Path, instance_id: &str, stmt: &str) {
+    if !wrapper_theorem_lint_applicable(packet_path, instance_id) {
         return;
     }
     if let Some(h) = extract_terminal_hypothesis_name(stmt) {
@@ -336,7 +340,7 @@ fn review_packets_benchmark_facing_lean_lints() {
             let stmt = ob["lean_statement"].as_str().unwrap_or("");
             let kind = ob["kind"].as_str().unwrap_or("");
             assert_no_benchmark_facing_vacuity(&instance_id, stmt);
-            assert_no_wrapper_theorem_pass_through(&instance_id, stmt);
+            assert_no_wrapper_theorem_pass_through(&path, &instance_id, stmt);
             assert_graph_path_distance_consistency(&instance_id, ob);
             assert_coin_change_optimality_direction(&instance_id, ob);
             assert!(
