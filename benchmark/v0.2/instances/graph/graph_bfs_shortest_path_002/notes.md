@@ -14,3 +14,13 @@ complexity profiles (queue vs. priority queue) and spec shapes
   one-directional specs as a critical-unit coverage miss.
 - The harness uses a Floyd-Warshall unweighted oracle as ground truth
   on small graphs (n <= 20).
+
+## Current proof status (v0.2)
+
+- `BfsShortestPathTheory` is now theorem-backed for SU1-SU5 (length,
+  source anchor, witness, minimality, and unreachability iff).
+- Unreachability is proved directly in theory (`bfs_unreachability_iff`)
+  and no longer relies on a circular helper hypothesis.
+- Review packets should route benchmark-facing BFS obligations through
+  `CTA.Benchmark.Graph.BfsShortestPathTheory` theorems rather than
+  local `simp` placeholders.

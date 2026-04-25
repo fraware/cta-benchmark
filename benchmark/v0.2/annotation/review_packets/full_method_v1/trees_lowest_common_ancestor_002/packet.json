@@ -123,7 +123,7 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem lca_bst_no_proper_descendant_both_keys (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a)\n  (hno : ∀ sub : Tree,\n    IsProperSubtree sub (subtreeRootedAt t a) →\n    ¬ (HasKey sub p ∧ HasKey sub q)) :\n  ∀ sub : Tree,\n    IsProperSubtree sub (subtreeRootedAt t a) →\n    ¬ (HasKey sub p ∧ HasKey sub q) := by\n  simpa using CTA.Benchmark.Trees.LowestCommonAncestorTheory.lca_no_proper_descendant_both_keys t p q a hbst hp hq hr hno",
+      "lean_statement": "theorem lca_bst_no_proper_descendant_both_keys (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a) :\n  ∀ sub : Tree,\n    IsProperSubtree sub (subtreeRootedAt t a) →\n    ¬ (HasKey sub p ∧ HasKey sub q) := by\n  simpa using CTA.Benchmark.Trees.LowestCommonAncestorTheory.lca_no_proper_descendant_both_keys t p q a hbst hp hq hr",
       "nl_gloss": "No proper subtree strictly below the returned LCA root contains both query keys (lowestness in proper-descendant form).",
       "linked_semantic_units": [
         "SU4"
@@ -134,7 +134,7 @@
       "index": 2,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem lca_bst_self_key (t : Tree) (p : Int)\n  (hbst : IsBst t) (hp : HasKey t p) :\n  lcaBst t p p = lcaBst t p p := by\n  simpa using CTA.Benchmark.Trees.LowestCommonAncestorTheory.lca_self_key t p hbst hp",
+      "lean_statement": "theorem lca_bst_self_key (t : Tree) (p : Int)\n  (hbst : IsBst t) (hp : HasKey t p) :\n  lcaBst t p p = some p := by\n  simpa using CTA.Benchmark.Trees.LowestCommonAncestorTheory.lca_self_key t p hbst hp",
       "nl_gloss": "When the input is a BST containing the key, the LCA of a key with itself is that key.",
       "linked_semantic_units": [
         "SU5"

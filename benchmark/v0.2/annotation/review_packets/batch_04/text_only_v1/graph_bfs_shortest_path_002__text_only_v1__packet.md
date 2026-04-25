@@ -14,5 +14,8 @@
    - cargo run -p cta_cli --quiet -- validate file --schema annotation --path <file>
 
 ## Notes
-- Replace placeholder scalar values and obligations.
-- generated_obligations length should match obligations evaluated for this pair.
+- Use theorem-backed benchmark-facing obligations whenever the packet
+  has moved to theory-backed Lean proofs.
+- For SU5 in theory-backed variants, use
+  `bfs_unreachability_iff adj source v hv` directly (no `hvalid` helper).
+- `generated_obligations` length should match obligations evaluated for this pair.

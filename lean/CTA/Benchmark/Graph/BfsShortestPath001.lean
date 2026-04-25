@@ -13,6 +13,6 @@ open CTA.Benchmark.Graph.BfsShortestPathTheory
 
 abbrev Adj := BfsShortestPathTheory.Adj
 abbrev DistTable := BfsShortestPathTheory.DistTable
-abbrev bfsShortestPath := BfsShortestPathTheory.bfsShortestPath
+noncomputable abbrev bfsShortestPath := BfsShortestPathTheory.bfsShortestPath
 
 end CTA.Benchmark.Graph.BfsShortestPath001

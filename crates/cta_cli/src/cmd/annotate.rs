@@ -1223,6 +1223,15 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
             if proof_mode != "definition_backed" && proof_mode != "axiom_backed" {
                 violations.push("M1 target packet has invalid proof_mode".to_string());
             }
+            if is_hotspot_target_packet(&system_id, &instance_id)
+                && diagnostics_exists
+                && diagnostics_has_unused_variable_warning(workspace, &diagnostics_rel)
+            {
+                violations.push(
+                    "hotspot packet diagnostics must not contain unused-variable warnings"
+                        .to_string(),
+                );
+            }
         }
         let Some(packet_obj) = packet.as_object_mut() else {
             anyhow::bail!("packet root must be object: {}", packet_path.display());
@@ -2086,6 +2095,27 @@ fn diagnostics_only_unavailable(workspace: &Path, diagnostics_rel: &str) -> bool
         return false;
     };
     v.get("available").and_then(|x| x.as_bool()) == Some(false)
+}
+
+fn diagnostics_has_unused_variable_warning(workspace: &Path, diagnostics_rel: &str) -> bool {
+    let diagnostics_abs = workspace.join(diagnostics_rel);
+    let Ok(raw) = std::fs::read_to_string(diagnostics_abs) else {
+        return false;
+    };
+    let Ok(v) = serde_json::from_str::<serde_json::Value>(&raw) else {
+        return false;
+    };
+    let stderr = v.get("stderr").and_then(|x| x.as_str()).unwrap_or("");
+    stderr.to_ascii_lowercase().contains("unused variable")
+}
+
+fn is_hotspot_target_packet(system_id: &str, instance_id: &str) -> bool {
+    matches!(
+        (system_id, instance_id),
+        ("full_method_v1", "graph_bfs_shortest_path_002")
+            | ("full_method_v1", "trees_lowest_common_ancestor_001")
+            | ("full_method_v1", "trees_lowest_common_ancestor_002")
+    )
 }
 
 fn count_admit_or_sorry(generated_obligations: &[serde_json::Value]) -> u64 {

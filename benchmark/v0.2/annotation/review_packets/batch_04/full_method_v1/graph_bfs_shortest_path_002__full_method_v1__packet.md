@@ -14,5 +14,8 @@
    - cargo run -p cta_cli --quiet -- validate file --schema annotation --path <file>
 
 ## Notes
-- Replace placeholder scalar values and obligations.
-- generated_obligations length should match obligations evaluated for this pair.
+- Packet is expected to use theorem-backed benchmark-facing obligations
+  from `CTA.Benchmark.Graph.BfsShortestPathTheory` for SU1-SU5.
+- SU5 must use `bfs_unreachability_iff adj source v hv` directly
+  (no circular `hvalid` helper hypothesis).
+- `generated_obligations` length should match obligations evaluated for this pair.

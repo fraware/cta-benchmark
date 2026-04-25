@@ -20,6 +20,6 @@ abbrev DistTable := BfsShortestPathTheory.DistTable
 
 /-- Declarative model of the reference `bfs_shortest_path`. Takes the
     adjacency list and the source vertex. -/
-abbrev bfsShortestPath := BfsShortestPathTheory.bfsShortestPath
+noncomputable abbrev bfsShortestPath := BfsShortestPathTheory.bfsShortestPath
 
 end CTA.Benchmark.Graph.BfsShortestPath002
