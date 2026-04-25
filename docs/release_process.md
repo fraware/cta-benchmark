@@ -93,7 +93,10 @@ Checklist:
 1. no packet `lean_statement` begins with `axiom`,
 2. no curated release candidate reports `proof_mode: "axiom_backed"` where
    the bar is definition-backed completion,
-3. packet obligations avoid benchmark-facing vacuous/trivial theorem forms.
+3. packet obligations avoid benchmark-facing vacuous/trivial theorem forms,
+4. strict-M1 benchmark-facing obligations avoid wrapper self-copy shapes
+   (`(h : P) : P := by exact h` / `simpa using h`) and tautological theorem
+   equalities (`x = x`).
 
 The first two are machine-checkable with `rg`; the third is enforced by
 `review_packet_lean_lint` and the focused regression tests plus manual signoff

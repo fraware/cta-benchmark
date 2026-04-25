@@ -1232,6 +1232,23 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
                         .to_string(),
                 );
             }
+            for ob in &obligations {
+                let layer = ob.get("layer").and_then(|v| v.as_str()).unwrap_or("");
+                if layer != "benchmark_facing" {
+                    continue;
+                }
+                let stmt = ob.get("lean_statement").and_then(|v| v.as_str()).unwrap_or("");
+                if is_wrapper_self_copy_theorem(stmt) {
+                    violations.push(
+                        "benchmark-facing theorem uses wrapper self-copy assumption".to_string(),
+                    );
+                }
+                if has_tautological_theorem_equality(stmt) {
+                    violations.push(
+                        "benchmark-facing theorem has tautological equality conclusion".to_string(),
+                    );
+                }
+            }
         }
         let Some(packet_obj) = packet.as_object_mut() else {
             anyhow::bail!("packet root must be object: {}", packet_path.display());
@@ -2327,6 +2344,102 @@ fn is_tautological_precondition(stmt: &str, gloss: &str) -> bool {
     }
     (g.contains("assume") || g.contains("precondition"))
         && (s.contains("bst t") || s.contains("sorted") || s.contains("nondecreasing"))
+}
+
+fn theorem_header_and_body(stmt: &str) -> Option<(&str, &str)> {
+    let split = stmt.find(":= by")?;
+    let head = stmt[..split].trim();
+    let body = stmt[(split + ":= by".len())..].trim();
+    Some((head, body))
+}
+
+fn theorem_conclusion(header: &str) -> Option<&str> {
+    let idx = header.rfind(") :")?;
+    Some(header[(idx + 3)..].trim())
+}
+
+fn normalize_prop_text(s: &str) -> String {
+    s.split_whitespace().collect::<Vec<_>>().join(" ")
+}
+
+fn parse_assumption_prop(header: &str, ident: &str) -> Option<String> {
+    let needle = format!("({ident} :");
+    let start = header.find(&needle)?;
+    let mut i = start + needle.len();
+    let bytes = header.as_bytes();
+    let mut depth = 0i32;
+    while i < header.len() {
+        let c = bytes[i] as char;
+        if c == '(' {
+            depth += 1;
+        } else if c == ')' {
+            if depth == 0 {
+                let prop = header[(start + needle.len())..i].trim();
+                return Some(prop.to_string());
+            }
+            depth -= 1;
+        }
+        i += 1;
+    }
+    None
+}
+
+fn wrapper_ident_from_body(body: &str) -> Option<String> {
+    let b = body.trim();
+    if let Some(rest) = b.strip_prefix("exact ") {
+        return Some(rest.trim().to_string());
+    }
+    if let Some(rest) = b.strip_prefix("simpa using ") {
+        return Some(rest.trim().to_string());
+    }
+    None
+}
+
+fn is_wrapper_self_copy_theorem(stmt: &str) -> bool {
+    let Some((header, body)) = theorem_header_and_body(stmt) else {
+        return false;
+    };
+    let Some(ident) = wrapper_ident_from_body(body) else {
+        return false;
+    };
+    let Some(assump) = parse_assumption_prop(header, &ident) else {
+        return false;
+    };
+    let Some(conclusion) = theorem_conclusion(header) else {
+        return false;
+    };
+    normalize_prop_text(&assump) == normalize_prop_text(conclusion)
+}
+
+fn has_tautological_theorem_equality(stmt: &str) -> bool {
+    let Some((header, _body)) = theorem_header_and_body(stmt) else {
+        return false;
+    };
+    let Some(conclusion) = theorem_conclusion(header) else {
+        return false;
+    };
+    let c = normalize_prop_text(conclusion);
+    if c.contains("→")
+        || c.contains("↔")
+        || c.contains("∧")
+        || c.contains("∨")
+        || c.contains("¬")
+        || c.contains("∀")
+        || c.contains("∃")
+    {
+        return false;
+    }
+    let mut parts = c.split('=');
+    let Some(lhs) = parts.next() else {
+        return false;
+    };
+    let Some(rhs) = parts.next() else {
+        return false;
+    };
+    if parts.next().is_some() {
+        return false;
+    }
+    normalize_prop_text(lhs) == normalize_prop_text(rhs)
 }
 
 fn is_vacuous_or_filler(stmt_norm: &str, gloss_lc: &str) -> bool {

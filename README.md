@@ -338,6 +338,10 @@ Regression suites pin this contract for focused cleanup packets:
 - `crates/cta_generate/tests/review_packet_lean_lint.rs` (repo-wide static checks on every `review_packets/**/packet.json`)
 - strict proof-status gate:
   `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1` (M1 elaboration required only for `is_m1_target_packet` pairs in `crates/cta_cli/src/cmd/annotate.rs`)
+  - For allowlisted packets, strict-M1 also rejects benchmark-facing wrapper
+    self-copy theorem bodies (`exact h` / `simpa using h` with identical
+    assumed proposition and conclusion) and tautological theorem equalities
+    (`x = x`).
 
 ### Lean scaffolds (`lean/CTA/Benchmark/**`)
 

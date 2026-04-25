@@ -199,7 +199,7 @@ proof worklist).
 
 ## Strict M1 elaboration allowlist
 
-`annotate refresh-lean-check --strict-m1` applies **two** layers of rules:
+`annotate refresh-lean-check --strict-m1` applies layered rules:
 
 1. **All packets:** refresh `lean_check` / diagnostics paths and recompute
    `proof_mode`, `admit_count`, and related fields from obligation text and
@@ -211,6 +211,10 @@ proof worklist).
    records structured `lean_diagnostics.json`, and **requires**
    `lean_check.elaborated = true`, `admit_count = 0`, and non-placeholder
    diagnostics. The temporary check file is deleted after the run.
+3. **Allowlisted pairs, benchmark-facing theorems:** strict-M1 also rejects
+   theorem wrappers that assume their own conclusion and immediately return it
+   (`exact h` / `simpa using h`) and rejects tautological theorem-equality
+   conclusions (`x = x`).
 
 Packets **not** on that list may legitimately keep `lean_check.elaborated =
 false` while still being schema-valid and useful for adjudication; the

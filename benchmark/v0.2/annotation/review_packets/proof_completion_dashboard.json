@@ -1,7 +1,7 @@
 {
   "benchmark_version": "v0.2",
   "packets_root": "benchmark/v0.2/annotation/review_packets",
-  "generated_at": "2026-04-25T10:22:30.4501996Z",
+  "generated_at": "2026-04-25T11:09:26.2685749Z",
   "total_packets": 94,
   "elaborated_packets": 28,
   "m2_ready_packets": 94,
