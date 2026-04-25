@@ -22,6 +22,15 @@ abbrev Graph := DijkstraTheory.Graph
     if `v` is out of range. -/
 abbrev DistTable := DijkstraTheory.DistTable
 
+/-- Full paper input contract: in-range source, in-range edge endpoints, nonnegative weights. -/
+abbrev ValidDijkstraInput := DijkstraTheory.ValidDijkstraInput
+
+/-- There exists a path from `source` to `v` with total edge weight `d`. -/
+abbrev PathWeight := DijkstraTheory.PathWeight
+
+/-- Every edge weight is nonnegative (implied by `ValidDijkstraInput`). -/
+abbrev NonNegativeWeights := DijkstraTheory.NonNegativeWeights
+
 /-- Declarative model of the reference `dijkstra`. Parameters match the Rust
     signature: vertex count, source, edge list. -/
 abbrev dijkstra := DijkstraTheory.dijkstra

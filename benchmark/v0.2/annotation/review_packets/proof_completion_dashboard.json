@@ -1,39 +1,39 @@
 {
   "benchmark_version": "v0.2",
   "packets_root": "benchmark/v0.2/annotation/review_packets",
-  "generated_at": "2026-04-24T21:02:04.9949484Z",
-  "total_packets": 93,
-  "elaborated_packets": 21,
-  "m2_ready_packets": 93,
+  "generated_at": "2026-04-24T22:32:18.8731746Z",
+  "total_packets": 94,
+  "elaborated_packets": 28,
+  "m2_ready_packets": 94,
   "summary_by_gap_reason": [
     {
       "gap_reason": "m2_ready",
-      "count": 93
+      "count": 94
     }
   ],
   "summary_by_system": [
     {
       "system_id": "code_only_v1",
       "total_packets": 24,
-      "elaborated_packets": 2,
+      "elaborated_packets": 4,
       "admit_debt": 0
     },
     {
       "system_id": "full_method_v1",
       "total_packets": 24,
-      "elaborated_packets": 15,
+      "elaborated_packets": 16,
       "admit_debt": 0
     },
     {
       "system_id": "naive_concat_v1",
       "total_packets": 24,
-      "elaborated_packets": 2,
+      "elaborated_packets": 4,
       "admit_debt": 0
     },
     {
       "system_id": "text_only_v1",
-      "total_packets": 21,
-      "elaborated_packets": 2,
+      "total_packets": 22,
+      "elaborated_packets": 4,
       "admit_debt": 0
     }
   ],
@@ -52,8 +52,8 @@
     },
     {
       "family": "graph",
-      "total_packets": 15,
-      "elaborated_packets": 2,
+      "total_packets": 16,
+      "elaborated_packets": 9,
       "admit_debt": 0
     },
     {
@@ -1057,6 +1057,15 @@
       "gap_reason": "m2_ready"
     },
     {
+      "instance_id": "graph_dijkstra_001",
+      "system_id": "text_only_v1",
+      "family": "graph",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
       "instance_id": "graph_dijkstra_002",
       "system_id": "text_only_v1",
       "family": "graph",
@@ -1303,7 +1312,7 @@
       "instance_id": "graph_dijkstra_001",
       "system_id": "code_only_v1",
       "family": "graph",
-      "elaborated": false,
+      "elaborated": true,
       "admit_count": 0,
       "proof_mode": "definition_backed",
       "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_001/lean_diagnostics.json",
@@ -1316,7 +1325,7 @@
       "instance_id": "graph_dijkstra_002",
       "system_id": "code_only_v1",
       "family": "graph",
-      "elaborated": false,
+      "elaborated": true,
       "admit_count": 0,
       "proof_mode": "definition_backed",
       "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_002/lean_diagnostics.json",
@@ -1615,7 +1624,7 @@
       "instance_id": "graph_dijkstra_001",
       "system_id": "full_method_v1",
       "family": "graph",
-      "elaborated": false,
+      "elaborated": true,
       "admit_count": 0,
       "proof_mode": "definition_backed",
       "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_dijkstra_001/lean_diagnostics.json",
@@ -1927,7 +1936,7 @@
       "instance_id": "graph_dijkstra_001",
       "system_id": "naive_concat_v1",
       "family": "graph",
-      "elaborated": false,
+      "elaborated": true,
       "admit_count": 0,
       "proof_mode": "definition_backed",
       "diagnostics_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/graph_dijkstra_001/lean_diagnostics.json",
@@ -1940,7 +1949,7 @@
       "instance_id": "graph_dijkstra_002",
       "system_id": "naive_concat_v1",
       "family": "graph",
-      "elaborated": false,
+      "elaborated": true,
       "admit_count": 0,
       "proof_mode": "definition_backed",
       "diagnostics_path": "benchmark/v0.2/annotation/review_packets/naive_concat_v1/graph_dijkstra_002/lean_diagnostics.json",
@@ -2223,10 +2232,23 @@
       "m1_violations": []
     },
     {
+      "instance_id": "graph_dijkstra_001",
+      "system_id": "text_only_v1",
+      "family": "graph",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
       "instance_id": "graph_dijkstra_002",
       "system_id": "text_only_v1",
       "family": "graph",
-      "elaborated": false,
+      "elaborated": true,
       "admit_count": 0,
       "proof_mode": "definition_backed",
       "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_002/lean_diagnostics.json",

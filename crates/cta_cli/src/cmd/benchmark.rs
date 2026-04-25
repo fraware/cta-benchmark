@@ -89,7 +89,7 @@ pub fn lint(workspace: &Path, args: LintArgs) -> Result<()> {
         };
         let release_report = validate_release(&ctx);
         report.issues.append(&mut parse_issues);
-        report.issues.extend(release_report.issues.into_iter());
+        report.issues.extend(release_report.issues);
     }
 
     emit_report(&report, bench.len(), args.json)?;

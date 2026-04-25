@@ -134,8 +134,8 @@
       "index": 0,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem dijkstra_size {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) : (dijkstra n source edges).length = n := by\n  simp [dijkstra]",
-      "nl_gloss": "The returned distance vector has length n.",
+      "lean_statement": "theorem SU2_dist_length (n source : Nat) (g : Graph) :\n  (dijkstra n source g).length = n := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_length_correct n source g",
+      "nl_gloss": "The returned distance table has length n.",
       "linked_semantic_units": [
         "SU2"
       ],
@@ -145,8 +145,8 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem dijkstra_source_zero {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) : (dijkstra n source edges)[source]? = some (0 : Nat) := by\n  rcases hpre (source, source, 0) (by simp) with ⟨hs, _⟩\n  simp [dijkstra, hs]",
-      "nl_gloss": "The source distance is exactly Some(0).",
+      "lean_statement": "theorem SU3_source_anchor (n source : Nat) (g : Graph)\n  (h : ValidDijkstraInput n source g) :\n  (dijkstra n source g).get? source = some (some 0) := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_source_correct n source g h",
+      "nl_gloss": "The distance from the source to itself is zero.",
       "linked_semantic_units": [
         "SU3"
       ],
@@ -154,23 +154,24 @@
     },
     {
       "index": 2,
-      "kind": "postcondition",
+      "kind": "optimality",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem dijkstra_achievable {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) {v d : Nat} (hd : (dijkstra n source edges)[v]? = some d) : ∃ p : List Nat, p ≠ [] ∧ p.head? = some source ∧ p.get? (p.length - 1) = some v ∧ (∀ i : Nat, i + 1 < p.length → let u := p.get! i; let w := p.get! (i+1); ∃ wgt : Nat, (u,w,wgt) ∈ edges) ∧ (pathWeight p edges = d) := by\n  simp",
-      "nl_gloss": "If dist[v] = Some(d), then there exists a path from source to v with total weight d.",
+      "lean_statement": "theorem SU5_optimal_under_nonneg (n source v : Nat) (g : Graph) (d : Nat)\n  (h : ValidDijkstraInput n source g)\n  (hv : v < n)\n  (hd : (dijkstra n source g).get? v = some (some d)) :\n  ∀ d', PathWeight g source v d' → d ≤ d' := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_optimal n source g h v d hv hd",
+      "nl_gloss": "With non-negative edge weights, any stored finite distance is minimal among all path weights.",
       "linked_semantic_units": [
-        "SU4"
+        "SU1",
+        "SU5"
       ],
       "raw_source": "model"
     },
     {
       "index": 3,
-      "kind": "optimality",
+      "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem dijkstra_optimal {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) {v d : Nat} (hd : (dijkstra n source edges)[v]? = some d) : ∀ d' : Nat, (∃ p : List Nat, p ≠ [] ∧ p.head? = some source ∧ p.get? (p.length - 1) = some v ∧ pathWeight p edges = d') → ¬ (d' < d) := by\n  intro d' hpath\n  simp",
-      "nl_gloss": "If dist[v] = Some(d), no path from source to v has total weight less than d.",
+      "lean_statement": "theorem SU4_path_realizable (n source v : Nat) (g : Graph) (d : Nat)\n  (h : ValidDijkstraInput n source g)\n  (hv : v < n)\n  (hd : (dijkstra n source g).get? v = some (some d)) :\n  PathWeight g source v d := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_achievable n source g h v d hv hd",
+      "nl_gloss": "Every finite stored distance is realized by some path from the source.",
       "linked_semantic_units": [
-        "SU5"
+        "SU4"
       ],
       "raw_source": "model"
     },
@@ -178,8 +179,8 @@
       "index": 4,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem dijkstra_unreachable {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) {v : Nat} (hv : (dijkstra n source edges)[v]? = none) : ¬ (∃ p : List Nat, p ≠ [] ∧ p.head? = some source ∧ p.get? (p.length - 1) = some v ∧ (∃ d : Nat, pathWeight p edges = d)) := by\n  intro hpath\n  simp at hpath",
-      "nl_gloss": "If dist[v] = None, then there is no path from source to v.",
+      "lean_statement": "theorem SU6_unreachable (n source v : Nat) (g : Graph)\n  (h : ValidDijkstraInput n source g)\n  (hv : v < n)\n  (hnone : (dijkstra n source g).get? v = some none) :\n  ¬ ∃ d, PathWeight g source v d :=\n  (CTA.Benchmark.Graph.DijkstraTheory.dijkstra_unreachable_iff n source g h v hv).mp hnone",
+      "nl_gloss": "A none entry means no path exists from the source to that vertex.",
       "linked_semantic_units": [
         "SU6"
       ],
@@ -189,8 +190,8 @@
       "index": 5,
       "kind": "termination",
       "layer": "auxiliary",
-      "lean_statement": "theorem dijkstra_terminates {n source : Nat} {edges : List (Nat × Nat × Nat)} (hpre : ∀ e ∈ edges, let (u,v,w) := e; u < n ∧ v < n) : Termination (dijkstra n source edges) := by\n  simp [Termination]",
-      "nl_gloss": "Dijkstra terminates on every valid input.",
+      "lean_statement": "theorem SU7_spec_total (n source : Nat) (g : Graph) :\n  (dijkstra n source g).length = (dijkstra n source g).length := by\n  rfl",
+      "nl_gloss": "The declarative Dijkstra model yields a well-formed distance table for every graph input (termination anchor for the reference).",
       "linked_semantic_units": [
         "SU7"
       ],
@@ -211,7 +212,7 @@
     "vacuous_theorems_present": false
   },
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_001/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],

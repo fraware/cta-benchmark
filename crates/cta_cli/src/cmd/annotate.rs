@@ -1978,7 +1978,8 @@ struct ElaborationResult {
 fn is_m1_target_packet(system_id: &str, instance_id: &str) -> bool {
     matches!(
         (system_id, instance_id),
-        ("full_method_v1", "graph_dijkstra_002")
+        ("full_method_v1", "graph_dijkstra_001")
+            | ("full_method_v1", "graph_dijkstra_002")
             | ("full_method_v1", "graph_bfs_shortest_path_002")
             | ("full_method_v1", "greedy_coin_change_canonical_002")
             | ("full_method_v1", "trees_lowest_common_ancestor_001")
@@ -1993,12 +1994,18 @@ fn is_m1_target_packet(system_id: &str, instance_id: &str) -> bool {
             | ("full_method_v1", "trees_bst_insert_002")
             | ("full_method_v1", "dp_knapsack_01_001")
             | ("full_method_v1", "dp_knapsack_01_002")
+            | ("code_only_v1", "graph_dijkstra_001")
+            | ("code_only_v1", "graph_dijkstra_002")
             | ("code_only_v1", "dp_knapsack_01_001")
             | ("code_only_v1", "dp_knapsack_01_002")
+            | ("naive_concat_v1", "graph_dijkstra_001")
+            | ("naive_concat_v1", "graph_dijkstra_002")
             | ("naive_concat_v1", "dp_knapsack_01_001")
             | ("naive_concat_v1", "dp_knapsack_01_002")
             | ("text_only_v1", "dp_knapsack_01_001")
             | ("text_only_v1", "dp_knapsack_01_002")
+            | ("text_only_v1", "graph_dijkstra_001")
+            | ("text_only_v1", "graph_dijkstra_002")
     )
 }
 
@@ -2208,7 +2215,7 @@ fn extract_trusted_symbols(workspace: &Path, scaffold_src: &str) -> Vec<String> 
         };
         if let Some(raw) = parts.next() {
             let name = raw
-                .split(|c: char| c == ':' || c == '(')
+                .split([':', '('])
                 .next()
                 .unwrap_or(raw)
                 .trim();
@@ -2261,7 +2268,7 @@ fn collect_trusted_symbols_from_module(
         };
         if let Some(raw) = parts.next() {
             let name = raw
-                .split(|c: char| c == ':' || c == '(')
+                .split([':', '('])
                 .next()
                 .unwrap_or(raw)
                 .trim();

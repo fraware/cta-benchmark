@@ -155,7 +155,7 @@ pub fn benchmark(workspace: &Path, args: BenchmarkArgs) -> Result<()> {
         };
         let release_report = validate_release(&ctx);
         let mut release_issues = parse_issues;
-        release_issues.extend(release_report.issues.into_iter());
+        release_issues.extend(release_report.issues);
         if !release_issues.is_empty() {
             for issue in &release_issues {
                 eprintln!(

@@ -389,7 +389,8 @@ fn mean_primary(xs: &[&PrimaryMetrics]) -> PrimaryMetrics {
 }
 
 fn bootstrap_ci(xs: &[&PrimaryMetrics], cfg: BootstrapConfig) -> BTreeMap<String, (f64, f64)> {
-    let metrics: [(&str, fn(&PrimaryMetrics) -> f64); 6] = [
+    type MetricExtractor = fn(&PrimaryMetrics) -> f64;
+    let metrics: [(&str, MetricExtractor); 6] = [
         ("elaboration_rate", |p| p.elaboration_rate),
         ("semantic_faithfulness_mean", |p| {
             p.semantic_faithfulness_mean
@@ -424,7 +425,7 @@ fn percentile_bootstrap(values: &[f64], cfg: BootstrapConfig) -> (f64, f64) {
         means.push(sum / n as f64);
     }
     means.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
-    let alpha = (1.0 - cfg.confidence).max(0.0).min(1.0);
+    let alpha = (1.0 - cfg.confidence).clamp(0.0, 1.0);
     let lo_idx = ((alpha / 2.0) * means.len() as f64).floor() as usize;
     let hi_idx = (((1.0 - alpha / 2.0) * means.len() as f64).ceil() as usize)
         .saturating_sub(1)

@@ -4,29 +4,19 @@ Scaffold for instance `dp_knapsack_01_001`.
 
 import CTA.Core.Prelude
 import CTA.Core.Types
+import CTA.Benchmark.DP.KnapsackTheory
 
 namespace CTA.Benchmark.DP.Knapsack01_001
 
 open CTA.Core
+open CTA.Benchmark.DP.KnapsackTheory
 
-/-- Weight and value vectors aligned index-for-index. -/
-abbrev Weights := List Nat
-abbrev Values := List Nat
-
-/-- A selection is represented as a list of distinct item indices. -/
-abbrev Selection := List Nat
-
-/-- Total weight of a selection. -/
-opaque totalWeight : Weights → Selection → Nat
-
-/-- Total value of a selection. -/
-opaque totalValue : Values → Selection → Nat
-
-/-- Predicate: `sel` is a valid subset (distinct indices, all in range). -/
-def ValidSelection (weights : Weights) (sel : Selection) : Prop :=
-  sel.Nodup ∧ ∀ i ∈ sel, i < weights.length
-
-/-- Declarative model of the reference `knapsack_01`. -/
-opaque knapsack01 : Weights → Values → Nat → Nat
+abbrev Weights := KnapsackTheory.Weights
+abbrev Values := KnapsackTheory.Values
+abbrev Selection := KnapsackTheory.Selection
+abbrev totalWeight := KnapsackTheory.totalWeight
+abbrev totalValue := KnapsackTheory.totalValue
+abbrev ValidSelection := KnapsackTheory.ValidSelection
+abbrev knapsack01 := KnapsackTheory.knapsack01
 
 end CTA.Benchmark.DP.Knapsack01_001

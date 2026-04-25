@@ -76,6 +76,7 @@ enum ValidateCmd {
 }
 
 #[derive(Debug, Subcommand)]
+#[allow(clippy::large_enum_variant)] // CLI dispatch; `PaperOrchestrate` carries the full orchestration surface.
 enum BenchmarkCmd {
     /// Run the benchmark linter.
     Lint(cmd::benchmark::LintArgs),

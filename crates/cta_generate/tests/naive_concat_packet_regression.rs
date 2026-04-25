@@ -168,6 +168,7 @@ fn regression_target_packets_are_benchmark_aligned() {
     let targets = [
         "arrays_binary_search_002",
         "graph_dijkstra_001",
+        "graph_dijkstra_002",
         "graph_bfs_shortest_path_001",
         "greedy_interval_scheduling_001",
         "sorting_merge_sort_001",

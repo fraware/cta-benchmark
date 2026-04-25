@@ -47,6 +47,14 @@ jobs:
       - name: cta validate benchmark v0.1
         run: cargo run -p cta_cli --quiet -- validate benchmark --version v0.1 --release
 
+      - name: cta verify review packets (v0.2 committed tree)
+        run: |
+          cargo run -p cta_cli --quiet -- annotate verify-review-packets \
+            --benchmark-version v0.2 \
+            --packets-root benchmark/v0.2/annotation/review_packets \
+            --schema schemas/review_packet.schema.json \
+            --out /tmp/cta_verify_review_packets_v02.json
+
       - name: cta refresh lean-check v0.2 (strict M1 gate)
         run: |
           cargo run -p cta_cli --quiet -- annotate refresh-lean-check \

@@ -54,6 +54,14 @@ jobs:
       - name: benchmark lint v0.1 (authoring heuristics, strict)
         run: cargo run -p cta_cli --quiet -- benchmark lint --version v0.1 --strict-authoring --json
 
+      - name: verify review packets (v0.2 committed tree)
+        run: |
+          cargo run -p cta_cli --quiet -- annotate verify-review-packets \
+            --benchmark-version v0.2 \
+            --packets-root benchmark/v0.2/annotation/review_packets \
+            --schema schemas/review_packet.schema.json \
+            --out /tmp/cta_verify_review_packets_v02.json
+
       - name: refresh lean-check v0.2 (strict M1 gate)
         run: |
           cargo run -p cta_cli --quiet -- annotate refresh-lean-check \

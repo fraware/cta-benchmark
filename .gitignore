@@ -41,5 +41,9 @@ Thumbs.db
 /dist
 /out
 
+# `cta validate benchmark --release` writes a timestamped summary; keep v0.2
+# tracked when curated, but ignore v0.1 local runs unless explicitly added.
+/benchmark/v0.1/manifests/release_summary.json
+
 # Python cache in notebooks folder
 /notebooks/.ipynb_checkpoints/

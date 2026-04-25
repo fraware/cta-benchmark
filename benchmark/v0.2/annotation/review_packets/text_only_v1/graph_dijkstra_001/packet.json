@@ -1,11 +1,11 @@
 {
   "benchmark_version": "v0.2",
-  "instance_id": "graph_dijkstra_002",
-  "system_id": "code_only_v1",
+  "instance_id": "graph_dijkstra_001",
+  "system_id": "text_only_v1",
   "domain": "graph",
   "difficulty": "medium",
-  "instance_path": "benchmark/v0.2/instances/graph/graph_dijkstra_002",
-  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001/generated/code_only_v1/graph_dijkstra_002.json",
+  "instance_path": "benchmark/v0.2/instances/graph/graph_dijkstra_001",
+  "generated_output_path": "runs/run_2026_04_22_text_only_v1_eval_003/generated/text_only_v1/graph_dijkstra_001.json",
   "informal_statement": {
     "text": "Given a directed graph with non-negative integer edge weights, a source vertex, and a vertex count n, return a vector dist of length n where dist[v] is the length of the shortest path from source to v, or None if no such path exists.",
     "preconditions": [
@@ -132,12 +132,12 @@
   "generated_obligations": [
     {
       "index": 0,
-      "kind": "postcondition",
+      "kind": "precondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU2_dist_length (n source : Nat) (g : Graph) :\n  (dijkstra n source g).length = n := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_length_correct n source g",
-      "nl_gloss": "The returned distance table has length n.",
+      "lean_statement": "theorem SU1_valid_input_characterization\n  (n source : Nat) (edges : Graph) :\n  ValidDijkstraInput n source edges ↔\n    (source < n ∧\n     ∀ e ∈ edges,\n       let s := e.1\n       let t := e.2.1\n       let w := e.2.2\n       s < n ∧ t < n ∧ 0 ≤ w) := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.valid_input_characterization n source edges",
+      "nl_gloss": "Valid Dijkstra inputs are exactly: in-range source, in-range edge endpoints, and nonnegative weights.",
       "linked_semantic_units": [
-        "SU2"
+        "SU1"
       ],
       "raw_source": "model"
     },
@@ -145,22 +145,23 @@
       "index": 1,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU3_source_anchor (n source : Nat) (g : Graph)\n  (h : ValidDijkstraInput n source g) :\n  (dijkstra n source g).get? source = some (some 0) := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_source_correct n source g h",
-      "nl_gloss": "The distance from the source to itself is zero.",
+      "lean_statement": "theorem SU2_length\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges) :\n  (dijkstra n source edges).length = n := by\n  have _hs : source < n :=\n    (CTA.Benchmark.Graph.DijkstraTheory.valid_input_characterization n source edges).1 h |>.1\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_length_correct n source edges",
+      "nl_gloss": "The returned distance vector has length n.",
       "linked_semantic_units": [
-        "SU3"
+        "SU1",
+        "SU2"
       ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "optimality",
+      "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU5_optimal_under_nonneg (n source v : Nat) (g : Graph) (d : Nat)\n  (h : ValidDijkstraInput n source g)\n  (hv : v < n)\n  (hd : (dijkstra n source g).get? v = some (some d)) :\n  ∀ d', PathWeight g source v d' → d ≤ d' := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_optimal n source g h v d hv hd",
-      "nl_gloss": "With non-negative edge weights, any stored finite distance is minimal among all path weights.",
+      "lean_statement": "theorem SU3_source_dist\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges) :\n  (dijkstra n source edges).get? source = some (some 0) := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_source_correct n source edges h",
+      "nl_gloss": "The source vertex has distance 0.",
       "linked_semantic_units": [
         "SU1",
-        "SU5"
+        "SU3"
       ],
       "raw_source": "model"
     },
@@ -168,30 +169,44 @@
       "index": 3,
       "kind": "postcondition",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU4_path_realizable (n source v : Nat) (g : Graph) (d : Nat)\n  (h : ValidDijkstraInput n source g)\n  (hv : v < n)\n  (hd : (dijkstra n source g).get? v = some (some d)) :\n  PathWeight g source v d := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_achievable n source g h v d hv hd",
-      "nl_gloss": "Every finite stored distance is realized by some path from the source.",
+      "lean_statement": "theorem SU4_achievable\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  PathWeight edges source v d := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_achievable n source edges h v d hv hd",
+      "nl_gloss": "If dist[v] = Some(d), then there exists a path from source to v with total weight d.",
       "linked_semantic_units": [
+        "SU1",
         "SU4"
       ],
       "raw_source": "model"
     },
     {
       "index": 4,
-      "kind": "postcondition",
+      "kind": "optimality",
       "layer": "benchmark_facing",
-      "lean_statement": "theorem SU6_unreachable (n source v : Nat) (g : Graph)\n  (h : ValidDijkstraInput n source g)\n  (hv : v < n)\n  (hnone : (dijkstra n source g).get? v = some none) :\n  ¬ ∃ d, PathWeight g source v d :=\n  (CTA.Benchmark.Graph.DijkstraTheory.dijkstra_unreachable_iff n source g h v hv).mp hnone",
-      "nl_gloss": "A none entry means no path exists from the source to that vertex.",
+      "lean_statement": "theorem SU5_optimal\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  ∀ w, PathWeight edges source v w → d ≤ w := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_optimal n source edges h v d hv hd",
+      "nl_gloss": "If dist[v] = Some(d), then no path from source to v has total weight less than d.",
       "linked_semantic_units": [
-        "SU6"
+        "SU1",
+        "SU5"
       ],
       "raw_source": "model"
     },
     {
       "index": 5,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU6_unreachability\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat)\n  (hv : v < n) :\n  (dijkstra n source edges).get? v = some none ↔\n  ¬ ∃ w, PathWeight edges source v w := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_unreachable_iff n source edges h v hv",
+      "nl_gloss": "dist[v] = None exactly when there is no path from source to v (within vertex range).",
+      "linked_semantic_units": [
+        "SU1",
+        "SU6"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
       "kind": "termination",
       "layer": "auxiliary",
-      "lean_statement": "theorem SU7_spec_total (n source : Nat) (g : Graph) :\n  (dijkstra n source g).length = (dijkstra n source g).length := by\n  rfl",
-      "nl_gloss": "The declarative Dijkstra model yields a well-formed distance table for every graph input (termination anchor for the reference).",
+      "lean_statement": "theorem SU7_termination\n  (n : Nat) (source : Nat) (edges : Graph) : ∃ dist : DistTable, dist = dijkstra n source edges := by\n  exact ⟨dijkstra n source edges, rfl⟩",
+      "nl_gloss": "The algorithm terminates on every valid input (the function returns a value).",
       "linked_semantic_units": [
         "SU7"
       ],
@@ -213,21 +228,21 @@
   },
   "lean_check": {
     "elaborated": true,
-    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_002/lean_diagnostics.json",
+    "diagnostics_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_001/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],
     "proof_mode": "definition_backed"
   },
   "behavior_check": {
-    "report_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_002/behavior_report.json",
+    "report_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_001/behavior_report.json",
     "summary": {
       "has_counterexample": false,
       "counterexample_count": 0
     }
   },
   "context": {
-    "scaffold_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_002/scaffold.lean",
-    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_002/reference.rs",
-    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/code_only_v1/graph_dijkstra_002/rust_summary.json"
+    "scaffold_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.2/annotation/review_packets/text_only_v1/graph_dijkstra_001/rust_summary.json"
   }
 }

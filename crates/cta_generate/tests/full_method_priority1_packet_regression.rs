@@ -179,6 +179,24 @@ fn assert_coin_change_optimality_direction(instance_id: &str, packet: &Value) {
 
 #[test]
 fn full_method_v1_priority1_semantic_hardening_packets() {
+    let dijkstra001 = load_packet("full_method_v1", "graph_dijkstra_001");
+    assert_no_known_bad_graph_patterns("graph_dijkstra_001", &dijkstra001);
+    assert_path_linked_obligations_tie_distance_to_paths("graph_dijkstra_001", &dijkstra001);
+    for ob in benchmark_facing(&dijkstra001) {
+        let idx = ob["index"].as_i64().unwrap_or(-1);
+        if idx == 0 || idx == 6 {
+            continue;
+        }
+        let stmt = ob["lean_statement"]
+            .as_str()
+            .unwrap_or("")
+            .to_ascii_lowercase();
+        assert!(
+            stmt.contains("validdijkstrainput"),
+            "graph_dijkstra_001: obligation index {idx} must carry a ValidDijkstraInput hypothesis"
+        );
+    }
+
     let dijkstra = load_packet("full_method_v1", "graph_dijkstra_002");
     assert_no_known_bad_graph_patterns("graph_dijkstra_002", &dijkstra);
     assert_path_linked_obligations_tie_distance_to_paths("graph_dijkstra_002", &dijkstra);

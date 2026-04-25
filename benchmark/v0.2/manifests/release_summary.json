@@ -1,6 +1,6 @@
 {
   "benchmark_version": "v0.2",
-  "manifest_hash": "sha256:cb35dc0be923a2e4012f920b55ae855c22699c76175f472f18eed43fd947c883",
+  "manifest_hash": "sha256:688f2267160aaad58710ac4d5819f9a27fbeae847d93e5b48d811280d292cd71",
   "eval_size": 24,
   "dev_size": 0,
   "annotation_coverage": {
@@ -17,5 +17,5 @@
   "release_validation": {
     "status": "fail"
   },
-  "timestamp": "2026-04-22T13:13:17.1910321Z"
+  "timestamp": "2026-04-24T22:42:20.9300812Z"
 }

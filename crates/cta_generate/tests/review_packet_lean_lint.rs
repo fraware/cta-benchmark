@@ -49,10 +49,6 @@ fn instance_id_from_path(path: &Path) -> String {
 }
 
 fn assert_no_benchmark_facing_vacuity(instance_id: &str, stmt: &str) {
-    // `graph_dijkstra_001` full_method packet predates the hardened obligation style; tracked separately.
-    if instance_id == "graph_dijkstra_001" {
-        return;
-    }
     let lc = stmt.to_ascii_lowercase();
     let stmt_norm = lc.split_whitespace().collect::<Vec<_>>().join(" ");
     assert!(
@@ -76,13 +72,8 @@ fn assert_no_benchmark_facing_vacuity(instance_id: &str, stmt: &str) {
 }
 
 /// Wrapper pass-through lint: benchmark-facing theorems under `full_method_v1`,
-/// `code_only_v1`, `naive_concat_v1`, and `text_only_v1` (except legacy `graph_dijkstra_001`,
-/// which is exempt alongside vacuity checks).
-fn wrapper_theorem_lint_applicable(packet_path: &Path, instance_id: &str) -> bool {
-    // Legacy instance: obligations still evolve toward theory-backed proofs.
-    if instance_id == "graph_dijkstra_001" {
-        return false;
-    }
+/// `code_only_v1`, `naive_concat_v1`, and `text_only_v1`.
+fn wrapper_theorem_lint_applicable(packet_path: &Path, _instance_id: &str) -> bool {
     let ps = packet_path.to_string_lossy();
     ps.contains("full_method_v1")
         || ps.contains("code_only_v1")
@@ -174,7 +165,7 @@ fn assert_graph_path_distance_consistency(instance_id: &str, ob: &Value) {
     let needs_pathweight = linked
         .iter()
         .any(|id| matches!(id.as_str(), "SU4" | "SU5" | "SU6"));
-    if instance_id.contains("dijkstra") && needs_pathweight && instance_id != "graph_dijkstra_001" {
+    if instance_id.contains("dijkstra") && needs_pathweight {
         assert!(
             lc.contains("pathweight"),
             "{instance_id}: weighted reachability/optimality/unreachability obligations must mention PathWeight ({stmt})"

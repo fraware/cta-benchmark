@@ -133,8 +133,9 @@
     {
       "index": 0,
       "kind": "precondition",
-      "lean_statement": "theorem SU1_input_precond {n source : Nat} {edges : Graph}\n    (h : ∀ e ∈ edges, let a := e.1; let b := e.2.1; let w := e.2.2; a < n ∧ b < n ∧ w ≥ 0) : True := by\n  trivial",
-      "nl_gloss": "Assume the input precondition: all edge endpoints are within [0,n) and all weights are non-negative.",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU1_valid_input_characterization\n  (n source : Nat) (edges : Graph) :\n  ValidDijkstraInput n source edges ↔\n    (source < n ∧\n     ∀ e ∈ edges,\n       let s := e.1\n       let t := e.2.1\n       let w := e.2.2\n       s < n ∧ t < n ∧ 0 ≤ w) := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.valid_input_characterization n source edges",
+      "nl_gloss": "Valid Dijkstra inputs are exactly: in-range source, in-range edge endpoints, and nonnegative weights.",
       "linked_semantic_units": [
         "SU1"
       ],
@@ -142,30 +143,36 @@
     },
     {
       "index": 1,
-      "kind": "unknown",
-      "lean_statement": "theorem SU2_length {n source : Nat} (edges : Graph) : (dijkstra n source edges).length = n := by\n  simp [dijkstra]",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_length\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges) :\n  (dijkstra n source edges).length = n := by\n  have _hs : source < n :=\n    (CTA.Benchmark.Graph.DijkstraTheory.valid_input_characterization n source edges).1 h |>.1\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_length_correct n source edges",
       "nl_gloss": "The returned distance vector has length n.",
       "linked_semantic_units": [
+        "SU1",
         "SU2"
       ],
       "raw_source": "model"
     },
     {
       "index": 2,
-      "kind": "unknown",
-      "lean_statement": "theorem SU3_source_dist {n source : Nat} (edges : Graph)\n    (hs : source < n) : (dijkstra n source edges).get? source = some (some 0) := by\n  simp [dijkstra, hs]",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_source_dist\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges) :\n  (dijkstra n source edges).get? source = some (some 0) := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_source_correct n source edges h",
       "nl_gloss": "The source vertex has distance 0.",
       "linked_semantic_units": [
+        "SU1",
         "SU3"
       ],
       "raw_source": "model"
     },
     {
       "index": 3,
-      "kind": "unknown",
-      "lean_statement": "theorem SU4_achievability {n source : Nat} (edges : Graph)\n    (v d : Nat) (hv : v < n)\n    (hd : (dijkstra n source edges).get? v = some (some d)) :\n    ∃ path : List Nat,\n      path ≠ [] ∧ path.head? = some source ∧ path.get? (path.length - 1) = some v ∧\n      (∃ total : Nat, total = d) := by\n  have hvsrc : v = source := by\n    have hs : source < n := by\n      by_contra hns\n      have hnone : (dijkstra n source edges).get? v = some none := by\n        simp [dijkstra, Nat.ne_of_lt hv, Nat.ne_of_lt (Nat.lt_of_not_ge hns)]\n      rw [hd] at hnone\n      cases hnone\n    by_contra hne\n    have hnone : (dijkstra n source edges).get? v = some none := by\n      simp [dijkstra, hs, hne]\n    rw [hd] at hnone\n    cases hnone\n  subst hvsrc\n  have hd0 : d = 0 := by\n    have hs : source < n := by exact hv\n    simpa [dijkstra, hs] using hd\n  subst hd0\n  refine ⟨[source], by simp⟩",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU4_achievable\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  PathWeight edges source v d := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_achievable n source edges h v d hv hd",
       "nl_gloss": "If dist[v] = Some(d), then there exists a path from source to v with total weight d.",
       "linked_semantic_units": [
+        "SU1",
         "SU4"
       ],
       "raw_source": "model"
@@ -173,19 +180,23 @@
     {
       "index": 4,
       "kind": "optimality",
-      "lean_statement": "theorem SU5_optimality {n source : Nat} (edges : Graph)\n    (v d : Nat) (hv : v < n)\n    (hd : (dijkstra n source edges).get? v = some (some d)) :\n    ∀ d' : Nat,\n      d' < d →\n      ¬ (∃ path : List Nat,\n          path ≠ [] ∧ path.head? = some source ∧\n          path.get? (path.length - 1) = some v ∧ True) := by\n  have hvsrc : v = source := by\n    have hs : source < n := by\n      by_contra hns\n      have hnone : (dijkstra n source edges).get? v = some none := by\n        simp [dijkstra, Nat.ne_of_lt hv, Nat.ne_of_lt (Nat.lt_of_not_ge hns)]\n      rw [hd] at hnone\n      cases hnone\n    by_contra hne\n    have hnone : (dijkstra n source edges).get? v = some none := by\n      simp [dijkstra, hs, hne]\n    rw [hd] at hnone\n    cases hnone\n  have hd0 : d = 0 := by\n    subst hvsrc\n    simpa [dijkstra, hv] using hd\n  intro d' hdlt hex\n  subst hd0\n  exact Nat.not_lt_zero _ hdlt",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU5_optimal\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat) (d : Nat)\n  (hv : v < n)\n  (hd : (dijkstra n source edges).get? v = some (some d)) :\n  ∀ w, PathWeight edges source v w → d ≤ w := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_optimal n source edges h v d hv hd",
       "nl_gloss": "If dist[v] = Some(d), then no path from source to v has total weight less than d.",
       "linked_semantic_units": [
+        "SU1",
         "SU5"
       ],
       "raw_source": "model"
     },
     {
       "index": 5,
-      "kind": "unknown",
-      "lean_statement": "theorem SU6_unreachability {n source v : Nat} (edges : Graph)\n    (hv : v < n)\n    (hu : (dijkstra n source edges).get? v = some none) :\n    ¬ (∃ d : Nat, (dijkstra n source edges).get? v = some (some d)) := by\n  intro h\n  rcases h with ⟨d, h⟩\n  simpa [hu] using h",
-      "nl_gloss": "If dist[v] = None (within range), then v is unreachable from source.",
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU6_unreachability\n  (n : Nat) (source : Nat) (edges : Graph)\n  (h : ValidDijkstraInput n source edges)\n  (v : Nat)\n  (hv : v < n) :\n  (dijkstra n source edges).get? v = some none ↔\n  ¬ ∃ w, PathWeight edges source v w := by\n  simpa using CTA.Benchmark.Graph.DijkstraTheory.dijkstra_unreachable_iff n source edges h v hv",
+      "nl_gloss": "dist[v] = None exactly when there is no path from source to v (within vertex range).",
       "linked_semantic_units": [
+        "SU1",
         "SU6"
       ],
       "raw_source": "model"
@@ -193,8 +204,9 @@
     {
       "index": 6,
       "kind": "termination",
-      "lean_statement": "theorem SU7_termination {n source : Nat} (edges : Graph) : True := by\n  trivial",
-      "nl_gloss": "The algorithm terminates on every valid input.",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU7_termination\n  (n : Nat) (source : Nat) (edges : Graph) : ∃ dist : DistTable, dist = dijkstra n source edges := by\n  exact ⟨dijkstra n source edges, rfl⟩",
+      "nl_gloss": "The algorithm terminates on every valid input (the function returns a value).",
       "linked_semantic_units": [
         "SU7"
       ],
@@ -202,7 +214,7 @@
     }
   ],
   "lean_check": {
-    "elaborated": false,
+    "elaborated": true,
     "diagnostics_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_dijkstra_001/lean_diagnostics.json",
     "admit_count": 0,
     "axiom_dependencies": [],
@@ -219,5 +231,18 @@
     "scaffold_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_dijkstra_001/scaffold.lean",
     "reference_rs_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_dijkstra_001/reference.rs",
     "rust_summary_path": "benchmark/v0.2/annotation/review_packets/full_method_v1/graph_dijkstra_001/rust_summary.json"
+  },
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2",
+      "SU3",
+      "SU4",
+      "SU5",
+      "SU6"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
   }
 }

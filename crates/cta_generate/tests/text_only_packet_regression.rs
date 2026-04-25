@@ -4,7 +4,10 @@
 //!
 //! Most legacy `text_only_v1` packets still omit `quality_summary` and use
 //! `kind: "unknown"` without `layer`; extend the `targets` list only when a
-//! packet is migrated to that schema.
+//! packet is migrated to that schema. In addition to both knapsack pilots,
+//! `graph_dijkstra_{001,002}` are migrated to the same `layer` +
+//! `quality_summary` + `DijkstraTheory`-backed obligations as other Dijkstra
+//! review packets.
 
 use std::collections::HashSet;
 use std::fs;
@@ -173,7 +176,12 @@ fn assert_benchmark_facing_cap(instance_id: &str, packet: &Value) {
 
 #[test]
 fn regression_target_packets_are_benchmark_aligned() {
-    let targets = ["dp_knapsack_01_001", "dp_knapsack_01_002"];
+    let targets = [
+        "dp_knapsack_01_001",
+        "dp_knapsack_01_002",
+        "graph_dijkstra_001",
+        "graph_dijkstra_002",
+    ];
 
     for instance_id in targets {
         let packet = load_packet(instance_id);
@@ -183,4 +191,68 @@ fn regression_target_packets_are_benchmark_aligned() {
         assert_direct_critical_coverage(instance_id, &packet);
         assert_benchmark_facing_cap(instance_id, &packet);
     }
+}
+
+/// `text_only_v1/graph_dijkstra_001` reuses the same archived model JSON as
+/// `code_only_v1/graph_dijkstra_001` (`raw_output.txt` is byte-identical). The
+/// normalized bundle must stay aligned with that body (not Fin/`dijkstraLike`
+/// text copied from `graph_dijkstra_002`).
+#[test]
+fn text_only_graph_dijkstra_001_generated_output_tracks_code_only_lineage() {
+    fn review_packet_dir(system_id: &str, instance_id: &str) -> PathBuf {
+        workspace_root()
+            .join("benchmark")
+            .join("v0.2")
+            .join("annotation")
+            .join("review_packets")
+            .join(system_id)
+            .join(instance_id)
+    }
+
+    let text_dir = review_packet_dir("text_only_v1", "graph_dijkstra_001");
+    let code_dir = review_packet_dir("code_only_v1", "graph_dijkstra_001");
+    let text_raw = fs::read_to_string(text_dir.join("raw_output.txt"))
+        .unwrap_or_else(|e| panic!("read text_only raw: {e}"));
+    let code_raw = fs::read_to_string(code_dir.join("raw_output.txt"))
+        .unwrap_or_else(|e| panic!("read code_only raw: {e}"));
+    assert_eq!(
+        text_raw, code_raw,
+        "graph_dijkstra_001: text_only and code_only raw_output.txt must match"
+    );
+
+    let text_gen: Value = serde_json::from_str(
+        &fs::read_to_string(text_dir.join("generated_output.json"))
+            .expect("read text_only generated_output.json"),
+    )
+    .expect("parse text_only generated_output.json");
+    let code_gen: Value = serde_json::from_str(
+        &fs::read_to_string(code_dir.join("generated_output.json"))
+            .expect("read code_only generated_output.json"),
+    )
+    .expect("parse code_only generated_output.json");
+
+    assert_eq!(
+        text_gen["normalized_obligations"], code_gen["normalized_obligations"],
+        "graph_dijkstra_001: normalized_obligations must match code_only (shared raw)"
+    );
+    assert_eq!(
+        text_gen["prompt_hash"], code_gen["prompt_hash"],
+        "graph_dijkstra_001: prompt_hash must match code_only normalization lineage"
+    );
+    assert_eq!(
+        text_gen["seed"], code_gen["seed"],
+        "graph_dijkstra_001: seed must match code_only bundle"
+    );
+
+    let joined = text_gen["normalized_obligations"]
+        .as_array()
+        .expect("normalized_obligations array")
+        .iter()
+        .filter_map(|o| o["lean_statement"].as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
+    assert!(
+        !joined.contains("dijkstraLike"),
+        "graph_dijkstra_001: text_only bundle must not regress to Fin/dijkstraLike obligations"
+    );
 }

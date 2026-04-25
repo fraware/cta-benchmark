@@ -11,17 +11,21 @@ fn workspace_root() -> PathBuf {
         .to_path_buf()
 }
 
-fn load_packet(instance_id: &str) -> Value {
+fn load_packet_from(system_id: &str, instance_id: &str) -> Value {
     let path = workspace_root()
         .join("benchmark")
         .join("v0.2")
         .join("annotation")
         .join("review_packets")
-        .join("code_only_v1")
+        .join(system_id)
         .join(instance_id)
         .join("packet.json");
     let raw = fs::read_to_string(&path).unwrap_or_else(|_| panic!("reading {}", path.display()));
     serde_json::from_str(&raw).unwrap_or_else(|_| panic!("parsing {}", path.display()))
+}
+
+fn load_packet(instance_id: &str) -> Value {
+    load_packet_from("code_only_v1", instance_id)
 }
 
 fn benchmark_facing(packet: &Value) -> Vec<Value> {
@@ -146,6 +150,40 @@ fn family_specific_shape_guards_hold() {
         assert!(
             coin.contains("canonicaldenoms") && coin.contains("optimality"),
             "{coin_id}: canonicality must appear explicitly in optimality theorem shape"
+        );
+    }
+
+    for (system_id, dijk_id) in [
+        ("code_only_v1", "graph_dijkstra_001"),
+        ("code_only_v1", "graph_dijkstra_002"),
+        ("naive_concat_v1", "graph_dijkstra_001"),
+        ("naive_concat_v1", "graph_dijkstra_002"),
+        ("full_method_v1", "graph_dijkstra_001"),
+        ("full_method_v1", "graph_dijkstra_002"),
+        ("text_only_v1", "graph_dijkstra_001"),
+        ("text_only_v1", "graph_dijkstra_002"),
+    ] {
+        let packet = load_packet_from(system_id, dijk_id);
+        let d = bf_text(&packet);
+        assert!(
+            !d.contains("{{"),
+            "{system_id}/{dijk_id}: unresolved placeholder in benchmark-facing theorem"
+        );
+        assert!(
+            !d.contains("-> true")
+                && !d.contains("→ true")
+                && !d.contains("∨ true")
+                && !d.contains("| none => true")
+                && !d.contains("| some _ => true"),
+            "{system_id}/{dijk_id}: benchmark-facing theorem has vacuous true-shell form"
+        );
+        assert!(
+            d.contains("pathweight") && d.contains("validdijkstrainput"),
+            "{system_id}/{dijk_id}: dijkstra obligations must mention PathWeight and ValidDijkstraInput"
+        );
+        assert!(
+            !d.contains("w ≥ 0") && !d.contains("w >= 0"),
+            "{system_id}/{dijk_id}: vacuous Nat weight nonnegativity clause must not appear in obligations"
         );
     }
 }

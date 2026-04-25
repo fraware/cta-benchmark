@@ -443,7 +443,7 @@ fn load_experiment_config(path: &Path) -> Result<ExperimentConfigMeta> {
 fn load_json(path: &Path) -> Result<serde_json::Value> {
     let raw =
         std::fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
-    Ok(serde_json::from_str(&raw).with_context(|| format!("parsing {}", path.display()))?)
+    serde_json::from_str(&raw).with_context(|| format!("parsing {}", path.display()))
 }
 
 fn annotation_coverage_table(coverage: &serde_json::Value) -> String {
