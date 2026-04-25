@@ -60,6 +60,11 @@ cargo test -p cta_generate --test review_packet_lean_lint
 cd lean
 lake build
 cd ..
+# v0.1 pilot: instance scaffolds must stay byte-identical to canonical modules.
+# After editing any `lean/CTA/Benchmark/**` file listed for the twelve v0.1 pilots:
+#   powershell -NoProfile -File scripts/sync_v0_1_pilot_scaffolds.ps1
+#   cargo run -p cta_cli -- benchmark manifest --version v0.1
+#   cargo run -p cta_cli -- validate benchmark --version v0.1 --release
 cargo run -p cta_cli -- benchmark lint --version v0.1
 cargo run -p cta_cli -- benchmark lint --version v0.2
 
@@ -145,12 +150,13 @@ cargo audit --deny warnings
       `cargo test -p cta_generate --test text_only_packet_regression`,
       `cargo test -p cta_generate --test full_method_priority1_packet_regression`,
       `cargo test -p cta_generate --test full_method_priority2_packet_regression`, and
-      `cargo test -p cta_generate --test review_packet_lean_lint`, then
-      `cta annotate verify-review-packets` for `v0.2` and commit the updated
-      `benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
-      when that file is part of your change set; then run
+      `cargo test -p cta_generate --test review_packet_lean_lint`, then run
       `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
       and commit any regenerated `lean_check` / `lean_diagnostics.json` /
-      `proof_completion_*` / worklist artifacts. New theory-backed pairs that
-      must always pass full elaboration belong in `is_m1_target_packet`; see
-      `docs/annotation_manual.md`.
+      `proof_completion_*` / worklist artifacts. Re-run
+      `cta annotate verify-review-packets` for `v0.2` afterward and commit
+      `benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
+      when it is part of your change set so signed `packet_hashes` match the
+      final `packet.json` bytes (refresh mutates `lean_check` and changes
+      hashes). New theory-backed pairs that must always pass full elaboration
+      belong in `is_m1_target_packet`; see `docs/annotation_manual.md`.

@@ -109,7 +109,7 @@ Priority order is:
 - then rerun strict refresh until the global worklist is empty.
 
 Current repository snapshot is fully burned down for `v0.2` review packets:
-- `m2_ready_packets = 93 / 93`,
+- `m2_ready_packets = 94 / 94`,
 - `summary_by_gap_reason = {m2_ready: 93}`,
 - `global_proof_worklist.count = 0`.
 
@@ -123,9 +123,10 @@ Rigorous addendum (`2026-04-24`, updated):
   systems, with proofs centralized in `lean/CTA/Benchmark/DP/KnapsackTheory.lean`
   and three `benchmark_facing` theorems per packet.
 - Packet-level trusted axioms and benchmark-facing vacuous placeholders for
-  these curated sets have been removed; `graph_dijkstra_001` remains on a
-  separate migration track (vacuity lint exemption in
-  `review_packet_lean_lint.rs`).
+  these curated sets have been removed; `graph_dijkstra_001` matches the same
+  hardened obligation and lint bar as `graph_dijkstra_002`, and
+  `text_only_v1/graph_dijkstra_{001,002}` use the same `DijkstraTheory`-backed
+  obligations (SU7 in `auxiliary`) under strict M1.
 - Strict refresh (`--strict-m1`) and `cargo test -p cta_generate` remain green;
   M1 elaboration is required only for pairs listed in `is_m1_target_packet`
   (`crates/cta_cli/src/cmd/annotate.rs`).
@@ -165,7 +166,8 @@ Then validate the batch and refresh release gates:
    - `cargo test -p cta_generate --test full_method_priority1_packet_regression`
    - `cargo test -p cta_generate --test full_method_priority2_packet_regression`
    - `cargo test -p cta_generate --test review_packet_lean_lint`
-4. `cargo run -p cta_cli -- annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
+4. `cargo run -p cta_cli -- annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+5. `cargo run -p cta_cli -- annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json` (after refresh so signed `packet_hashes` match final `packet.json`)
 
 ## Gold-audit workbook
 

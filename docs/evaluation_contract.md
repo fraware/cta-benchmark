@@ -179,7 +179,7 @@ A run is paper-eligible iff **all** of the following hold:
    green:
    - `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
 
-Current baseline satisfies this gate completely (`m2_ready_packets = 93 / 93`,
+Current baseline satisfies this gate completely (`m2_ready_packets = 94 / 94`,
 empty global proof worklist).
 
 If any condition fails, the run is stored under `runs/` for

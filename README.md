@@ -147,13 +147,6 @@ cargo run -p cta_cli -- annotate sync-review-packets \
   --from benchmark/v0.2/annotation/review_packets \
   --out benchmark/v0.2/annotation/adjudicated_subset
 
-# Strict review-packet audit gate (schema + integrity + signed summary)
-cargo run -p cta_cli -- annotate verify-review-packets \
-  --benchmark-version v0.2 \
-  --packets-root benchmark/v0.2/annotation/review_packets \
-  --schema schemas/review_packet.schema.json \
-  --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json
-
 # Lean proof-status refresh (strict M1 gate + proof-completion artifacts).
 # M1 full elaboration is required only for (system_id, instance_id) pairs in
 # `is_m1_target_packet` (see `crates/cta_cli/src/cmd/annotate.rs`).
@@ -161,6 +154,14 @@ cargo run -p cta_cli -- annotate refresh-lean-check \
   --benchmark-version v0.2 \
   --packets-root benchmark/v0.2/annotation/review_packets \
   --strict-m1
+
+# Strict review-packet audit gate (schema + integrity + signed summary).
+# Run after refresh so `packet_hashes` match final `packet.json` bytes.
+cargo run -p cta_cli -- annotate verify-review-packets \
+  --benchmark-version v0.2 \
+  --packets-root benchmark/v0.2/annotation/review_packets \
+  --schema schemas/review_packet.schema.json \
+  --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json
 
 # Metrics + reports for a single run directory. Use the benchmark-local
 # pack for paper-reportable numbers; the runs/annotation_packs/ copy is
@@ -183,7 +184,7 @@ cargo run -p cta_cli -- reports package \
   --canonical-run-ids <run_id_1>,<run_id_2>,...
 
 # End-to-end fail-fast paper-track orchestrator
-# (plan -> batches -> coverage -> validate --release -> verify-review-packets -> package)
+# (plan -> batches -> coverage -> validate --release -> refresh-lean-check -> verify-review-packets -> package)
 cargo run -p cta_cli -- benchmark paper-orchestrate \
   --benchmark-version v0.2 \
   --canonical-run-ids <run_id_1>,<run_id_2>,...
@@ -310,6 +311,10 @@ cargo test -p cta_generate --test text_only_packet_regression
 cargo test -p cta_generate --test full_method_priority1_packet_regression
 cargo test -p cta_generate --test full_method_priority2_packet_regression
 cargo test -p cta_generate --test review_packet_lean_lint
+cargo run -p cta_cli -- annotate refresh-lean-check \
+  --benchmark-version v0.2 \
+  --packets-root benchmark/v0.2/annotation/review_packets \
+  --strict-m1
 cargo run -p cta_cli -- annotate verify-review-packets \
   --benchmark-version v0.2 \
   --packets-root benchmark/v0.2/annotation/review_packets \
@@ -319,9 +324,9 @@ cargo run -p cta_cli -- annotate verify-review-packets \
 
 **Canonical `code_only_v1` regression roster** (must stay green; source of truth is the `targets` array in `crates/cta_generate/tests/code_only_packet_regression.rs`): `arrays_binary_search_001`, `arrays_binary_search_002`, `arrays_max_subarray_001`, `arrays_max_subarray_002`, `graph_bfs_shortest_path_001`, `graph_bfs_shortest_path_002`, `graph_dijkstra_001`, `graph_dijkstra_002`, `greedy_interval_scheduling_001`, `sorting_insertion_sort_001`, `sorting_insertion_sort_002`, `sorting_merge_sort_001`, `sorting_merge_sort_002`, `trees_bst_insert_001`, `trees_bst_insert_002`, `trees_lowest_common_ancestor_001`, `trees_lowest_common_ancestor_002`, `dp_knapsack_01_001`, `dp_knapsack_01_002`, `dp_longest_common_subsequence_001`.
 
-**Canonical `naive_concat_v1` regression roster** (same idea; `targets` in `crates/cta_generate/tests/naive_concat_packet_regression.rs`): includes `dp_knapsack_01_001` and `dp_knapsack_01_002` alongside the other pilot instances so layers and `quality_summary` cannot rot silently.
+**Canonical `naive_concat_v1` regression roster** (same idea; `targets` in `crates/cta_generate/tests/naive_concat_packet_regression.rs`): includes `graph_dijkstra_001`, `graph_dijkstra_002`, `dp_knapsack_01_001`, and `dp_knapsack_01_002` alongside the other pilot instances so layers and `quality_summary` cannot rot silently.
 
-**`text_only_v1`:** `crates/cta_generate/tests/text_only_packet_regression.rs` pins migrated pilots that already use `layer` + `quality_summary` (currently both knapsack instances); extend `targets` when additional `text_only_v1` packets are brought up to the same schema.
+**`text_only_v1`:** `crates/cta_generate/tests/text_only_packet_regression.rs` pins migrated pilots that already use `layer` + `quality_summary` (both knapsack instances and `graph_dijkstra_{001,002}`); extend `targets` when additional `text_only_v1` packets are brought up to the same schema.
 
 Regression suites pin this contract for focused cleanup packets:
 
@@ -330,7 +335,7 @@ Regression suites pin this contract for focused cleanup packets:
 - `crates/cta_generate/tests/text_only_packet_regression.rs`
 - `crates/cta_generate/tests/family_packet_regression.rs`
 - `crates/cta_generate/tests/full_method_priority1_packet_regression.rs` and `full_method_priority2_packet_regression.rs` (curated `full_method_v1` graph + knapsack + LCA + binary-search packets)
-- `crates/cta_generate/tests/review_packet_lean_lint.rs` (repo-wide static checks on every `review_packets/**/packet.json`; legacy `graph_dijkstra_001` vacuity exemption is documented in that test file)
+- `crates/cta_generate/tests/review_packet_lean_lint.rs` (repo-wide static checks on every `review_packets/**/packet.json`)
 - strict proof-status gate:
   `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1` (M1 elaboration required only for `is_m1_target_packet` pairs in `crates/cta_cli/src/cmd/annotate.rs`)
 
@@ -353,9 +358,9 @@ metadata and emits:
 
 Current strict-refresh snapshot committed in this workspace:
 
-- `total_packets = 93`
-- `m2_ready_packets = 93`
-- `summary_by_gap_reason = {m2_ready: 93}`
+- `total_packets = 94`
+- `m2_ready_packets = 94`
+- `summary_by_gap_reason = {m2_ready: 94}`
 - `global_proof_worklist.count = 0`
 
 Execution policy (now fully completed for `v0.2`):

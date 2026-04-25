@@ -102,7 +102,7 @@ disjoint. See `docs/paper_readiness.md`.
   `runs/<run_id>/lean_generated/...`.
 
 Current repository baseline: `v0.2` review packets are fully proof-complete
-under strict refresh (`m2_ready_packets = 93 / 93`).
+under strict refresh (`m2_ready_packets = 94 / 94`).
 
 Additional hardening baseline (`2026-04-24`, updated):
 

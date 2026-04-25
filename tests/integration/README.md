@@ -26,14 +26,21 @@ End-to-end CLI orchestration is additionally exercised by
 
 1. `cta validate schemas`
 2. `cta validate benchmark --version v0.1 --release`
-3. `cta validate benchmark --version v0.2 --release`
+3. `cta validate benchmark --version v0.2 --release` (paper track; fails with `GOLD_AUDIT_SIGNOFF_INVALID` until `benchmark/v0.2/audit/gold_signoff.json` is completed per `docs/release_process.md`. Repository CI currently runs `v0.1 --release` only.)
 4. `cta experiment --config configs/experiments/pilot_v1.json --dry-run`
 5. `cta experiment --config configs/experiments/pilot_v1.json`
 6. `cta validate file --schema {run_manifest, results_bundle} --path <...>`
 7. `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
 
-Current baseline expectation for this gate: `m2_ready_packets = 93 / 93` and
+Current baseline expectation for this gate: `m2_ready_packets = 94 / 94` and
 `global_proof_worklist.count = 0`.
+
+`.github/workflows/ci.yml` runs `annotate verify-review-packets` **before**
+`annotate refresh-lean-check --strict-m1`, writing the signed summary to
+`/tmp/…` so CI validates the committed `packet.json` set without rewriting
+`benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
+on every run (local releases still regenerate that path after refresh; see
+`docs/release_process.md`).
 
 No integration test reaches the network; every provider call goes
 through `StubProvider`, and `OpenAiProvider` / `AnthropicProvider` are

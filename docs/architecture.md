@@ -88,8 +88,8 @@ artifact stream is enforced:
 
 ```
 review_packets/**/packet.json + scaffold.lean
-    -> cta annotate verify-review-packets
     -> cta annotate refresh-lean-check --strict-m1
+    -> cta annotate verify-review-packets
     -> proof_completion_dashboard.{json,csv}
        wave1_proof_worklist.{json,csv}
        global_proof_worklist.{json,csv}
@@ -97,7 +97,7 @@ review_packets/**/packet.json + scaffold.lean
 ```
 
 Current repository baseline: strict refresh is fully green for `v0.2`
-(`m2_ready_packets = 93 / 93`, `global_proof_worklist.count = 0`).
+(`m2_ready_packets = 94 / 94`, `global_proof_worklist.count = 0`).
 
 Definition-backed hardening baseline (`2026-04-24`, updated):
 

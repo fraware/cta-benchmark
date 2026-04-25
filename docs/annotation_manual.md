@@ -93,7 +93,9 @@ For paper-track batches, use this command sequence:
 4. Rebuild pack and coverage summary:
    - `cta annotate pack --version v0.2 --from-benchmark`
    - `cta annotate coverage --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --pack benchmark/v0.2/annotation/adjudicated_subset/pack.json --out benchmark/v0.2/annotation/adjudicated_subset`
-5. Enforce review-packet audit gate before packaging:
+5. Enforce review-packet audit gate before packaging (after any
+   `refresh-lean-check` in the same change set, so signed `packet_hashes` match
+   final `packet.json`):
    - `cta annotate verify-review-packets --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --schema schemas/review_packet.schema.json --out benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
 
 ## Rigorous status addendum (`2026-04-24`, updated)
@@ -112,6 +114,10 @@ also pass **strict M1** full elaboration (`lean_check.elaborated = true`,
   Canonical proofs live in `lean/CTA/Benchmark/DP/KnapsackTheory.lean`;
   benchmark-facing obligations use `knapsack01_feasible_witness`,
   `totalValue_le_knapsack01`, and `ValidSelection` → `Nodup` (`exact hV.1`).
+- **Dijkstra (`graph_dijkstra_{001,002}`):** `text_only_v1` carries the same
+  `DijkstraTheory`-backed `generated_obligations` shape as the hardened
+  `full_method_v1` / `code_only_v1` / `naive_concat_v1` packets (with SU7 in
+  `auxiliary` so the text-only six-theorem benchmark-facing cap is respected).
 - **Additional M1 pilots** (graph / greedy / sort / tree instances) are listed
   explicitly in `is_m1_target_packet`; only those pairs are required to
   elaborate under `--strict-m1` (details below).
@@ -131,10 +137,16 @@ Release-facing expectation for curated paper-track packets:
   `True` placeholders in curated obligations.
 
 Repo-wide vacuity and wrapper checks run on **every** `packet.json` with
-`layer: "benchmark_facing"` obligations. The legacy instance
-`graph_dijkstra_001` is exempt from **vacuity** checks only (see
-`crates/cta_generate/tests/review_packet_lean_lint.rs`); migrating that packet
-removes the exemption.
+`layer: "benchmark_facing"` obligations, including `graph_dijkstra_001` (same
+bar as other graph shortest-path packets).
+
+**v0.1 pilot Lean mirrors:** the twelve v0.1 pilot `scaffold.lean` files under
+`benchmark/v0.1/instances/**` must remain **byte-identical** to the matching
+`lean/CTA/Benchmark/**` modules (see `INST_LEAN_SCAFFOLD_DIVERGENCE` in
+`crates/cta_benchmark/src/lint.rs`). After editing a canonical pilot module,
+run `scripts/sync_v0_1_pilot_scaffolds.ps1`, then `cta benchmark manifest
+--version v0.1` and `cta validate benchmark --version v0.1 --release`. Details
+are in `CONTRIBUTING.md` (Lean scaffolds, §3d).
 
 ## Review packet contract (`packet.json`)
 
@@ -166,7 +178,10 @@ for queueing and checklists only. It is not a substitute for a valid
 `packet.json` plus `annotate verify-review-packets` and, when you change packet
 shape or prompts, the `cta_generate` tests documented in `README.md` and
 `docs/release_process.md` (`code_only_packet_regression`,
-`family_packet_regression`, `naive_concat_packet_regression`,
+`family_packet_regression` (including cross-system Dijkstra shape checks on
+`graph_dijkstra_{001,002}` for `code_only_v1`, `naive_concat_v1`, and
+`full_method_v1`, plus `graph_dijkstra_{001,002}` under `text_only_v1`),
+`naive_concat_packet_regression`,
 `text_only_packet_regression`,
 `full_method_priority1_packet_regression`,
 `full_method_priority2_packet_regression`, and repo-wide
@@ -179,7 +194,7 @@ For Lean proof-completion tracking, each packet should carry a refreshed
 - `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
 
 At the current repository baseline, this strict gate reports complete closure
-for `v0.2` review packets (`m2_ready_packets = 93 / 93`, empty global
+for `v0.2` review packets (`m2_ready_packets = 94 / 94`, empty global
 proof worklist).
 
 ## Strict M1 elaboration allowlist
