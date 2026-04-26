@@ -79,6 +79,12 @@ pub enum SchemaName {
     Experiment,
     /// `review_packet.schema.json`
     ReviewPacket,
+    /// `annotation_pack_manifest.schema.json`
+    AnnotationPackManifest,
+    /// `protocol_freeze.schema.json`
+    ProtocolFreeze,
+    /// `failure_mode_ontology.schema.json`
+    FailureModeOntology,
 }
 
 impl SchemaName {
@@ -97,6 +103,9 @@ impl SchemaName {
             SchemaName::BenchmarkManifest => "benchmark_manifest.schema.json",
             SchemaName::Experiment => "experiment.schema.json",
             SchemaName::ReviewPacket => "review_packet.schema.json",
+            SchemaName::AnnotationPackManifest => "annotation_pack_manifest.schema.json",
+            SchemaName::ProtocolFreeze => "protocol_freeze.schema.json",
+            SchemaName::FailureModeOntology => "failure_mode_ontology.schema.json",
         }
     }
 
@@ -113,6 +122,9 @@ impl SchemaName {
         SchemaName::BenchmarkManifest,
         SchemaName::Experiment,
         SchemaName::ReviewPacket,
+        SchemaName::AnnotationPackManifest,
+        SchemaName::ProtocolFreeze,
+        SchemaName::FailureModeOntology,
     ];
 
     /// Parse a [`SchemaName`] from its CLI-friendly lowercase identifier.
@@ -132,6 +144,11 @@ impl SchemaName {
             "benchmark_manifest" | "benchmark-manifest" => Some(Self::BenchmarkManifest),
             "experiment" => Some(Self::Experiment),
             "review_packet" | "review-packet" | "reviewpacket" => Some(Self::ReviewPacket),
+            "annotation_pack_manifest" | "annotation-pack-manifest" => {
+                Some(Self::AnnotationPackManifest)
+            }
+            "protocol_freeze" | "protocol-freeze" => Some(Self::ProtocolFreeze),
+            "failure_mode_ontology" | "failure-mode-ontology" => Some(Self::FailureModeOntology),
             _ => None,
         }
     }

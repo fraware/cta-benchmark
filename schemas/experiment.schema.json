@@ -64,6 +64,10 @@
       "type": "string",
       "description": "Workspace-relative path to an adjudicated annotation pack to score against. If absent, the runner skips metrics + reports."
     },
+    "annotation_human_pack": {
+      "type": "string",
+      "description": "Optional workspace-relative path to a human-adjudicated pack. When present on disk, annotate plan defaults to this path before annotation_pack."
+    },
     "require_full_annotation_coverage": {
       "type": "boolean",
       "description": "If true, release validation requires annotation_pack to cover every (instance_id, system_id) pair in the target split."

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.org/schemas/failure_mode_ontology.schema.json",
+  "title": "failure_mode_ontology_v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "modes"],
+  "properties": {
+    "schema_version": { "const": "failure_mode_ontology_v1" },
+    "modes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "slug", "description"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "slug": { "type": "string" },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

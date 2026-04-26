@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.org/schemas/annotation_pack_manifest.schema.json",
+  "title": "AnnotationPackManifest",
+  "description": "Sidecar metadata for adjudicated pack coverage (alongside or merged into manifest.json under adjudicated_subset).",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "benchmark_version",
+    "split",
+    "required_pairs",
+    "covered_pairs",
+    "pack_path"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "When set, should be annotation_pack_manifest_v1"
+    },
+    "benchmark_version": { "type": "string" },
+    "split": { "type": "string" },
+    "required_pairs": { "type": "integer", "minimum": 0 },
+    "covered_pairs": { "type": "integer", "minimum": 0 },
+    "pack_path": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "provenance": { "type": "string" },
+    "epistemic_tier": {
+      "type": "string",
+      "enum": [
+        "human_gold",
+        "pipeline_derived",
+        "synthetic_inter_rater",
+        "mixed",
+        "unknown"
+      ],
+      "description": "What kind of evidence the pack represents."
+    },
+    "provenance_tool": {
+      "type": "string",
+      "description": "Tool or script that last wrote authoritative scores."
+    },
+    "input_hashes": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "SHA-256 hex or sha256: prefix for inputs used to derive the pack."
+    },
+    "protocol_freeze_sha256": {
+      "type": "string",
+      "description": "Hash of benchmark/<v>/protocol_freeze.json when pinned."
+    }
+  }
+}

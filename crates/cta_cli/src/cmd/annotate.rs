@@ -8,7 +8,7 @@ use cta_annotations::{adjudicate_set, load_dir, AdjudicationPolicy, AnnotationPa
 use cta_core::BenchmarkVersion;
 use cta_schema::{SchemaName, SchemaRegistry};
 use serde::Deserialize;
-use serde_json::json;
+use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
 
 use crate::parse_bench_version;
@@ -354,12 +354,7 @@ pub fn plan(workspace: &Path, args: PlanArgs) -> Result<()> {
     let (exp, required_pairs) =
         load_required_pairs(workspace, &args.benchmark_version, &args.experiment_config)?;
     let pack_path = args.pack.unwrap_or_else(|| {
-        workspace
-            .join("benchmark")
-            .join(args.benchmark_version.as_str())
-            .join("annotation")
-            .join("adjudicated_subset")
-            .join("pack.json")
+        resolve_default_pack_path(workspace, &args.benchmark_version, &args.experiment_config)
     });
     let present_pairs = load_pack_pairs(&pack_path).with_context(|| {
         format!(
@@ -442,7 +437,34 @@ pub fn coverage(workspace: &Path, args: CoverageArgs) -> Result<()> {
             .map(|(iid, sid)| json!({"instance_id": iid, "system_id": sid}))
             .collect::<Vec<_>>(),
     });
-    let manifest = json!({
+    let exp_cfg_abs = if args.experiment_config.is_absolute() {
+        args.experiment_config.clone()
+    } else {
+        workspace.join(&args.experiment_config)
+    };
+    let split_path = workspace
+        .join("benchmark")
+        .join(args.benchmark_version.as_str())
+        .join("splits")
+        .join(format!("{}.json", exp.split));
+    let freeze_path = workspace
+        .join("benchmark")
+        .join(args.benchmark_version.as_str())
+        .join("protocol_freeze.json");
+
+    let mut input_hashes = serde_json::Map::new();
+    if let Some(h) = sha256_file_hex(&exp_cfg_abs) {
+        input_hashes.insert("experiment_config".to_string(), json!(h));
+    }
+    if let Some(h) = sha256_file_hex(&split_path) {
+        input_hashes.insert("split_json".to_string(), json!(h));
+    }
+    if let Some(h) = sha256_file_hex(&args.pack) {
+        input_hashes.insert("annotation_pack_json".to_string(), json!(h));
+    }
+
+    let mut manifest = json!({
+        "schema_version": "annotation_pack_manifest_v1",
         "benchmark_version": args.benchmark_version.as_str(),
         "split": coverage_summary["split"],
         "required_pairs": required_pairs.len(),
@@ -451,7 +473,16 @@ pub fn coverage(workspace: &Path, args: CoverageArgs) -> Result<()> {
         "generated_at": time::OffsetDateTime::now_utc()
             .format(&time::format_description::well_known::Rfc3339)
             .unwrap_or_else(|_| "1970-01-01T00:00:00Z".to_string()),
+        "epistemic_tier": "pipeline_derived",
+        "provenance_tool": "cta_cli_annotate_coverage",
+        "input_hashes": Value::Object(input_hashes.clone()),
     });
+    if let Some(h) = sha256_file_hex(&freeze_path) {
+        manifest
+            .as_object_mut()
+            .expect("manifest is object")
+            .insert("protocol_freeze_sha256".to_string(), json!(h));
+    }
     std::fs::write(
         args.out.join("coverage_summary.json"),
         serde_json::to_vec_pretty(&coverage_summary)?,
@@ -1771,6 +1802,45 @@ fn load_pack_pairs(path: &Path) -> Result<HashSet<(String, String)>> {
         .into_iter()
         .map(|r| (r.instance_id.to_string(), r.system_id.to_string()))
         .collect())
+}
+
+fn sha256_file_hex(path: &Path) -> Option<String> {
+    let data = std::fs::read(path).ok()?;
+    Some(format!("sha256:{:x}", Sha256::digest(data)))
+}
+
+fn resolve_default_pack_path(
+    workspace: &Path,
+    benchmark_version: &BenchmarkVersion,
+    experiment_config: &Path,
+) -> PathBuf {
+    let exp_path = if experiment_config.is_absolute() {
+        experiment_config.to_path_buf()
+    } else {
+        workspace.join(experiment_config)
+    };
+    if let Ok(raw) = std::fs::read_to_string(&exp_path) {
+        if let Ok(v) = serde_json::from_str::<serde_json::Value>(&raw) {
+            if let Some(h) = v.get("annotation_human_pack").and_then(|x| x.as_str()) {
+                let p = workspace.join(h);
+                if p.is_file() {
+                    return p;
+                }
+            }
+            if let Some(p) = v.get("annotation_pack").and_then(|x| x.as_str()) {
+                let path = workspace.join(p);
+                if path.is_file() {
+                    return path;
+                }
+            }
+        }
+    }
+    workspace
+        .join("benchmark")
+        .join(benchmark_version.as_str())
+        .join("annotation")
+        .join("adjudicated_subset")
+        .join("pack.json")
 }
 
 fn write_assignment_matrix(

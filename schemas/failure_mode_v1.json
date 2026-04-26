@@ -1,0 +1,20 @@
+{
+  "schema_version": "failure_mode_ontology_v1",
+  "modes": [
+    {
+      "id": "empty",
+      "slug": "",
+      "description": "No explicit failure-mode tag; adjudicated metrics may still flag low scores via thresholds."
+    },
+    {
+      "id": "low_faithfulness",
+      "slug": "low_faithfulness",
+      "description": "Derived or adjudicated signal that semantic faithfulness is below the reporting threshold for that slice."
+    },
+    {
+      "id": "low_faithfulness_demo",
+      "slug": "low_faithfulness_demo",
+      "description": "Synthetic demo label used only in example fixtures; must not appear in paper-strict raw_metrics."
+    }
+  ]
+}

@@ -26,8 +26,10 @@ post_processing_pipeline:
 token_budget:
   max_context_tokens: 16000
   max_output_tokens: 2048
-estimated_cost_usd_per_1k_instances: 0.0
-runtime_notes: "higher context tokens than code_only due to scaffold exposure"
+estimated_cost_usd_per_1k_instances: null
+runtime_notes: "Higher context tokens than code_only due to scaffold exposure; live wall-clock dominated by provider latency."
 output_schema: "results_bundle.schema_v1"
 reference_obligations_visible: false
 scaffold_visible: true
+notes: "Estimated cost field is intentionally null (not captured in-repo)."
+run_manifest_linkage: "See `experiments/run_manifests/` for per-wave provider metadata when published."

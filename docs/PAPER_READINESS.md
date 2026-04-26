@@ -40,7 +40,11 @@ python scripts\build_benchmark_manifest_jsonl.py --benchmark-version v0.3
 python scripts\validate_benchmark.py
 python scripts\export_benchmark_stats.py
 python scripts\dump_prompts_appendix.py
-python scripts\compute_results.py
+python scripts\materialize_v03_adjudication_artifacts.py
+python scripts\compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv
+python scripts\compute_results.py --paper
+python scripts\materialize_repair_hotspot_artifacts.py
+python scripts\export_benchmark_paper_summary.py
 ```
 
 **Bash (same steps):**
@@ -59,7 +63,11 @@ python3 scripts/build_benchmark_manifest_jsonl.py --benchmark-version v0.3
 python3 scripts/validate_benchmark.py
 python3 scripts/export_benchmark_stats.py
 python3 scripts/dump_prompts_appendix.py
-python3 scripts/compute_results.py
+python3 scripts/materialize_v03_adjudication_artifacts.py
+python3 scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv
+python3 scripts/compute_results.py --paper
+python3 scripts/materialize_repair_hotspot_artifacts.py
+python3 scripts/export_benchmark_paper_summary.py
 ```
 
 **If `annotate coverage` must be skipped** (no Cargo on PATH):

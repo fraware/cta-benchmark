@@ -47,6 +47,9 @@ pub struct ExperimentConfigSummary {
     pub providers: Vec<String>,
     /// Optional workspace-relative annotation pack path.
     pub annotation_pack: Option<String>,
+    /// Optional human-adjudicated pack path (see docs/PROVENANCE.md).
+    #[serde(default)]
+    pub annotation_human_pack: Option<String>,
     /// If true, release validation requires full (instance, system) coverage
     /// in the annotation pack for the experiment split.
     #[serde(default)]

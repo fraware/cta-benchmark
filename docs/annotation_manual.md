@@ -221,6 +221,16 @@ false` while still being schema-valid and useful for adjudication; the
 dashboard column `m1_violation_count` is the indicator for allowlisted pairs
 that fail the strict contract.
 
+## Human wave v0.3 (eval)
+
+Stratification and minimum cell policy: `docs/annotation_sampling_v03.md`.
+
+Header-only CSV templates (opaque keys, no in-repo crosswalk):
+`benchmark/v0.3/annotation/human_wave_v03/`.
+
+Calibration and anchor checks before touching eval data:
+`docs/annotator_calibration_v03.md`.
+
 ## Hygiene
 
 - Never edit a previously submitted annotation. Submit a new one.

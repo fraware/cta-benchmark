@@ -1,0 +1,53 @@
+{
+  "schema_version": "benchmark_paper_summary_v1",
+  "benchmark_version": "v0.3",
+  "total_instances": 84,
+  "systems_profiled": [
+    "code_only_v1",
+    "full_method_v1",
+    "naive_concat_v1",
+    "text_only_v1"
+  ],
+  "systems_profiled_count": 4,
+  "expected_instance_level_rows": 336,
+  "expected_raw_metrics_rows": 336,
+  "family_counts": {
+    "arrays_binary_search": 7,
+    "arrays_max_subarray": 7,
+    "dp_knapsack_01": 7,
+    "dp_longest_common_subsequence": 7,
+    "graph_bfs_shortest_path": 7,
+    "graph_dijkstra": 7,
+    "greedy_coin_change_canonical": 7,
+    "greedy_interval_scheduling": 7,
+    "sorting_insertion_sort": 7,
+    "sorting_merge_sort": 7,
+    "trees_bst_insert": 7,
+    "trees_lowest_common_ancestor": 7
+  },
+  "split_counts": {
+    "dev": 36,
+    "eval": 48
+  },
+  "difficulty_counts": {
+    "easy": 35,
+    "medium": 49
+  },
+  "critical_units_sum_by_family": {
+    "arrays_binary_search": 21,
+    "arrays_max_subarray": 21,
+    "dp_knapsack_01": 28,
+    "dp_longest_common_subsequence": 21,
+    "graph_bfs_shortest_path": 35,
+    "graph_dijkstra": 42,
+    "greedy_coin_change_canonical": 21,
+    "greedy_interval_scheduling": 21,
+    "sorting_insertion_sort": 14,
+    "sorting_merge_sort": 21,
+    "trees_bst_insert": 21,
+    "trees_lowest_common_ancestor": 28
+  },
+  "critical_units_total": 294,
+  "eval_instance_count": 48,
+  "source_manifest": "benchmark/manifest.jsonl"
+}

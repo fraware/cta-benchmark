@@ -236,3 +236,26 @@ benchmark-facing obligation sets are regression-tested so that
 `critical_unit_coverage` and `semantic_faithfulness_mean` remain meaningful
 when those packets are promoted into packs and compared against model output.
 See `docs/annotation_manual.md` and `README.md` (obligation quality gate).
+
+## Instance-level vs aggregate metrics (v0.3 tables)
+
+| Level | Where it lives | Uncertainty / interpretation |
+|-------|----------------|--------------------------------|
+| Instance | `results/raw_metrics.json` rows (`instance_id` × `system`) | Per-instance scalars are point estimates from the adjudication pipeline; they are not paired human ratings. |
+| Aggregate (system) | `results/system_summary.csv`, `results/system_summary_with_ci.json` | `mean` pools instance-level `faithfulness_mean` (and related fields) across all manifest instances present in raw metrics for that system. `system_summary_with_ci.json` adds bootstrap 95% intervals for those **pooled means** (primary metrics listed in-file), not per-instance confidence. |
+| Aggregate (system × family) | `results/family_summary.csv` and the `per_system_family` block in `system_summary_with_ci.json` | Same pooling rule restricted to a benchmark family. |
+
+**Column naming.** Treat `results/raw_metrics.json` fields as **instance_level**
+inputs. Treat `system_summary.csv` / `family_summary.csv` columns `mean`,
+`sd`, `median`, `iqr`, `bootstrap_ci95_*`, and `n` as **aggregate_*** summaries
+over instances. In `system_summary_with_ci.json`, each metric block carries
+`mean`, `ci95`, and `n` for pooled means only (`aggregate_scope` in-file).
+
+Regenerate aggregates with `python scripts/compute_results.py --paper` after refreshing `results/raw_metrics.json`.
+
+## Family-level multiple comparison (optional)
+
+Family contrasts within a system are **not** adjusted in-repo by default.
+Either apply Benjamini–Hochberg (or another FDR procedure) in an external
+analysis notebook, or import coefficients from a hierarchical model fit in
+R/Stan and cite that artifact explicitly in the paper supplement.

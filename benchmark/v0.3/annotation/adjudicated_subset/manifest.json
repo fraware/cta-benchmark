@@ -1,8 +1,17 @@
 {
+  "schema_version": "annotation_pack_manifest_v1",
   "benchmark_version": "v0.3",
   "split": "eval",
   "required_pairs": 192,
   "covered_pairs": 192,
   "pack_path": "benchmark/v0.3/annotation/adjudicated_subset/pack.json",
-  "generated_at": "2026-04-26T12:55:15.4149661Z"
+  "provenance": "scripts/materialize_v03_adjudication_artifacts.py",
+  "epistemic_tier": "pipeline_derived",
+  "provenance_tool": "materialize_v03_adjudication_artifacts.py",
+  "input_hashes": {
+    "eval_split_json": "sha256:275b46d4c601b302cded53e33cf12cfec666505161e40eac3fe60a632b129d5e",
+    "experiment_config_benchmark_v03": "sha256:9b245e5d4845b2270df238676c14d5d1053fa76f3690d64ad6633c59d1cdc7a4",
+    "annotation_pack_json": "sha256:05ca90d362dbb6a04ef7334c54850688464ddcd5f8d1a2b5c616f174849b27fe"
+  },
+  "protocol_freeze_sha256": "sha256:506c2e76ccdb471ac1d304a633187eb102376d568cd674fb8b713899c3acedf0"
 }

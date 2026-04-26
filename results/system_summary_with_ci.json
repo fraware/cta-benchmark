@@ -1,0 +1,1793 @@
+{
+  "schema_version": "system_summary_with_ci_v1",
+  "seed": 42,
+  "bootstrap_reps": 2000,
+  "aggregate_scope": "all_rows_joining_manifest_instances_to_raw_metrics_v2",
+  "note_instance_vs_aggregate": "Per-instance values live in results/raw_metrics.json; this file summarizes bootstrap uncertainty for means pooled over instances (not per-instance CIs).",
+  "primary_metrics": [
+    "faithfulness_mean",
+    "code_consistency_mean",
+    "vacuity_rate",
+    "proof_utility_mean"
+  ],
+  "per_system": {
+    "code_only_v1": {
+      "faithfulness_mean": {
+        "mean": 0.89305,
+        "ci95": [
+          0.8714226190476191,
+          0.9138833333333333
+        ],
+        "n": 84
+      },
+      "code_consistency_mean": {
+        "mean": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "n": 84
+      },
+      "vacuity_rate": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n": 84
+      },
+      "proof_utility_mean": {
+        "mean": 0.3706297619047619,
+        "ci95": [
+          0.3359333333333333,
+          0.40850238095238095
+        ],
+        "n": 84
+      }
+    },
+    "full_method_v1": {
+      "faithfulness_mean": {
+        "mean": 0.8769285714285715,
+        "ci95": [
+          0.8600785714285715,
+          0.8938654761904762
+        ],
+        "n": 84
+      },
+      "code_consistency_mean": {
+        "mean": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "n": 84
+      },
+      "vacuity_rate": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n": 84
+      },
+      "proof_utility_mean": {
+        "mean": 0.5762845238095238,
+        "ci95": [
+          0.5321809523809524,
+          0.6182988095238096
+        ],
+        "n": 84
+      }
+    },
+    "naive_concat_v1": {
+      "faithfulness_mean": {
+        "mean": 0.773652380952381,
+        "ci95": [
+          0.7395345238095238,
+          0.8079285714285714
+        ],
+        "n": 84
+      },
+      "code_consistency_mean": {
+        "mean": 0.9785714285714286,
+        "ci95": [
+          0.9571428571428572,
+          0.9946428571428572
+        ],
+        "n": 84
+      },
+      "vacuity_rate": {
+        "mean": 0.028016666666666662,
+        "ci95": [
+          0.01809404761904762,
+          0.03956190476190476
+        ],
+        "n": 84
+      },
+      "proof_utility_mean": {
+        "mean": 0.3538952380952381,
+        "ci95": [
+          0.31935833333333336,
+          0.3930011904761904
+        ],
+        "n": 84
+      }
+    },
+    "text_only_v1": {
+      "faithfulness_mean": {
+        "mean": 0.7174011904761904,
+        "ci95": [
+          0.6784702380952381,
+          0.7587357142857143
+        ],
+        "n": 84
+      },
+      "code_consistency_mean": {
+        "mean": 0.9785714285714286,
+        "ci95": [
+          0.9571428571428572,
+          0.9946428571428572
+        ],
+        "n": 84
+      },
+      "vacuity_rate": {
+        "mean": 0.05009285714285714,
+        "ci95": [
+          0.030732142857142857,
+          0.07154404761904762
+        ],
+        "n": 84
+      },
+      "proof_utility_mean": {
+        "mean": 0.3459130952380952,
+        "ci95": [
+          0.31173214285714285,
+          0.3843273809523809
+        ],
+        "n": 84
+      }
+    }
+  },
+  "per_system_family": {
+    "code_only_v1": {
+      "arrays_binary_search": {
+        "faithfulness_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.315,
+          "ci95": [
+            0.315,
+            0.315
+          ],
+          "n": 7
+        }
+      },
+      "arrays_max_subarray": {
+        "faithfulness_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.315,
+          "ci95": [
+            0.315,
+            0.315
+          ],
+          "n": 7
+        }
+      },
+      "dp_knapsack_01": {
+        "faithfulness_mean": {
+          "mean": 0.8333,
+          "ci95": [
+            0.8333,
+            0.8333
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7076,
+          "ci95": [
+            0.7076,
+            0.7076
+          ],
+          "n": 7
+        }
+      },
+      "dp_longest_common_subsequence": {
+        "faithfulness_mean": {
+          "mean": 0.8571428571428571,
+          "ci95": [
+            0.7857142857142857,
+            0.9285714285714286
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2947714285714286,
+          "ci95": [
+            0.2796,
+            0.30994285714285713
+          ],
+          "n": 7
+        }
+      },
+      "graph_bfs_shortest_path": {
+        "faithfulness_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.315,
+          "ci95": [
+            0.315,
+            0.315
+          ],
+          "n": 7
+        }
+      },
+      "graph_dijkstra": {
+        "faithfulness_mean": {
+          "mean": 0.9167,
+          "ci95": [
+            0.9167,
+            0.9167
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7363,
+          "ci95": [
+            0.7363,
+            0.7363
+          ],
+          "n": 7
+        }
+      },
+      "greedy_coin_change_canonical": {
+        "faithfulness_mean": {
+          "mean": 0.75,
+          "ci95": [
+            0.75,
+            0.75
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2796,
+          "ci95": [
+            0.2796,
+            0.2796
+          ],
+          "n": 7
+        }
+      },
+      "greedy_interval_scheduling": {
+        "faithfulness_mean": {
+          "mean": 0.75,
+          "ci95": [
+            0.75,
+            0.75
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2796,
+          "ci95": [
+            0.2796,
+            0.2796
+          ],
+          "n": 7
+        }
+      },
+      "sorting_insertion_sort": {
+        "faithfulness_mean": {
+          "mean": 0.8333,
+          "ci95": [
+            0.8333,
+            0.8333
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2914,
+          "ci95": [
+            0.2914,
+            0.2914
+          ],
+          "n": 7
+        }
+      },
+      "sorting_merge_sort": {
+        "faithfulness_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.315,
+          "ci95": [
+            0.315,
+            0.315
+          ],
+          "n": 7
+        }
+      },
+      "trees_bst_insert": {
+        "faithfulness_mean": {
+          "mean": 0.9428571428571428,
+          "ci95": [
+            0.9142857142857144,
+            0.9857142857142858
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.3068857142857143,
+          "ci95": [
+            0.30282857142857145,
+            0.31094285714285713
+          ],
+          "n": 7
+        }
+      },
+      "trees_lowest_common_ancestor": {
+        "faithfulness_mean": {
+          "mean": 0.8333,
+          "ci95": [
+            0.8333,
+            0.8333
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2914,
+          "ci95": [
+            0.2914,
+            0.2914
+          ],
+          "n": 7
+        }
+      }
+    },
+    "full_method_v1": {
+      "arrays_binary_search": {
+        "faithfulness_mean": {
+          "mean": 0.875,
+          "ci95": [
+            0.875,
+            0.875
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2973,
+          "ci95": [
+            0.2973,
+            0.2973
+          ],
+          "n": 7
+        }
+      },
+      "arrays_max_subarray": {
+        "faithfulness_mean": {
+          "mean": 0.9,
+          "ci95": [
+            0.9,
+            0.9
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.3008,
+          "ci95": [
+            0.3008,
+            0.3008
+          ],
+          "n": 7
+        }
+      },
+      "dp_knapsack_01": {
+        "faithfulness_mean": {
+          "mean": 0.8333,
+          "ci95": [
+            0.8333,
+            0.8333
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7076,
+          "ci95": [
+            0.7076,
+            0.7076
+          ],
+          "n": 7
+        }
+      },
+      "dp_longest_common_subsequence": {
+        "faithfulness_mean": {
+          "mean": 0.8053571428571429,
+          "ci95": [
+            0.8017857142857144,
+            0.8107142857142857
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2874285714285714,
+          "ci95": [
+            0.2869428571428571,
+            0.2881571428571429
+          ],
+          "n": 7
+        }
+      },
+      "graph_bfs_shortest_path": {
+        "faithfulness_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.5078571428571429,
+          "ci95": [
+            0.37928571428571434,
+            0.7007142857142857
+          ],
+          "n": 7
+        }
+      },
+      "graph_dijkstra": {
+        "faithfulness_mean": {
+          "mean": 0.9286,
+          "ci95": [
+            0.9286,
+            0.9286
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7404,
+          "ci95": [
+            0.7404,
+            0.7404
+          ],
+          "n": 7
+        }
+      },
+      "greedy_coin_change_canonical": {
+        "faithfulness_mean": {
+          "mean": 0.7785714285714286,
+          "ci95": [
+            0.7571428571428571,
+            0.7928571428571429
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.4547857142857143,
+          "ci95": [
+            0.3427285714285714,
+            0.6228714285714286
+          ],
+          "n": 7
+        }
+      },
+      "greedy_interval_scheduling": {
+        "faithfulness_mean": {
+          "mean": 0.7785714285714286,
+          "ci95": [
+            0.7571428571428571,
+            0.7928571428571429
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.6887857142857143,
+          "ci95": [
+            0.6838428571428572,
+            0.6937285714285715
+          ],
+          "n": 7
+        }
+      },
+      "sorting_insertion_sort": {
+        "faithfulness_mean": {
+          "mean": 0.8333,
+          "ci95": [
+            0.8333,
+            0.8333
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7076,
+          "ci95": [
+            0.7076,
+            0.7076
+          ],
+          "n": 7
+        }
+      },
+      "sorting_merge_sort": {
+        "faithfulness_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.765,
+          "ci95": [
+            0.765,
+            0.765
+          ],
+          "n": 7
+        }
+      },
+      "trees_bst_insert": {
+        "faithfulness_mean": {
+          "mean": 0.9571428571428572,
+          "ci95": [
+            0.9142857142857144,
+            0.9857142857142858
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7502571428571428,
+          "ci95": [
+            0.7404285714285714,
+            0.7600857142857143
+          ],
+          "n": 7
+        }
+      },
+      "trees_lowest_common_ancestor": {
+        "faithfulness_mean": {
+          "mean": 0.8333,
+          "ci95": [
+            0.8333,
+            0.8333
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7076,
+          "ci95": [
+            0.7076,
+            0.7076
+          ],
+          "n": 7
+        }
+      }
+    },
+    "naive_concat_v1": {
+      "arrays_binary_search": {
+        "faithfulness_mean": {
+          "mean": 0.9285714285714286,
+          "ci95": [
+            0.8928571428571429,
+            0.9821428571428571
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.09525714285714285,
+          "ci95": [
+            0.02381428571428571,
+            0.14288571428571428
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.30488571428571426,
+          "ci95": [
+            0.29982857142857144,
+            0.31247142857142857
+          ],
+          "n": 7
+        }
+      },
+      "arrays_max_subarray": {
+        "faithfulness_mean": {
+          "mean": 0.6753285714285715,
+          "ci95": [
+            0.5779571428571428,
+            0.7402428571428572
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0909,
+          "ci95": [
+            0.0909,
+            0.0909
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.269,
+          "ci95": [
+            0.2552,
+            0.2782
+          ],
+          "n": 7
+        }
+      },
+      "dp_knapsack_01": {
+        "faithfulness_mean": {
+          "mean": 0.8333,
+          "ci95": [
+            0.8333,
+            0.8333
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7076,
+          "ci95": [
+            0.7076,
+            0.7076
+          ],
+          "n": 7
+        }
+      },
+      "dp_longest_common_subsequence": {
+        "faithfulness_mean": {
+          "mean": 0.5733714285714286,
+          "ci95": [
+            0.5558428571428572,
+            0.5850571428571428
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.25451428571428575,
+          "ci95": [
+            0.2520285714285714,
+            0.2561714285714286
+          ],
+          "n": 7
+        }
+      },
+      "graph_bfs_shortest_path": {
+        "faithfulness_mean": {
+          "mean": 0.8714285714285713,
+          "ci95": [
+            0.7428571428571428,
+            0.9571428571428572
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2967857142857143,
+          "ci95": [
+            0.28464285714285714,
+            0.30892857142857144
+          ],
+          "n": 7
+        }
+      },
+      "graph_dijkstra": {
+        "faithfulness_mean": {
+          "mean": 0.9286,
+          "ci95": [
+            0.9286,
+            0.9286
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7404,
+          "ci95": [
+            0.7404,
+            0.7404
+          ],
+          "n": 7
+        }
+      },
+      "greedy_coin_change_canonical": {
+        "faithfulness_mean": {
+          "mean": 0.5357000000000001,
+          "ci95": [
+            0.5119,
+            0.5714
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 0.7428571428571429,
+          "ci95": [
+            0.6142857142857144,
+            0.8714285714285713
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.047599999999999996,
+          "ci95": [
+            0.011899999999999999,
+            0.0833
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.24915714285714285,
+          "ci95": [
+            0.2457857142857143,
+            0.2542142857142857
+          ],
+          "n": 7
+        }
+      },
+      "greedy_interval_scheduling": {
+        "faithfulness_mean": {
+          "mean": 0.7428714285714285,
+          "ci95": [
+            0.6107428571428571,
+            0.8309571428571428
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2785714285714286,
+          "ci95": [
+            0.25984285714285715,
+            0.29105714285714285
+          ],
+          "n": 7
+        }
+      },
+      "sorting_insertion_sort": {
+        "faithfulness_mean": {
+          "mean": 0.7951142857142858,
+          "ci95": [
+            0.7835714285714286,
+            0.8124285714285715
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.10244285714285714,
+          "ci95": [
+            0.09667142857142856,
+            0.10821428571428572
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2859428571428571,
+          "ci95": [
+            0.2843142857142857,
+            0.28757142857142853
+          ],
+          "n": 7
+        }
+      },
+      "sorting_merge_sort": {
+        "faithfulness_mean": {
+          "mean": 0.9805,
+          "ci95": [
+            0.9610000000000001,
+            0.9935
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.31225714285714284,
+          "ci95": [
+            0.3095142857142857,
+            0.31408571428571425
+          ],
+          "n": 7
+        }
+      },
+      "trees_bst_insert": {
+        "faithfulness_mean": {
+          "mean": 0.7999999999999999,
+          "ci95": [
+            0.75,
+            0.85
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2866714285714286,
+          "ci95": [
+            0.27958571428571427,
+            0.2937571428571429
+          ],
+          "n": 7
+        }
+      },
+      "trees_lowest_common_ancestor": {
+        "faithfulness_mean": {
+          "mean": 0.6190428571428572,
+          "ci95": [
+            0.5952142857142857,
+            0.6547857142857143
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.26095714285714283,
+          "ci95": [
+            0.2575857142857143,
+            0.2660142857142857
+          ],
+          "n": 7
+        }
+      }
+    },
+    "text_only_v1": {
+      "arrays_binary_search": {
+        "faithfulness_mean": {
+          "mean": 0.8571,
+          "ci95": [
+            0.8571,
+            0.8571
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.2857,
+          "ci95": [
+            0.2857,
+            0.2857
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2947,
+          "ci95": [
+            0.2947,
+            0.2947
+          ],
+          "n": 7
+        }
+      },
+      "arrays_max_subarray": {
+        "faithfulness_mean": {
+          "mean": 0.7959428571428572,
+          "ci95": [
+            0.6939142857142857,
+            0.9489857142857143
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.08165714285714286,
+          "ci95": [
+            0.020414285714285715,
+            0.12248571428571428
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.28608571428571433,
+          "ci95": [
+            0.27162857142857144,
+            0.30054285714285717
+          ],
+          "n": 7
+        }
+      },
+      "dp_knapsack_01": {
+        "faithfulness_mean": {
+          "mean": 0.8333,
+          "ci95": [
+            0.8333,
+            0.8333
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7076,
+          "ci95": [
+            0.7076,
+            0.7076
+          ],
+          "n": 7
+        }
+      },
+      "dp_longest_common_subsequence": {
+        "faithfulness_mean": {
+          "mean": 0.5585571428571429,
+          "ci95": [
+            0.5565857142857142,
+            0.5615142857142857
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2524285714285714,
+          "ci95": [
+            0.25214285714285717,
+            0.25285714285714284
+          ],
+          "n": 7
+        }
+      },
+      "graph_bfs_shortest_path": {
+        "faithfulness_mean": {
+          "mean": 0.6122428571428572,
+          "ci95": [
+            0.5850142857142858,
+            0.6530857142857143
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.25998571428571426,
+          "ci95": [
+            0.2561285714285714,
+            0.26384285714285716
+          ],
+          "n": 7
+        }
+      },
+      "graph_dijkstra": {
+        "faithfulness_mean": {
+          "mean": 0.9286,
+          "ci95": [
+            0.9286,
+            0.9286
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.7404,
+          "ci95": [
+            0.7404,
+            0.7404
+          ],
+          "n": 7
+        }
+      },
+      "greedy_coin_change_canonical": {
+        "faithfulness_mean": {
+          "mean": 0.5306,
+          "ci95": [
+            0.5102,
+            0.5612
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 0.7428571428571429,
+          "ci95": [
+            0.6142857142857144,
+            0.9357142857142857
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.14285714285714285,
+          "ci95": [
+            0.03571428571428571,
+            0.21428571428571427
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.24842857142857142,
+          "ci95": [
+            0.24554285714285715,
+            0.25275714285714285
+          ],
+          "n": 7
+        }
+      },
+      "greedy_interval_scheduling": {
+        "faithfulness_mean": {
+          "mean": 0.5455,
+          "ci95": [
+            0.5455,
+            0.5455
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0909,
+          "ci95": [
+            0.0909,
+            0.0909
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2506,
+          "ci95": [
+            0.2506,
+            0.2506
+          ],
+          "n": 7
+        }
+      },
+      "sorting_insertion_sort": {
+        "faithfulness_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.315,
+          "ci95": [
+            0.315,
+            0.315
+          ],
+          "n": 7
+        }
+      },
+      "sorting_merge_sort": {
+        "faithfulness_mean": {
+          "mean": 0.8214142857142858,
+          "ci95": [
+            0.7023571428571429,
+            0.9404714285714286
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.28967142857142864,
+          "ci95": [
+            0.2727857142857143,
+            0.30655714285714286
+          ],
+          "n": 7
+        }
+      },
+      "trees_bst_insert": {
+        "faithfulness_mean": {
+          "mean": 0.5736142857142857,
+          "ci95": [
+            0.5548714285714286,
+            0.6017285714285714
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.2545857142857143,
+          "ci95": [
+            0.25192857142857145,
+            0.25857142857142856
+          ],
+          "n": 7
+        }
+      },
+      "trees_lowest_common_ancestor": {
+        "faithfulness_mean": {
+          "mean": 0.5519428571428572,
+          "ci95": [
+            0.5129857142857143,
+            0.5779142857142857
+          ],
+          "n": 7
+        },
+        "code_consistency_mean": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "n": 7
+        },
+        "vacuity_rate": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 7
+        },
+        "proof_utility_mean": {
+          "mean": 0.25147142857142857,
+          "ci95": [
+            0.24594285714285716,
+            0.25515714285714286
+          ],
+          "n": 7
+        }
+      }
+    }
+  }
+}

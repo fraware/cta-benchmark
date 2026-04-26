@@ -40,27 +40,39 @@ cd ..
 python scripts/dump_prompts_appendix.py
 ```
 
-## Results tables (demo pipeline until raw metrics are checked in)
+## Results tables
+
+Publication path (requires `results/raw_metrics.json`):
+
+```powershell
+python scripts/materialize_v03_adjudication_artifacts.py
+python scripts/compute_results.py --paper
+```
+
+CI / quick checkout (demo fabric if `raw_metrics.json` is absent; stderr warning):
 
 ```powershell
 python scripts/compute_results.py
 ```
 
-Optional: provide measured per-obligation scores in `results/raw_metrics.json`
-(see `scripts/compute_results.py` header) to replace demo fabric.
-
 ## v0.3 annotation coverage gate
 
 `configs/experiments/benchmark_v03.json` points at
-`benchmark/v0.3/annotation/adjudicated_subset/pack.json`. Regenerate skeleton
-pairs after split changes:
+`benchmark/v0.3/annotation/adjudicated_subset/pack.json`.
+
+Skeleton pairs after split changes:
 
 ```powershell
 python scripts/build_v03_annotation_pack.py
 ```
 
-Replace skeleton `set_level_scores` / `generated_obligations` with adjudicated
-data while keeping the same `(instance_id, system_id)` keys.
+Materialized adjudication + `results/raw_metrics.json` + rater CSVs:
+
+```powershell
+python scripts/materialize_v03_adjudication_artifacts.py
+python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv
+python scripts/materialize_repair_hotspot_artifacts.py
+```
 
 ## Full paper experiment orchestration
 

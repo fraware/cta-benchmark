@@ -4,8 +4,13 @@ Build benchmark/v0.3/annotation/adjudicated_subset/pack.json with one record
 per (eval instance, system) pair so release checks pass when
 require_full_annotation_coverage is true for benchmark_v03.
 
-Records are adjudication-shaped skeletons: replace with real scores when the
-wave completes.
+Default output uses skeleton rows. For publication data, run:
+
+  python scripts/materialize_v03_adjudication_artifacts.py
+
+after which this script is mainly useful to refresh `coverage_summary.json`
+via `annotate coverage` without overwriting adjudicated scores (skip this
+script if the pack is already materialized).
 """
 
 from __future__ import annotations

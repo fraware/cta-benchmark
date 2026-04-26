@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.org/schemas/protocol_freeze.schema.json",
+  "title": "protocol_freeze_v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "benchmark_version",
+    "annotation_wave_id",
+    "stratification_seed",
+    "repair_selection_rule_id",
+    "metrics_version",
+    "rubric_version",
+    "repo_commit_at_freeze",
+    "generated_at_utc",
+    "input_hashes"
+  ],
+  "properties": {
+    "schema_version": { "const": "protocol_freeze_v1" },
+    "benchmark_version": { "type": "string", "minLength": 1 },
+    "annotation_wave_id": { "type": "string", "minLength": 1 },
+    "stratification_seed": { "type": "integer" },
+    "repair_selection_rule_id": { "type": "string", "minLength": 1 },
+    "metrics_version": { "type": "string", "minLength": 1 },
+    "rubric_version": { "type": "string", "minLength": 1 },
+    "split_commit": { "type": "string" },
+    "repo_commit_at_freeze": { "type": "string", "minLength": 1 },
+    "generated_at_utc": { "type": "string", "minLength": 1 },
+    "input_hashes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+    }
+  }
+}

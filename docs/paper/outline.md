@@ -5,9 +5,10 @@ Obligation Generation from Rust Reference Code".
 
 ## Contributions
 
-1. A versioned benchmark: pilot `v0.1` (12 tasks) and paper-track `v0.2`
-   (24 eval tasks) across six domains (arrays, sorting, graph, greedy, DP,
-   trees), each with
+1. A versioned benchmark: pilot `v0.1` (12 tasks), paper-track `v0.2`
+   (24 eval tasks), and current paper-track `v0.3` with **84** instances
+   (authoritative counts in `benchmark/v0.3/benchmark_paper_summary.json`)
+   across six domains (arrays, sorting, graph, greedy, DP, trees), each with
    decomposed semantic units, gold reference obligations, a deterministic
    behavioral harness, a Lean scaffold with byte-identity enforced
    between the instance-local copy and the canonical
@@ -37,6 +38,10 @@ Obligation Generation from Rust Reference Code".
    criteria, including inter-annotator agreement methodology.
 6. Results — tables produced by `cta reports build`.
 7. Analysis — failure taxonomy and qualitative cases.
+
+Reviewer-facing indexes: `docs/REVIEWER_MAP.md`, `docs/LIMITATIONS.md`, and
+`docs/PROVENANCE.md` map each section to committed artifacts and regeneration
+commands.
 8. Limitations — what our benchmark does not measure.
 
 ## Reproducibility statement

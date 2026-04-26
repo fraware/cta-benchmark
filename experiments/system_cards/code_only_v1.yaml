@@ -25,9 +25,10 @@ post_processing_pipeline:
 token_budget:
   max_context_tokens: 12000
   max_output_tokens: 2048
-estimated_cost_usd_per_1k_instances: 0.0
-runtime_notes: "dominated by provider latency; offline stub runs in milliseconds per instance"
+estimated_cost_usd_per_1k_instances: null
+runtime_notes: "Dominated by provider latency for live runs; repository CI uses offline stubs (milliseconds per instance). Per-wave USD totals are not exported in this bundle."
 output_schema: "results_bundle.schema_v1 (see schemas/)"
 reference_obligations_visible: false
 scaffold_visible: true
-notes: "Costs are run-specific; fill from provider billing after each wave."
+notes: "Estimated cost field is intentionally null (not captured in-repo). Bind quoted figures to billing exports or run manifests when available."
+run_manifest_linkage: "Populate `experiments/run_manifests/*.json` for each provider wave; this card stays model- and prompt-specific only."

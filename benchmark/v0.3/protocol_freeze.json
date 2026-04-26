@@ -1,0 +1,17 @@
+{
+  "schema_version": "protocol_freeze_v1",
+  "benchmark_version": "v0.3",
+  "annotation_wave_id": "wave_pipeline_v03_001",
+  "stratification_seed": 42,
+  "repair_selection_rule_id": "hotspot_low_faithfulness_top12",
+  "metrics_version": "metrics_v2",
+  "rubric_version": "rubric_v1",
+  "repo_commit_at_freeze": "24dcf31d800fb6a4881864a74fbaed2c6237705d",
+  "generated_at_utc": "2026-04-26T16:12:21.446828Z",
+  "input_hashes": {
+    "eval_split_json": "sha256:275b46d4c601b302cded53e33cf12cfec666505161e40eac3fe60a632b129d5e",
+    "experiment_config_benchmark_v03": "sha256:9b245e5d4845b2270df238676c14d5d1053fa76f3690d64ad6633c59d1cdc7a4",
+    "benchmark_paper_summary": "sha256:7821287888f9feb165c475dfb0b737fcd5e7214f8c456b8bdde5d0d775840c8e",
+    "repair_hotspot_selection": "sha256:c4e4f0c5a0d2543c2de3f1470c79643f7939beb2e329e1ecb67eb93ee84f0e4c"
+  }
+}

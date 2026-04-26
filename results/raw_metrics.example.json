@@ -1,11 +1,18 @@
 {
-  "schema_version": "raw_metrics_v1",
-  "description": "Copy to results/raw_metrics.json and fill faithfulness_mean per (system, family) from adjudicated scores.",
+  "schema_version": "raw_metrics_v2",
+  "description": "Per-instance rows consumed by scripts/compute_results.py. Copy to results/raw_metrics.json or regenerate via scripts/materialize_v03_adjudication_artifacts.py.",
   "rows": [
     {
-      "system": "full_method_v1",
-      "family": "graph_bfs_shortest_path",
-      "faithfulness_mean": 3.2
+      "instance_id": "arrays_binary_search_004",
+      "family": "arrays_binary_search",
+      "system": "code_only_v1",
+      "faithfulness_mean": 0.82,
+      "code_consistency_mean": 0.95,
+      "vacuity_rate": 0.1,
+      "proof_utility_mean": 0.55,
+      "contradiction_flag": false,
+      "missing_critical_units": 0,
+      "failure_mode_label": ""
     }
   ]
 }

@@ -21,6 +21,12 @@ theorem proving." It is a benchmark and baseline system for generating Lean
 obligations from text plus code, then measuring elaboration, semantic
 faithfulness, code consistency, vacuity, and proof utility.
 
+### Reviewer trail
+
+- [`docs/PROVENANCE.md`](docs/PROVENANCE.md) — what each artifact can claim (epistemic tiers).
+- [`docs/REVIEWER_MAP.md`](docs/REVIEWER_MAP.md) — paper sections to files and regen commands.
+- [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md) — threats to validity in one place.
+
 ## Non-goals
 
 - No general-purpose IDE plugin

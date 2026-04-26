@@ -154,3 +154,16 @@ documented in `docs/annotation_manual.md`; mechanical guards live in
   only when intentionally preserving an abstract interface; the default is
   centralized definition-backed family theory.
 - No ambiguous edge cases whose adjudication depends on the reader.
+
+## Roadmap: `v0.4` and beyond
+
+`v0.3` is the current paper-track benchmark slice. **New instance families or
+material changes to task semantics** ship only under a new `benchmark/v0.4/`
+tree after an explicit milestone: a stable `protocol_freeze.json` for v0.3,
+completed release gates in `docs/release_process.md`, and a version bump in
+manifest `source_provenance`.
+
+Deprecation policy: frozen `benchmark/v0.N/` directories remain immutable except
+for documented hygiene repairs; consumers should pin `benchmark_version` in
+experiment configs. When `v0.4` exists, `v0.3` remains addressable for
+reproduction of earlier papers without silent content drift.

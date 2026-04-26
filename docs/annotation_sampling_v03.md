@@ -1,0 +1,33 @@
+# Stratified sampling frame (v0.3 human wave)
+
+This document defines the **intended** stratification for a human double-annotation
+wave on v0.3 **eval** packets. Until real CSVs land under
+`benchmark/v0.3/annotation/human_wave_v03/`, all paper metrics remain
+`pipeline_derived` per `docs/PROVENANCE.md`.
+
+## Factors
+
+Primary cells are the Cartesian product of:
+
+- `system_id` (four baselines in `configs/experiments/benchmark_v03.json`)
+- `family` (twelve families in `benchmark/v0.3/benchmark_paper_summary.json`)
+- `difficulty` (`easy` | `medium` from the benchmark manifest)
+
+## Minimum cell policy (target)
+
+For each non-empty cell in the grid above that appears in the frozen **eval**
+split (`benchmark/v0.3/splits/eval.json`), target at least **two** packets
+per rater after quality filters (eligibility: packet has non-empty obligation
+bundle and passes hygiene gates in `docs/annotation_manual.md`).
+
+Cells with fewer than two eligible packets are merged upward (same `system_id`
+and `difficulty`, pool families) before undersampling elsewhere, so the frame
+stays feasible without inventing instances.
+
+## Import path
+
+Curators copy completed CSVs into `benchmark/v0.3/annotation/human_adjudicated/`
+with `pack.json` and a validated `manifest.json` (see
+`schemas/annotation_pack_manifest.schema.json`). The CLI resolves the pack path
+from the experiment config when `annotation_human_pack` is set; see
+`configs/experiments/benchmark_v03.json`.

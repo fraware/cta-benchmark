@@ -114,6 +114,9 @@ jobs:
             fi
           done
 
+      - name: paper reviewer readiness (row counts, schemas, denylist)
+        run: python3 scripts/ci_reviewer_readiness.py
+
   lean:
     name: lean (scaffold compile)
     runs-on: ubuntu-latest

@@ -241,3 +241,20 @@ rubric versions may only be used on new annotation batches.
    `crates/cta_reports/tests/snapshots/`, so any non-trivial diff is a
    contract change and must be accompanied by a snapshot update and a
    metrics-version bump.
+
+## Versioning toward `v0.4`
+
+Until `benchmark/v0.4/` exists, all release energy stays on tightening `v0.3`
+(protocol freeze, gold audit posture, provider baselines). Opening `v0.4` is
+explicitly gated: new instances live only under a new benchmark directory with
+their own `splits/`, `protocol_freeze.json`, and manifest rows; partial edits
+to `v0.3` instances after freeze require a new `instance_id` suffix policy
+described in `docs/benchmark_spec.md`.
+
+Compatibility checklist when bumping benchmark version:
+
+1. Duplicate the prior tree (`benchmark/v0.N` → `benchmark/v0.{N+1}`) and bump
+   every `benchmark_version` field in instances and splits.
+2. Regenerate `benchmark/manifest.jsonl` and `benchmark_paper_summary.json`.
+3. Re-run `cargo test` plus `cta validate benchmark --version v0.{N+1} --release`.
+4. Refresh `docs/PROVENANCE.md` and `docs/REVIEWER_MAP.md` rows for moved paths.

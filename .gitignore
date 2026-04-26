@@ -38,6 +38,7 @@ Thumbs.db
 !.env.example
 
 # Build artifacts
+/build
 /dist
 /out
 /artifacts/*.zip

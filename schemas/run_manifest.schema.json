@@ -102,6 +102,22 @@
         "os":       { "type": "string" },
         "arch":     { "type": "string" }
       }
+    },
+    "cost_reporting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["reported", "unreported_with_reason"]
+        },
+        "reason_code": {
+          "type": "string",
+          "description": "Stable machine reason when status is unreported_with_reason."
+        },
+        "estimated_cost_usd": { "type": "number" }
+      }
     }
   }
 }

@@ -1,0 +1,20 @@
+{
+  "schema_version": "repair_impact_summary_v1",
+  "counterfactual_definition": "For each system with repair_subset=yes rows on the eval split, counterfactual_mean_faithfulness is the mean faithfulness over eval-split rows for that system with repair_subset!=yes. Each repaired instance is compared against that system-level mean (not a reconstructed pre-repair trace).",
+  "per_system": {
+    "naive_concat_v1": {
+      "repair_n": 4,
+      "observed_mean_faithfulness": 0.52275,
+      "counterfactual_mean_faithfulness": 0.7914954545454546,
+      "delta_obs_minus_counterfactual": -0.2687454545454545,
+      "non_repair_eval_n": 44
+    },
+    "text_only_v1": {
+      "repair_n": 8,
+      "observed_mean_faithfulness": 0.52275,
+      "counterfactual_mean_faithfulness": 0.756965,
+      "delta_obs_minus_counterfactual": -0.23421499999999995,
+      "non_repair_eval_n": 40
+    }
+  }
+}

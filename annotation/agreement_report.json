@@ -1,24 +1,144 @@
 {
   "schema_version": "agreement_report_v1",
-  "n_packets": 2,
+  "n_packets": 192,
   "weighted_kappa_linear": {
-    "semantic_faithfulness": 0.5,
-    "code_consistency": 0.0,
-    "proof_utility": 0.5
+    "semantic_faithfulness": 0.9068764820004311,
+    "code_consistency": 0.5199999999999897,
+    "proof_utility": 0.7763589301121652
   },
   "weighted_kappa_bootstrap_ci95": {
     "semantic_faithfulness": [
-      0.0,
-      0.5
+      0.8392296420347497,
+      0.9595278246205728
     ],
     "code_consistency": [
-      0.0,
-      NaN
+      0.17399617590822467,
+      0.770444763271156
     ],
     "proof_utility": [
-      0.0,
-      0.5
+      0.695597028447182,
+      0.8502065167508017
     ]
   },
-  "coverage_percent_agreement": 1.0
+  "krippendorff_alpha_interval": {
+    "semantic_faithfulness": 0.9201312657438007,
+    "code_consistency": 0.5735364112327463,
+    "proof_utility": 0.831378990680957
+  },
+  "krippendorff_alpha_interval_bootstrap_ci95": {
+    "semantic_faithfulness": [
+      0.8618421052631579,
+      0.9677410321749601
+    ],
+    "code_consistency": [
+      0.17860962566844918,
+      0.7966101694915254
+    ],
+    "proof_utility": [
+      0.7648888815343119,
+      0.8871967717497178
+    ]
+  },
+  "gwet_ac1_ordinal_as_nominal": {
+    "semantic_faithfulness": 0.8984097122196419,
+    "code_consistency": 0.4823801270941655,
+    "proof_utility": 0.7334498804535055
+  },
+  "gwet_ac2_linear_ordinal": {
+    "semantic_faithfulness": 0.9068538932161819,
+    "code_consistency": 0.51680747797951,
+    "proof_utility": 0.7754629128316191
+  },
+  "coverage_percent_agreement": 0.9635416666666666,
+  "coverage_cohens_kappa_unweighted": 0.9221411192214111,
+  "coverage_kappa_bootstrap_ci95": [
+    0.8606170598911072,
+    0.97678916827853
+  ],
+  "coverage_gwet_ac1": 0.922098246630923,
+  "coverage_prevalence_pooled": {
+    "full": 0.6640625,
+    "partial": 0.2994791666666667,
+    "failed": 0.036458333333333336
+  },
+  "ordinal_confusion_matrices": {
+    "semantic_faithfulness": {
+      "1": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "2": {
+        "1": 0,
+        "2": 6,
+        "3": 0,
+        "4": 0
+      },
+      "3": {
+        "1": 0,
+        "2": 0,
+        "3": 53,
+        "4": 3
+      },
+      "4": {
+        "1": 0,
+        "2": 0,
+        "3": 6,
+        "4": 124
+      }
+    },
+    "code_consistency": {
+      "1": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "2": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "3": {
+        "1": 0,
+        "2": 1,
+        "3": 3,
+        "4": 0
+      },
+      "4": {
+        "1": 0,
+        "2": 0,
+        "3": 6,
+        "4": 182
+      }
+    },
+    "proof_utility": {
+      "1": {
+        "1": 4,
+        "2": 2,
+        "3": 0,
+        "4": 0
+      },
+      "2": {
+        "1": 11,
+        "2": 108,
+        "3": 11,
+        "4": 0
+      },
+      "3": {
+        "1": 0,
+        "2": 1,
+        "3": 45,
+        "4": 2
+      },
+      "4": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 8
+      }
+    }
+  }
 }
