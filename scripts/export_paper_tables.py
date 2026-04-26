@@ -3,6 +3,12 @@
 Emit publication-facing CSV tables under results/paper_table_*.csv from the
 final metric summaries (four-system study; faithfulness is one column among
 several explicit metrics).
+
+When produced via ``compute_results.py --paper``, headline ``paper_table_*.csv``
+files summarize **strict independent** rows (``raw_metrics_strict.json`` pipeline).
+Expanded mapped tables live under ``results/appendix_mapped_evidence/``.
+``paper_table_annotation_evidence.csv`` (written by ``compute_results.py``) is the
+manuscript-ready row-count table by ``annotation_origin`` for both views.
 """
 
 from __future__ import annotations

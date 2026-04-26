@@ -53,6 +53,16 @@ exact packet population (including anonymized keys joined to raters);
 written by `python scripts/materialize_v03_adjudication_artifacts.py` when using
 the pipeline-derived pack.
 
+**v0.3 pipeline note:** the materialized audit list is the **full eval grid**
+(four systems × eval instances). Those instances usually load canonical
+`*_001`/`*_002` packets, so `annotation_origin` in `agreement_packet_ids.csv` is
+often entirely `mapped_from_canonical`. That is distinct from headline **eval
+metrics**, which (under `compute_results.py --paper`) pool **strict**
+independent rows from `results/raw_metrics_strict.json`. See
+`results/paper_table_agreement_evidence.csv`,
+`results/paper_table_annotation_evidence.csv`, and
+[`docs/paper/system_scope.md`](../docs/paper/system_scope.md).
+
 ## Rubric anchor
 
 All dimensions are defined in `annotation/RUBRIC.md`. Vacuity rate uses the

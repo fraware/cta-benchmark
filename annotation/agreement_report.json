@@ -200,7 +200,11 @@
     "agreement_packet_ids_csv": "annotation/agreement_packet_ids.csv",
     "rater_a": "annotation/rater_a.csv",
     "rater_b": "annotation/rater_b.csv",
-    "reproduce_command": "python scripts/reproduce_agreement_report.py  # or: python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv"
+    "reproduce_command": "python scripts/reproduce_agreement_report.py  # or: python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv",
+    "paper_table_agreement_evidence_csv": "results/paper_table_agreement_evidence.csv",
+    "agreement_audit_design_note": "Audit rows are eval-split (instance, system) pairs; canonical template packets yield mapped_from_canonical unless instance_id equals the template stem.",
+    "agreement_audit_strict_independent_packet_count": 0,
+    "agreement_audit_all_packets_mapped_from_canonical": true
   },
   "weighted_kappa_linear": {
     "semantic_faithfulness": 0.9068764820004311,

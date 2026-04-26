@@ -10,7 +10,10 @@
 | Legacy faithfulness-only aliases | `results/system_summary.csv`, `results/family_summary.csv` | same; **do not** describe as full “system reliability” without naming the metric |
 | Family × system (per metric) | `results/family_faithfulness_summary.csv`, `results/family_consistency_summary.csv`, `results/family_vacuity_summary.csv`, `results/family_proof_utility_summary.csv` | same as `compute_results.py --paper` |
 | Bootstrap summaries | `results/system_summary_with_ci.json` | same as `compute_results.py` |
-| Publication-facing tables (lift numbers here) | `results/paper_table_systems.csv`, `results/paper_table_families.csv`, `results/paper_table_failure_modes.csv`, `results/paper_table_repairs.csv` | emitted by `compute_results.py --paper` (via `scripts/export_paper_tables.py`) |
+| Annotation evidence inventory (eval metrics rows; quote in paper) | `results/paper_table_annotation_evidence.csv` | `python scripts/compute_results.py --paper` |
+| Agreement audit population (packet-level origins) | `results/paper_table_agreement_evidence.csv` | same (joins `annotation/agreement_packet_ids.csv`) |
+| Publication-facing tables — **headline (strict)** | `results/paper_table_systems.csv`, `results/paper_table_families.csv`, `results/paper_table_failure_modes.csv`, `results/paper_table_repairs.csv` | same (strict `raw_metrics_strict.json` pipeline) |
+| Appendix — **expanded mapped** | `results/appendix_mapped_evidence/paper_table_*.csv` and sibling summaries | same command (second pass inside `compute_results.py --paper`) |
 | Inter-rater agreement (synthetic rater B) | `annotation/agreement_report.json`, `annotation/agreement_report.md` | `python scripts/reproduce_agreement_report.py` (wraps `compute_agreement_stats.py`) |
 | Agreement audit trail (packet population) | `annotation/agreement_packet_ids.csv`, `annotation/rater_a.csv`, `annotation/rater_b.csv`, `annotation/adjudication_log.csv` | `python scripts/materialize_v03_adjudication_artifacts.py` |
 | Repair selection + logs | `repairs/hotspot_selection.csv`, `repairs/repair_log.jsonl` | `python scripts/materialize_repair_hotspot_artifacts.py` |

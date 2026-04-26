@@ -2,6 +2,8 @@
   "schema_version": "benchmark_paper_summary_v1",
   "benchmark_version": "v0.3",
   "paper_system_set": "four_baselines",
+  "paper_headline_policy": "four_system_primary_study",
+  "paper_alternate_scope_note": "Optional three-headline-system scope: treat text_only_v1 as calibration-only and exclude it from primary tables while keeping it in appendix robustness exports.",
   "paper_systems_ordered": [
     "text_only_v1",
     "code_only_v1",
@@ -16,7 +18,9 @@
     "text_only_v1"
   ],
   "systems_profiled_count": 4,
-  "expected_instance_level_rows": 336,
+  "expected_instance_level_rows_expanded_grid": 336,
+  "expected_instance_level_rows_headline_strict_sparse": 94,
+  "expected_instance_level_rows": 94,
   "expected_raw_metrics_rows": 336,
   "expected_raw_metrics_strict_rows": 94,
   "family_counts": {
@@ -57,5 +61,9 @@
   },
   "critical_units_total": 294,
   "eval_instance_count": 48,
-  "source_manifest": "benchmark/manifest.jsonl"
+  "source_manifest": "benchmark/manifest.jsonl",
+  "expected_agreement_packet_audit_rows": 192,
+  "agreement_audit_strict_independent_packet_count": 0,
+  "agreement_audit_all_packets_mapped_from_canonical": true,
+  "agreement_audit_design_note": "Audit rows are eval-split (instance, system) pairs; canonical template packets yield mapped_from_canonical unless instance_id equals the template stem."
 }

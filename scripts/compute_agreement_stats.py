@@ -208,6 +208,18 @@ def write_markdown(report: dict, path: Path, first: Path, second: Path) -> None:
         f"- Rater B: `{_repo_rel(second)}`",
         f"- Audit mapping: `annotation/agreement_packet_ids.csv`",
         f"- Overlapping packets: **{report.get('n_packets', 0)}**",
+    ]
+    aud = report.get("audit") or {}
+    if aud.get("paper_table_agreement_evidence_csv"):
+        lines.append(
+            f"- Row-count breakdown (eval audit vs strict subset): "
+            f"`{aud['paper_table_agreement_evidence_csv']}`"
+        )
+    if aud.get("agreement_audit_design_note"):
+        lines.append(
+            f"- Population note: {aud['agreement_audit_design_note']}"
+        )
+    lines += [
         "",
         "Notes: Rater B includes a small deterministic jitter layer for ordinal scales and "
         "occasional coverage-label disagreement so agreement statistics are non-degenerate; "
@@ -306,21 +318,41 @@ def main() -> int:
         print("no overlapping packet_id rows; wrote", OUT_JSON)
         return 1
 
+    audit: dict[str, object] = {
+        "join_key": join_label,
+        "ordered_join_keys": common,
+        "agreement_packet_ids_csv": "annotation/agreement_packet_ids.csv",
+        "rater_a": _repo_rel(first),
+        "rater_b": _repo_rel(second),
+        "reproduce_command": (
+            "python scripts/reproduce_agreement_report.py  "
+            "# or: python scripts/compute_agreement_stats.py "
+            f"--first {_repo_rel(first)} --second {_repo_rel(second)}"
+        ),
+    }
+    pap_evi = ROOT / "results" / "paper_table_agreement_evidence.csv"
+    if pap_evi.is_file():
+        audit["paper_table_agreement_evidence_csv"] = (
+            "results/paper_table_agreement_evidence.csv"
+        )
+    bsum = ROOT / "benchmark" / "v0.3" / "benchmark_paper_summary.json"
+    if bsum.is_file():
+        try:
+            sj = json.loads(bsum.read_text(encoding="utf-8"))
+            for key in (
+                "agreement_audit_design_note",
+                "agreement_audit_strict_independent_packet_count",
+                "agreement_audit_all_packets_mapped_from_canonical",
+            ):
+                if key in sj:
+                    audit[key] = sj[key]
+        except json.JSONDecodeError:
+            pass
+
     report: dict = {
         "schema_version": "agreement_report_v1",
         "n_packets": len(common),
-        "audit": {
-            "join_key": join_label,
-            "ordered_join_keys": common,
-            "agreement_packet_ids_csv": "annotation/agreement_packet_ids.csv",
-            "rater_a": _repo_rel(first),
-            "rater_b": _repo_rel(second),
-            "reproduce_command": (
-                "python scripts/reproduce_agreement_report.py  "
-                "# or: python scripts/compute_agreement_stats.py "
-                f"--first {_repo_rel(first)} --second {_repo_rel(second)}"
-            ),
-        },
+        "audit": audit,
         "weighted_kappa_linear": {},
         "weighted_kappa_bootstrap_ci95": {},
         "krippendorff_alpha_interval": {},

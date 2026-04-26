@@ -143,7 +143,10 @@ python scripts\validate_benchmark.py --strict-grid-near-dup
 | Output | Path |
 |--------|------|
 | Table 1 (inventory) | `results/table1_benchmark_overview.csv`, `results/table1_family_semantic_load.csv` |
-| Manuscript-ready aggregates | `results/paper_table_systems.csv`, `results/paper_table_families.csv`, `results/paper_table_failure_modes.csv`, `results/paper_table_repairs.csv` |
+| Annotation evidence (strict vs expanded eval rows) | `results/paper_table_annotation_evidence.csv` |
+| Agreement packet evidence (audit population origins) | `results/paper_table_agreement_evidence.csv` |
+| Manuscript-ready aggregates — **headline (strict)** | `results/paper_table_systems.csv`, `results/paper_table_families.csv`, `results/paper_table_failure_modes.csv`, `results/paper_table_repairs.csv` |
+| Appendix — expanded mapped robustness | `results/appendix_mapped_evidence/paper_table_*.csv` |
 | Per-metric system summaries + reliability | `results/system_faithfulness_summary.csv`, `results/system_consistency_summary.csv`, `results/system_vacuity_summary.csv`, `results/system_proof_utility_summary.csv`, `results/system_reliability_summary.csv`, `results/system_reliability_sensitivity.csv` |
 | Per-metric family summaries | `results/family_faithfulness_summary.csv`, `results/family_consistency_summary.csv`, `results/family_vacuity_summary.csv`, `results/family_proof_utility_summary.csv` |
 | Faithfulness-only legacy alias | `results/system_summary.csv`, `results/family_summary.csv` (same pooling as faithfulness columns; not a composite “reliability” score) |

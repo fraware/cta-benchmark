@@ -75,6 +75,18 @@ def main() -> int:
             )
             return 1
 
+    ag_path = ROOT / "annotation" / "agreement_packet_ids.csv"
+    exp_ag = summary.get("expected_agreement_packet_audit_rows")
+    if exp_ag is not None and ag_path.is_file():
+        n_ag = count_csv_rows(ag_path)
+        if n_ag != int(exp_ag):
+            print(
+                f"error: agreement_packet_ids.csv rows {n_ag} != "
+                f"expected_agreement_packet_audit_rows {exp_ag}",
+                file=sys.stderr,
+            )
+            return 1
+
     man = ROOT / "benchmark" / "v0.3" / "annotation" / "adjudicated_subset" / "manifest.json"
     if man.is_file():
         cargo_validate("annotation_pack_manifest", man)

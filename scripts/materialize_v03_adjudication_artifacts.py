@@ -8,6 +8,14 @@ Writes:
   - annotation/agreement_packet_ids.csv, rater_a.csv, rater_b.csv (anonymized keys),
     adjudication_log.csv
 
+The agreement audit enumerates **eval-split** ``(instance_id, system_id)`` pairs
+(``eval.json`` uses ``*_004``…``*_007`` stems). Those instances almost always
+resolve to **canonical** ``*_001``/``*_002`` review packets, so
+``annotation_origin`` in ``agreement_packet_ids.csv`` is typically
+``mapped_from_canonical`` for every row. Headline **eval metrics** still use
+``raw_metrics_strict.json`` (dev + eval direct rows) via ``compute_results.py
+--paper``; do not conflate the two populations.
+
 Provenance: each record is pipeline-derived from `packet.json` under
 `benchmark/v0.3/annotation/review_packets/<system>/<template>/`. Field
 `annotation_origin` is `direct_adjudicated` when `template == instance_id`, else
@@ -384,6 +392,7 @@ def main() -> int:
             pid = f"{iid}__{sys}"
             audit_ord += 1
             anon_key = f"ag_{audit_ord:03d}"
+            audit_origin = compute_annotation_origin(iid, template_id)
             agreement_audit.append(
                 {
                     "ordinal": str(audit_ord),
@@ -391,7 +400,7 @@ def main() -> int:
                     "real_packet_id": pid,
                     "instance_id": iid,
                     "system_id": sys,
-                    "annotation_origin": rec.get("annotation_origin", ""),
+                    "annotation_origin": audit_origin,
                     "source_template_id": template_id,
                 }
             )

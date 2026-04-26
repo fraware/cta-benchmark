@@ -55,9 +55,13 @@ python scripts/repair_counterfactual_metrics.py
 python scripts/export_benchmark_paper_summary.py
 ```
 
-Use **`raw_metrics_strict.json`** for conservative headline claims (direct
-adjudication only) and **`raw_metrics_expanded.json`** (or `raw_metrics.json`)
-when family-grid propagation from canonical templates is intended.
+Headline paper tables from **`python scripts/compute_results.py --paper`** use
+**`raw_metrics_strict.json`** only; expanded mapped summaries are written to
+**`results/appendix_mapped_evidence/`**. Row-count transparency is in
+**`results/paper_table_annotation_evidence.csv`** and
+**`results/paper_table_agreement_evidence.csv`** (agreement packet origins). For
+ad-hoc analysis outside that pipeline, use **`raw_metrics_expanded.json`** (or
+`raw_metrics.json`) when family-grid propagation is intended.
 
 CI / quick checkout (demo fabric if `raw_metrics.json` is absent; stderr warning):
 

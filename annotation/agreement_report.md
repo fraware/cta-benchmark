@@ -6,6 +6,8 @@ Inputs:
 - Rater B: `annotation/rater_b.csv`
 - Audit mapping: `annotation/agreement_packet_ids.csv`
 - Overlapping packets: **192**
+- Row-count breakdown (eval audit vs strict subset): `results/paper_table_agreement_evidence.csv`
+- Population note: Audit rows are eval-split (instance, system) pairs; canonical template packets yield mapped_from_canonical unless instance_id equals the template stem.
 
 Notes: Rater B includes a small deterministic jitter layer for ordinal scales and occasional coverage-label disagreement so agreement statistics are non-degenerate; adjudicated gold labels for metrics live in `benchmark/v0.3/annotation/adjudicated_subset/pack.json`.
 

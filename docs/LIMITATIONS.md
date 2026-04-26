@@ -7,7 +7,13 @@
   the tier named in `docs/PROVENANCE.md`.
 - Inter-rater agreement CSVs include a **deterministic synthetic rater B**
   layer so coefficients are numerically stable; treat them as methodology
-  demos, not human reliability from two independent experts.
+  demos, not human reliability from two independent experts. The agreement
+  packet population is still **pipeline-keyed** to eval `(instance, system)`
+  rows; cite `annotation/agreement_packet_ids.csv` and distinguish headline
+  **strict** metrics rows from agreement table construction in the text.
+  `results/paper_table_agreement_evidence.csv` quantifies how many agreement
+  packets fall under each `annotation_origin` (the strict packet subset may be
+  empty while the headline eval table remains strict-backed).
 
 ## Metrics
 

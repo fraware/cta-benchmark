@@ -7,8 +7,14 @@ By default, if ``results/raw_metrics.json`` is absent, emits deterministic
 demo-structured outputs from the manifest (CI convenience) and prints a
 warning to stderr.
 
-With ``--paper``, demo fallback is disabled: the script exits with an error
-unless a valid raw metrics file is present.
+With ``--paper``, demo fallback is disabled, **headline** aggregates and
+``paper_table_*.csv`` are computed from ``raw_metrics_strict.json`` (independent
+evidence rows only), ``instance_level.csv`` is **sparse** (no synthetic fillers),
+and ``appendix_mapped_evidence/`` receives the expanded mapped re-run for
+robustness tables. ``paper_table_annotation_evidence.csv`` summarizes row
+counts by ``annotation_origin`` for both views. Also writes
+``paper_table_agreement_evidence.csv`` (dual-annotation audit population from
+``annotation/agreement_packet_ids.csv``).
 """
 
 from __future__ import annotations
@@ -17,6 +23,7 @@ import argparse
 import csv
 import json
 import math
+import os
 import random
 import subprocess
 import sys
@@ -257,10 +264,114 @@ def load_hotspot_repair_keys(path: Path) -> set[tuple[str, str]]:
     return keys
 
 
+def count_annotation_origin_tally(rows: list[dict]) -> tuple[int, int, int, int, int]:
+    """Returns (n_eval_rows, n_unique_instance_ids, n_direct_human, n_direct_adjudicated, n_mapped)."""
+    inst_ids: set[str] = set()
+    nh = nd = nm = 0
+    for r in rows:
+        inst_ids.add(str(r.get("instance_id", "")))
+        o = str(r.get("annotation_origin") or "")
+        if o == "direct_human":
+            nh += 1
+        elif o == "direct_adjudicated":
+            nd += 1
+        elif o == "mapped_from_canonical":
+            nm += 1
+    return len(rows), len(inst_ids), nh, nd, nm
+
+
+def write_agreement_packet_evidence_table(
+    agreement_packet_ids_csv: Path,
+    out_path: Path,
+) -> None:
+    """Tally annotation_origin for the dual-annotation audit population (192 packets)."""
+    if not agreement_packet_ids_csv.is_file():
+        return
+    audit_rows: list[dict[str, str]] = []
+    with agreement_packet_ids_csv.open(encoding="utf-8", newline="") as f:
+        r = csv.DictReader(f)
+        for row in r:
+            audit_rows.append({k: (v or "").strip() for k, v in row.items()})
+
+    def tally(rows: list[dict[str, str]]) -> tuple[int, int, int, int, int]:
+        nh = nd = nm = 0
+        inst: set[str] = set()
+        for row in rows:
+            inst.add(row.get("instance_id", ""))
+            o = row.get("annotation_origin", "")
+            if o == "direct_human":
+                nh += 1
+            elif o == "direct_adjudicated":
+                nd += 1
+            elif o == "mapped_from_canonical":
+                nm += 1
+        return len(rows), len(inst), nh, nd, nm
+
+    strict_only = [
+        r
+        for r in audit_rows
+        if r.get("annotation_origin", "")
+        in ("direct_human", "direct_adjudicated")
+    ]
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(
+            [
+                "agreement_subset",
+                "n_packets",
+                "n_unique_instance_ids",
+                "n_direct_human",
+                "n_direct_adjudicated",
+                "n_mapped_from_canonical",
+            ]
+        )
+        w.writerow(["full_audit_population", *tally(audit_rows)])
+        w.writerow(["strict_independent_only", *tally(strict_only)])
+
+
+def write_paper_annotation_evidence_table(
+    out_path: Path,
+    strict_rows: list[dict],
+    expanded_rows: list[dict] | None,
+) -> None:
+    """Single table for the manuscript: row counts by annotation_origin per metrics view."""
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(
+            [
+                "metrics_view",
+                "n_eval_rows",
+                "n_unique_instance_ids",
+                "n_direct_human",
+                "n_direct_adjudicated",
+                "n_mapped_from_canonical",
+            ]
+        )
+        n, nu, nh, nd, nm = count_annotation_origin_tally(strict_rows)
+        w.writerow(["strict_independent", n, nu, nh, nd, nm])
+        if expanded_rows is not None:
+            n2, nu2, nh2, nd2, nm2 = count_annotation_origin_tally(expanded_rows)
+            w.writerow(["expanded_mapped", n2, nu2, nh2, nd2, nm2])
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--manifest", type=Path, default=ROOT / "benchmark" / "manifest.jsonl")
-    ap.add_argument("--raw-metrics", type=Path, default=ROOT / "results" / "raw_metrics.json")
+    ap.add_argument(
+        "--raw-metrics",
+        type=Path,
+        default=ROOT / "results" / "raw_metrics.json",
+        help="Expanded / mapped view (alias of raw_metrics_expanded.json when materialized). "
+        "Under --paper, used for appendix outputs and evidence inventory only; headline uses --raw-metrics-strict.",
+    )
+    ap.add_argument(
+        "--raw-metrics-strict",
+        type=Path,
+        default=ROOT / "results" / "raw_metrics_strict.json",
+        help="Strict independent-evidence rows; required under --paper for headline tables.",
+    )
     ap.add_argument("--out-dir", type=Path, default=ROOT / "results")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument(
@@ -278,9 +389,23 @@ def main() -> int:
     ap.add_argument(
         "--paper",
         action="store_true",
-        help="Require results/raw_metrics.json; never emit demo fallback.",
+        help="Headline pipeline: load strict raw metrics, forbid demo fallback, validate failure labels, "
+        "sparse instance_level, write annotation-evidence table, emit appendix_mapped_evidence/ from expanded raw.",
+    )
+    ap.add_argument(
+        "--no-demo",
+        action="store_true",
+        help="Exit if raw metrics are missing (no synthetic fallback). Implied by --paper.",
+    )
+    ap.add_argument(
+        "--sparse-instance-level",
+        action="store_true",
+        help="Only emit instance_level.csv rows for (instance_id, system) keys present in raw metrics.",
     )
     args = ap.parse_args()
+    if args.paper:
+        args.no_demo = True
+        args.sparse_instance_level = True
 
     rng = random.Random(args.seed)
     mrows = load_manifest_rows(args.manifest)
@@ -299,11 +424,27 @@ def main() -> int:
     )
 
     use_demo = False
-    if args.raw_metrics.is_file():
-        raw_rows, is_v2 = load_raw_metrics(args.raw_metrics)
+    raw_rows_expanded_inventory: list[dict] | None = None
+    load_path = args.raw_metrics
+    if args.paper:
+        if not args.raw_metrics_strict.is_file():
+            print(
+                f"error: strict raw metrics missing at {args.raw_metrics_strict} (--paper). "
+                "Run: python scripts/materialize_v03_adjudication_artifacts.py",
+                file=sys.stderr,
+            )
+            return 1
+        load_path = args.raw_metrics_strict
+        if args.raw_metrics.is_file():
+            raw_rows_expanded_inventory, _ = load_raw_metrics(args.raw_metrics)
+
+    failure_check = args.paper or args.no_demo
+
+    if load_path.is_file():
+        raw_rows, is_v2 = load_raw_metrics(load_path)
         if not raw_rows:
-            if args.paper:
-                print("error: raw_metrics.json has no rows (--paper)", file=sys.stderr)
+            if args.no_demo or args.paper:
+                print(f"error: raw metrics at {load_path} has no rows", file=sys.stderr)
                 return 1
             use_demo = True
         elif is_v2:
@@ -325,10 +466,10 @@ def main() -> int:
                         multi_by_system[sid][m].append(float(row[m]))
                         multi_by_sys_fam[(sid, fam)][m].append(float(row[m]))
                 fml = (row.get("failure_mode_label") or "").strip()
-                if args.paper and allowed_failures and fml not in allowed_failures:
+                if failure_check and allowed_failures and fml not in allowed_failures:
                     print(
                         f"error: failure_mode_label {fml!r} not in ontology "
-                        f"({args.failure_ontology}) (--paper)",
+                        f"({args.failure_ontology})",
                         file=sys.stderr,
                     )
                     return 1
@@ -349,9 +490,9 @@ def main() -> int:
                 by_sys_fam[(sid, fam)].append(score)
             systems = sorted(metrics_by_system.keys()) if metrics_by_system else list(DEFAULT_SYSTEMS)
     else:
-        if args.paper:
+        if args.no_demo or args.paper:
             print(
-                f"error: raw metrics missing at {args.raw_metrics} (--paper forbids demo fallback)",
+                f"error: raw metrics missing at {load_path} (--no-demo / --paper)",
                 file=sys.stderr,
             )
             return 1
@@ -661,7 +802,7 @@ def main() -> int:
                             "yes" if (iid, sid) in repair_keys else "no",
                         ]
                     )
-                else:
+                elif not args.sparse_instance_level:
                     xs = by_sys_fam.get((sid, r["family"]), [])
                     demo = mean(xs) if xs else float("nan")
                     w.writerow(
@@ -697,7 +838,11 @@ def main() -> int:
         w.writerow(
             ["w_faithfulness", "w_code", "w_proof", "system", "composite_mean", "source_mode"]
         )
-        mode = "demo_synthetic" if use_demo else "raw_metrics"
+        mode = (
+            "demo_synthetic"
+            if use_demo
+            else ("raw_metrics_strict_headline" if args.paper else "raw_metrics")
+        )
         for wf, wc, wp in weights_grid:
             if abs(wf + wc + wp - 1.0) > 1e-6:
                 continue
@@ -759,10 +904,16 @@ def main() -> int:
             "schema_version": "system_summary_with_ci_v1",
             "seed": args.seed,
             "bootstrap_reps": 2000,
-            "aggregate_scope": "all_rows_joining_manifest_instances_to_raw_metrics_v2",
+            "aggregate_scope": (
+                "strict_independent_raw_metrics_rows_sparse_instance_level"
+                if args.paper
+                else "all_rows_joining_manifest_instances_to_raw_metrics_v2"
+            ),
+            "evidence_view": "strict_independent" if args.paper else "unspecified",
             "note_instance_vs_aggregate": (
-                "Per-instance values live in results/raw_metrics.json; this file summarizes "
-                "bootstrap uncertainty for means pooled over instances (not per-instance CIs)."
+                "Per-instance headline values come from results/raw_metrics_strict.json under --paper; "
+                "expanded mapped view is under results/appendix_mapped_evidence/. "
+                "Bootstrap intervals are for pooled means over listed rows, not per-instance CIs."
             ),
             "primary_metrics": list(PRIMARY_METRICS),
             "per_system": per_system,
@@ -775,9 +926,57 @@ def main() -> int:
 
     if not use_demo and by_sys_inst:
         subprocess.run(
-            [sys.executable, str(ROOT / "scripts" / "export_paper_tables.py")],
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "export_paper_tables.py"),
+                "--results-dir",
+                str(args.out_dir),
+            ],
             cwd=str(ROOT),
             check=True,
+        )
+
+    if args.paper and not use_demo and by_sys_inst:
+        write_paper_annotation_evidence_table(
+            args.out_dir / "paper_table_annotation_evidence.csv",
+            list(raw_rows),
+            raw_rows_expanded_inventory,
+        )
+        write_agreement_packet_evidence_table(
+            ROOT / "annotation" / "agreement_packet_ids.csv",
+            args.out_dir / "paper_table_agreement_evidence.csv",
+        )
+
+    if (
+        args.paper
+        and not use_demo
+        and os.environ.get("CTA_COMPUTE_APPENDIX") != "1"
+        and args.raw_metrics.is_file()
+    ):
+        appendix_dir = args.out_dir / "appendix_mapped_evidence"
+        appendix_dir.mkdir(parents=True, exist_ok=True)
+        subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "compute_results.py"),
+                "--raw-metrics",
+                str(args.raw_metrics),
+                "--out-dir",
+                str(appendix_dir),
+                "--manifest",
+                str(args.manifest),
+                "--failure-ontology",
+                str(args.failure_ontology),
+                "--hotspot-selection",
+                str(args.hotspot_selection),
+                "--seed",
+                str(args.seed),
+                "--no-demo",
+                "--sparse-instance-level",
+            ],
+            cwd=str(ROOT),
+            check=True,
+            env={**os.environ, "CTA_COMPUTE_APPENDIX": "1"},
         )
 
     extra_paths = [
@@ -791,8 +990,14 @@ def main() -> int:
         + (f", {ci_path}" if ci_path.is_file() else "")
         + extra
         + (
-            ", paper_table_*.csv"
+            ", paper_table_*.csv, paper_table_annotation_evidence.csv, "
+            "paper_table_agreement_evidence.csv"
             if (args.out_dir / "paper_table_systems.csv").is_file()
+            else ""
+        )
+        + (
+            ", appendix_mapped_evidence/"
+            if (args.out_dir / "appendix_mapped_evidence" / "paper_table_systems.csv").is_file()
             else ""
         )
     )

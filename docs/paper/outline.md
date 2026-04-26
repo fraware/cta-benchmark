@@ -13,11 +13,14 @@ Obligation Generation from Rust Reference Code".
    behavioral harness, a Lean scaffold with byte-identity enforced
    between the instance-local copy and the canonical
    `lean/CTA/Benchmark/**` module, and an adjudicated annotation subset.
-2. **Four-system primary study:** baseline generators `text_only_v1`,
-   `code_only_v1`, `naive_concat_v1`, and `full_method_v1` are all first-class
-   comparators in tables and text (see `benchmark/v0.3/benchmark_paper_summary.json`
-   field `paper_systems_ordered`). There is no silent three-system headline with
-   `text_only_v1` relegated to an appendix.
+2. **System scope (default: four-system primary study):** baseline generators
+   `text_only_v1`, `code_only_v1`, `naive_concat_v1`, and `full_method_v1` are
+   first-class comparators unless the manuscript explicitly adopts the optional
+   **calibration-only** scope for `text_only_v1` (see `docs/paper/system_scope.md`
+   and `benchmark_paper_summary.json` fields `paper_headline_policy` /
+   `paper_alternate_scope_note`). **Headline** metrics tables use the strict
+   independent evidence view; expanded mapped propagation is appendix-only
+   (`results/appendix_mapped_evidence/`, `paper_table_annotation_evidence.csv`).
 3. A reproducible Rust pipeline with frozen metric (`metrics_v2`), schema
    (`schema_v1`), and rubric (`rubric_v1`) contracts.
 4. A metric suite decomposed into `elaboration_rate`,

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 from collections import Counter
 from pathlib import Path
@@ -12,13 +13,20 @@ V3 = ROOT / "benchmark" / "v0.3"
 OUT = V3 / "benchmark_paper_summary.json"
 RAW = ROOT / "results" / "raw_metrics.json"
 
+DEFAULT_FOUR = [
+    "text_only_v1",
+    "code_only_v1",
+    "naive_concat_v1",
+    "full_method_v1",
+]
+
 
 def systems_profiled_default() -> list[str]:
     if not RAW.is_file():
-        return ["text_only_v1", "code_only_v1", "naive_concat_v1", "full_method_v1"]
+        return list(DEFAULT_FOUR)
     rows = json.loads(RAW.read_text(encoding="utf-8")).get("rows") or []
     if not rows or "system" not in rows[0]:
-        return ["text_only_v1", "code_only_v1", "naive_concat_v1", "full_method_v1"]
+        return list(DEFAULT_FOUR)
     return sorted({str(r["system"]) for r in rows})
 
 
@@ -49,8 +57,13 @@ def main() -> int:
     n_sys = len(systems)
     strict_n = 0
     strict_path = ROOT / "results" / "raw_metrics_strict.json"
+    expanded_n = 0
+    if RAW.is_file():
+        raw_payload = json.loads(RAW.read_text(encoding="utf-8"))
+        expanded_n = len(raw_payload.get("rows") or [])
     if strict_path.is_file():
-        strict_n = len(json.loads(strict_path.read_text(encoding="utf-8")).get("rows") or [])
+        strict_payload = json.loads(strict_path.read_text(encoding="utf-8"))
+        strict_n = len(strict_payload.get("rows") or [])
     elif RAW.is_file():
         raw_rows = json.loads(RAW.read_text(encoding="utf-8")).get("rows") or []
         strict_n = sum(
@@ -59,30 +72,72 @@ def main() -> int:
             if str(r.get("annotation_origin", ""))
             in ("direct_human", "direct_adjudicated")
         )
+    else:
+        strict_n = 0
+    headline_inst = strict_n
+    inst_csv = ROOT / "results" / "instance_level.csv"
+    if inst_csv.is_file():
+        with inst_csv.open(encoding="utf-8", newline="") as f:
+            headline_inst = max(0, sum(1 for _ in f) - 1)
+
+    ag_audit = ROOT / "annotation" / "agreement_packet_ids.csv"
+    ag_audit_rows = 0
+    ag_strict_packets = 0
+    ag_all_mapped = False
+    if ag_audit.is_file():
+        with ag_audit.open(encoding="utf-8", newline="") as f:
+            rdr = csv.DictReader(f)
+            ag_rows = list(rdr)
+        ag_audit_rows = len(ag_rows)
+        if ag_rows:
+            origins = [str(x.get("annotation_origin", "")).strip() for x in ag_rows]
+            ag_strict_packets = sum(
+                1 for o in origins if o in ("direct_human", "direct_adjudicated")
+            )
+            ag_all_mapped = all(o == "mapped_from_canonical" for o in origins)
+
     payload = {
         "schema_version": "benchmark_paper_summary_v1",
         "benchmark_version": "v0.3",
         "paper_system_set": "four_baselines",
-        "paper_systems_ordered": [
-            "text_only_v1",
-            "code_only_v1",
-            "naive_concat_v1",
-            "full_method_v1",
-        ],
+        "paper_headline_policy": "four_system_primary_study",
+        "paper_alternate_scope_note": (
+            "Optional three-headline-system scope: treat text_only_v1 as "
+            "calibration-only and exclude it from primary tables while keeping "
+            "it in appendix robustness exports."
+        ),
+        "paper_systems_ordered": list(DEFAULT_FOUR),
         "total_instances": len(v3),
         "systems_profiled": systems,
         "systems_profiled_count": n_sys,
-        "expected_instance_level_rows": len(v3) * n_sys,
-        "expected_raw_metrics_rows": len(v3) * n_sys,
+        "expected_instance_level_rows_expanded_grid": len(v3) * n_sys,
+        "expected_instance_level_rows_headline_strict_sparse": headline_inst,
+        "expected_instance_level_rows": headline_inst,
+        "expected_raw_metrics_rows": (
+            expanded_n if expanded_n else len(v3) * n_sys
+        ),
         "expected_raw_metrics_strict_rows": strict_n,
         "family_counts": dict(sorted(by_family.items())),
         "split_counts": dict(sorted(by_split.items())),
         "difficulty_counts": dict(sorted(by_diff.items())),
         "critical_units_sum_by_family": dict(sorted(crit_by_family.items())),
         "critical_units_total": sum(crit_by_family.values()),
-        "eval_instance_count": len(json.loads((V3 / "splits" / "eval.json").read_text(encoding="utf-8"))["instance_ids"]),
+        "eval_instance_count": len(
+            json.loads(
+                (V3 / "splits" / "eval.json").read_text(encoding="utf-8")
+            )["instance_ids"]
+        ),
         "source_manifest": "benchmark/manifest.jsonl",
     }
+    if ag_audit_rows:
+        payload["expected_agreement_packet_audit_rows"] = ag_audit_rows
+        payload["agreement_audit_strict_independent_packet_count"] = ag_strict_packets
+        payload["agreement_audit_all_packets_mapped_from_canonical"] = ag_all_mapped
+        payload["agreement_audit_design_note"] = (
+            "Audit rows are eval-split (instance, system) pairs; canonical "
+            "template packets yield mapped_from_canonical unless instance_id "
+            "equals the template stem."
+        )
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {OUT}")

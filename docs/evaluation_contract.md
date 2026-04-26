@@ -255,8 +255,11 @@ per-metric summary CSV columns `mean`, `sd`, `median`, `iqr`,
 `n` for pooled means only (`aggregate_scope` in-file).
 
 Regenerate aggregates with `python scripts/compute_results.py --paper` after
-refreshing `results/raw_metrics.json` (typically via
-`python scripts/materialize_v03_adjudication_artifacts.py`). Run
+refreshing `results/raw_metrics_strict.json` and `results/raw_metrics.json`
+(typically via `python scripts/materialize_v03_adjudication_artifacts.py`).
+Under `--paper`, headline CSV/JSON pools **strict** rows only; expanded mapped
+pools are mirrored under `results/appendix_mapped_evidence/`. Quote row counts
+from `results/paper_table_annotation_evidence.csv`. Run
 `python scripts/materialize_repair_hotspot_artifacts.py` before
 `compute_results.py` when instance rows should reflect repair-hotspot keys from
 `repairs/hotspot_selection.csv`.
