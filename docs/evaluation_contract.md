@@ -241,17 +241,25 @@ See `docs/annotation_manual.md` and `README.md` (obligation quality gate).
 
 | Level | Where it lives | Uncertainty / interpretation |
 |-------|----------------|--------------------------------|
-| Instance | `results/raw_metrics.json` rows (`instance_id` × `system`) | Per-instance scalars are point estimates from the adjudication pipeline; they are not paired human ratings. |
-| Aggregate (system) | `results/system_summary.csv`, `results/system_summary_with_ci.json` | `mean` pools instance-level `faithfulness_mean` (and related fields) across all manifest instances present in raw metrics for that system. `system_summary_with_ci.json` adds bootstrap 95% intervals for those **pooled means** (primary metrics listed in-file), not per-instance confidence. |
-| Aggregate (system × family) | `results/family_summary.csv` and the `per_system_family` block in `system_summary_with_ci.json` | Same pooling rule restricted to a benchmark family. |
+| Instance (expanded) | `results/raw_metrics.json` / `results/raw_metrics_expanded.json` rows (`instance_id` × `system`) | Includes `annotation_origin` and `mapped_from_canonical` where adjudication was propagated from a canonical template across grid variants. |
+| Instance (strict independent evidence) | `results/raw_metrics_strict.json` | Same schema; only rows with `annotation_origin` in `{direct_human, direct_adjudicated}`. Smaller N; use when the claim requires no canonical-to-grid mapping. |
+| Aggregate (system, per metric) | `results/system_faithfulness_summary.csv`, `results/system_consistency_summary.csv`, `results/system_vacuity_summary.csv`, `results/system_proof_utility_summary.csv` | Each file pools one named scalar from `instance_level.csv` / raw metrics across instances for that system. |
+| Composite reliability (explicit definition) | `results/system_reliability_summary.csv`, `results/system_reliability_sensitivity.csv` | Documented weighted composite; see column headers and `compute_results.py` for weights. Not interchangeable with faithfulness-only summaries. |
+| Aggregate (system, faithfulness alias) | `results/system_summary.csv`, `results/system_summary_with_ci.json` | `system_summary.csv` is the **faithfulness** pooling path retained for backward compatibility. `system_summary_with_ci.json` adds bootstrap 95% intervals for **pooled means** (metrics listed in-file), not per-instance confidence. |
+| Aggregate (system × family, faithfulness alias) | `results/family_summary.csv` and the `per_system_family` block in `system_summary_with_ci.json` | Same pooling rule restricted to a benchmark family. |
 
-**Column naming.** Treat `results/raw_metrics.json` fields as **instance_level**
-inputs. Treat `system_summary.csv` / `family_summary.csv` columns `mean`,
-`sd`, `median`, `iqr`, `bootstrap_ci95_*`, and `n` as **aggregate_*** summaries
-over instances. In `system_summary_with_ci.json`, each metric block carries
-`mean`, `ci95`, and `n` for pooled means only (`aggregate_scope` in-file).
+**Column naming.** Treat raw-metrics fields as **instance_level** inputs. Treat
+per-metric summary CSV columns `mean`, `sd`, `median`, `iqr`,
+`bootstrap_ci95_*`, and `n` as **aggregate_*** summaries over instances. In
+`system_summary_with_ci.json`, each metric block carries `mean`, `ci95`, and
+`n` for pooled means only (`aggregate_scope` in-file).
 
-Regenerate aggregates with `python scripts/compute_results.py --paper` after refreshing `results/raw_metrics.json`.
+Regenerate aggregates with `python scripts/compute_results.py --paper` after
+refreshing `results/raw_metrics.json` (typically via
+`python scripts/materialize_v03_adjudication_artifacts.py`). Run
+`python scripts/materialize_repair_hotspot_artifacts.py` before
+`compute_results.py` when instance rows should reflect repair-hotspot keys from
+`repairs/hotspot_selection.csv`.
 
 ## Family-level multiple comparison (optional)
 

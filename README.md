@@ -252,6 +252,11 @@ accepted into the paper without a manifest.**
 For a **step-by-step local checklist** (v0.3 manifest, annotation pack, tables,
 Lean build, anonymous zip), see [`docs/PAPER_READINESS.md`](docs/PAPER_READINESS.md).
 
+Paper-track **adjudication tables** (`results/raw_metrics_strict.json` vs
+expanded views, per-metric summaries, `results/paper_table_*.csv`, agreement
+audit CSVs under `annotation/`) are regenerated from Python scripts; see
+[`REPRODUCE.md`](REPRODUCE.md) and [`docs/REVIEWER_MAP.md`](docs/REVIEWER_MAP.md).
+
 The generation pipeline is build-pure: no network calls happen during
 `cargo build`. Live providers (`OpenAiProvider`, `AnthropicProvider`) only
 issue HTTP requests at runtime, and only when their respective credential

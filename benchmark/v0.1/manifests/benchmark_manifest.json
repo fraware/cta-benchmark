@@ -3,7 +3,7 @@
   "benchmark_version": "v0.1",
   "rubric_version": "rubric_v1",
   "metrics_version": "metrics_v2",
-  "created_at": "2026-04-24T21:46:50.7671439Z",
+  "created_at": "2026-04-26T21:15:40.6760716Z",
   "instance_count_by_domain": {
     "arrays": 2,
     "dp": 2,
@@ -17,7 +17,7 @@
     "arrays_max_subarray_001": "sha256:d1b6852c7a580454e1f685af4e7c146b75d9276c2c857175a5770441019818a5",
     "dp_knapsack_01_001": "sha256:c9126a5e94bad113173a7049e28984d27033d3ff1a0c1f7a164ca9049a853c22",
     "dp_longest_common_subsequence_001": "sha256:a2e732e6b8884258314ad87ad971d204d775c2b5a25ec114b26f79758266457e",
-    "graph_bfs_shortest_path_001": "sha256:cd38e58adc8ebb6534ac56a7140cef2ff075566e357c72a4eddabff9b820a3ca",
+    "graph_bfs_shortest_path_001": "sha256:5b6f69cd25a20a0485a385ae4ebdef3ebebdf12ba238cf996cd619ed0051de96",
     "graph_dijkstra_001": "sha256:7be14fb099bfd6d0991a5e4fa74380a95297b10d20bbad8b673593168c4a3a19",
     "greedy_coin_change_canonical_001": "sha256:3dd563ad5e31c7cfd5d284095c4a718d85b34cfb9e3b298da68194d015206cb6",
     "greedy_interval_scheduling_001": "sha256:6617a72b6be9b09b4dde0bdf4ecdd1f3c96c145d2ec62b75c72b8f55efcc6d83",
@@ -26,5 +26,5 @@
     "trees_bst_insert_001": "sha256:1c8f1fa481645f9c6299e6c623e57812ec488237d4fb6550203a364c82b005bd",
     "trees_lowest_common_ancestor_001": "sha256:4daf654be763ef0029540ca54a560a079f5f1e9f8a26c61055ce42b0949e80ab"
   },
-  "content_hash": "sha256:da04236181fce174088dfb1043b6c4b9b91043e1374b7286e72c9a3f16a70f3f"
+  "content_hash": "sha256:781c7755b06f1d1ee3243187a14f26e813dfdbb8d758e742fa8046f542da94b7"
 }

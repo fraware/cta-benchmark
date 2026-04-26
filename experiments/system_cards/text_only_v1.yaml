@@ -1,5 +1,8 @@
 schema_version: system_card_v1
 system_id: text_only_v1
+cost_reporting:
+  status: unreported_with_reason
+  reason_code: repository_ci_stub_provider_usd_not_tracked
 model:
   name: "gpt-4.1"
   version: "2025-04-14"

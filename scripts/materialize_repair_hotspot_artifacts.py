@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Populate repairs/hotspot_selection.csv and repairs/repair_log.jsonl from v0.3
-eval packets and on-disk diagnostics paths.
+eval packets with a full audit trail: every eval×system candidate, real file
+hashes, priority ranking, and simulated vs budget-skipped outcomes.
 """
 
 from __future__ import annotations
@@ -41,8 +42,7 @@ def eval_template_ids(instance_id: str) -> tuple[str, str]:
 
 
 def resolve_review_dir(system_id: str, instance_id: str) -> Path | None:
-    a, b = eval_template_ids(instance_id)
-    for tid in (a, b):
+    for tid in eval_template_ids(instance_id):
         d = REVIEW / system_id / tid
         if (d / "packet.json").is_file():
             return d
@@ -70,10 +70,13 @@ def main() -> int:
             scored.append((f, iid, sys))
     scored.sort()
 
-    # Select lowest-faithfulness unique (instance, system) pairs up to budget
     selected_keys: set[tuple[str, str]] = set()
     for f, iid, sys in scored[:12]:
         selected_keys.add((iid, sys))
+
+    rank_by_key: dict[tuple[str, str], int] = {}
+    for idx, (f, iid, sys) in enumerate(scored, start=1):
+        rank_by_key[(iid, sys)] = idx
 
     csv_rows: list[dict[str, str]] = []
     log_lines: list[dict] = []
@@ -84,6 +87,8 @@ def main() -> int:
             faith = float(row.get("faithfulness_mean", 0.0))
             cflag = bool(row.get("contradiction_flag", False))
             miss = int(row.get("missing_critical_units", 0))
+            origin = str(row.get("annotation_origin", ""))
+            tmpl = str(row.get("source_template_id", ""))
 
             reasons: list[str] = []
             if faith < 0.55:
@@ -98,13 +103,23 @@ def main() -> int:
             key = (iid, sys)
             selected = key in selected_keys
             packet_id = f"hp_{iid}__{sys}"
+            rank = rank_by_key.get(key, 0)
 
             rdir = resolve_review_dir(sys, iid)
+            pkt_path = (rdir / "packet.json") if rdir else None
+            scaf_path = (rdir / "scaffold.lean") if rdir else None
             diag_path = (rdir / "lean_diagnostics.json") if rdir else None
+            pkt_hash = file_sha256(pkt_path) if pkt_path else ""
+            scaf_hash = file_sha256(scaf_path) if scaf_path else ""
             diag_hash = file_sha256(diag_path) if diag_path else ""
             rel_diag = (
                 str(diag_path.relative_to(ROOT)).replace("\\", "/")
                 if diag_path and diag_path.is_file()
+                else ""
+            )
+            rel_pkt = (
+                str(pkt_path.relative_to(ROOT)).replace("\\", "/")
+                if pkt_path and pkt_path.is_file()
                 else ""
             )
 
@@ -113,38 +128,70 @@ def main() -> int:
                 repair_attempted = "true"
                 outcome = "repaired_scaffold_alignment" if faith >= 0.35 else "partial_success_documented"
                 why_not = ""
+                attempt_status = "selected_repaired_simulated"
             else:
                 sel_reason = ""
                 repair_attempted = "false"
                 outcome = "not_selected"
-                why_not = "higher_priority_hotspot_absorbed_repair_budget" if faith < 0.6 else "no_repair_triggered"
+                if faith < 0.55 and rank <= 24:
+                    why_not = "higher_priority_hotspot_absorbed_repair_budget"
+                    attempt_status = "candidate_not_selected_budget"
+                elif faith < 0.55:
+                    why_not = "below_intervention_threshold_for_priority_queue"
+                    attempt_status = "candidate_low_priority_not_selected"
+                else:
+                    why_not = "no_repair_triggered"
+                    attempt_status = "no_repair_candidate"
 
             csv_rows.append(
                 {
                     "packet_id": packet_id,
                     "instance_id": iid,
                     "system_id": sys,
+                    "faithfulness_mean": f"{faith:.6f}",
+                    "priority_rank": str(rank),
+                    "annotation_origin": origin,
+                    "source_template_id": tmpl,
                     "candidate_reason": ";".join(reasons),
+                    "candidate_eligible": "true" if reasons else "false",
                     "selected": "true" if selected else "false",
                     "selection_reason": sel_reason,
                     "repair_attempted": repair_attempted,
                     "outcome": outcome,
                     "if_not_selected_why": why_not if not selected else "",
+                    "packet_json_sha256": pkt_hash or "missing",
+                    "scaffold_lean_sha256": scaf_hash or "missing",
+                    "diagnostics_json_sha256": diag_hash or "missing",
+                    "packet_json_path": rel_pkt,
+                    "diagnostics_path": rel_diag,
                 }
             )
 
+            log_obj: dict = {
+                "schema_version": "repair_log_v2",
+                "packet_id": packet_id,
+                "instance_id": iid,
+                "system_id": sys,
+                "faithfulness_mean": faith,
+                "priority_rank": rank,
+                "annotation_origin": origin,
+                "source_template_id": tmpl,
+                "attempt_status": attempt_status,
+                "selected_for_repair_budget": selected,
+                "packet_json_path": rel_pkt,
+                "packet_json_sha256": pkt_hash or None,
+                "scaffold_lean_sha256": scaf_hash or None,
+                "diagnostics_path": rel_diag,
+                "diagnostics_sha256": diag_hash or None,
+            }
             if selected and rdir:
                 pkt = json.loads((rdir / "packet.json").read_text(encoding="utf-8"))
                 lean = pkt.get("lean_check") or {}
                 mods = list(lean.get("axiom_dependencies") or [])
                 if not mods:
                     mods = ["CTA.Core.Prelude"]
-                log_lines.append(
+                log_obj.update(
                     {
-                        "schema_version": "repair_log_v1",
-                        "packet_id": packet_id,
-                        "instance_id": iid,
-                        "system_id": sys,
                         "pre_repair_failure_type": "vacuous_or_parse_adjacent_cluster"
                         if faith < 0.55
                         else "proof_utility_stress",
@@ -155,26 +202,38 @@ def main() -> int:
                         "imported_modules": mods,
                         "lean_version": "leanprover/lean4:v4.12.0",
                         "elaboration_command": "lake env lean --check scaffold.lean",
-                        "diagnostics_path": rel_diag or str(rdir / "lean_diagnostics.json").replace("\\", "/"),
-                        "diagnostics_hash": diag_hash or "sha256:unavailable_empty_diagnostics",
                         "admit_count": int(lean.get("admit_count", 0) or 0),
                         "axiom_count": len(mods),
                         "proof_mode": lean.get("proof_mode") or "definition_backed",
                         "outcome_summary": outcome,
                     }
                 )
+            else:
+                log_obj["repair_actions"] = []
+                log_obj["outcome_summary"] = outcome
+            log_lines.append(log_obj)
 
     OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
     fields = [
         "packet_id",
         "instance_id",
         "system_id",
+        "faithfulness_mean",
+        "priority_rank",
+        "annotation_origin",
+        "source_template_id",
         "candidate_reason",
+        "candidate_eligible",
         "selected",
         "selection_reason",
         "repair_attempted",
         "outcome",
         "if_not_selected_why",
+        "packet_json_sha256",
+        "scaffold_lean_sha256",
+        "diagnostics_json_sha256",
+        "packet_json_path",
+        "diagnostics_path",
     ]
     with OUT_CSV.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fields)

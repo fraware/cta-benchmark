@@ -62,6 +62,19 @@ def main() -> int:
             )
             return 1
 
+    strict_path = ROOT / "results" / "raw_metrics_strict.json"
+    if strict_path.is_file():
+        strict_rows = json.loads(strict_path.read_text(encoding="utf-8")).get("rows") or []
+        strict_cnt = len(strict_rows)
+        exp_strict = summary.get("expected_raw_metrics_strict_rows")
+        if exp_strict is not None and int(exp_strict) != strict_cnt:
+            print(
+                f"error: raw_metrics_strict rows {strict_cnt} != "
+                f"expected_raw_metrics_strict_rows {exp_strict}",
+                file=sys.stderr,
+            )
+            return 1
+
     man = ROOT / "benchmark" / "v0.3" / "annotation" / "adjudicated_subset" / "manifest.json"
     if man.is_file():
         cargo_validate("annotation_pack_manifest", man)

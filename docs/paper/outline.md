@@ -13,11 +13,14 @@ Obligation Generation from Rust Reference Code".
    behavioral harness, a Lean scaffold with byte-identity enforced
    between the instance-local copy and the canonical
    `lean/CTA/Benchmark/**` module, and an adjudicated annotation subset.
-2. Four baseline generation systems (`text_only_v1`, `code_only_v1`,
-   `naive_concat_v1`, `full_method_v1`) implemented as a reproducible
-   Rust pipeline with frozen metric (`metrics_v2`), schema (`schema_v1`),
-   and rubric (`rubric_v1`) contracts.
-3. A metric suite decomposed into `elaboration_rate`,
+2. **Four-system primary study:** baseline generators `text_only_v1`,
+   `code_only_v1`, `naive_concat_v1`, and `full_method_v1` are all first-class
+   comparators in tables and text (see `benchmark/v0.3/benchmark_paper_summary.json`
+   field `paper_systems_ordered`). There is no silent three-system headline with
+   `text_only_v1` relegated to an appendix.
+3. A reproducible Rust pipeline with frozen metric (`metrics_v2`), schema
+   (`schema_v1`), and rubric (`rubric_v1`) contracts.
+4. A metric suite decomposed into `elaboration_rate`,
    `semantic_faithfulness_mean`, `critical_unit_coverage`,
    `rust_consistency_rate`, `vacuity_rate`, `proof_utility`, plus
    secondary metrics and inter-annotator agreement (linearly-weighted
@@ -36,7 +39,9 @@ Obligation Generation from Rust Reference Code".
    provider abstraction (stub, OpenAI, Anthropic).
 5. Metrics — primary and secondary definitions with acceptance
    criteria, including inter-annotator agreement methodology.
-6. Results — tables produced by `cta reports build`.
+6. Results — primary tables from `python scripts/compute_results.py --paper`
+   (`results/paper_table_*.csv`, per-metric summaries, reliability) plus run
+   bundles from `cta reports build` where model generations are reported.
 7. Analysis — failure taxonomy and qualitative cases.
 
 Reviewer-facing indexes: `docs/REVIEWER_MAP.md`, `docs/LIMITATIONS.md`, and

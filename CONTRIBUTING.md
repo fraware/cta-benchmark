@@ -137,6 +137,9 @@ cargo audit --deny warnings
 - [ ] `cta validate schemas` and
       `cta validate benchmark --version <v> --release` for every benchmark
       version your PR touches (for example `v0.1`, `v0.2`, and/or `v0.3`).
+      If validation reports `MANIFEST_CONTENT_HASH_STALE`, regenerate with
+      `cta benchmark manifest --version <v>` and commit the updated
+      `benchmark/<version>/manifests/benchmark_manifest.json`.
 - [ ] Supply-chain gates (`cargo deny check`, `cargo audit`) unchanged
       or improved.
 - [ ] No placeholder prose; every comment describes intent, trade-off,

@@ -3,18 +3,16 @@
 Materialize v0.3 publication artifacts from frozen review packets.
 
 Writes:
-  - benchmark/v0.3/annotation/adjudicated_subset/pack.json
-  - results/raw_metrics.json
-  - annotation/rater_a.csv, annotation/rater_b.csv (double-pass simulation)
-  - annotation/adjudication_log.csv
+  - benchmark/v0.3/annotation/adjudicated_subset/pack.json (records include `annotation_origin`)
+  - results/raw_metrics.json, raw_metrics_expanded.json, raw_metrics_strict.json
+  - annotation/agreement_packet_ids.csv, rater_a.csv, rater_b.csv (anonymized keys),
+    adjudication_log.csv
 
-Provenance (important): rows are **not** independent human adjudications. Each
-record is derived deterministically from the registered `packet.json` under
-`benchmark/v0.3/annotation/review_packets/<system>/<template>/`, where
-`template` is the paired canonical instance (`*_001` / `*_002`) for the eval
-grid variant (`*_004`..`*_007`). Labels and scores summarize obligation text,
-linked semantic units, and packet hygiene fields (`lean_check`,
-`behavior_check`, optional `quality_summary`).
+Provenance: each record is pipeline-derived from `packet.json` under
+`benchmark/v0.3/annotation/review_packets/<system>/<template>/`. Field
+`annotation_origin` is `direct_adjudicated` when `template == instance_id`, else
+`mapped_from_canonical` for eval-grid propagation. `direct_human` is reserved for
+future human imports.
 
 Annotator id is a stable anonymized pipeline reviewer id so the pack is not
 misread as crowdsourced gold.
@@ -37,6 +35,17 @@ PACK_DIR = V3 / "annotation" / "adjudicated_subset"
 REVIEW_ROOT = V3 / "annotation" / "review_packets"
 SYSTEMS = ["text_only_v1", "code_only_v1", "naive_concat_v1", "full_method_v1"]
 ANNOTATOR_ID = "anonymized_pipeline_reviewer_v03_001"
+
+
+def compute_annotation_origin(instance_id: str, template_id: str) -> str:
+    """
+    direct_adjudicated: review packet path matches this instance_id.
+    mapped_from_canonical: eval-grid or fallback used a different template packet.
+    direct_human: reserved for imports from human_adjudicated/ (not set here).
+    """
+    if template_id == instance_id:
+        return "direct_adjudicated"
+    return "mapped_from_canonical"
 
 
 def eval_template_ids(instance_id: str) -> tuple[str, str]:
@@ -239,10 +248,12 @@ def build_record(
     proof_base = 0.85 if elaborated else 0.35
     proof_utility = max(0.0, min(1.0, proof_base * (0.55 + 0.45 * faith_mean) * (0.9 if not has_cex else 0.45)))
 
+    origin = compute_annotation_origin(instance_id, template_id)
     notes = (
         "Pipeline-derived adjudication from registered review packet "
         f"`benchmark/v0.3/annotation/review_packets/{system_id}/{template_id}/packet.json` "
         f"mapped to eval instance `{instance_id}` (same algorithm family grid). "
+        f"annotation_origin={origin}. "
         "Disagreements between automated obligation hygiene checks were not applicable; "
         "no dual-human rater merge was required for this export."
     )
@@ -253,6 +264,7 @@ def build_record(
         "instance_id": instance_id,
         "system_id": system_id,
         "annotator_id": ANNOTATOR_ID,
+        "annotation_origin": origin,
         "set_level_scores": {
             "semantic_faithfulness": round(faith_mean, 4),
             "code_consistency": round(code_consistency, 4),
@@ -319,6 +331,8 @@ def main() -> int:
     rater_a: list[dict] = []
     rater_b: list[dict] = []
     adj_rows: list[dict] = []
+    agreement_audit: list[dict] = []
+    audit_ord = 0
 
     # Full benchmark (dev + eval): drives results/raw_metrics.json and instance_level.csv.
     for iid in sorted(manifest_by_id.keys()):
@@ -331,6 +345,7 @@ def main() -> int:
             sl = rec["set_level_scores"]
             cov = rec["critical_unit_coverage"]
             n_incon = sum(1 for o in rec["generated_obligations"] if o["consistency_label"] == "inconsistent")
+            origin = compute_annotation_origin(iid, template_id)
             raw_rows.append(
                 {
                     "instance_id": iid,
@@ -345,6 +360,8 @@ def main() -> int:
                     "failure_mode_label": "low_faithfulness"
                     if sl["semantic_faithfulness"] < 0.45
                     else "",
+                    "annotation_origin": origin,
+                    "source_template_id": template_id,
                 }
             )
 
@@ -365,13 +382,26 @@ def main() -> int:
             cov = rec["critical_unit_coverage"]
 
             pid = f"{iid}__{sys}"
+            audit_ord += 1
+            anon_key = f"ag_{audit_ord:03d}"
+            agreement_audit.append(
+                {
+                    "ordinal": str(audit_ord),
+                    "anonymized_packet_key": anon_key,
+                    "real_packet_id": pid,
+                    "instance_id": iid,
+                    "system_id": sys,
+                    "annotation_origin": rec.get("annotation_origin", ""),
+                    "source_template_id": template_id,
+                }
+            )
             ord_f = score_to_ordinal(sl["semantic_faithfulness"])
             ord_c = score_to_ordinal(sl["code_consistency"])
             ord_p = score_to_ordinal(sl["proof_utility"])
             cov_l = coverage_label(cov["covered"], cov["missed"])
             rater_a.append(
                 {
-                    "packet_id": pid,
+                    "anonymized_packet_key": anon_key,
                     "semantic_faithfulness": ord_f,
                     "code_consistency": ord_c,
                     "proof_utility": ord_p,
@@ -384,7 +414,7 @@ def main() -> int:
                 cov_b = {"full": "partial", "partial": "failed", "failed": "partial"}.get(cov_l, cov_l)
             rater_b.append(
                 {
-                    "packet_id": pid,
+                    "anonymized_packet_key": anon_key,
                     "semantic_faithfulness": rater_b_jitter(pid, "f", ord_f),
                     "code_consistency": rater_b_jitter(pid, "c", ord_c),
                     "proof_utility": rater_b_jitter(pid, "p", ord_p),
@@ -404,9 +434,10 @@ def main() -> int:
             if disag:
                 adj_rows.append(
                     {
-                        "adjudication_id": f"adj_{pid}",
-                        "packet_id": pid,
+                        "adjudication_id": f"adj_{anon_key}",
+                        "anonymized_packet_key": anon_key,
                         "instance_id": iid,
+                        "system_id": sys,
                         "reviewer_pair": "rater_a|rater_b",
                         "disagreement_axes": "|".join(disag),
                         "resolution_notes": "Final labels taken from pipeline adjudication record (pack.json).",
@@ -415,8 +446,8 @@ def main() -> int:
                     }
                 )
 
-    adj_note_by_pid = {
-        r["packet_id"]: (
+    adj_note_by_key = {
+        r["anonymized_packet_key"]: (
             f"Rater disagreement on [{r['disagreement_axes']}]; "
             f"{r['resolution_notes']}"
         )
@@ -424,8 +455,13 @@ def main() -> int:
     }
     for rec in records:
         pid = f"{rec['instance_id']}__{rec['system_id']}"
-        if pid in adj_note_by_pid:
-            rec["annotator_notes"] = f"{rec['annotator_notes']} {adj_note_by_pid[pid]}"
+        ord_match = next(
+            (a for a in agreement_audit if a["real_packet_id"] == pid),
+            None,
+        )
+        ak = ord_match["anonymized_packet_key"] if ord_match else ""
+        if ak and ak in adj_note_by_key:
+            rec["annotator_notes"] = f"{rec['annotator_notes']} {adj_note_by_key[ak]}"
 
     if not args.skip_pack:
         PACK_DIR.mkdir(parents=True, exist_ok=True)
@@ -475,35 +511,82 @@ def main() -> int:
         (PACK_DIR / "manifest.json").write_text(json.dumps(manifest_side, indent=2) + "\n", encoding="utf-8")
         print(f"wrote {pack_path} ({len(records)} records)")
 
-    raw_path = ROOT / "results" / "raw_metrics.json"
-    raw_path.parent.mkdir(parents=True, exist_ok=True)
-    raw_path.write_text(
-        json.dumps(
-            {
-                "schema_version": "raw_metrics_v2",
-                "description": "Per-instance metrics for all v0.3 manifest instances (dev+eval), derived from registered review packets; eval adjudication pack uses the same pipeline.",
-                "rows": raw_rows,
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
-    print(f"wrote {raw_path}")
+    strict_rows = [
+        r
+        for r in raw_rows
+        if r.get("annotation_origin") in ("direct_human", "direct_adjudicated")
+    ]
+    expanded_payload = {
+        "schema_version": "raw_metrics_v2",
+        "metrics_view": "expanded_mapped",
+        "description": (
+            "Per-instance metrics for all v0.3 manifest instances (dev+eval), including "
+            "rows propagated from canonical template packets (annotation_origin=mapped_from_canonical)."
+        ),
+        "rows": raw_rows,
+    }
+    strict_payload = {
+        "schema_version": "raw_metrics_v2",
+        "metrics_view": "strict_independent",
+        "description": (
+            "Subset of raw_metrics where annotation_origin is direct_human or direct_adjudicated "
+            "(excludes canonical-to-grid propagation)."
+        ),
+        "rows": strict_rows,
+    }
+    raw_dir = ROOT / "results"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    for name, payload in (
+        ("raw_metrics_expanded.json", expanded_payload),
+        ("raw_metrics.json", expanded_payload),
+        ("raw_metrics_strict.json", strict_payload),
+    ):
+        p = raw_dir / name
+        p.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        print(f"wrote {p} ({len(payload['rows'])} rows)")
+
+    ann_dir = ROOT / "annotation"
+    ann_dir.mkdir(parents=True, exist_ok=True)
+    if agreement_audit:
+        audit_path = ann_dir / "agreement_packet_ids.csv"
+        with audit_path.open("w", newline="", encoding="utf-8") as f:
+            acols = [
+                "ordinal",
+                "anonymized_packet_key",
+                "real_packet_id",
+                "instance_id",
+                "system_id",
+                "annotation_origin",
+                "source_template_id",
+            ]
+            w = csv.DictWriter(f, fieldnames=acols)
+            w.writeheader()
+            w.writerows(agreement_audit)
+        print(f"wrote {audit_path} ({len(agreement_audit)} rows)")
 
     if not args.skip_aux_csv:
-        ann_dir = ROOT / "annotation"
-        ann_dir.mkdir(parents=True, exist_ok=True)
         for name, rows, fieldnames in (
             (
                 "rater_a.csv",
                 rater_a,
-                ["packet_id", "semantic_faithfulness", "code_consistency", "proof_utility", "coverage_label"],
+                [
+                    "anonymized_packet_key",
+                    "semantic_faithfulness",
+                    "code_consistency",
+                    "proof_utility",
+                    "coverage_label",
+                ],
             ),
             (
                 "rater_b.csv",
                 rater_b,
-                ["packet_id", "semantic_faithfulness", "code_consistency", "proof_utility", "coverage_label"],
+                [
+                    "anonymized_packet_key",
+                    "semantic_faithfulness",
+                    "code_consistency",
+                    "proof_utility",
+                    "coverage_label",
+                ],
             ),
         ):
             p = ann_dir / name
@@ -517,8 +600,9 @@ def main() -> int:
         with adj_path.open("w", newline="", encoding="utf-8") as f:
             cols = [
                 "adjudication_id",
-                "packet_id",
+                "anonymized_packet_key",
                 "instance_id",
+                "system_id",
                 "reviewer_pair",
                 "disagreement_axes",
                 "resolution_notes",

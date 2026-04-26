@@ -41,9 +41,10 @@ python scripts\validate_benchmark.py
 python scripts\export_benchmark_stats.py
 python scripts\dump_prompts_appendix.py
 python scripts\materialize_v03_adjudication_artifacts.py
-python scripts\compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv
-python scripts\compute_results.py --paper
 python scripts\materialize_repair_hotspot_artifacts.py
+python scripts\reproduce_agreement_report.py
+python scripts\compute_results.py --paper
+python scripts\repair_counterfactual_metrics.py
 python scripts\export_benchmark_paper_summary.py
 ```
 
@@ -64,9 +65,10 @@ python3 scripts/validate_benchmark.py
 python3 scripts/export_benchmark_stats.py
 python3 scripts/dump_prompts_appendix.py
 python3 scripts/materialize_v03_adjudication_artifacts.py
-python3 scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv
-python3 scripts/compute_results.py --paper
 python3 scripts/materialize_repair_hotspot_artifacts.py
+python3 scripts/reproduce_agreement_report.py
+python3 scripts/compute_results.py --paper
+python3 scripts/repair_counterfactual_metrics.py
 python3 scripts/export_benchmark_paper_summary.py
 ```
 
@@ -101,9 +103,16 @@ Set-Location ..
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --no-deps
 cargo test --workspace --all-targets
+cargo test --workspace --doc
 ```
 
 ## 5. Annotation agreement (after rater CSVs exist)
+
+```powershell
+python scripts\reproduce_agreement_report.py
+```
+
+Equivalent direct invocation:
 
 ```powershell
 python scripts\compute_agreement_stats.py `
@@ -112,7 +121,7 @@ python scripts\compute_agreement_stats.py `
 ```
 
 Example inputs: `annotation/rater_a.example.csv` and
-`annotation/rater_b.example.csv`.
+`annotation/rater_b.example.csv`. Audit population: `annotation/agreement_packet_ids.csv`.
 
 ## 6. Anonymous artifact zip (optional upload bundle)
 
@@ -134,6 +143,12 @@ python scripts\validate_benchmark.py --strict-grid-near-dup
 | Output | Path |
 |--------|------|
 | Table 1 (inventory) | `results/table1_benchmark_overview.csv`, `results/table1_family_semantic_load.csv` |
-| System / family / failure / instance / composite | `results/system_summary.csv`, `results/family_summary.csv`, `results/failure_mode_counts.csv`, `results/instance_level.csv`, `results/composite_sensitivity.csv` |
+| Manuscript-ready aggregates | `results/paper_table_systems.csv`, `results/paper_table_families.csv`, `results/paper_table_failure_modes.csv`, `results/paper_table_repairs.csv` |
+| Per-metric system summaries + reliability | `results/system_faithfulness_summary.csv`, `results/system_consistency_summary.csv`, `results/system_vacuity_summary.csv`, `results/system_proof_utility_summary.csv`, `results/system_reliability_summary.csv`, `results/system_reliability_sensitivity.csv` |
+| Per-metric family summaries | `results/family_faithfulness_summary.csv`, `results/family_consistency_summary.csv`, `results/family_vacuity_summary.csv`, `results/family_proof_utility_summary.csv` |
+| Faithfulness-only legacy alias | `results/system_summary.csv`, `results/family_summary.csv` (same pooling as faithfulness columns; not a composite “reliability” score) |
+| Failure / instance / composite | `results/failure_mode_counts.csv`, `results/instance_level.csv`, `results/composite_sensitivity.csv` |
+| Repair sensitivity (counterfactual proxy) | `results/repair_impact_summary.json` from `python scripts/repair_counterfactual_metrics.py` (after `compute_results.py --paper` when instance rows include repair flags) |
+| Bootstrap on pooled means | `results/system_summary_with_ci.json` |
 | Prompt appendix | `appendix/PROMPTS_APPENDIX.md` |
 | Canonical manifest | `benchmark/manifest.jsonl` |

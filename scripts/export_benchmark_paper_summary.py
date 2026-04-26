@@ -47,14 +47,34 @@ def main() -> int:
 
     systems = systems_profiled_default()
     n_sys = len(systems)
+    strict_n = 0
+    strict_path = ROOT / "results" / "raw_metrics_strict.json"
+    if strict_path.is_file():
+        strict_n = len(json.loads(strict_path.read_text(encoding="utf-8")).get("rows") or [])
+    elif RAW.is_file():
+        raw_rows = json.loads(RAW.read_text(encoding="utf-8")).get("rows") or []
+        strict_n = sum(
+            1
+            for r in raw_rows
+            if str(r.get("annotation_origin", ""))
+            in ("direct_human", "direct_adjudicated")
+        )
     payload = {
         "schema_version": "benchmark_paper_summary_v1",
         "benchmark_version": "v0.3",
+        "paper_system_set": "four_baselines",
+        "paper_systems_ordered": [
+            "text_only_v1",
+            "code_only_v1",
+            "naive_concat_v1",
+            "full_method_v1",
+        ],
         "total_instances": len(v3),
         "systems_profiled": systems,
         "systems_profiled_count": n_sys,
         "expected_instance_level_rows": len(v3) * n_sys,
         "expected_raw_metrics_rows": len(v3) * n_sys,
+        "expected_raw_metrics_strict_rows": strict_n,
         "family_counts": dict(sorted(by_family.items())),
         "split_counts": dict(sorted(by_split.items())),
         "difficulty_counts": dict(sorted(by_diff.items())),

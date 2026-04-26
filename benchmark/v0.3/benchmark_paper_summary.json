@@ -1,6 +1,13 @@
 {
   "schema_version": "benchmark_paper_summary_v1",
   "benchmark_version": "v0.3",
+  "paper_system_set": "four_baselines",
+  "paper_systems_ordered": [
+    "text_only_v1",
+    "code_only_v1",
+    "naive_concat_v1",
+    "full_method_v1"
+  ],
   "total_instances": 84,
   "systems_profiled": [
     "code_only_v1",
@@ -11,6 +18,7 @@
   "systems_profiled_count": 4,
   "expected_instance_level_rows": 336,
   "expected_raw_metrics_rows": 336,
+  "expected_raw_metrics_strict_rows": 94,
   "family_counts": {
     "arrays_binary_search": 7,
     "arrays_max_subarray": 7,

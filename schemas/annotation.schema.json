@@ -31,7 +31,7 @@
     },
     "annotator_id": {
       "type": "string",
-      "pattern": "^(ann_[0-9]{2}|adjudicator)$"
+      "pattern": "^(ann_[0-9]{2}|adjudicator|anonymized_[a-z0-9_]+)$"
     },
     "set_level_scores": {
       "type": "object",
@@ -88,6 +88,15 @@
     },
     "annotator_notes": {
       "type": "string"
+    },
+    "annotation_origin": {
+      "type": "string",
+      "description": "Provenance of labels for this record: direct human adjudication, direct pipeline adjudication on the instance packet, or propagation from a canonical template packet.",
+      "enum": [
+        "direct_human",
+        "direct_adjudicated",
+        "mapped_from_canonical"
+      ]
     }
   },
   "$defs": {

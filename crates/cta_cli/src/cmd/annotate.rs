@@ -477,11 +477,8 @@ pub fn coverage(workspace: &Path, args: CoverageArgs) -> Result<()> {
         "provenance_tool": "cta_cli_annotate_coverage",
         "input_hashes": Value::Object(input_hashes.clone()),
     });
-    if let Some(h) = sha256_file_hex(&freeze_path) {
-        manifest
-            .as_object_mut()
-            .expect("manifest is object")
-            .insert("protocol_freeze_sha256".to_string(), json!(h));
+    if let (Some(h), Some(obj)) = (sha256_file_hex(&freeze_path), manifest.as_object_mut()) {
+        obj.insert("protocol_freeze_sha256".to_string(), json!(h));
     }
     std::fs::write(
         args.out.join("coverage_summary.json"),

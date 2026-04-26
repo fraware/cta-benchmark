@@ -36,6 +36,8 @@ allow = [
   "Zlib",
   "CC0-1.0",
   "OpenSSL",
+  # Mozilla `webpki-roots` CA bundle (pulled by `rustls` / `reqwest`); permissive.
+  "CDLA-Permissive-2.0",
 ]
 confidence-threshold = 0.93
 exceptions = []

@@ -12,7 +12,9 @@
       "proof_utility_mean": 0.55,
       "contradiction_flag": false,
       "missing_critical_units": 0,
-      "failure_mode_label": ""
+      "failure_mode_label": "",
+      "annotation_origin": "mapped_from_canonical",
+      "source_template_id": "arrays_binary_search_001"
     }
   ]
 }

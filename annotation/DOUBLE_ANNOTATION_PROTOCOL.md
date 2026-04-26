@@ -30,15 +30,28 @@ This protocol satisfies paper requirements for **independent first passes**,
 
 ## Agreement outputs
 
-After both passes exist, run:
+After both passes exist (or after the repo materializer has written
+`annotation/rater_a.csv` and `annotation/rater_b.csv` from adjudicated packets),
+run the reproducible wrapper:
+
+```powershell
+python scripts/reproduce_agreement_report.py
+```
+
+Equivalent direct invocation:
 
 ```powershell
 python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv
 ```
 
 This writes `annotation/agreement_report.json` (weighted κ, bootstrap CI) and
-`annotation/agreement_raw_table.csv`. Paste summary statistics into
-`annotation/agreement_report.md` for the appendix.
+`annotation/agreement_raw_table.csv`, and refreshes `annotation/agreement_report.md`.
+
+**Audit trail (reviewer-facing):** `annotation/agreement_packet_ids.csv` lists the
+exact packet population (including anonymized keys joined to raters);
+`annotation/adjudication_log.csv` records adjudication outcomes. Both are
+written by `python scripts/materialize_v03_adjudication_artifacts.py` when using
+the pipeline-derived pack.
 
 ## Rubric anchor
 

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Compute inter-rater agreement from two CSVs (same packet_id rows).
+Compute inter-rater agreement from two CSVs (same join-key rows).
 
 Expected columns (case-sensitive):
-  packet_id, semantic_faithfulness, code_consistency, proof_utility, coverage_label
+  anonymized_packet_key (preferred) or packet_id,
+  semantic_faithfulness, code_consistency, proof_utility, coverage_label
 
 Ordinal columns use integers 1–4. coverage_label uses strings full|partial|failed.
 
@@ -42,12 +43,16 @@ OUT_MD = ROOT / "annotation" / "agreement_report.md"
 ORDINAL_COLS = ("semantic_faithfulness", "code_consistency", "proof_utility")
 
 
+def join_key(row: dict[str, str]) -> str:
+    return (row.get("anonymized_packet_key") or row.get("packet_id") or "").strip()
+
+
 def load_scores(path: Path) -> dict[str, dict[str, str]]:
     by_id: dict[str, dict[str, str]] = {}
     with path.open(encoding="utf-8", newline="") as f:
         r = csv.DictReader(f)
         for row in r:
-            pid = row.get("packet_id", "").strip()
+            pid = join_key(row)
             if not pid:
                 continue
             by_id[pid] = {k: (row.get(k) or "").strip() for k in row}
@@ -198,8 +203,10 @@ def write_markdown(report: dict, path: Path, first: Path, second: Path) -> None:
         "# Inter-annotator agreement (v0.3 eval packets)",
         "",
         "Inputs:",
+        f"- Join key: **`{(report.get('audit') or {}).get('join_key', 'packet_id')}`**",
         f"- Rater A: `{_repo_rel(first)}`",
         f"- Rater B: `{_repo_rel(second)}`",
+        f"- Audit mapping: `annotation/agreement_packet_ids.csv`",
         f"- Overlapping packets: **{report.get('n_packets', 0)}**",
         "",
         "Notes: Rater B includes a small deterministic jitter layer for ordinal scales and "
@@ -282,13 +289,16 @@ def main() -> int:
 
     first = resolve_rater_csv("--first", args.first)
     second = resolve_rater_csv("--second", args.second)
+    with first.open(encoding="utf-8", newline="") as fh:
+        hdr = csv.DictReader(fh).fieldnames or ()
+    join_label = "anonymized_packet_key" if "anonymized_packet_key" in hdr else "packet_id"
     a = load_scores(first)
     b = load_scores(second)
     common = sorted(set(a) & set(b))
     if not common:
         payload = {
             "schema_version": "agreement_report_v1",
-            "error": "no overlapping packet_id between inputs",
+            "error": "no overlapping join keys (anonymized_packet_key or packet_id) between inputs",
             "first": str(first),
             "second": str(second),
         }
@@ -299,6 +309,18 @@ def main() -> int:
     report: dict = {
         "schema_version": "agreement_report_v1",
         "n_packets": len(common),
+        "audit": {
+            "join_key": join_label,
+            "ordered_join_keys": common,
+            "agreement_packet_ids_csv": "annotation/agreement_packet_ids.csv",
+            "rater_a": _repo_rel(first),
+            "rater_b": _repo_rel(second),
+            "reproduce_command": (
+                "python scripts/reproduce_agreement_report.py  "
+                "# or: python scripts/compute_agreement_stats.py "
+                f"--first {_repo_rel(first)} --second {_repo_rel(second)}"
+            ),
+        },
         "weighted_kappa_linear": {},
         "weighted_kappa_bootstrap_ci95": {},
         "krippendorff_alpha_interval": {},

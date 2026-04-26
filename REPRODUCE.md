@@ -42,12 +42,22 @@ python scripts/dump_prompts_appendix.py
 
 ## Results tables
 
-Publication path (requires `results/raw_metrics.json`):
+Publication path (writes `raw_metrics.json` / `raw_metrics_expanded.json`,
+`raw_metrics_strict.json`, agreement audit CSVs, and adjudicated pack fields
+including `annotation_origin`):
 
 ```powershell
 python scripts/materialize_v03_adjudication_artifacts.py
+python scripts/materialize_repair_hotspot_artifacts.py
+python scripts/reproduce_agreement_report.py
 python scripts/compute_results.py --paper
+python scripts/repair_counterfactual_metrics.py
+python scripts/export_benchmark_paper_summary.py
 ```
+
+Use **`raw_metrics_strict.json`** for conservative headline claims (direct
+adjudication only) and **`raw_metrics_expanded.json`** (or `raw_metrics.json`)
+when family-grid propagation from canonical templates is intended.
 
 CI / quick checkout (demo fabric if `raw_metrics.json` is absent; stderr warning):
 
@@ -66,12 +76,12 @@ Skeleton pairs after split changes:
 python scripts/build_v03_annotation_pack.py
 ```
 
-Materialized adjudication + `results/raw_metrics.json` + rater CSVs:
+Materialized adjudication + raw metrics + rater CSVs + agreement audit:
 
 ```powershell
 python scripts/materialize_v03_adjudication_artifacts.py
-python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv
 python scripts/materialize_repair_hotspot_artifacts.py
+python scripts/reproduce_agreement_report.py
 ```
 
 ## Full paper experiment orchestration
