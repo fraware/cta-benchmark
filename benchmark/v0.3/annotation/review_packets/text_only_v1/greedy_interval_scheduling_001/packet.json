@@ -1,0 +1,213 @@
+{
+  "benchmark_version": "v0.3",
+  "instance_id": "greedy_interval_scheduling_001",
+  "system_id": "text_only_v1",
+  "domain": "greedy",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.3/instances/greedy/greedy_interval_scheduling_001",
+  "generated_output_path": "runs/run_2026_04_22_text_only_v1_eval_003/generated/text_only_v1/greedy_interval_scheduling_001.json",
+  "informal_statement": {
+    "text": "Given a slice of closed-open intervals [start, end), return the maximum number of mutually non-overlapping intervals selectable from the input.",
+    "preconditions": [
+      "for every input interval, start < end"
+    ],
+    "required_properties": [
+      "the returned count equals the size of some subset of pairwise non-overlapping intervals from the input",
+      "no subset of pairwise non-overlapping intervals from the input is strictly larger than the returned count",
+      "intervals sharing only an endpoint (interval i ends where interval j starts) are considered non-overlapping"
+    ],
+    "edge_cases": [
+      "empty input (result is 0)",
+      "all intervals mutually disjoint (result equals len)",
+      "all intervals overlap a common point (result is 1)",
+      "intervals touching at a single endpoint",
+      "many duplicate intervals"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: every interval satisfies start < stop.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "allowing start == stop (empty intervals)",
+        "omitting the precondition entirely"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Feasibility: the returned count is witnessed by some subset of the input that is pairwise non-overlapping.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only an upper bound",
+        "confusing index selections with value selections"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Optimality: no pairwise non-overlapping subset of the input is strictly larger than the returned count.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only feasibility (admits the trivial return 0)"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Endpoint convention: two intervals that share only an endpoint are non-overlapping.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "using strict inequality instead of non-strict at the boundary"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Empty input: the result is 0 when the input is empty.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (ivs : Intervals), (∀ i ∈ ivs, i.start < i.stop) → ∃ (sel : List Nat), Feasible ivs sel ∧ sel.length = intervalScheduling ivs",
+      "nl_gloss": "When every input interval has strictly positive length, there exists a feasible selection whose size equals the returned count.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (ivs : Intervals) (sel : List Nat), (∀ i ∈ ivs, i.start < i.stop) → Feasible ivs sel → sel.length ≤ intervalScheduling ivs",
+      "nl_gloss": "When every input interval has strictly positive length, no feasible selection is strictly larger than the returned count.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "∀ (a b : Interval), a.stop = b.start → NonOverlap a b",
+      "nl_gloss": "Intervals touching at a single endpoint are non-overlapping.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "unknown",
+      "lean_statement": "def Interval (α : Type) := { start : α // True }",
+      "nl_gloss": "Introduce an interval type (placeholder) to model closed-open intervals.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "structure COpenInterval (α : Type) where\n  start : α\n  end_ : α\n  (h : start ≤ end_)",
+      "nl_gloss": "Define a closed-open interval [start, end) with the invariant start ≤ end.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "def nonoverlap {α} [LinearOrder α] (I J : COpenInterval α) : Prop := I.end_ ≤ J.start ∨ J.end_ ≤ I.start",
+      "nl_gloss": "Define when two intervals are mutually non-overlapping (disjoint in closed-open sense).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "def pairwiseNonoverlap {α} [LinearOrder α] (s : List (COpenInterval α)) : Prop :=\n  ∀ ⦃I⦄, I ∈ s → ∀ ⦃J⦄, J ∈ s → I ≠ J → nonoverlap I J",
+      "nl_gloss": "Define pairwise non-overlap for a set/list of intervals.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "def selectable {α} [LinearOrder α] (s : List (COpenInterval α)) : Prop := pairwiseNonoverlap s",
+      "nl_gloss": "Define that a selection is valid iff its intervals are pairwise non-overlapping.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "axiom maxSelectable {α} [LinearOrder α] (xs : List (COpenInterval α)) : Nat",
+      "nl_gloss": "Define the intended objective: the maximum size of a selectable subset.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "theorem maxSelectable_spec {α} [LinearOrder α] (xs : List (COpenInterval α)) :\n  (∃ s : List (COpenInterval α), s ⊆ xs ∧ selectable s ∧ s.length = maxSelectable xs) ∧\n  (∀ t : List (COpenInterval α), t ⊆ xs → selectable t → t.length ≤ maxSelectable xs)",
+      "nl_gloss": "The returned maximum is achievable by some selectable subset, and no selectable subset is larger.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "def solve {α} [LinearOrder α] (xs : List (COpenInterval α)) : Nat := maxSelectable xs",
+      "nl_gloss": "Define the algorithm result as the maximum selectable size (spec-level definition).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "theorem solve_correct {α} [LinearOrder α] (xs : List (COpenInterval α)) :\n  (∃ s : List (COpenInterval α), s ⊆ xs ∧ selectable s ∧ s.length = solve xs) ∧\n  (∀ t : List (COpenInterval α), t ⊆ xs → selectable t → t.length ≤ solve xs)",
+      "nl_gloss": "The solver returns exactly the maximum number of mutually non-overlapping intervals.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 9,
+      "kind": "unknown",
+      "lean_statement": "theorem solve_nil {α} [LinearOrder α] : solve ([] : List (COpenInterval α)) = 0",
+      "nl_gloss": "With no intervals, the maximum selectable number is 0.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 10,
+      "kind": "unknown",
+      "lean_statement": "theorem solve_single {α} [LinearOrder α] (I : COpenInterval α) : solve [I] = 1",
+      "nl_gloss": "With one interval, the maximum selectable number is 1.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/greedy_interval_scheduling_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/greedy_interval_scheduling_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/greedy_interval_scheduling_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/greedy_interval_scheduling_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/greedy_interval_scheduling_001/rust_summary.json"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzzz_695",
+  "system_id": "code_only_v1",
+  "instance_id": "trees_bst_insert_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4188,
+    "prompt_tokens": 1197,
+    "completion_tokens": 451
+  },
+  "raw_output_path": "generated/code_only_v1/raw/trees_bst_insert_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem bst_insert_precondition {t : Tree} {key : Int} (h : BST t) : BST t := by\n simpa using h",
+      "nl_gloss": "Benchmark-facing: the input tree must be a valid strict BST (in-order strictly ascending).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem bst_insert_preserves_BST (t : Tree) (key : Int) (hBST : BST t) : BST (bst_insert t key)",
+      "nl_gloss": "Benchmark-facing: insertion preserves the BST property for all cases (including duplicates as no-op).",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem bst_insert_keymultiset_absent (t : Tree) (key : Int) (hBST : BST t) (habsent : key \u00e2\u02c6\u2030 keys t) :\n  KeyMultiset (bst_insert t key) = KeyMultiset t + {key}",
+      "nl_gloss": "Absent-key case: inserting a missing key adds exactly one occurrence of that key to the output key multiset.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem bst_insert_keymultiset_present (t : Tree) (key : Int) (hBST : BST t) (hpresent : key \u00e2\u02c6\u02c6 keys t) :\n  KeyMultiset (bst_insert t key) = KeyMultiset t",
+      "nl_gloss": "Present-key case: inserting an existing key leaves the output key multiset unchanged.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:78ee94c67bc032f3e78101a150e89a308db5d0a94b0944a92cfc8e7b121cbd54",
+  "seed": 95
+}

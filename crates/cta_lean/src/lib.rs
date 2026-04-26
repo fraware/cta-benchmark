@@ -143,6 +143,7 @@ pub fn write_generated_lean(
 /// Lean source file via purely-textual scanning. Robust enough for generated
 /// files whose structure is well-formed; not a Lean parser.
 #[must_use]
+#[allow(clippy::expect_used)] // fixed pattern; failure is a programmer error
 pub fn extract_theorem_names(source: &str) -> Vec<String> {
     static RE: Lazy<Regex> = Lazy::new(|| {
         Regex::new(r"(?m)^\s*(?:theorem|lemma|def)\s+([A-Za-z0-9_']+)")
@@ -202,6 +203,7 @@ pub fn classify_error(severity: &str, message: &str) -> String {
 /// Continuation lines (indented or non-prefixed) are attached to the most
 /// recent diagnostic's `message_tail`.
 #[must_use]
+#[allow(clippy::expect_used)] // fixed pattern; failure is a programmer error
 pub fn parse_diagnostics(combined: &str) -> Vec<Diagnostic> {
     static HEAD: Lazy<Regex> = Lazy::new(|| {
         // Allow both forward and back slashes in the path prefix; allow drive
@@ -340,6 +342,8 @@ pub fn lake_available(lake_bin: &Path) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
     use super::*;
 
     #[test]

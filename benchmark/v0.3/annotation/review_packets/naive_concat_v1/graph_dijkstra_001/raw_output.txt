@@ -1,0 +1,60 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ e ∈ edges, e.src < n ∧ e.dst < n ∧ (0 ≤ e.weight)",
+      "nl_gloss": "All directed edges stay within vertex bounds [0,n) and all edge weights are non-negative.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "dist.length = n",
+      "nl_gloss": "The returned distance vector has exactly n entries (one per vertex).",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "dist[source] = some 0",
+      "nl_gloss": "The source vertex is reachable with distance 0.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "∀ v < n, dist[v] = some d → ∃ path, path.Source = source ∧ path.Target = v ∧ path.weight = d",
+      "nl_gloss": "If dist[v] is Some(d), then there exists a path from source to v whose total weight is exactly d.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "∀ v < n, dist[v] = some d → ¬ (∃ d' < d, ∃ path, path.Source = source ∧ path.Target = v ∧ path.weight = d')",
+      "nl_gloss": "If dist[v] is Some(d), then no path from source to v has total weight strictly less than d.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "∀ v < n, dist[v] = none → ¬ (∃ path, path.Source = source ∧ path.Target = v)",
+      "nl_gloss": "If dist[v] is None, then v is unreachable from the source.",
+      "linked_semantic_units": [
+        "SU6"
+      ]
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "DijkstraTerminates n source edges",
+      "nl_gloss": "The Dijkstra loop terminates for every valid input.",
+      "linked_semantic_units": [
+        "SU7"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "obligations": [
+    {
+      "kind": "definition",
+      "lean_statement": "def Interval (α : Type) := { start : α // True }",
+      "nl_gloss": "Introduce an interval type (placeholder) to formalize intervals with a start point; end points will be added in subsequent obligations."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "structure ClosedOpenInterval (α : Type) where\n  start : α\n  end_ : α\n  (h : start ≤ end_)",
+      "nl_gloss": "Define closed-open intervals [start, end_) with the constraint start ≤ end."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def nonoverlap {α} [LinearOrder α] (I J : ClosedOpenInterval α) : Prop :=\n  I.end_ ≤ J.start ∨ J.end_ ≤ I.start",
+      "nl_gloss": "Define when two intervals are mutually non-overlapping (disjoint) for closed-open intervals."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def pairwiseNonoverlap {α} [LinearOrder α] (s : List (ClosedOpenInterval α)) : Prop :=\n  ∀ ⦃I⦄, I ∈ s → ∀ ⦃J⦄, J ∈ s → I ≠ J → nonoverlap I J",
+      "nl_gloss": "Define pairwise non-overlap for a set/list of intervals."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def selectable {α} [LinearOrder α] (s : List (ClosedOpenInterval α)) : Prop :=\n  pairwiseNonoverlap s",
+      "nl_gloss": "Define what it means for a subcollection to be selectable: all chosen intervals are pairwise non-overlapping."
+    },
+    {
+      "kind": "definition",
+      "lean_statement": "def maxSelectable {α} [LinearOrder α] (xs : List (ClosedOpenInterval α)) : Nat :=\n  Nat.findGreatest (by\n    -- placeholder: existence of a maximum over finite subsets\n    exact ⟨0, by simp, by\n      intro n hn\n      exact ⟨n, by simp⟩⟩)",
+      "nl_gloss": "Define the maximum size of a selectable subcollection among all subcollections of the input (finite maximum)."
+    },
+    {
+      "kind": "specification",
+      "lean_statement": "def solve {α} [LinearOrder α] (xs : List (ClosedOpenInterval α)) : Nat :=\n  maxSelectable xs",
+      "nl_gloss": "Specify the intended algorithm result as the maximum number of mutually non-overlapping intervals selectable from the input."
+    },
+    {
+      "kind": "upper_bound",
+      "lean_statement": "theorem solve_le_maxSelectable {α} [LinearOrder α] (xs : List (ClosedOpenInterval α)) :\n  solve xs ≤ maxSelectable xs := by\n  rfl",
+      "nl_gloss": "The returned value does not exceed the defined maximum selectable size."
+    },
+    {
+      "kind": "achievability",
+      "lean_statement": "theorem exists_selectable_sublist_of_size {α} [LinearOrder α]\n    (xs : List (ClosedOpenInterval α)) :\n    ∃ (ys : List (ClosedOpenInterval α)),\n      ys ⊆ xs ∧ selectable ys ∧ ys.length = maxSelectable xs := by\n  -- obligation: show the maximum is attained by some selectable subcollection\n  admit",
+      "nl_gloss": "There exists a selectable subcollection (sublist) of the input whose size equals the maximum."
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem optimality {α} [LinearOrder α] (xs : List (ClosedOpenInterval α)) :\n  ∀ (ys : List (ClosedOpenInterval α)),\n    ys ⊆ xs → selectable ys → ys.length ≤ solve xs := by\n  -- obligation: any selectable subcollection cannot be larger than the optimum\n  admit",
+      "nl_gloss": "Any selectable subcollection of the input has size at most the algorithm’s returned maximum."
+    },
+    {
+      "kind": "sublist_relation",
+      "lean_statement": "theorem selectable_sublist_inherits {α} [LinearOrder α]\n    (xs ys : List (ClosedOpenInterval α)) :\n    ys ⊆ xs → selectable xs → selectable ys := by\n  -- obligation: pairwise non-overlap is preserved under taking subcollections\n  intro hsub hsel\n  unfold selectable pairwiseNonoverlap at *\n  intro I hI J hJ hIJ\n  apply hsel\n  · exact hsub hI\n  · exact hsub hJ\n  · exact hIJ",
+      "nl_gloss": "If the whole input is selectable, then any subcollection is also selectable (non-overlap is inherited by subsets)."
+    }
+  ]
+}

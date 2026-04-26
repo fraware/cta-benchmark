@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.local/schema/run_manifest_sidecar_v1.json",
+  "title": "CTA per-run manifest sidecar (paper reproducibility)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "run_id",
+    "timestamp_utc",
+    "git_commit",
+    "seed",
+    "prompt_sha256",
+    "model_name",
+    "model_version",
+    "provider_id",
+    "token_usage",
+    "estimated_cost_usd",
+    "output_paths",
+    "benchmark_version",
+    "split",
+    "system_id"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "timestamp_utc": { "type": "string", "format": "date-time" },
+    "git_commit": { "type": "string" },
+    "seed": { "type": "integer" },
+    "prompt_sha256": { "type": "string" },
+    "model_name": { "type": "string" },
+    "model_version": { "type": "string" },
+    "provider_id": { "type": "string" },
+    "token_usage": {
+      "type": "object",
+      "required": ["prompt_tokens", "completion_tokens"],
+      "properties": {
+        "prompt_tokens": { "type": "integer", "minimum": 0 },
+        "completion_tokens": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "estimated_cost_usd": { "type": "number" },
+    "output_paths": {
+      "type": "object",
+      "required": ["run_root", "bundles_glob", "raw_glob"],
+      "properties": {
+        "run_root": { "type": "string" },
+        "bundles_glob": { "type": "string" },
+        "raw_glob": { "type": "string" }
+      }
+    },
+    "benchmark_version": { "type": "string" },
+    "split": { "type": "string" },
+    "system_id": { "type": "string" }
+  }
+}

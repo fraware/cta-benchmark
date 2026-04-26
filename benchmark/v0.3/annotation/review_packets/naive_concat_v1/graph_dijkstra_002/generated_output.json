@@ -1,0 +1,88 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_naive_concat_v1_eval_full_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "graph_dijkstra_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 10025,
+    "prompt_tokens": 161,
+    "completion_tokens": 1292
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/graph_dijkstra_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem output_length (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) (hV : g.Vcard = n) :\n  let dist := dijkstra_ref g w s n;\n  dist.length = n",
+      "nl_gloss": "The returned distance vector has length n (one entry per vertex).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem output_type_option (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) :\n  let dist := dijkstra_ref g w s n;\n  ∀ v : Fin n, dist[v].isSome ∨ dist[v].isNone",
+      "nl_gloss": "Each entry is an optional distance: Some d if a path exists, otherwise None.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem source_distance (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) (hV : g.Vcard = n) :\n  let dist := dijkstra_ref g w s n;\n  dist[⟨s.1, hV ▸ Nat.lt_succ_self _⟩] = some 0",
+      "nl_gloss": "The distance from the source to itself is 0.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem none_implies_no_path (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) (hV : g.Vcard = n) :\n  let dist := dijkstra_ref g w s n;\n  ∀ v : Fin n,\n    dist[v] = none → ¬ (∃ p : Path g s v, p.lengthCost w < ∞)",
+      "nl_gloss": "If the algorithm returns None for a vertex, then there is no path from the source to that vertex.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem some_implies_path (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) (hV : g.Vcard = n) :\n  let dist := dijkstra_ref g w s n;\n  ∀ v : Fin n,\n    dist[v] = some d → ∃ p : Path g s v, p.lengthCost w = d",
+      "nl_gloss": "If the algorithm returns Some d for a vertex, then there exists a path from the source to that vertex whose total weight is exactly d.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem upper_bound (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) (hV : g.Vcard = n) :\n  let dist := dijkstra_ref g w s n;\n  ∀ v : Fin n, ∀ p : Path g s v,\n    dist[v].elim (fun _ => True) (fun d => d ≤ p.lengthCost w)",
+      "nl_gloss": "For any reachable vertex v and any path p from s to v, the computed distance is ≤ the cost of that path (so it is an upper bound on the shortest path).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem optimality (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) (hV : g.Vcard = n) :\n  let dist := dijkstra_ref g w s n;\n  ∀ v : Fin n,\n    dist[v].elim (fun _ => True)\n      (fun d => ∀ d' : Nat,\n        (∃ p : Path g s v, p.lengthCost w = d') → d ≤ d' ∧ (d' = d → True))",
+      "nl_gloss": "Optimality: when a distance is returned as Some d, it is minimal among all path costs to v.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem relaxation_invariant (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) :\n  let dist := dijkstra_ref g w s n;\n  ∀ e : g.Edge,\n    let u := e.src; let v := e.dst;\n    dist[⟨u.1, _⟩].elim (fun _ => True)\n      (fun du =>\n        dist[⟨v.1, _⟩].elim (fun _ => True)\n          (fun dv => dv ≤ du + w e))",
+      "nl_gloss": "Triangle inequality / relaxation property: for every edge u→v, if distances are defined then dv ≤ du + weight(u,v).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem nonneg_weights_required (w : g.Edge → Nat) :\n  ∀ e : g.Edge, 0 ≤ w e",
+      "nl_gloss": "Edge weights are non-negative (Nat), which is the key precondition for Dijkstra correctness.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem algorithm_terminates (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) :\n  ∃ t : Nat, dijkstra_ref_steps g w s n = t",
+      "nl_gloss": "The reference implementation terminates (e.g., due to finite vertex set and bounded priority-queue operations).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem correctness_matches_spec (g : DirectedGraph) (w : g.Edge → Nat) (s : g.V) (n : Nat) (hV : g.Vcard = n) :\n  let dist := dijkstra_ref g w s n;\n  ∀ v : Fin n,\n    dist[v] = shortestPathCostOption g w s v",
+      "nl_gloss": "The computed vector matches the mathematical shortest-path cost function (Some shortest cost, or None if unreachable).",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:f02e1625d363ab18455bd98eb172cc9c980ca8c7ab0e4bd80d8a06beeb66f4e7",
+  "seed": 1
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "sorting_insertion_sort_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 2987,
+    "prompt_tokens": 871,
+    "completion_tokens": 326
+  },
+  "raw_output_path": "generated/full_method_v1/raw/sorting_insertion_sort_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU1_sorted_output (xs : Arr) : Sorted (insertionSort xs) := by\n  -- proof obligation: insertionSort produces a nondecreasing list\n  admit",
+      "nl_gloss": "For any input list xs, the output of insertionSort is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU2_permutation_output (xs : Arr) : IsPerm xs (insertionSort xs) := by\n  -- proof obligation: insertionSort preserves the multiset of elements\n  admit",
+      "nl_gloss": "For any input list xs, the output of insertionSort is a permutation of xs (preserves element counts).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem SU3_termination (xs : Arr) : True := by\n  -- proof obligation: insertion sort terminates on every input\n  admit",
+      "nl_gloss": "Insertion sort terminates on every input.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.4
+    }
+  ],
+  "prompt_hash": "sha256:fc244b515ecace33a205d91a56f2ced94964a9cdb792e9a9e64889bd15400291",
+  "seed": 1
+}

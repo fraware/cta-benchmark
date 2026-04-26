@@ -1,0 +1,35 @@
+You are given a Rust reference implementation of a classical algorithm task. Produce a list of Lean 4 proof obligations that together describe what this implementation computes and why it is correct.
+
+Rules:
+- Output a single JSON object with key `obligations`.
+- Each obligation has: `kind`, `lean_statement`, `nl_gloss`.
+- Do not invent functionality the code does not implement.
+- If the code documents a precondition (asserts, preconditions in comments), capture it.
+
+Reference implementation:
+```rust
+//! Reference implementation for `arrays_binary_search_002`.
+//!
+//! Pure, stable Rust. No macros. No unsafe. No external crates.
+
+/// Binary search on a sorted nondecreasing slice.
+///
+/// Returns `Some(i)` with `arr[i] == target` if found, otherwise `None`.
+/// If the target appears multiple times, any matching index is acceptable.
+pub fn binary_search(arr: &[i32], target: i32) -> Option<usize> {
+    let mut lo: usize = 0;
+    let mut hi: usize = arr.len();
+    while lo < hi {
+        let mid = lo + (hi - lo) / 2;
+        if arr[mid] == target {
+            return Some(mid);
+        }
+        if arr[mid] < target {
+            lo = mid + 1;
+        } else {
+            hi = mid;
+        }
+    }
+    None
+}
+```

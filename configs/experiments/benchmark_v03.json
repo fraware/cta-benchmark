@@ -1,0 +1,16 @@
+{
+  "schema_version": "schema_v1",
+  "experiment_id": "benchmark_v03",
+  "benchmark_version": "v0.3",
+  "split": "eval",
+  "systems": ["text_only_v1", "code_only_v1", "naive_concat_v1", "full_method_v1"],
+  "providers": ["configs/providers/openai.json", "configs/providers/anthropic.json"],
+  "seeds": [1, 2, 3],
+  "generation_parameters": {
+    "temperature": 0.0,
+    "max_tokens": 2048
+  },
+  "annotation_pack": "benchmark/v0.3/annotation/adjudicated_subset/pack.json",
+  "require_full_annotation_coverage": true,
+  "notes": "v0.3 eval grid (48 instances). pack.json provides skeleton records for every (instance, system) pair; replace scores with adjudicated values."
+}

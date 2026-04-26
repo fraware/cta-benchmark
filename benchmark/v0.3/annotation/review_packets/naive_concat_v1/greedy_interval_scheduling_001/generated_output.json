@@ -1,0 +1,54 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_23_naive_concat_v1_eval_zzzzzzz_fix_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "greedy_interval_scheduling_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4729,
+    "prompt_tokens": 1035,
+    "completion_tokens": 649
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/greedy_interval_scheduling_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_feasibility_witness {n : Nat} (intervals : Fin n → (Int × Int)) (ans : Nat) : (∀ i : Fin n, let iv := intervals i; iv.1.1 < iv.1.2) → ans = greedy_interval_scheduling_001 intervals → ∃ (S : Finset (Fin n)), (S.card = ans) ∧ (∀ i j ∈ S, i ≠ j → nonOverlapping (intervals i) (intervals j))",
+      "nl_gloss": "The returned count is realized by some subset of the input intervals that are pairwise non-overlapping.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU3_optimality_maximal {n : Nat} (intervals : Fin n → (Int × Int)) (ans : Nat) : (∀ i : Fin n, let iv := intervals i; iv.1.1 < iv.1.2) → ans = greedy_interval_scheduling_001 intervals → (∀ (S : Finset (Fin n))), (∀ i j ∈ S, i ≠ j → nonOverlapping (intervals i) (intervals j)) → S.card ≤ ans",
+      "nl_gloss": "Optimality: no pairwise non-overlapping subset is strictly larger than the returned count.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_empty_input_zero (intervals : Fin 0 → (Int × Int)) : greedy_interval_scheduling_001 intervals = 0",
+      "nl_gloss": "Empty input yields result 0.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    },
+    {
+      "kind": "auxiliary",
+      "lean_statement": "theorem SU4_endpoint_convention_nonOverlapping_shared_endpoint {a b c : Int} : b ≤ c → nonOverlapping (a, b) (b, c)",
+      "nl_gloss": "Endpoint convention: intervals that only share an endpoint are considered non-overlapping for the [start,end) model.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:b6bd87096902e64513e83414a6bc6d45f8cb10588b715f5764f6b6cb6564f448",
+  "seed": 777
+}

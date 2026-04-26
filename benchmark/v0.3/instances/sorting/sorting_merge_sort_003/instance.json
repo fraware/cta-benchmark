@@ -1,0 +1,44 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "sorting_merge_sort_003",
+  "title": "Merge sort producing a sorted permutation of the input",
+  "domain": "sorting",
+  "difficulty": "medium",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given a slice of integers, return a new vector containing the same multiset of elements in nondecreasing order.\n\nBenchmark note (sorting_merge_sort_003): Variant 3 stresses boundary preconditions and explicit edge-case coverage in the informal contract.\nAuthoring lens: Lens 3 focuses reviewer attention on vacuous universal quantifiers in obligations.",
+    "preconditions": [
+      "the input is a slice of i32 values of any length"
+    ],
+    "required_properties": [
+      "the output length equals the input length",
+      "the output is sorted in nondecreasing order",
+      "the output is a permutation of the input (same multiset of elements)"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice",
+      "already-sorted slice",
+      "reverse-sorted slice",
+      "slice with duplicates",
+      "slice of length that is a power of two",
+      "slice of length that is not a power of two"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/sorting/sorting_merge_sort_003/reference.rs",
+    "entry_fn": "merge_sort"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/sorting/sorting_merge_sort_003/scaffold.lean",
+    "namespace": "CTA.Benchmark.Sorting.MergeSort003",
+    "reference_obligations_path": "instances/sorting/sorting_merge_sort_003/reference_obligations.json",
+    "semantic_units_path": "instances/sorting/sorting_merge_sort_003/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/sorting/sorting_merge_sort_002/harness.json"
+  }
+}

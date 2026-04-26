@@ -1,0 +1,24 @@
+{
+  "schema_version": "agreement_report_v1",
+  "n_packets": 2,
+  "weighted_kappa_linear": {
+    "semantic_faithfulness": 0.5,
+    "code_consistency": 0.0,
+    "proof_utility": 0.5
+  },
+  "weighted_kappa_bootstrap_ci95": {
+    "semantic_faithfulness": [
+      0.0,
+      0.5
+    ],
+    "code_consistency": [
+      0.0,
+      NaN
+    ],
+    "proof_utility": [
+      0.0,
+      0.5
+    ]
+  },
+  "coverage_percent_agreement": 1.0
+}

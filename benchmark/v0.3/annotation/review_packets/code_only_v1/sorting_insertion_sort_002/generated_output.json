@@ -1,0 +1,46 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "system_id": "code_only_v1",
+  "instance_id": "sorting_insertion_sort_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 7279,
+    "prompt_tokens": 204,
+    "completion_tokens": 863
+  },
+  "raw_output_path": "generated/code_only_v1/raw/sorting_insertion_sort_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU1_sorted_output (xs : Arr) : Sorted (insertionSort xs)",
+      "nl_gloss": "The declarative output list is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_perm_output (xs : Arr) : List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input (duplicate counts preserved).",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem SU3_output_length (xs : Arr) : (insertionSort xs).length = xs.length",
+      "nl_gloss": "The specification-level sort preserves length, matching finite termination of the reference on every input.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:a642b318f02b3af2e1a695b581b9c715589129a74a825f309b5f001c8d407036",
+  "seed": 0
+}

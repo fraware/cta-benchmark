@@ -1,0 +1,21 @@
+{
+  "schema_version": "schema_v1",
+  "harness_type": "property_based",
+  "seed": 2024,
+  "num_trials": 150,
+  "input_generator": {
+    "kind": "random_bst",
+    "min_size": 0,
+    "max_size": 32,
+    "key_range": [
+      -40,
+      40
+    ]
+  },
+  "oracle_checks": [
+    "output_inorder_strictly_ascending",
+    "output_contains_inserted_key",
+    "output_contains_all_input_keys"
+  ],
+  "timeout_ms": 2000
+}

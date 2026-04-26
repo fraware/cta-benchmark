@@ -146,6 +146,8 @@ define_id!(
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
     use super::*;
     use pretty_assertions::assert_eq;
 

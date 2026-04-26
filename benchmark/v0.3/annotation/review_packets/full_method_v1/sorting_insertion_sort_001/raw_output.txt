@@ -1,0 +1,31 @@
+{
+  "obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), Sorted (insertionSort xs)",
+      "nl_gloss": "For every input list xs, the output of insertionSort is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.93
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), IsPerm xs (insertionSort xs)",
+      "nl_gloss": "For every input list xs, the output is a permutation of xs (same multiset of elements, including duplicates).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.93
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "∀ (xs : Arr), ∃ ys : Arr, ys = insertionSort xs",
+      "nl_gloss": "For every input xs, insertionSort produces some output list (i.e., it terminates / is defined on all inputs).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.55
+    }
+  ]
+}

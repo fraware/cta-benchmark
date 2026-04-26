@@ -1,0 +1,51 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "trees_lowest_common_ancestor_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 8503,
+    "prompt_tokens": 1132,
+    "completion_tokens": 804
+  },
+  "raw_output_path": "generated/full_method_v1/raw/trees_lowest_common_ancestor_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem lca_bst_subtree_witness (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a) :\n  ∃ sub : Tree,\n    IsSubtree sub t ∧\n    (match sub with\n     | Tree.nil => False\n     | Tree.node _ k _ => k = a) ∧\n    HasKey sub p ∧\n    HasKey sub q := by\n  admit",
+      "nl_gloss": "When the input is a BST containing both query keys, the returned key is the root of a subtree containing both queries.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3"
+      ],
+      "confidence": 0.75
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem lca_bst_no_proper_descendant_both_keys (t : Tree) (p q a : Int)\n  (hbst : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hr : lcaBst t p q = some a) :\n  ∀ sub : Tree,\n    IsProperSubtree sub (subtreeRootedAt t a) →\n    ¬ (HasKey sub p ∧ HasKey sub q) := by\n  admit",
+      "nl_gloss": "No proper subtree strictly below the returned LCA root contains both query keys (lowestness in proper-descendant form).",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.65
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem lca_bst_self_key (t : Tree) (p : Int)\n  (hbst : IsBst t) (hp : HasKey t p) :\n  lcaBst t p p = some p := by\n  admit",
+      "nl_gloss": "When the input is a BST containing the key, the LCA of a key with itself is that key.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.6
+    }
+  ],
+  "prompt_hash": "sha256:0a1767121c70ad499d3cdbc4c98324345133f0b1280b3b0bde11a8635bf5a99e",
+  "seed": 1
+}

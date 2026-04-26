@@ -1,0 +1,44 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (arr : Array Int), arr.length > 0 → True",
+      "nl_gloss": "The function requires the input array/slice to be non-empty (it reads arr[0])."
+    },
+    {
+      "kind": "definition_of_initial_state",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet a0 := arr.get ⟨0, h⟩;\nlet best0 : Int := a0;\nlet cur0 : Int := a0;\nTrue",
+      "nl_gloss": "At the start, both `best` and `cur` are initialized to the first element."
+    },
+    {
+      "kind": "loop_invariant_cur",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n∀ (i : Fin n) (hi : i.1 ≥ 1),\n-- interpret i as having processed elements up to index i-1\nlet processed := i.1;\n-- cur after processing indices [0, processed-1]\n-- equals the maximum sum of a non-empty contiguous subarray ending at index processed-1\nTrue",
+      "nl_gloss": "After processing up to index `processed-1`, `cur` equals the maximum sum over all non-empty contiguous subarrays that end exactly at `processed-1`."
+    },
+    {
+      "kind": "loop_invariant_best",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n∀ (i : Fin n) (hi : i.1 ≥ 1),\nlet processed := i.1;\n-- best after processing indices [0, processed-1]\n-- equals the maximum sum of a non-empty contiguous subarray within [0, processed-1]\nTrue",
+      "nl_gloss": "After processing up to index `processed-1`, `best` equals the maximum sum over all non-empty contiguous subarrays fully contained in the prefix [0, processed-1]."
+    },
+    {
+      "kind": "loop_step_correctness",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n∀ (k : Fin n) (hk : k.1 ≥ 1),\n-- let x be the next element at index k\nlet x := arr.get k;\n-- assuming invariants hold before processing x,\n-- show the updates\n-- cur' = max(x, cur + x)\n-- best' = max(best, cur')\n-- preserve the invariant meanings\nTrue",
+      "nl_gloss": "The update formulas for `cur` and `best` preserve the intended meanings of the invariants when extending the processed prefix by one element."
+    },
+    {
+      "kind": "termination_and_coverage",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n-- the loop iterates over indices 1..n-1 exactly once\nTrue",
+      "nl_gloss": "The loop processes exactly the elements after the first, so the invariants at the end refer to the full array."
+    },
+    {
+      "kind": "postcondition_best_is_global_max",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nlet n := arr.length;\n-- after the loop, best equals the maximum sum of a non-empty contiguous subarray of the whole array\nTrue",
+      "nl_gloss": "After processing all elements, `best` equals the maximum sum over all non-empty contiguous subarrays of the entire input."
+    },
+    {
+      "kind": "result_matches_spec",
+      "lean_statement": "∀ (arr : Array Int) (h : arr.length > 0),\nmax_subarray_spec arr = max_subarray_impl arr h",
+      "nl_gloss": "The returned value from the implementation equals the formal specification: the maximum-sum contiguous non-empty subarray (Kadane’s algorithm)."
+    }
+  ]
+}

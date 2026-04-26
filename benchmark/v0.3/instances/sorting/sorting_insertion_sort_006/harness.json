@@ -1,0 +1,21 @@
+{
+  "schema_version": "schema_v1",
+  "harness_type": "property_based",
+  "seed": 17,
+  "num_trials": 200,
+  "input_generator": {
+    "kind": "int_vec",
+    "min_len": 0,
+    "max_len": 64,
+    "value_range": [
+      -100,
+      100
+    ]
+  },
+  "oracle_checks": [
+    "output_is_sorted",
+    "output_is_permutation_of_input",
+    "length_preserved"
+  ],
+  "timeout_ms": 2000
+}

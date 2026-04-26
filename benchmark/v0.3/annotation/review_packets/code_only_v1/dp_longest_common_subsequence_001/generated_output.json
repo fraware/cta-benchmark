@@ -1,0 +1,55 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "system_id": "code_only_v1",
+  "instance_id": "dp_longest_common_subsequence_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 10598,
+    "prompt_tokens": 319,
+    "completion_tokens": 1155
+  },
+  "raw_output_path": "generated/code_only_v1/raw/dp_longest_common_subsequence_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_common_subseq_witness (a b : Arr) :\n  ∃ ia ib : List Nat,\n    CommonSubseq a b ia ib ∧ ia.length = lcsLength a b",
+      "nl_gloss": "There exists a common subsequence whose length matches the returned LCS length.",
+      "linked_semantic_units": [
+        "SU2",
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_maximal (a b : Arr) (ia ib : List Nat)\n  (h : CommonSubseq a b ia ib) :\n  ia.length ≤ lcsLength a b",
+      "nl_gloss": "No common subsequence is strictly longer than the returned value.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU1_length_bounds (a b : Arr) :\n  lcsLength a b ≤ a.length ∧ lcsLength a b ≤ b.length",
+      "nl_gloss": "The LCS length never exceeds either input length.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_symmetry (a b : Arr) : lcsLength a b = lcsLength b a",
+      "nl_gloss": "LCS length is symmetric in the two inputs.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:6a2684a4ad71815e3797320823849f6f7795f4ae990e61c14986267f7e727197",
+  "seed": 0
+}

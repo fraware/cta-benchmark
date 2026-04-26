@@ -1,0 +1,44 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem bfs_shortest_path_len_eq (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) (h : dist.length = adj.length) : dist.length = adj.length := by simpa using h",
+      "nl_gloss": "Length of the distance vector equals the number of vertices (adj length).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_source_anchor (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) (hlen : dist.length = adj.length) (hs : source < adj.length) : dist[source] = some 0 := by\n  -- contract obligation: dist[source] must be anchored at 0\n  admit",
+      "nl_gloss": "The source vertex has distance exactly 0.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_witness_edges (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) (hlen : dist.length = adj.length) (hs : source < adj.length) (v : Nat) (k : Nat) (hk : dist[v] = some k) : ∃ p : Fin (k+1) → Nat, p 0 = source ∧ p k = v ∧ ∀ i : Fin k, let u := p i; let w := p (Fin.succ i); w ∈ adj[u].toList := by\n  admit",
+      "nl_gloss": "If dist[v] = Some(k), there exists a directed path of exactly k edges from source to v.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem bfs_shortest_path_minimality (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) (hlen : dist.length = adj.length) (hs : source < adj.length) (v : Nat) (k : Nat) (hk : dist[v] = some k) : ¬ ∃ m : Nat, m < k ∧ ∃ p : Fin (m+1) → Nat, p 0 = source ∧ p m = v ∧ ∀ i : Fin m, let u := p i; let w := p (Fin.succ i); w ∈ adj[u].toList := by\n  admit",
+      "nl_gloss": "If dist[v] = Some(k), then no path from source to v uses fewer than k edges.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem bfs_shortest_path_unreachability_iff (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) (hlen : dist.length = adj.length) (hs : source < adj.length) (v : Nat) : dist[v] = none ↔ ¬ ∃ k : Nat, ∃ p : Fin (k+1) → Nat, p 0 = source ∧ p k = v ∧ ∀ i : Fin k, let u := p i; let w := p (Fin.succ i); w ∈ adj[u].toList := by\n  admit",
+      "nl_gloss": "dist[v] = None iff there is no directed path from source to v.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem lcs_length_range_bound (a b : List Int) : 0 <= lcsLength a b ∧ lcsLength a b <= Int.min a.length b.length := by\n  -- obligation: benchmark-aligned range bound for the returned length\n  admit",
+      "nl_gloss": "The computed LCS length is always within [0, min(|a|, |b|)].",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem lcs_length_witness_strict_increasing (a b : List Int) :\n  let k := lcsLength a b\n  ∃ (ia : Finset Nat) (ib : Finset Nat),\n    (Nat.card ia = k) ∧ (Nat.card ib = k) ∧\n    (∀ i1 i2, i1 ∈ ia → i2 ∈ ia → i1 < i2 → a.get? i1 = a.get? i2 → False) ∧\n    (∀ i ∈ ia, ∃ j ∈ ib, a.get? i = b.get? j) := by\n  admit",
+      "nl_gloss": "There exist strictly increasing index selections into a and b of equal length k such that the chosen elements match pairwise in order.",
+      "linked_semantic_units": [
+        "SU2",
+        "SU4"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem lcs_length_maximality (a b : List Int) :\n  let k := lcsLength a b\n  ∀ (ia ib : List Nat),\n    (ia.Nodup ∧ ib.Nodup) →\n    (ia.Sorted (· < ·)) → (ib.Sorted (· < ·)) →\n    (ia.length = ib.length) →\n    (∀ t : Fin ia.length, ia.get t < a.length ∧ ib.get t < b.length) →\n    (∀ t : Fin ia.length, a.get? (ia.get t) = b.get? (ib.get t)) →\n    ia.length <= k := by\n  admit",
+      "nl_gloss": "No common subsequence longer than the returned length exists (maximality).",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem lcs_length_terminates (a b : List Int) :\n  ∃ (m n : Nat), m = a.length ∧ n = b.length ∧ m * n < (m + 1) * (n + 1) := by\n  admit",
+      "nl_gloss": "The DP computation is over a finite m×n table and therefore terminates.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "auxiliary",
+      "lean_statement": "theorem lcs_length_symmetry (a b : List Int) : lcsLength a b = lcsLength b a := by\n  admit",
+      "nl_gloss": "Symmetry of the LCS length with respect to swapping the two input sequences.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "greedy_interval_scheduling_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 6002,
+    "prompt_tokens": 1017,
+    "completion_tokens": 401
+  },
+  "raw_output_path": "generated/full_method_v1/raw/greedy_interval_scheduling_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_start_lt_stop (intervals : Intervals) : Prop :=\n  ∀ i ∈ intervals, i.start < i.stop",
+      "nl_gloss": "Input precondition: every interval satisfies start < stop.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU2_feasible_witness (intervals : Intervals) :\n  ∃ idxs : List Nat,\n    Feasible intervals idxs ∧\n      idxs.length = intervalScheduling intervals",
+      "nl_gloss": "The returned count is witnessed by some subset of the input that is pairwise non-overlapping.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU3_optimality (intervals : Intervals) :\n  ∀ idxs : List Nat,\n    Feasible intervals idxs → idxs.length ≤ intervalScheduling intervals",
+      "nl_gloss": "No pairwise non-overlapping subset of the input is strictly larger than the returned count.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU4_endpoint_nonoverlap (a b : Interval) :\n  a.stop = b.start → NonOverlap a b",
+      "nl_gloss": "Two intervals that share only an endpoint are non-overlapping (closed-open convention).",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem SU5_empty_result :\n  intervalScheduling ([] : Intervals) = 0",
+      "nl_gloss": "Empty input: the result is 0 when the input is empty.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.9
+    }
+  ],
+  "prompt_hash": "sha256:8251355162610fd742f53c01200c124b4c6758743941b2d6e45cf2ed03787ee9",
+  "seed": 1
+}

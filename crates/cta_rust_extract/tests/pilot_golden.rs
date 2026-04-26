@@ -11,6 +11,8 @@
 //! JSON-level golden file per instance (those are deferred to M2's
 //! golden-fixtures sprint).
 
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use std::collections::BTreeSet;
 use std::path::PathBuf;
 

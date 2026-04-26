@@ -1,0 +1,209 @@
+{
+  "benchmark_version": "v0.3",
+  "instance_id": "trees_lowest_common_ancestor_002",
+  "system_id": "text_only_v1",
+  "domain": "trees",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.3/instances/trees/trees_lowest_common_ancestor_002",
+  "generated_output_path": "runs/run_2026_04_22_text_only_v1_eval_003/generated/text_only_v1/trees_lowest_common_ancestor_002.json",
+  "informal_statement": {
+    "text": "Given a binary search tree whose in-order traversal is strictly ascending and two keys both present in the tree, return the key of the lowest node that has both keys in its subtree.",
+    "preconditions": [
+      "the input tree is a valid BST",
+      "both query keys are present in the tree"
+    ],
+    "required_properties": [
+      "the returned key appears in the tree",
+      "both query keys are in the subtree rooted at the returned key",
+      "no proper descendant of the returned key has both query keys in its subtree"
+    ],
+    "edge_cases": [
+      "both keys equal (returned key equals them)",
+      "one key is an ancestor of the other",
+      "keys on opposite sides of the root",
+      "root is the LCA",
+      "tree with only a single path"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "BST precondition: the input tree is a valid BST.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the BST precondition and solving general-tree LCA",
+        "assuming strict ordering within equal keys"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Presence precondition: both query keys are present in the tree.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the presence precondition",
+        "returning None silently when a key is missing"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Ancestor property: both query keys lie in the subtree rooted at the returned key.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "returning any common ancestor instead of the lowest one",
+        "confusing descendant with ancestor"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Lowest: no proper descendant of the returned node contains both keys.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "returning the root unconditionally",
+        "using LCA of general trees (parent-pointer style) semantics"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Key equality case: when p == q, the LCA is that same key.",
+      "criticality": "supporting"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (p q a : Int), IsBst t → HasKey t p → HasKey t q → lcaBst t p q = some a → ∃ sub : Tree, IsSubtree sub t ∧ (match sub with | Tree.nil => False | Tree.node _ k _ => k = a) ∧ HasKey sub p ∧ HasKey sub q",
+      "nl_gloss": "When the input is a BST containing both query keys, the returned key is the root of a subtree containing both queries.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (p q a : Int), IsBst t → HasKey t p → HasKey t q → lcaBst t p q = some a → ∀ (sub : Tree), IsProperSubtree sub t → (match sub with | Tree.nil => True | Tree.node _ k _ => k = a → False) → HasKey sub p → HasKey sub q → False",
+      "nl_gloss": "When the input is a BST containing both query keys, no proper subtree that is not rooted at the returned key contains both queries and sits strictly below the LCA.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (p : Int), IsBst t → HasKey t p → lcaBst t p p = some p",
+      "nl_gloss": "When the input is a BST containing the key, the LCA of a key with itself is that key.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "unknown",
+      "lean_statement": "inductive BST (α : Type) [LT α] : Type :=\n| node : (l r : BST α) → (key : α) → BST α\n-- placeholder: user will supply the intended BST definition and in-order traversal",
+      "nl_gloss": "Provide (or assume) a formal definition of a binary search tree and its in-order traversal.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "variable {α : Type} [LinearOrder α]\nvariable (t : BST α)\n-- Assume in-order traversal is strictly ascending\naxiom inorder_strict_ascending : StrictMono (inorder t)",
+      "nl_gloss": "Assume the given tree has a strictly ascending in-order traversal (i.e., it is a valid BST with no duplicates).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "def In (x : α) (t : BST α) : Prop := x ∈ inorder t\n-- or an equivalent membership predicate tied to the tree structure",
+      "nl_gloss": "Define membership of a key in the tree (e.g., via in-order traversal).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "variable {a b : α}\naxiom ha : In a t\naxiom hb : In b t",
+      "nl_gloss": "Assume both keys a and b are present in the tree.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "def Subtree (u : Node α) : BST α :=\n  t\n\ndef LowestBoth (a b : α) (t : BST α) : α :=\n  a",
+      "nl_gloss": "Define the target value: the key of the lowest (deepest) node whose subtree contains both keys.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "axiom LowestBoth_spec_contains :\n  let x := LowestBoth a b t\n  In x t ∧ (∃ u, key u = x ∧ In a (Subtree u) ∧ In b (Subtree u))",
+      "nl_gloss": "The returned key corresponds to a node whose subtree contains both keys.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "axiom LowestBoth_spec_lowest :\n  let x := LowestBoth a b t\n  ∀ u, (In a (Subtree u) ∧ In b (Subtree u)) →\n    depth u ≤ depth (node_of_key x)",
+      "nl_gloss": "Among all nodes whose subtrees contain both keys, the returned node is the lowest (deepest).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "axiom LowestBoth_spec_uniqueness :\n  let x := LowestBoth a b t\n  ∀ y, (∃ u, key u = y ∧ In a (Subtree u) ∧ In b (Subtree u)) →\n    (depth (node_of_key y) = depth (node_of_key x) → y = x)",
+      "nl_gloss": "The lowest such node is unique in terms of its key (consistent with strict BST ordering).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "def lowestNodeBoth (a b : α) (t : BST α) : α :=\n  LowestBoth a b t",
+      "nl_gloss": "Define the algorithm that returns the key of the lowest node whose subtree contains both keys.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 9,
+      "kind": "unknown",
+      "lean_statement": "theorem lowestNodeBoth_correct :\n  lowestNodeBoth a b t = LowestBoth a b t",
+      "nl_gloss": "The algorithm returns exactly the key specified by the 'lowest node with both keys in its subtree' definition.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/trees_lowest_common_ancestor_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/trees_lowest_common_ancestor_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/trees_lowest_common_ancestor_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/trees_lowest_common_ancestor_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/trees_lowest_common_ancestor_002/rust_summary.json"
+  }
+}

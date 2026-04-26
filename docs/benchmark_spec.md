@@ -62,7 +62,17 @@ For `v0.1` (the pilot release), `dev.json` and `eval.json` both cover all
 
 For paper-track releases (`v0.2+`), release validation enforces stricter
 policy: `eval` must contain at least 24 instances and `dev`/`eval` must be
-disjoint. See `docs/paper_readiness.md`.
+disjoint. See `docs/PAPER_READINESS.md`.
+
+### v0.3 family grid (specification stress, not new algorithms)
+
+`v0.3` expands each v0.2 algorithm **family** to seven instance ids (`*_001`
+… `*_007`) that **share** the same reference implementation and behavioral
+harness. Instances differ in **informal_statement** emphasis, **semantic
+unit** glosses, **notes**, and audit metadata so reviewers can stress-test
+specification transfer without conflating oracle diversity with algorithmic
+diversity. Variants `_001` and `_002` additionally carry distinct **grid
+variant** paragraphs so paired controls are not near-duplicate prose.
 
 ## Release / versioning
 

@@ -1,0 +1,36 @@
+{
+  "benchmark_version": "v0.3",
+  "split": "eval",
+  "systems": [
+    "text_only_v1",
+    "code_only_v1",
+    "naive_concat_v1",
+    "full_method_v1"
+  ],
+  "closure_target": {
+    "required_pairs": 96,
+    "definition": "24 eval instances x 4 systems"
+  },
+  "artifacts": {
+    "required_pairs": "benchmark/v0.3/annotation/task_board/required_pairs.json",
+    "missing_pairs": "benchmark/v0.3/annotation/task_board/missing_pairs.json",
+    "assignment_matrix": "benchmark/v0.3/annotation/task_board/assignment_matrix.csv",
+    "completion_log": "benchmark/v0.3/annotation/task_board/completion_log.csv",
+    "strict_batches": "benchmark/v0.3/annotation/task_board/batches/batch_manifest.json"
+  },
+  "status_definitions": {
+    "unassigned": "No reviewers assigned",
+    "assigned": "Pair assigned to ann_01 and ann_02",
+    "first_review_done": "ann_01 submission completed",
+    "second_review_done": "ann_02 submission completed",
+    "needs_adjudication": "Reviewer disagreement detected",
+    "adjudicated": "Adjudicator resolved disagreement",
+    "packed": "Record included in benchmark/v0.3/annotation/adjudicated_subset/pack.json"
+  },
+  "command_surface": {
+    "initialize_queue": "cta annotate plan --benchmark-version v0.3 --experiment-config configs/experiments/benchmark_v1.json --out benchmark/v0.3/annotation/task_board",
+    "materialize_batches": "cta annotate batches --benchmark-version v0.3 --missing-pairs benchmark/v0.3/annotation/task_board/missing_pairs.json --out benchmark/v0.3/annotation/task_board/batches",
+    "sync_adjudications": "cta annotate sync-review-packets --benchmark-version v0.3 --from benchmark/v0.3/annotation/review_packets --out benchmark/v0.3/annotation/adjudicated_subset",
+    "coverage_refresh": "cta annotate coverage --benchmark-version v0.3 --experiment-config configs/experiments/benchmark_v1.json --pack benchmark/v0.3/annotation/adjudicated_subset/pack.json --out benchmark/v0.3/annotation/adjudicated_subset"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (arr : Array Int), True",
+      "nl_gloss": "No explicit precondition is required beyond having a mutable slice/array; the algorithm works for any length (including 0 and 1)."
+    },
+    {
+      "kind": "bounds_safety",
+      "lean_statement": "∀ (arr : Array Int) (i : Nat), i < arr.size → (i = 0 ∨ i > 0) → True",
+      "nl_gloss": "The outer loop iterates i from 1 to arr.len-1, so any access to arr[i] and arr[j-1] is within bounds when the loop conditions hold."
+    },
+    {
+      "kind": "loop_invariant_outer",
+      "lean_statement": "∀ (arr : Array Int) (i : Nat), i ≤ arr.size →\n  let arr' := (insertion_sort_prefix arr i) in\n  Sorted (arr'.toList) ∧ Permutation arr.toList arr'.toList",
+      "nl_gloss": "After processing indices up to i (i.e., after the outer loop has completed for all k < i), the prefix arr[0..i) is sorted in ascending order, and the multiset of elements in the whole array is unchanged (only swaps occur)."
+    },
+    {
+      "kind": "loop_invariant_inner",
+      "lean_statement": "∀ (arr : Array Int) (i j : Nat),\n  i < arr.size → j ≤ i →\n  let arr0 := arr in\n  let arr1 := (insertion_sort_inner_step arr0 i j) in\n  (Permutation arr0.toList arr1.toList) ∧\n  (Sorted ( (arr1.toList).take i )) ∧\n  (∀ k < j, arr1[k] ≤ arr1[k+1])",
+      "nl_gloss": "During the inner while-loop for a fixed i, with current index j, the elements outside the moving window are unchanged up to permutation, and the portion before j remains sorted; the swap step preserves the multiset and moves arr[j] left while maintaining sortedness of the already-processed prefix."
+    },
+    {
+      "kind": "termination_inner",
+      "lean_statement": "∀ (arr : Array Int) (i j : Nat), i < arr.size → j ≤ i →\n  (j > 0 ∧ arr[j-1] > arr[j]) →\n  (j-1) < j",
+      "nl_gloss": "The inner loop decreases j by 1 each iteration, so it terminates."
+    },
+    {
+      "kind": "termination_outer",
+      "lean_statement": "∀ (arr : Array Int), True",
+      "nl_gloss": "The outer loop iterates over a finite range i = 1..arr.len-1, so it terminates."
+    },
+    {
+      "kind": "permutation_preservation",
+      "lean_statement": "∀ (arr : Array Int),\n  let arr' := insertion_sort arr in\n  Permutation arr.toList arr'.toList",
+      "nl_gloss": "Because the implementation only uses swaps, the output array is a permutation of the input (same elements with the same multiplicities)."
+    },
+    {
+      "kind": "sortedness_postcondition",
+      "lean_statement": "∀ (arr : Array Int),\n  let arr' := insertion_sort arr in\n  Sorted (arr'.toList)",
+      "nl_gloss": "After completion, the entire array is sorted in ascending order."
+    },
+    {
+      "kind": "stability_not_claimed",
+      "lean_statement": "∀ (arr : Array Int), True",
+      "nl_gloss": "No stability property is required or claimed by the implementation; it performs swaps, so only sortedness and permutation are proven."
+    }
+  ]
+}

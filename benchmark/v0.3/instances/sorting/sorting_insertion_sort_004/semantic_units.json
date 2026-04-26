@@ -1,0 +1,31 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "sorting_insertion_sort_004",
+  "benchmark_version": "v0.3",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "Sortedness: the output list is sorted in nondecreasing order. (Variant 4 stresses witness existence vs uniqueness and forbids smuggling extra outputs.)",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU2",
+      "description": "Permutation: the output is a permutation of the input (every element preserved, counts preserved). (Variant 4 stresses witness existence vs uniqueness and forbids smuggling extra outputs.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting set equality without counting duplicates",
+        "asserting length preservation only"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Termination on every input. (Variant 4 stresses witness existence vs uniqueness and forbids smuggling extra outputs.)",
+      "criticality": "supporting"
+    },
+    {
+      "id": "SU4",
+      "description": "Stability is NOT required and should not be asserted. (Variant 4 stresses witness existence vs uniqueness and forbids smuggling extra outputs.)",
+      "criticality": "optional"
+    }
+  ]
+}

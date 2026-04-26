@@ -1,0 +1,32 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "dp_knapsack_01_006",
+  "benchmark_version": "v0.3",
+  "obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (ws : Weights) (vs : Values) (cap : Nat), ws.length = vs.length \u2192 \u2203 (sel : Selection), ValidSelection ws sel \u2227 totalWeight ws sel \u2264 cap \u2227 totalValue vs sel = knapsack01 ws vs cap",
+      "nl_gloss": "When weights and values are length-aligned, there exists a valid feasible selection whose total value equals the returned result.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (ws : Weights) (vs : Values) (cap : Nat) (sel : Selection), ws.length = vs.length \u2192 ValidSelection ws sel \u2192 totalWeight ws sel \u2264 cap \u2192 totalValue vs sel \u2264 knapsack01 ws vs cap",
+      "nl_gloss": "When weights and values are length-aligned, no valid feasible selection beats the returned result.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ]
+}

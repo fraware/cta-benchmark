@@ -1,0 +1,42 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "greedy_interval_scheduling_003",
+  "title": "Maximum-cardinality interval scheduling by earliest finish time",
+  "domain": "greedy",
+  "difficulty": "medium",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given a slice of closed-open intervals [start, end), return the maximum number of mutually non-overlapping intervals selectable from the input.\n\nBenchmark note (greedy_interval_scheduling_003): Variant 3 stresses boundary preconditions and explicit edge-case coverage in the informal contract.\nAuthoring lens: Lens 3 focuses reviewer attention on vacuous universal quantifiers in obligations.",
+    "preconditions": [
+      "for every input interval, start < end"
+    ],
+    "required_properties": [
+      "the returned count equals the size of some subset of pairwise non-overlapping intervals from the input",
+      "no subset of pairwise non-overlapping intervals from the input is strictly larger than the returned count",
+      "intervals sharing only an endpoint (interval i ends where interval j starts) are considered non-overlapping"
+    ],
+    "edge_cases": [
+      "empty input (result is 0)",
+      "all intervals mutually disjoint (result equals len)",
+      "all intervals overlap a common point (result is 1)",
+      "intervals touching at a single endpoint",
+      "many duplicate intervals"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/greedy/greedy_interval_scheduling_003/reference.rs",
+    "entry_fn": "interval_scheduling"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/greedy/greedy_interval_scheduling_003/scaffold.lean",
+    "namespace": "CTA.Benchmark.Greedy.IntervalScheduling003",
+    "reference_obligations_path": "instances/greedy/greedy_interval_scheduling_003/reference_obligations.json",
+    "semantic_units_path": "instances/greedy/greedy_interval_scheduling_003/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/greedy/greedy_interval_scheduling_002/harness.json"
+  }
+}

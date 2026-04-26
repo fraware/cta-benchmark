@@ -1,0 +1,44 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_interval_start_lt_stop {intervals : List (Int × Int)} (h : ∀ iv ∈ intervals, iv.1 < iv.2) : ∀ iv ∈ intervals, iv.1 < iv.2 := by\n  simpa using h",
+      "nl_gloss": "Benchmark precondition: every interval has start < stop (no empty intervals).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_feasible_witness {intervals : List (Int × Int)} (hSU1 : ∀ iv ∈ intervals, iv.1 < iv.2)\n  (k : Nat)\n  (hret : k = interval_scheduling intervals) : ∃ S : List (Int × Int), (S.Nodup) ∧ (S ⊆ intervals) ∧ (pairwise_nonoverlapping S) ∧ (S.length = k)",
+      "nl_gloss": "Feasibility: the returned count is realized by some subset of the input that is pairwise non-overlapping.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU3_maximality {intervals : List (Int × Int)} (hSU1 : ∀ iv ∈ intervals, iv.1 < iv.2)\n  (k : Nat) (hret : k = interval_scheduling intervals) :\n  ∀ T : List (Int × Int), (T ⊆ intervals) → pairwise_nonoverlapping T → T.length ≤ k",
+      "nl_gloss": "Optimality: no pairwise non-overlapping subset of the input has strictly larger size than the returned count.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "auxiliary",
+      "lean_statement": "theorem SU4_endpoint_convention {a b : Int × Int}\n  (ha : a.1 < a.2) (hb : b.1 < b.2) :\n  (a.2 = b.1) → nonoverlapping a b",
+      "nl_gloss": "Endpoint convention: intervals that meet exactly at an endpoint are non-overlapping (half-open [start,end)).",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_empty_input {intervals : List (Int × Int)} (h : intervals = []) : interval_scheduling intervals = 0 := by\n  simpa [h, interval_scheduling]",
+      "nl_gloss": "Empty input yields result 0.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ]
+}

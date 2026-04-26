@@ -1,0 +1,46 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "greedy_interval_scheduling_001",
+  "benchmark_version": "v0.3",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: every interval satisfies start < stop. (V001 baseline.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "allowing start == stop (empty intervals)",
+        "omitting the precondition entirely"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Feasibility: the returned count is witnessed by some subset of the input that is pairwise non-overlapping. (V001 baseline.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only an upper bound",
+        "confusing index selections with value selections"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Optimality: no pairwise non-overlapping subset of the input is strictly larger than the returned count. (V001 baseline.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only feasibility (admits the trivial return 0)"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Endpoint convention: two intervals that share only an endpoint are non-overlapping. (V001 baseline.)",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "using strict inequality instead of non-strict at the boundary"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Empty input: the result is 0 when the input is empty. (V001 baseline.)",
+      "criticality": "optional"
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "benchmark_version": "v0.3",
+  "instance_id": "arrays_max_subarray_001",
+  "system_id": "naive_concat_v1",
+  "domain": "arrays",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.3/instances/arrays/arrays_max_subarray_001",
+  "generated_output_path": "runs/run_2026_04_22_naive_concat_v1_eval_full_001/generated/naive_concat_v1/arrays_max_subarray_001.json",
+  "informal_statement": {
+    "text": "Given a non-empty slice of integers, return the maximum sum over all contiguous non-empty subslices.",
+    "preconditions": [
+      "the input slice is non-empty"
+    ],
+    "required_properties": [
+      "the returned value equals the maximum sum over all contiguous non-empty subslices",
+      "there exist indices i <= j with i < arr.len() and j <= arr.len() such that arr[i..j] sums to the returned value",
+      "no contiguous non-empty subslice sums to a strictly greater value"
+    ],
+    "edge_cases": [
+      "single-element slice",
+      "all negative elements (max is the largest single element)",
+      "all zero elements",
+      "all positive elements (max is the whole slice)",
+      "a single large negative element interleaved among positives"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: the slice is non-empty.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the non-emptiness precondition",
+        "treating the empty-slice case as returning 0"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Existential witness: there is a contiguous non-empty subslice whose sum equals the returned value.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only an upper bound without a witness",
+        "quantifying over subsequences rather than contiguous subslices"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Upper-bound property: no contiguous non-empty subslice sums strictly above the returned value.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "missing the maximality condition",
+        "quantifying only over subslices of a fixed length"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Contiguity constraint: the witness is a contiguous range i..j, not a subsequence.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "allowing gaps in the witnessed indices"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "All-negative case: the result equals the maximum single element when every element is negative.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr), arr ≠ [] → ∃ (i j : Nat), i ≤ j ∧ j ≤ arr.length ∧ i < j ∧ sliceSum arr i j = maxSubarray arr",
+      "nl_gloss": "For any non-empty input, there exists a contiguous non-empty subslice whose sum equals the returned maximum.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr) (i j : Nat), arr ≠ [] → i < j → j ≤ arr.length → sliceSum arr i j ≤ maxSubarray arr",
+      "nl_gloss": "For any non-empty input, no contiguous non-empty subslice has a sum strictly greater than the returned maximum.",
+      "linked_semantic_units": [
+        "SU3",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "theorem precond_nonempty {a : Array Int} (h : a.size > 0) : True",
+      "nl_gloss": "Assume the input slice/array is non-empty (size > 0), matching the task requirement that the slice is non-empty.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "def maxContigSum (xs : List Int) : Int :=\n  maxSubarray xs",
+      "nl_gloss": "Define the mathematical specification: the maximum sum among all contiguous non-empty sublists of the input list.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "def rust_impl_result (xs : List Int) : Int :=\n  maxSubarray xs",
+      "nl_gloss": "Define a pure Lean function that corresponds to the Rust reference implementation’s computed result.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "theorem rust_impl_total (xs : List Int) : ∃ r : Int, rust_impl_result xs = r",
+      "nl_gloss": "The reference implementation is total on non-empty inputs (i.e., it produces an integer result without getting stuck).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "theorem rust_impl_correct_spec {xs : List Int} (h : xs ≠ []) : rust_impl_result xs = maxContigSum xs",
+      "nl_gloss": "The value computed by the Rust implementation equals the specification: the maximum sum over all contiguous non-empty subslices.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSum_is_upper_bound {xs : List Int} (h : xs ≠ []) :\n  ∀ (i j : Nat), i < j ∧ j ≤ xs.length →\n    let sub := xs.drop i |>.take (j - i) in\n    sum sub ≤ maxContigSum xs",
+      "nl_gloss": "For every contiguous non-empty subarray (defined by indices i<j), its sum is ≤ the computed maximum.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSum_attained {xs : List Int} (h : xs ≠ []) :\n  ∃ (i j : Nat), i < j ∧ j ≤ xs.length ∧\n    let sub := xs.drop i |>.take (j - i) in\n    sum sub = maxContigSum xs",
+      "nl_gloss": "There exists at least one contiguous non-empty subarray whose sum equals the maximum.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "theorem maxContigSum_nonempty {xs : List Int} (h : xs ≠ []) :\n  ∃ (i j : Nat), i < j ∧ j ≤ xs.length",
+      "nl_gloss": "Because the input is non-empty, there exists at least one contiguous non-empty subarray to take a maximum over.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "theorem sum_drop_take_matches_subarray {xs : List Int} (i j : Nat)\n  (hi : i < j) (hj : j ≤ xs.length) :\n  sum (xs.drop i |>.take (j - i)) = sum (subarray xs i j)",
+      "nl_gloss": "Ensure the Lean definition of the subarray sum used in the specification matches the intended contiguous subarray notion (drop/take vs an explicit subarray function).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 9,
+      "kind": "unknown",
+      "lean_statement": "theorem kadane_invariant {xs : List Int} (h : xs ≠ []) : True := by\n  trivial",
+      "nl_gloss": "Prove the core loop invariant of the algorithm: the maintained running values correspond to the best (maximum) sums of contiguous subarrays ending at the current position (and/or the best overall so far).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 10,
+      "kind": "unknown",
+      "lean_statement": "theorem rust_impl_final_uses_invariant {xs : List Int} (h : xs ≠ []) : True := by\n  trivial",
+      "nl_gloss": "Use the invariant to conclude that the final returned value equals the global maximum over all contiguous non-empty subarrays.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_001/rust_summary.json"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_length_preserved (arr : List Int) : (mergeSort arr).length = arr.length",
+      "nl_gloss": "The merge sort output has the same length as the input.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_sorted (arr : List Int) : Sorted (· ≤ ·) (mergeSort arr)",
+      "nl_gloss": "The merge sort output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_permutation (arr : List Int) : mergeSort arr ~ arr",
+      "nl_gloss": "The merge sort output is a permutation of the input (same multiset).",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    }
+  ]
+}

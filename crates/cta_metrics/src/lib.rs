@@ -494,6 +494,8 @@ pub fn compute_results_bundle_with_agreement(
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
     use super::*;
     use cta_annotations::{
         AnnotatedObligation, Annotation, ConsistencyLabel, CriticalUnitCoverage, FaithfulnessLabel,

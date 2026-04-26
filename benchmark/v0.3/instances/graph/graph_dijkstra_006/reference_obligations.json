@@ -1,0 +1,63 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "graph_dijkstra_006",
+  "benchmark_version": "v0.3",
+  "obligations": [
+    {
+      "id": "obl_001",
+      "kind": "bounds",
+      "lean_statement": "\u2200 (n source : Nat) (g : Graph), (dijkstra n source g).length = n",
+      "nl_gloss": "The returned distance table has length n.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (n source : Nat) (g : Graph), source < n \u2192 (dijkstra n source g).get? source = some (some 0)",
+      "nl_gloss": "The distance from the source to itself is zero.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "optimality",
+      "lean_statement": "\u2200 (n source v : Nat) (g : Graph) (d : Nat), NonNegativeWeights g \u2192 (dijkstra n source g).get? v = some (some d) \u2192 \u2200 d', PathWeight g source v d' \u2192 d \u2264 d'",
+      "nl_gloss": "When every edge weight is non-negative, if dist[v] == Some(d) then no path from source to v has weight less than d.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU5"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_004",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (n source v : Nat) (g : Graph) (d : Nat), (dijkstra n source g).get? v = some (some d) \u2192 PathWeight g source v d",
+      "nl_gloss": "If dist[v] == Some(d), there exists a path from source to v with total weight d.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_005",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (n source v : Nat) (g : Graph), (dijkstra n source g).get? v = some none \u2192 \u00ac \u2203 d, PathWeight g source v d",
+      "nl_gloss": "If dist[v] == None, there is no path from source to v.",
+      "linked_semantic_units": [
+        "SU6"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ]
+}

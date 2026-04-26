@@ -4,6 +4,8 @@
 //! new template version per the evaluation contract) or a regression in
 //! rendering.
 
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use std::path::PathBuf;
 
 use cta_generate::{PromptContext, PromptKind, PromptTemplate};

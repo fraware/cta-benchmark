@@ -1,0 +1,43 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "trees_bst_insert_003",
+  "title": "Insertion into a binary search tree preserving the BST invariant",
+  "domain": "trees",
+  "difficulty": "easy",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given a binary search tree whose in-order traversal is sorted strictly ascending and an integer key, return a new BST identical to the input on every existing key plus an additional node with the given key, unless the key is already present, in which case the tree is returned unchanged.\n\nBenchmark note (trees_bst_insert_003): BST insertion (variant 3): emphasize strict ordering invariant in inorder traversal after each insert.\nAuthoring lens: Lens 3 catches duplicates policy: decide consistent `<` on left, `>` on right handling.",
+    "preconditions": [
+      "the input tree is a valid BST (in-order traversal is strictly ascending)"
+    ],
+    "required_properties": [
+      "the output tree is a valid BST",
+      "the multiset of keys in the output equals the multiset of keys in the input union {key} if the key was absent, else equals the multiset of keys in the input",
+      "every key present in the input is also present in the output"
+    ],
+    "edge_cases": [
+      "empty input tree",
+      "single-node tree, key less than root",
+      "single-node tree, key greater than root",
+      "single-node tree, key equal to root (unchanged)",
+      "left-leaning chain",
+      "right-leaning chain"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/trees/trees_bst_insert_003/reference.rs",
+    "entry_fn": "bst_insert"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/trees/trees_bst_insert_003/scaffold.lean",
+    "namespace": "CTA.Benchmark.Trees.BstInsert003",
+    "reference_obligations_path": "instances/trees/trees_bst_insert_003/reference_obligations.json",
+    "semantic_units_path": "instances/trees/trees_bst_insert_003/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/trees/trees_bst_insert_002/harness.json"
+  }
+}

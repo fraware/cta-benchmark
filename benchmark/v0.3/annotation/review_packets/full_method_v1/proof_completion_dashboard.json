@@ -1,0 +1,662 @@
+{
+  "benchmark_version": "v0.3",
+  "packets_root": "benchmark/v0.3/annotation/review_packets/full_method_v1",
+  "generated_at": "2026-04-24T15:27:42.6031046Z",
+  "total_packets": 24,
+  "elaborated_packets": 13,
+  "m2_ready_packets": 24,
+  "summary_by_gap_reason": [
+    {
+      "gap_reason": "m2_ready",
+      "count": 24
+    }
+  ],
+  "summary_by_system": [
+    {
+      "system_id": "full_method_v1",
+      "total_packets": 24,
+      "elaborated_packets": 13,
+      "admit_debt": 0
+    }
+  ],
+  "summary_by_family": [
+    {
+      "family": "arrays",
+      "total_packets": 4,
+      "elaborated_packets": 0,
+      "admit_debt": 0
+    },
+    {
+      "family": "dp",
+      "total_packets": 4,
+      "elaborated_packets": 0,
+      "admit_debt": 0
+    },
+    {
+      "family": "graph",
+      "total_packets": 4,
+      "elaborated_packets": 2,
+      "admit_debt": 0
+    },
+    {
+      "family": "greedy",
+      "total_packets": 4,
+      "elaborated_packets": 3,
+      "admit_debt": 0
+    },
+    {
+      "family": "sorting",
+      "total_packets": 4,
+      "elaborated_packets": 4,
+      "admit_debt": 0
+    },
+    {
+      "family": "trees",
+      "total_packets": 4,
+      "elaborated_packets": 4,
+      "admit_debt": 0
+    }
+  ],
+  "wave1_focus_ranked": [
+    {
+      "instance_id": "greedy_interval_scheduling_001",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true
+    },
+    {
+      "instance_id": "greedy_interval_scheduling_002",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true
+    },
+    {
+      "instance_id": "sorting_insertion_sort_001",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true
+    },
+    {
+      "instance_id": "sorting_insertion_sort_002",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true
+    },
+    {
+      "instance_id": "sorting_merge_sort_001",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true
+    },
+    {
+      "instance_id": "sorting_merge_sort_002",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true
+    },
+    {
+      "instance_id": "trees_bst_insert_001",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true
+    },
+    {
+      "instance_id": "trees_bst_insert_002",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true
+    }
+  ],
+  "wave1_next_batch": [],
+  "all_focus_ranked": [
+    {
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "full_method_v1",
+      "family": "arrays",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "full_method_v1",
+      "family": "arrays",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "arrays_max_subarray_001",
+      "system_id": "full_method_v1",
+      "family": "arrays",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "arrays_max_subarray_002",
+      "system_id": "full_method_v1",
+      "family": "arrays",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "dp_knapsack_01_001",
+      "system_id": "full_method_v1",
+      "family": "dp",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "dp_knapsack_01_002",
+      "system_id": "full_method_v1",
+      "family": "dp",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "dp_longest_common_subsequence_001",
+      "system_id": "full_method_v1",
+      "family": "dp",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "dp_longest_common_subsequence_002",
+      "system_id": "full_method_v1",
+      "family": "dp",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "graph_bfs_shortest_path_001",
+      "system_id": "full_method_v1",
+      "family": "graph",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "graph_bfs_shortest_path_002",
+      "system_id": "full_method_v1",
+      "family": "graph",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "graph_dijkstra_001",
+      "system_id": "full_method_v1",
+      "family": "graph",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "graph_dijkstra_002",
+      "system_id": "full_method_v1",
+      "family": "graph",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "greedy_coin_change_canonical_001",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "greedy_coin_change_canonical_002",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "greedy_interval_scheduling_001",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "greedy_interval_scheduling_002",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "sorting_insertion_sort_001",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "sorting_insertion_sort_002",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "sorting_merge_sort_001",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "sorting_merge_sort_002",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "trees_bst_insert_001",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "trees_bst_insert_002",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "trees_lowest_common_ancestor_001",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    },
+    {
+      "instance_id": "trees_lowest_common_ancestor_002",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "m2_ready": true,
+      "gap_reason": "m2_ready"
+    }
+  ],
+  "all_next_candidates": [],
+  "all_next_batch": [],
+  "strict_m1_violations": [],
+  "rows": [
+    {
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "full_method_v1",
+      "family": "arrays",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/arrays_binary_search_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "full_method_v1",
+      "family": "arrays",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/arrays_binary_search_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "arrays_max_subarray_001",
+      "system_id": "full_method_v1",
+      "family": "arrays",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/arrays_max_subarray_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "arrays_max_subarray_002",
+      "system_id": "full_method_v1",
+      "family": "arrays",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/arrays_max_subarray_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "dp_knapsack_01_001",
+      "system_id": "full_method_v1",
+      "family": "dp",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/dp_knapsack_01_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "dp_knapsack_01_002",
+      "system_id": "full_method_v1",
+      "family": "dp",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/dp_knapsack_01_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "dp_longest_common_subsequence_001",
+      "system_id": "full_method_v1",
+      "family": "dp",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "dp_longest_common_subsequence_002",
+      "system_id": "full_method_v1",
+      "family": "dp",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/dp_longest_common_subsequence_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "graph_bfs_shortest_path_001",
+      "system_id": "full_method_v1",
+      "family": "graph",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "graph_bfs_shortest_path_002",
+      "system_id": "full_method_v1",
+      "family": "graph",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/graph_bfs_shortest_path_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "graph_dijkstra_001",
+      "system_id": "full_method_v1",
+      "family": "graph",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/graph_dijkstra_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "graph_dijkstra_002",
+      "system_id": "full_method_v1",
+      "family": "graph",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/graph_dijkstra_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "greedy_coin_change_canonical_001",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "elaborated": false,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/greedy_coin_change_canonical_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "greedy_coin_change_canonical_002",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/greedy_coin_change_canonical_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "greedy_interval_scheduling_001",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/greedy_interval_scheduling_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "greedy_interval_scheduling_002",
+      "system_id": "full_method_v1",
+      "family": "greedy",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/greedy_interval_scheduling_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "sorting_insertion_sort_001",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/sorting_insertion_sort_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "sorting_insertion_sort_002",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/sorting_insertion_sort_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "sorting_merge_sort_001",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/sorting_merge_sort_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "sorting_merge_sort_002",
+      "system_id": "full_method_v1",
+      "family": "sorting",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/sorting_merge_sort_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "trees_bst_insert_001",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/trees_bst_insert_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "trees_bst_insert_002",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/trees_bst_insert_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "trees_lowest_common_ancestor_001",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_001/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    },
+    {
+      "instance_id": "trees_lowest_common_ancestor_002",
+      "system_id": "full_method_v1",
+      "family": "trees",
+      "elaborated": true,
+      "admit_count": 0,
+      "proof_mode": "definition_backed",
+      "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/trees_lowest_common_ancestor_002/lean_diagnostics.json",
+      "diagnostics_exists": true,
+      "m2_ready": true,
+      "gap_reason": "m2_ready",
+      "m1_violations": []
+    }
+  ]
+}

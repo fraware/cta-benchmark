@@ -1,0 +1,3656 @@
+{
+  "schema_version": "schema_v1",
+  "rubric_version": "rubric_v1",
+  "benchmark_version": "v0.3",
+  "split": "eval",
+  "records": [
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_binary_search_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "arrays_max_subarray_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_knapsack_01_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "dp_longest_common_subsequence_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_bfs_shortest_path_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "graph_dijkstra_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_coin_change_canonical_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "greedy_interval_scheduling_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_insertion_sort_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "sorting_merge_sort_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_bst_insert_007",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_004",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_004",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_004",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_004",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_005",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_005",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_005",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_005",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_006",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_006",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_006",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_006",
+      "system_id": "full_method_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_007",
+      "system_id": "text_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_007",
+      "system_id": "code_only_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_007",
+      "system_id": "naive_concat_v1"
+    },
+    {
+      "schema_version": "schema_v1",
+      "rubric_version": "rubric_v1",
+      "annotator_id": "skeleton_v03_coverage",
+      "set_level_scores": {
+        "semantic_faithfulness": 0.0,
+        "code_consistency": 0.0,
+        "vacuity_rate": 0.0,
+        "proof_utility": 0.0
+      },
+      "critical_unit_coverage": {
+        "covered": [],
+        "missed": []
+      },
+      "generated_obligations": [],
+      "annotator_notes": "Skeleton row for v0.3 eval coverage gate; replace with adjudicated payload.",
+      "instance_id": "trees_lowest_common_ancestor_007",
+      "system_id": "full_method_v1"
+    }
+  ]
+}

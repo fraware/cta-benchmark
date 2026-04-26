@@ -1,0 +1,19 @@
+{
+  "schema_version": "schema_v1",
+  "harness_type": "reference_relational",
+  "seed": 314,
+  "num_trials": 150,
+  "input_generator": {
+    "kind": "adj_list",
+    "min_n": 1,
+    "max_n": 20,
+    "max_out_degree": 4
+  },
+  "oracle_checks": [
+    "dist_length_matches_n",
+    "dist_source_is_zero",
+    "dist_matches_fw_unweighted",
+    "unreachable_iff_no_path"
+  ],
+  "timeout_ms": 4000
+}

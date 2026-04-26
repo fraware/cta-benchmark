@@ -1,0 +1,46 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzzz_695",
+  "system_id": "code_only_v1",
+  "instance_id": "sorting_merge_sort_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 1939,
+    "prompt_tokens": 1199,
+    "completion_tokens": 243
+  },
+  "raw_output_path": "generated/code_only_v1/raw/sorting_merge_sort_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_length_preserved (arr : List Int) : (mergeSort arr).length = arr.length",
+      "nl_gloss": "The merge sort output has the same length as the input.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_sorted (arr : List Int) : Sorted (· ≤ ·) (mergeSort arr)",
+      "nl_gloss": "The merge sort output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_permutation (arr : List Int) : mergeSort arr ~ arr",
+      "nl_gloss": "The merge sort output is a permutation of the input (same multiset).",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:17c74954985cd9f67673f01b8f844bec6a053c66310cddac91d78f1621a2f2ce",
+  "seed": 95
+}

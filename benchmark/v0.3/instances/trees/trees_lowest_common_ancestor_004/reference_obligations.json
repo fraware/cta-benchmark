@@ -1,0 +1,42 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "trees_lowest_common_ancestor_004",
+  "benchmark_version": "v0.3",
+  "obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (t : Tree) (p q a : Int), IsBst t \u2192 HasKey t p \u2192 HasKey t q \u2192 lcaBst t p q = some a \u2192 \u2203 sub : Tree, IsSubtree sub t \u2227 (match sub with | Tree.nil => False | Tree.node _ k _ => k = a) \u2227 HasKey sub p \u2227 HasKey sub q",
+      "nl_gloss": "When the input is a BST containing both query keys, the returned key is the root of a subtree containing both queries.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (t : Tree) (p q a : Int), IsBst t \u2192 HasKey t p \u2192 HasKey t q \u2192 lcaBst t p q = some a \u2192 \u2200 (sub : Tree), IsProperSubtree sub t \u2192 (match sub with | Tree.nil => True | Tree.node _ k _ => k = a \u2192 False) \u2192 HasKey sub p \u2192 HasKey sub q \u2192 False",
+      "nl_gloss": "When the input is a BST containing both query keys, no proper subtree that is not rooted at the returned key contains both queries and sits strictly below the LCA.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (t : Tree) (p : Int), IsBst t \u2192 HasKey t p \u2192 lcaBst t p p = some p",
+      "nl_gloss": "When the input is a BST containing the key, the LCA of a key with itself is that key.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    }
+  ]
+}

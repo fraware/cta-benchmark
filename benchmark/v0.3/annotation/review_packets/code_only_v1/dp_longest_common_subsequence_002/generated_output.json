@@ -1,0 +1,39 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_23_code_only_v1_eval_zzzzzzzzzzzz_900",
+  "system_id": "code_only_v1",
+  "instance_id": "dp_longest_common_subsequence_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 6008,
+    "prompt_tokens": 1275,
+    "completion_tokens": 762
+  },
+  "raw_output_path": "generated/code_only_v1/raw/dp_longest_common_subsequence_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_lcs_witness_indices (a b : List Int) :\n  let k := lcs_length a b\n  ? ia ib : List Nat, ia.length = k ? ib.length = k ? StrictlyIncreasing ia ? StrictlyIncreasing ib ? (? t : Nat, t < k ? a[ia.get! t]! = b[ib.get! t]!)",
+      "nl_gloss": "Witness via strictly increasing index selections (non-contiguous subsequence semantics).",
+      "linked_semantic_units": [
+        "SU2",
+        "SU4"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU3_lcs_maximality (a b : List Int) :\n  let k := lcs_length a b\n  ? m : Nat, (? ia ib : List Nat, ia.length = m ? ib.length = m ? StrictlyIncreasing ia ? StrictlyIncreasing ib ? (? t : Nat, t < m ? a[ia.get! t]! = b[ib.get! t]!)) ? m = k",
+      "nl_gloss": "No common subsequence defined by increasing indices is longer than returned length.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:86192fd679f3d11ec0ab1bd818e7b855a2ff03b79cc79c226908a5c116532155",
+  "seed": 123
+}

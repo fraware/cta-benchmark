@@ -1,0 +1,48 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "trees_lowest_common_ancestor_005",
+  "benchmark_version": "v0.3",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "BST precondition: the input tree is a valid BST. (LCA on BST keys (variant 5): emphasize equal keys and boundary comparisons.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the BST precondition and solving general-tree LCA",
+        "assuming strict ordering within equal keys"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Presence precondition: both query keys are present in the tree. (LCA on BST keys (variant 5): emphasize equal keys and boundary comparisons.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the presence precondition",
+        "returning None silently when a key is missing"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Ancestor property: both query keys lie in the subtree rooted at the returned key. (LCA on BST keys (variant 5): emphasize equal keys and boundary comparisons.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "returning any common ancestor instead of the lowest one",
+        "confusing descendant with ancestor"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Lowest: no proper descendant of the returned node contains both keys. (LCA on BST keys (variant 5): emphasize equal keys and boundary comparisons.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "returning the root unconditionally",
+        "using LCA of general trees (parent-pointer style) semantics"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Key equality case: when p == q, the LCA is that same key. (LCA on BST keys (variant 5): emphasize equal keys and boundary comparisons.)",
+      "criticality": "supporting"
+    }
+  ]
+}

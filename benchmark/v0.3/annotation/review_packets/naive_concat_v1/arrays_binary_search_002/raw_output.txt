@@ -1,0 +1,36 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_sorted_nondec {arr : Array Int} : SortedNondecreasing (arr.toList) -> True",
+      "nl_gloss": "Benchmark-facing: the input slice must be sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_some_implies_bounds_and_eq {arr : Array Int} {target : Int} {i : Nat} : SortedNondecreasing (arr.toList) -> binary_search arr target = some i -> i < arr.size -> arr[i] = target",
+      "nl_gloss": "If the function returns Some(i), then i is within bounds and arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_none_implies_absent {arr : Array Int} {target : Int} : SortedNondecreasing (arr.toList) -> binary_search arr target = none -> ¬ (∃ i : Nat, i < arr.size ∧ arr[i] = target)",
+      "nl_gloss": "If the function returns None, then the target does not occur anywhere in the array.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem SU4_binary_search_terminates {arr : Array Int} {target : Int} : SortedNondecreasing (arr.toList) -> Terminates (binary_search arr target)",
+      "nl_gloss": "The binary search loop terminates (the search interval shrinks each iteration).",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    }
+  ]
+}

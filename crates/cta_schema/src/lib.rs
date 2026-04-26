@@ -277,6 +277,7 @@ impl SchemaRegistry {
         self.validate_with_path(name, &value, path)
     }
 
+    #[allow(clippy::expect_used)] // invariant: `load` populated `compiled` for every `SchemaName`
     fn validate_with_path(&self, name: SchemaName, value: &Value, path: &Path) -> Result<()> {
         let schema = self
             .compiled
@@ -301,6 +302,8 @@ impl SchemaRegistry {
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
     use super::*;
 
     fn schema_root() -> PathBuf {

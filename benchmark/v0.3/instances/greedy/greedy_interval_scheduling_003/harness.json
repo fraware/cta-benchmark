@@ -1,0 +1,21 @@
+{
+  "schema_version": "schema_v1",
+  "harness_type": "reference_relational",
+  "seed": 7,
+  "num_trials": 100,
+  "input_generator": {
+    "kind": "interval_vec",
+    "min_len": 0,
+    "max_len": 16,
+    "coordinate_range": [
+      0,
+      30
+    ]
+  },
+  "oracle_checks": [
+    "result_matches_exhaustive_oracle",
+    "result_at_most_input_length",
+    "result_nonnegative"
+  ],
+  "timeout_ms": 4000
+}

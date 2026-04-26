@@ -1,0 +1,94 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "dp_knapsack_01_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 8966,
+    "prompt_tokens": 171,
+    "completion_tokens": 1286
+  },
+  "raw_output_path": "generated/text_only_v1/raw/dp_knapsack_01_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem knapsack_spec (weights values : List Nat) (capacity : Nat)\n  (hlen : weights.length = values.length)\n  (hnonneg : True) : True := by trivial",
+      "nl_gloss": "Set up the problem with equal-length lists of non-negative weights and values and a non-negative capacity.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def feasibleSubsets (weights values : List Nat) (capacity : Nat) : Set (List Nat) :=\n  { idxs |\n    let n := weights.length\n    idxs.Nodup ∧\n    idxs ⊆ List.range n ∧\n    (sum (idxs.map (fun i => weights.getD i 0))) ≤ capacity ∧\n    (sum (idxs.map (fun i => values.getD i 0))) ≥ 0 }",
+      "nl_gloss": "Define what it means for a subset (represented by distinct indices) to be feasible: indices are within bounds, no repeats, and total weight is within capacity.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def subsetValue (weights values : List Nat) (idxs : List Nat) : Nat :=\n  sum (idxs.map (fun i => values.getD i 0))",
+      "nl_gloss": "Define the total value of a chosen subset (by indices).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def subsetWeight (weights values : List Nat) (idxs : List Nat) : Nat :=\n  sum (idxs.map (fun i => weights.getD i 0))",
+      "nl_gloss": "Define the total weight of a chosen subset (by indices).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def knapsackAnswer (weights values : List Nat) (capacity : Nat) : Nat :=\n  sSup ( { subsetValue weights values idxs | idxs ∈ feasibleSubsets weights values capacity } )",
+      "nl_gloss": "Define the intended output as the maximum total value among all feasible subsets.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem feasible_empty (weights values : List Nat) (capacity : Nat) :\n  [] ∈ feasibleSubsets weights values capacity := by\n  simp [feasibleSubsets, subsetWeight, subsetValue]",
+      "nl_gloss": "The empty subset is feasible (weight 0 ≤ capacity), so the maximum is well-defined.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem knapsackAnswer_is_upper_bound (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  subsetValue weights values idxs ≤ knapsackAnswer weights values capacity := by\n  -- follows from definition as supremum/maximum over feasible values\n  admit",
+      "nl_gloss": "Any feasible subset’s total value is ≤ the returned answer.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem knapsackAnswer_attains (weights values : List Nat) (capacity : Nat) :\n  ∃ idxs : List Nat,\n    idxs ∈ feasibleSubsets weights values capacity ∧\n    subsetValue weights values idxs = knapsackAnswer weights values capacity := by\n  -- for Nat, supremum over a finite set is attained\n  admit",
+      "nl_gloss": "There exists a feasible subset whose value equals the returned maximum.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem feasible_implies_each_item_used_at_most_once (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  idxs.Nodup := by\n  simpa [feasibleSubsets] using (by\n    have := (show idxs ∈ feasibleSubsets weights values capacity from hfeas)\n    simpa [feasibleSubsets] using this)",
+      "nl_gloss": "Feasibility enforces that each item index appears at most once (no repeated selection).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem feasible_implies_weight_le_capacity (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  subsetWeight weights values idxs ≤ capacity := by\n  simpa [feasibleSubsets, subsetWeight] using (by\n    have := (show idxs ∈ feasibleSubsets weights values capacity from hfeas)\n    simpa [feasibleSubsets] using this)",
+      "nl_gloss": "Any feasible subset respects the capacity constraint on total weight.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem feasible_implies_indices_within_length (weights values : List Nat) (capacity : Nat)\n  (idxs : List Nat) (hfeas : idxs ∈ feasibleSubsets weights values capacity) :\n  let n := weights.length\n  idxs ⊆ List.range n := by\n  simpa [feasibleSubsets] using (by\n    have := (show idxs ∈ feasibleSubsets weights values capacity from hfeas)\n    simpa [feasibleSubsets] using this)",
+      "nl_gloss": "Chosen indices correspond to valid items within the list length.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem knapsack_correct_for_equal_lengths (weights values : List Nat) (capacity : Nat)\n  (hlen : weights.length = values.length) :\n  knapsackAnswer weights values capacity =\n    sSup ( { subsetValue weights values idxs | idxs.Nodup ∧ idxs ⊆ List.range weights.length ∧ subsetWeight weights values idxs ≤ capacity } ) := by\n  -- show feasibleSubsets matches the intended constraints when lengths agree\n  admit",
+      "nl_gloss": "When weights and values have equal length, the feasibility definition matches the intended subset constraints over items.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:a39dd36ee459c77b6cad81e95b4a69a64232f664b1249c2562d1794e8c6f88e0",
+  "seed": 3
+}

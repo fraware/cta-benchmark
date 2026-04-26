@@ -1,0 +1,46 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "graph_bfs_shortest_path_004",
+  "title": "Breadth-first search shortest path length in an unweighted directed graph",
+  "domain": "graph",
+  "difficulty": "easy",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given an unweighted directed graph represented by an adjacency list of n vertices and a source vertex, return a vector dist of length n where dist[v] is Some(k) if the shortest path from source to v uses k edges, and None if v is unreachable.\n\nBenchmark note (graph_bfs_shortest_path_004): BFS distance table (variant 4): emphasize handling of parallel edges and duplicate enqueues without breaking shortest counts.\nAuthoring lens: Lens 4 targets specifications that accidentally allow counting non-simple walks or double-counting hop length.",
+    "preconditions": [
+      "n >= 1",
+      "0 <= source < n",
+      "every neighbor index is in [0, n)"
+    ],
+    "required_properties": [
+      "dist has length n",
+      "dist[source] == Some(0)",
+      "if dist[v] == Some(k), there is a directed path from source to v using exactly k edges",
+      "if dist[v] == Some(k), no directed path from source to v uses fewer than k edges",
+      "if dist[v] == None, there is no directed path from source to v"
+    ],
+    "edge_cases": [
+      "graph with a single vertex and no edges",
+      "fully disconnected graph (source isolated)",
+      "cycles on the shortest path",
+      "parallel edges (duplicate neighbors)",
+      "self-loop on the source"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/graph/graph_bfs_shortest_path_004/reference.rs",
+    "entry_fn": "bfs_shortest_path"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/graph/graph_bfs_shortest_path_004/scaffold.lean",
+    "namespace": "CTA.Benchmark.Graph.BfsShortestPath004",
+    "reference_obligations_path": "instances/graph/graph_bfs_shortest_path_004/reference_obligations.json",
+    "semantic_units_path": "instances/graph/graph_bfs_shortest_path_004/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/graph/graph_bfs_shortest_path_002/harness.json"
+  }
+}

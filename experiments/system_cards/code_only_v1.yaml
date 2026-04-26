@@ -1,0 +1,33 @@
+# Machine-readable system card: code_only_v1
+schema_version: system_card_v1
+system_id: code_only_v1
+model:
+  name: "gpt-4.1"
+  version: "2025-04-14"
+provider:
+  id: "openai"
+  endpoint: "https://api.openai.com/v1/chat/completions"
+prompt_template_path: "configs/prompts/code_only_v1.json"
+visible_context_fields:
+  - problem_summary
+  - rust_summary
+sampling:
+  temperature: 0.0
+  top_p: 1.0
+  max_output_tokens: 2048
+num_samples_per_instance: 3
+selection_rule: "first_parseable_json_object; tie-break lowest obligation count then lexicographic raw text"
+post_processing_pipeline:
+  - "strip_markdown_fences"
+  - "parse_json_obligations"
+  - "normalize_obligation_shape"
+  - "cta_schema_validate_results_bundle"
+token_budget:
+  max_context_tokens: 12000
+  max_output_tokens: 2048
+estimated_cost_usd_per_1k_instances: 0.0
+runtime_notes: "dominated by provider latency; offline stub runs in milliseconds per instance"
+output_schema: "results_bundle.schema_v1 (see schemas/)"
+reference_obligations_visible: false
+scaffold_visible: true
+notes: "Costs are run-specific; fill from provider billing after each wave."

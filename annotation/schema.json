@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cta-benchmark.local/schema/annotation_packet_row_v1.json",
+  "title": "CTA annotation row (one row per packet per annotator pass)",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "packet_id",
+    "instance_id",
+    "annotator_id",
+    "pass",
+    "semantic_faithfulness_1_4",
+    "code_consistency_1_4",
+    "proof_utility_1_4",
+    "vacuity_rate",
+    "vacuous_obligation_ids",
+    "coverage_label",
+    "notes"
+  ],
+  "properties": {
+    "schema_version": { "const": "annotation_row_v1" },
+    "packet_id": { "type": "string" },
+    "instance_id": { "type": "string" },
+    "system_blind_label": { "type": "string" },
+    "annotator_id": { "type": "string" },
+    "pass": { "type": "string", "enum": ["first", "second", "adjudication"] },
+    "semantic_faithfulness_1_4": { "type": "integer", "minimum": 1, "maximum": 4 },
+    "code_consistency_1_4": { "type": "integer", "minimum": 1, "maximum": 4 },
+    "proof_utility_1_4": { "type": "integer", "minimum": 1, "maximum": 4 },
+    "vacuity_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+    "vacuous_obligation_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "coverage_label": {
+      "type": "string",
+      "enum": ["full", "partial", "failed"]
+    },
+    "notes": { "type": "string" }
+  }
+}

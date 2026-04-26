@@ -1,0 +1,46 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "greedy_coin_change_canonical_007",
+  "benchmark_version": "v0.3",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "Canonicality precondition: the denomination system must be canonical (greedy yields the optimal count). (Variant 7 stresses cross-family confusion: obligations must reference this instance's types and entry point only.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the canonicality precondition",
+        "assuming greedy is always optimal for any denomination system"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Alignment: the output counts vector has the same length as denoms. (Variant 7 stresses cross-family confusion: obligations must reference this instance's types and entry point only.)",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "returning a variable-length vector",
+        "dropping trailing zero entries"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Decomposition: sum(counts[i] * denoms[i]) equals amount. (Variant 7 stresses cross-family confusion: obligations must reference this instance's types and entry point only.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating sum(counts) = amount instead of the weighted sum"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Optimality: sum(counts) is minimal among all valid decompositions. (Variant 7 stresses cross-family confusion: obligations must reference this instance's types and entry point only.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only feasibility; admits the zero-count no-op on amount=0 but not in general"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Non-negativity: every count entry is non-negative. (Variant 7 stresses cross-family confusion: obligations must reference this instance's types and entry point only.)",
+      "criticality": "supporting"
+    }
+  ]
+}

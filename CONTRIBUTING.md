@@ -39,6 +39,7 @@ cargo test --workspace --doc
 cargo run -p cta_cli -- validate schemas
 cargo run -p cta_cli -- validate benchmark --version v0.1 --release
 cargo run -p cta_cli -- validate benchmark --version v0.2 --release
+cargo run -p cta_cli -- validate benchmark --version v0.3 --release
 
 # 3b. paper-track annotation/packaging flow (v0.2)
 cargo run -p cta_cli -- annotate plan --benchmark-version v0.2 --experiment-config configs/experiments/benchmark_v1.json --out benchmark/v0.2/annotation/task_board
@@ -67,6 +68,10 @@ cd ..
 #   cargo run -p cta_cli -- validate benchmark --version v0.1 --release
 cargo run -p cta_cli -- benchmark lint --version v0.1
 cargo run -p cta_cli -- benchmark lint --version v0.2
+cargo run -p cta_cli -- benchmark lint --version v0.3 --release
+
+# 3f. v0.3 gold audit workbook (regenerate skeleton CSVs from eval split)
+cargo run -p cta_cli -- benchmark audit-workbook --version v0.3
 
 # 3e. review-packet Lean proof status (when touching review `packet.json`,
 #     `scaffold.lean` copies, `lean/CTA/Benchmark/**` used by packets, or
@@ -129,8 +134,9 @@ cargo audit --deny warnings
 - [ ] `cargo clippy --workspace --all-targets --no-deps` zero errors.
 - [ ] `cargo test --workspace --all-targets` and
       `cargo test --workspace --doc` green.
-- [ ] `cta validate schemas` and `cta validate benchmark --version <v>`
-      pass.
+- [ ] `cta validate schemas` and
+      `cta validate benchmark --version <v> --release` for every benchmark
+      version your PR touches (for example `v0.1`, `v0.2`, and/or `v0.3`).
 - [ ] Supply-chain gates (`cargo deny check`, `cargo audit`) unchanged
       or improved.
 - [ ] No placeholder prose; every comment describes intent, trade-off,

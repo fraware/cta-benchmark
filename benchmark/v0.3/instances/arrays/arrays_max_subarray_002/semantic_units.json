@@ -1,0 +1,47 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "arrays_max_subarray_002",
+  "benchmark_version": "v0.3",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: the slice is non-empty. (V002 paired control.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the non-emptiness precondition",
+        "treating the empty-slice case as returning 0"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Existential witness: there is a contiguous non-empty subslice whose sum equals the returned value. (V002 paired control.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only an upper bound without a witness",
+        "quantifying over subsequences rather than contiguous subslices"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Upper-bound property: no contiguous non-empty subslice sums strictly above the returned value. (V002 paired control.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "missing the maximality condition",
+        "quantifying only over subslices of a fixed length"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Contiguity constraint: the witness is a contiguous range i..j, not a subsequence. (V002 paired control.)",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "allowing gaps in the witnessed indices"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "All-negative case: the result equals the maximum single element when every element is negative. (V002 paired control.)",
+      "criticality": "optional"
+    }
+  ]
+}

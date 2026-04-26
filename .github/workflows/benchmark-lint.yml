@@ -54,6 +54,12 @@ jobs:
       - name: benchmark lint v0.1 (authoring heuristics, strict)
         run: cargo run -p cta_cli --quiet -- benchmark lint --version v0.1 --strict-authoring --json
 
+      - name: validate benchmark v0.3 (release coherence)
+        run: cargo run -p cta_cli --quiet -- validate benchmark --version v0.3 --release
+
+      - name: benchmark lint v0.3 (release coherence)
+        run: cargo run -p cta_cli --quiet -- benchmark lint --version v0.3 --release --json
+
       - name: verify review packets (v0.2 committed tree)
         run: |
           cargo run -p cta_cli --quiet -- annotate verify-review-packets \

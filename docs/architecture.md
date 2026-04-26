@@ -31,6 +31,11 @@ rules that keep the repository on-mission.
                            lean/ project   runs/
 ```
 
+`experiments/system_cards/` holds machine-readable YAML cards for the four
+evaluation systems (`text_only_v1`, `code_only_v1`, `naive_concat_v1`,
+`full_method_v1`); experiment JSON under `configs/experiments/` references the
+same system ids.
+
 ## Crate boundaries
 
 Hard rule: no upward dependency edges. Each crate depends only on crates

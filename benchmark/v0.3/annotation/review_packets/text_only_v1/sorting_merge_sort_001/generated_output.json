@@ -1,0 +1,46 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "sorting_merge_sort_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4765,
+    "prompt_tokens": 146,
+    "completion_tokens": 288
+  },
+  "raw_output_path": "generated/text_only_v1/raw/sorting_merge_sort_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "def sortSlice (s : Array Int) : Array Int := s.qsort (· ≤ ·)",
+      "nl_gloss": "Define the intended function that returns a sorted array (nondecreasing order) from the input slice.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem sortSlice_sorted (s : Array Int) : Sorted (· ≤ ·) (sortSlice s) := by\n  simpa [sortSlice] using s.qsort_sorted (· ≤ ·)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem sortSlice_perm (s : Array Int) : sortSlice s ~ s := by\n  simpa [sortSlice] using s.qsort_perm (· ≤ ·)",
+      "nl_gloss": "The output contains exactly the same multiset of elements as the input (i.e., it is a permutation of the input).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem sortSlice_multiset (s : Array Int) : (sortSlice s).toMultiset = s.toMultiset := by\n  simpa [Array.toMultiset] using (sortSlice_perm s).toMultiset_eq",
+      "nl_gloss": "Equivalently, the output and input have equal multisets of elements.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:60e54d08f80626e2c590c637983dd70e82eca8536bb3752a4843fc747878ff2f",
+  "seed": 3
+}

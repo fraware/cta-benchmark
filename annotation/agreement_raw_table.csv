@@ -1,0 +1,7 @@
+packet_id,dim,rater_a,rater_b,agree
+example_packet_001,semantic_faithfulness,3,2,0
+example_packet_001,code_consistency,3,3,1
+example_packet_001,proof_utility,2,3,0
+example_packet_002,semantic_faithfulness,4,4,1
+example_packet_002,code_consistency,4,3,0
+example_packet_002,proof_utility,4,4,1

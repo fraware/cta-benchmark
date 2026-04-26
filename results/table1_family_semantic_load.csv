@@ -1,0 +1,13 @@
+family,instances,semantic_units_total,critical_units_sum
+arrays_binary_search,7,35,21
+arrays_max_subarray,7,35,21
+dp_knapsack_01,7,35,28
+dp_longest_common_subsequence,7,35,21
+graph_bfs_shortest_path,7,35,35
+graph_dijkstra,7,49,42
+greedy_coin_change_canonical,7,35,21
+greedy_interval_scheduling,7,35,21
+sorting_insertion_sort,7,28,14
+sorting_merge_sort,7,28,21
+trees_bst_insert,7,28,21
+trees_lowest_common_ancestor,7,35,28

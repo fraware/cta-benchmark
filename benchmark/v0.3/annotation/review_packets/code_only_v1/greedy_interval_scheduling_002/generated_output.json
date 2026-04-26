@@ -1,0 +1,54 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_23_code_only_v1_eval_zzzzzzzzzzzz_900",
+  "system_id": "code_only_v1",
+  "instance_id": "greedy_interval_scheduling_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 6513,
+    "prompt_tokens": 1205,
+    "completion_tokens": 660
+  },
+  "raw_output_path": "generated/code_only_v1/raw/greedy_interval_scheduling_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_feasible_witness {intervals : List (Int * Int)} (hSU1 : forall iv, List.Mem iv intervals -> iv.1 < iv.2) :\n  exists S : List (Int * Int), (forall iv, List.Mem iv S -> List.Mem iv intervals) /\\ pairwise_nonoverlapping S /\\ S.length = interval_scheduling intervals",
+      "nl_gloss": "Returned count is witnessed by a feasible subset.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU3_maximality {intervals : List (Int * Int)} (hSU1 : forall iv, List.Mem iv intervals -> iv.1 < iv.2) :\n  forall T : List (Int * Int), (forall iv, List.Mem iv T -> List.Mem iv intervals) -> pairwise_nonoverlapping T -> T.length <= interval_scheduling intervals",
+      "nl_gloss": "No feasible subset is larger.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "auxiliary",
+      "lean_statement": "theorem SU4_endpoint_convention (a b c d : Int) : b <= c -> nonoverlapping (a,b) (c,d)",
+      "nl_gloss": "Endpoint-touching intervals are non-overlapping.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_empty_input : interval_scheduling ([] : List (Int \u00d7 Int)) = 0",
+      "nl_gloss": "Empty-input theorem.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:b876da847d188d6fa209ef26b11b4893b790f11f0524b79816f82bb236212aaa",
+  "seed": 123
+}

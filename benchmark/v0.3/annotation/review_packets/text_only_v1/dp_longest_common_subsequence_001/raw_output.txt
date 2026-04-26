@@ -1,0 +1,49 @@
+{
+  "obligations": [
+    {
+      "kind": "definition",
+      "lean_statement": "def lcsLen (a b : List Int) : Nat := sorry",
+      "nl_gloss": "Define the function that returns the length of the longest common subsequence between lists a and b."
+    },
+    {
+      "kind": "specification (subsequence predicate)",
+      "lean_statement": "def IsSubseq (s t : List Int) : Prop := ∃ (pref suf : List Int), t = pref ++ s ++ suf ∧ True",
+      "nl_gloss": "Provide a predicate capturing that s is a subsequence of t (not necessarily contiguous) in the same relative order."
+    },
+    {
+      "kind": "specification (subsequence predicate correctness)",
+      "lean_statement": "∀ s t : List Int, IsSubseq s t ↔ (∃ f : Fin s.length → Fin t.length, (∀ i, f i < t.length) ∧ (∀ i j, i < j → f i < f j) ∧ (∀ i, s.nthLe i (by simp) = t.nthLe (f i) (by simp)))",
+      "nl_gloss": "Characterize subsequence by an order-preserving index embedding from s into t."
+    },
+    {
+      "kind": "upper bound",
+      "lean_statement": "∀ s : List Int, IsSubseq s a → IsSubseq s b → s.length ≤ lcsLen a b",
+      "nl_gloss": "Any common subsequence s of a and b has length at most the returned value."
+    },
+    {
+      "kind": "existence of an optimal subsequence",
+      "lean_statement": "∃ s : List Int, IsSubseq s a ∧ IsSubseq s b ∧ s.length = lcsLen a b",
+      "nl_gloss": "There exists a common subsequence whose length equals the returned value."
+    },
+    {
+      "kind": "maximality (equivalent characterization)",
+      "lean_statement": "∀ n : Nat, (∃ s : List Int, IsSubseq s a ∧ IsSubseq s b ∧ s.length = n) → n ≤ lcsLen a b",
+      "nl_gloss": "The returned length is the maximum length among all common subsequences."
+    },
+    {
+      "kind": "base cases",
+      "lean_statement": "lcsLen [] b = 0 ∧ lcsLen a [] = 0",
+      "nl_gloss": "If either input list is empty, the longest common subsequence length is 0."
+    },
+    {
+      "kind": "recurrence (matching last elements)",
+      "lean_statement": "∀ a b : List Int, ∀ x y : Int, a = aInit ++ [x] → b = bInit ++ [y] → x = y → lcsLen a b = lcsLen aInit bInit + 1",
+      "nl_gloss": "If the last elements of both lists are equal, the optimal length increases by 1 over the prefixes."
+    },
+    {
+      "kind": "recurrence (non-matching last elements)",
+      "lean_statement": "∀ a b : List Int, ∀ x y : Int, a = aInit ++ [x] → b = bInit ++ [y] → x ≠ y → lcsLen a b = Nat.max (lcsLen aInit b) (lcsLen a bInit)",
+      "nl_gloss": "If the last elements differ, the optimal length is the maximum of dropping one last element from either list."
+    }
+  ]
+}

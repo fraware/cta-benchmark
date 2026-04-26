@@ -23,6 +23,7 @@ use crate::loader::LoadedBenchmark;
 
 /// Run every authoring heuristic over a loaded benchmark and append
 /// findings to `issues`.
+#[allow(clippy::expect_used)] // fixed authoring patterns; failure is a programmer error
 pub fn check_authoring(b: &LoadedBenchmark, issues: &mut Vec<LintIssue>) {
     let vacuous_exists = Regex::new(r"∃\s*[^,]+,[^=]*=").expect("valid regex");
     let unconditional_precond = Regex::new(r"^∀[^→]*$").expect("valid regex");
@@ -161,6 +162,8 @@ fn load_json_array(path: &Path, key: &str) -> Option<Vec<Value>> {
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
     use super::*;
 
     #[test]

@@ -1,0 +1,172 @@
+{
+  "benchmark_version": "v0.3",
+  "instance_id": "arrays_binary_search_002",
+  "system_id": "text_only_v1",
+  "domain": "arrays",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.3/instances/arrays/arrays_binary_search_002",
+  "generated_output_path": "runs/run_2026_04_22_text_only_v1_eval_003/generated/text_only_v1/arrays_binary_search_002.json",
+  "informal_statement": {
+    "text": "Given a sorted slice of integers in nondecreasing order and a target value, return Some(i) where arr[i] == target, or None if the target is absent. If multiple indices match, returning any valid index is acceptable.",
+    "preconditions": [
+      "arr is sorted in nondecreasing order"
+    ],
+    "required_properties": [
+      "if the function returns Some(i), then i < arr.len() and arr[i] == target",
+      "if the function returns None, then target does not occur in arr",
+      "the function terminates for every input"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice containing the target",
+      "single-element slice not containing the target",
+      "target smaller than all elements",
+      "target larger than all elements",
+      "duplicates of the target"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: the slice is sorted in nondecreasing order.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "forgetting the precondition entirely",
+        "asserting strict ordering instead of nondecreasing"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Success postcondition: if the return is Some(i), then i is a valid index and arr[i] == target.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the bounds check",
+        "omitting the equality check"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Failure postcondition: if the return is None, then target does not occur in arr.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "only quantifying over a prefix or suffix",
+        "stating the weaker claim that target is not at a specific position"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Termination: the function terminates on every input (lo..hi shrinks each iteration).",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "stating termination without a variant"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Uniqueness is NOT required: multiple valid indices exist when duplicates are present.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr) (t : Int) (i : Nat), binarySearch arr t = some i → i < arr.length ∧ arr.get? i = some t",
+      "nl_gloss": "If the function returns Some i, then i is in range and arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr) (t : Int), SortedLE arr → binarySearch arr t = none → ∀ i, i < arr.length → arr.get? i ≠ some t",
+      "nl_gloss": "Assuming the input is sorted in nondecreasing order, if the function returns None then the target does not occur anywhere in the slice.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "∀ (arr : Array Int) (target : Int), True",
+      "nl_gloss": "No additional preconditions beyond having an array and a target.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int), Sorted (· ≤ ·) arr",
+      "nl_gloss": "The input slice/array is sorted in nondecreasing order.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (i : Nat),\n  (h : i < arr.size) →\n  (get? arr i = some target) →\n  (binarySearch arr target = some i) ∨ (∃ j : Nat, j < arr.size ∧ get? arr j = some target ∧ binarySearch arr target = some j)",
+      "nl_gloss": "If there exists an index i in bounds with arr[i] = target, the algorithm returns Some at some index where arr[index] = target.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (target : Int),\n  (∀ i : Nat, i < arr.size → get? arr i ≠ some target) →\n  binarySearch arr target = none",
+      "nl_gloss": "If the target does not occur anywhere in the array, the algorithm returns None.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (res : Option Nat),\n  (binarySearch arr target = res) →\n  (res = some (by\n    intro i; exact i) → True)",
+      "nl_gloss": "Placeholder to ensure the result is an Option Nat (index) when Some is returned.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (target : Int) (i : Nat),\n  binarySearch arr target = some i →\n  i < arr.size ∧ get? arr i = some target",
+      "nl_gloss": "If the algorithm returns Some(i), then i is in bounds and arr[i] = target.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "∀ (arr : Array Int) (target : Int),\n  binarySearch arr target = none →\n  ∀ i : Nat, i < arr.size → get? arr i ≠ some target",
+      "nl_gloss": "If the algorithm returns None, then the target is absent from all in-bounds indices.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/arrays_binary_search_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/arrays_binary_search_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/arrays_binary_search_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/arrays_binary_search_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.3/annotation/review_packets/text_only_v1/arrays_binary_search_002/rust_summary.json"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "run_id": "run_2026_04_26_full_method_v1_eval_001",
+  "timestamp_utc": "2026-04-26T12:00:00Z",
+  "git_commit": "0000000000000000000000000000000000000000",
+  "seed": 1,
+  "prompt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "model_name": "gpt-4.1",
+  "model_version": "2025-04-14",
+  "provider_id": "openai",
+  "token_usage": {
+    "prompt_tokens": 120000,
+    "completion_tokens": 80000
+  },
+  "estimated_cost_usd": 0.0,
+  "output_paths": {
+    "run_root": "runs/run_2026_04_26_full_method_v1_eval_001",
+    "bundles_glob": "runs/run_2026_04_26_full_method_v1_eval_001/generated/full_method_v1/*.json",
+    "raw_glob": "runs/run_2026_04_26_full_method_v1_eval_001/generated/full_method_v1/raw/*.txt"
+  },
+  "benchmark_version": "v0.3",
+  "split": "eval",
+  "system_id": "full_method_v1"
+}

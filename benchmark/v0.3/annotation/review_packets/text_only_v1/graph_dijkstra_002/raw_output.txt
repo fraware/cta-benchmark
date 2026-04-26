@@ -1,0 +1,49 @@
+{
+  "obligations": [
+    {
+      "kind": "type_and_length",
+      "lean_statement": "∀ (n : Nat) (s : Fin n) (g : Fin n → Fin n → Option Nat),\n  let dist := dijkstraLike g s n\n  in dist.length = n",
+      "nl_gloss": "The returned distance vector has length n."
+    },
+    {
+      "kind": "range_of_entries",
+      "lean_statement": "∀ (n : Nat) (s : Fin n) (g : Fin n → Fin n → Option Nat),\n  let dist := dijkstraLike g s n\n  in ∀ v : Fin n, dist[v].isSome ∨ dist[v].isNone",
+      "nl_gloss": "Each entry dist[v] is an optional nonnegative integer (i.e., either Some d or None)."
+    },
+    {
+      "kind": "nonneg_weights_assumption",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat),\n  ∀ u v : Fin n, match g u v with\n  | some w => True\n  | none => True\n  end",
+      "nl_gloss": "Edge weights are nonnegative integers (modeled as Nat)."
+    },
+    {
+      "kind": "source_distance",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n),\n  let dist := dijkstraLike g s n\n  in dist[s] = some 0",
+      "nl_gloss": "The distance from the source to itself is 0."
+    },
+    {
+      "kind": "unreachable_is_none",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in (¬ ∃ path : List (Fin n),\n        path.head? = some s ∧ path.get? (path.length - 1) = some v ∧\n        ∀ i : Nat, i + 1 < path.length →\n          ∃ w : Nat, g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w)\n      → dist[v] = none",
+      "nl_gloss": "If there is no directed path from the source to v, then dist[v] is None."
+    },
+    {
+      "kind": "reachable_is_some",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in (∃ path : List (Fin n),\n        path.head? = some s ∧ path.get? (path.length - 1) = some v ∧\n        ∀ i : Nat, i + 1 < path.length →\n          ∃ w : Nat, g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w)\n      → dist[v].isSome",
+      "nl_gloss": "If there exists a directed path from the source to v, then dist[v] is Some d for some d."
+    },
+    {
+      "kind": "upper_bound_by_any_path",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in ∀ path : List (Fin n),\n     path.head? = some s → path.get? (path.length - 1) = some v →\n     (∀ i : Nat, i + 1 < path.length → ∃ w : Nat,\n        g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w) →\n     ∃ d : Nat,\n       dist[v] = some d ∧\n       d ≤ pathWeight g path",
+      "nl_gloss": "For any valid path from s to v with total weight pathWeight, the returned distance dist[v] is ≤ that path’s weight."
+    },
+    {
+      "kind": "minimality",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in ∀ d : Nat,\n     dist[v] = some d →\n     (∀ d' : Nat,\n        (∃ path : List (Fin n),\n          path.head? = some s ∧ path.get? (path.length - 1) = some v ∧\n          ∀ i : Nat, i + 1 < path.length →\n            ∃ w : Nat,\n              g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w ∧\n              pathWeight g path = d') →\n        d ≤ d')",
+      "nl_gloss": "If dist[v] = some d, then d is no larger than the weight of every path from s to v (i.e., it is the shortest-path length)."
+    },
+    {
+      "kind": "attained_by_some_shortest_path",
+      "lean_statement": "∀ (n : Nat) (g : Fin n → Fin n → Option Nat) (s : Fin n) (v : Fin n),\n  let dist := dijkstraLike g s n\n  in ∀ d : Nat,\n     dist[v] = some d →\n     ∃ path : List (Fin n),\n       path.head? = some s ∧ path.get? (path.length - 1) = some v ∧\n       (∀ i : Nat, i + 1 < path.length → ∃ w : Nat,\n          g (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩) = some w) ∧\n       pathWeight g path = d",
+      "nl_gloss": "If dist[v] = some d, then there exists a path from s to v whose total weight equals d."
+    }
+  ]
+}

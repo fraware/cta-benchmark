@@ -1,0 +1,32 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "arrays_max_subarray_007",
+  "benchmark_version": "v0.3",
+  "obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (arr : Arr), arr \u2260 [] \u2192 \u2203 (i j : Nat), i \u2264 j \u2227 j \u2264 arr.length \u2227 i < j \u2227 sliceSum arr i j = maxSubarray arr",
+      "nl_gloss": "For any non-empty input, there exists a contiguous non-empty subslice whose sum equals the returned maximum.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (arr : Arr) (i j : Nat), arr \u2260 [] \u2192 i < j \u2192 j \u2264 arr.length \u2192 sliceSum arr i j \u2264 maxSubarray arr",
+      "nl_gloss": "For any non-empty input, no contiguous non-empty subslice has a sum strictly greater than the returned maximum.",
+      "linked_semantic_units": [
+        "SU3",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ]
+}

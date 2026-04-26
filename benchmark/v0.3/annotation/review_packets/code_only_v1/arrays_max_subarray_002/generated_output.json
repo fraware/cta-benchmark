@@ -1,0 +1,41 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "system_id": "code_only_v1",
+  "instance_id": "arrays_max_subarray_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 8389,
+    "prompt_tokens": 254,
+    "completion_tokens": 953
+  },
+  "raw_output_path": "generated/code_only_v1/raw/arrays_max_subarray_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_contiguous_witness (arr : Arr) (hne : arr ≠ []) :\n  ∃ i j : Nat,\n    i ≤ j ∧ j ≤ arr.length ∧ i < j ∧ sliceSum arr i j = maxSubarray arr",
+      "nl_gloss": "For every non-empty input, some contiguous non-empty subslice achieves the returned maximum sum.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_global_upper_bound (arr : Arr) (i j : Nat) (hne : arr ≠ [])\n  (hij : i < j) (hj : j ≤ arr.length) :\n  sliceSum arr i j ≤ maxSubarray arr",
+      "nl_gloss": "No contiguous non-empty subslice sums above the returned maximum.",
+      "linked_semantic_units": [
+        "SU3",
+        "SU4"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:51cfdd6a328f5061f75481ee105a3ea9fa380079aeeb150a082d164da8709f79",
+  "seed": 0
+}

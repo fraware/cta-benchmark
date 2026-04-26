@@ -1,0 +1,88 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_naive_concat_v1_eval_full_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "dp_longest_common_subsequence_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 10673,
+    "prompt_tokens": 149,
+    "completion_tokens": 1312
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/dp_longest_common_subsequence_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_lcs_length (a b : List Int) :\n  let r := lcsLength a b\n  r = Nat.findGreatest (fun n =>\n    ∃ (s : List Int),\n      s.length = n ∧\n      IsSubsequence s a ∧\n      IsSubsequence s b) (by\n        -- n is bounded by min lengths\n        simp [Nat.findGreatest, List.length])",
+      "nl_gloss": "The function returns the maximum length n such that there exists a list s of length n that is a subsequence of both a and b (i.e., the LCS length).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_def (a b : List Int) :\n  lcsLength a b = (lcsDP a b).result",
+      "nl_gloss": "The returned value is exactly the result extracted from the dynamic-programming table/structure used by the implementation.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def IsSubsequence (s t : List Int) : Prop :=\n  ∃ (u v : List Int), t = u ++ s ++ v ∧ s = filter? -- (or an equivalent inductive definition)\n\n-- obligation: the implementation uses the same notion\n\ntheorem IsSubsequence_iff_impl (s a b : List Int) :\n  IsSubsequence s a ↔ implIsSubsequence s a ∧ IsSubsequence s b ↔ implIsSubsequence s b",
+      "nl_gloss": "The subsequence relation used in the specification matches the one implicitly relied upon by the implementation (e.g., via an inductive definition or an equivalent predicate).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem dp_invariant (a b : List Int) (i j : Nat) :\n  i ≤ a.length → j ≤ b.length →\n  (lcsDP a b).dp i j =\n    Nat.findGreatest (fun n =>\n      ∃ (s : List Int),\n        s.length = n ∧\n        IsSubsequence s (a.take i) ∧\n        IsSubsequence s (b.take j)) (by\n          -- boundedness by min lengths\n          simp [Nat.findGreatest])",
+      "nl_gloss": "For every DP cell (i,j), the stored value equals the LCS length for prefixes a[0..i) and b[0..j).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem dp_recurrence (a b : List Int) (i j : Nat) :\n  i > 0 → j > 0 →\n  let ai := a.get? (i-1)\n  let bj := b.get? (j-1)\n  match ai, bj with\n  | some x, some y =>\n      if x = y then\n        (lcsDP a b).dp i j = (lcsDP a b).dp (i-1) (j-1) + 1\n      else\n        (lcsDP a b).dp i j = Nat.max ((lcsDP a b).dp (i-1) j) ((lcsDP a b).dp i (j-1))\n  | _, _ => True",
+      "nl_gloss": "The implementation’s DP transition satisfies the standard LCS recurrence: match case adds 1 from (i-1,j-1), mismatch case takes max of (i-1,j) and (i,j-1).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem dp_base_cases (a b : List Int) :\n  (lcsDP a b).dp 0 0 = 0 ∧\n  (∀ i, (lcsDP a b).dp i 0 = 0) ∧\n  (∀ j, (lcsDP a b).dp 0 j = 0)",
+      "nl_gloss": "DP initialization is correct: LCS length is 0 when either prefix is empty.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_le_min (a b : List Int) :\n  lcsLength a b ≤ Nat.min a.length b.length",
+      "nl_gloss": "The computed LCS length never exceeds the length of either input (since any common subsequence cannot be longer than the shorter list).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_sound (a b : List Int) :\n  ∃ (s : List Int),\n    s.length = lcsLength a b ∧\n    IsSubsequence s a ∧\n    IsSubsequence s b",
+      "nl_gloss": "There exists an actual common subsequence of both a and b whose length equals the returned value (not just an upper bound).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_optimal (a b : List Int) :\n  ∀ (s : List Int),\n    IsSubsequence s a →\n    IsSubsequence s b →\n    s.length ≤ lcsLength a b",
+      "nl_gloss": "Any common subsequence s of a and b has length at most the returned value (so the returned value is optimal).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsDP_terminates (a b : List Int) :\n  ∃ res, lcsDP a b = res",
+      "nl_gloss": "The DP computation is well-defined/terminates for all finite input slices (totality of the implementation).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem dp_index_safety (a b : List Int) :\n  ∀ i j, i ≤ a.length → j ≤ b.length →\n    (lcsDP a b).dp i j is defined and any internal array access is within bounds",
+      "nl_gloss": "All array/table accesses performed by the implementation are within bounds for the given prefix indices.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:6d9188da709aba161ff3c171ae10d4bb17c769e8626215910e690283dff8653a",
+  "seed": 1
+}

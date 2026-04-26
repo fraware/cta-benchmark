@@ -1,3 +1,5 @@
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use std::collections::HashSet;
 use std::fs;
 use std::path::{Path, PathBuf};

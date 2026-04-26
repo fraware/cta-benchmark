@@ -1,0 +1,54 @@
+{
+  "obligations": [
+    {
+      "kind": "definition/typing",
+      "lean_statement": "Let n : Nat, g : Fin n → List (Fin n), s : Fin n. Define the algorithm result as dist : Vector (Option Nat) n. Obligation: the Rust reference implementation corresponds to a Lean function that returns such a dist, and all indexing into the adjacency list and dist are within bounds (i.e., neighbors are in Fin n).",
+      "nl_gloss": "The implementation is well-typed: it produces a vector of length n of optional natural distances, and it never indexes out of bounds; all edges stay within the vertex set."
+    },
+    {
+      "kind": "initialization",
+      "lean_statement": "Obligation: dist[s] = some 0, and for all v ≠ s, dist[v] is initially None (or at least not some 0).",
+      "nl_gloss": "The algorithm starts with distance 0 at the source and no known distances elsewhere."
+    },
+    {
+      "kind": "edge relaxation invariant (soundness of discovered distances)",
+      "lean_statement": "Let E : Fin n → Fin n → Prop be the edge relation defined by adjacency lists: E u v ↔ v ∈ g u. Obligation: For every vertex v and every k, if dist[v] = some k, then either v = s ∧ k = 0, or there exists u such that E u v ∧ dist[u] = some (k-1).",
+      "nl_gloss": "Whenever the algorithm assigns dist[v] = k, there is a valid directed path of exactly k edges from s to v (witnessed by a predecessor with distance k-1)."
+    },
+    {
+      "kind": "monotonicity / non-increasing updates",
+      "lean_statement": "Obligation: During the algorithm, dist values only decrease in the sense that if the algorithm ever sets dist[v] = some k, then any later assignment to dist[v] (if any) must be some k' with k' ≤ k. In particular, the final dist[v] is the minimum k ever assigned to v.",
+      "nl_gloss": "The algorithm never overwrites a shorter distance with a longer one; the final distances are the best (smallest) discovered."
+    },
+    {
+      "kind": "queue/processing invariant (BFS correctness structure)",
+      "lean_statement": "If the algorithm uses a worklist/queue of vertices (and possibly their tentative distances), then for each dequeued vertex v with tentative distance k, the invariant holds that dist[v] = some k at the time of processing, and k is consistent with the relaxation rule (i.e., k is the length of some path from s to v).",
+      "nl_gloss": "When a vertex is processed, its tentative distance matches the current recorded distance and corresponds to an actual path length."
+    },
+    {
+      "kind": "upper bound property (no overestimation)",
+      "lean_statement": "Obligation: For all v and k, if dist[v] = some k, then there exists a directed path from s to v of length k (i.e., ∃ path of exactly k edges). Equivalently, dist[v] is an upper bound on the true shortest-path length.",
+      "nl_gloss": "The computed distance is never smaller than the true shortest-path length? (More precisely: it corresponds to a real path, so it cannot be an impossible underestimate.)"
+    },
+    {
+      "kind": "optimality / minimality (no underestimation)",
+      "lean_statement": "Let δ v be the length of the shortest directed path from s to v, defined as the minimum k such that there exists a path of length k; if no such path exists, δ v is undefined. Obligation: If dist[v] = some k, then k = δ v (i.e., k is minimal among all path lengths).",
+      "nl_gloss": "If a vertex is reachable, the algorithm returns the exact shortest number of edges."
+    },
+    {
+      "kind": "unreachability correctness",
+      "lean_statement": "Obligation: If there is no directed path from s to v, then dist[v] = None. Conversely, if dist[v] = None, then v is unreachable from s.",
+      "nl_gloss": "The algorithm returns None exactly for vertices that cannot be reached from the source."
+    },
+    {
+      "kind": "completeness via BFS layering (reachability implies discovery)",
+      "lean_statement": "For every k : Nat and vertex v, if there exists a directed path from s to v of length k, then after the algorithm terminates, dist[v] ≠ None and dist[v] ≤ some k; moreover, if k is the shortest such length, then dist[v] = some k.",
+      "nl_gloss": "All reachable vertices are eventually discovered, and the first time a vertex can be reached at layer k corresponds to the shortest distance."
+    },
+    {
+      "kind": "termination / finite exploration (optional but typical)",
+      "lean_statement": "Obligation: The algorithm terminates for all finite graphs of size n. If the implementation uses a queue, show that the number of enqueues is finite (e.g., bounded by n times the number of distance improvements).",
+      "nl_gloss": "The reference implementation always finishes on finite input."
+    }
+  ]
+}

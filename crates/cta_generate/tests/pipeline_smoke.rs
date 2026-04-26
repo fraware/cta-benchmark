@@ -4,6 +4,8 @@
 //! and drives the stub provider to produce a schema-conforming
 //! [`GeneratedOutputBundle`] for each.
 
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use std::path::PathBuf;
 
 use cta_core::{InstanceId, RunId, SystemId};

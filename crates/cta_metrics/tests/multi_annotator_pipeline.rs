@@ -4,6 +4,8 @@
 //! directory, which has two non-adjudicator annotators plus an explicit
 //! adjudicator for the same (instance, system) pair.
 
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 

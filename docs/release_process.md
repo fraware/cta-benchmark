@@ -32,6 +32,19 @@ coverage for any experiment that sets
 `require_full_annotation_coverage: true`, and a two-reviewer gold audit
 signoff (`benchmark/<version>/audit/gold_signoff.json`).
 
+### v0.3 gold audit posture (template vs complete)
+
+For `v0.3`, the repository may ship `benchmark/v0.3/audit/gold_signoff.json` in
+**template** mode: set `release_gold_audit_status` to
+`template_pending_human_review`, keep `"approved": false`, and use explicit
+`Unassigned` reviewer lines until humans finish `audit/evidence/*.csv` (see
+`benchmark/v0.3/audit/review_checklist.md`). `cargo run -p cta_cli -- validate benchmark --version v0.3 --release` accepts that posture.
+
+To claim a completed audit, curators fill the evidence workbooks, update
+`signoff_notes.md`, set real reviewer names, set `"approved": true`, and set
+`release_gold_audit_status` to `human_audit_complete` (or remove the field to
+use the legacy strict rule).
+
 `v0.2/dev.json` is intentionally empty at this stage. Policy rationale:
 for paper-track readiness we block on held-out `eval` quality first
 (coverage + signoff + provider runs) and avoid mixing prompt-tuning

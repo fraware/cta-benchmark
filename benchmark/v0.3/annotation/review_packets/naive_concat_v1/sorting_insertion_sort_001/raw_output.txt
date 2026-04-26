@@ -1,0 +1,49 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (a : Array Int) (n : Nat), n = a.size → True",
+      "nl_gloss": "Assume the input slice/array has a well-defined length n; no additional ordering precondition is required."
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "∃ (m : Nat), True ∧ (∀ i : Nat, i < n → Acc (fun j => j) i)",
+      "nl_gloss": "The insertion-sort loops terminate (e.g., by using a decreasing measure such as the outer index and/or inner index)."
+    },
+    {
+      "kind": "invariant_outer_loop",
+      "lean_statement": "∀ (i : Nat), i ≤ n →\n  let a' := state_after_outer i in\n  (Sorted (a'.toList.take i)) ∧\n  (Permutation a'.toList (a0.toList))",
+      "nl_gloss": "After completing the outer loop for index i, the prefix of length i is sorted and the entire array is a permutation of the original input."
+    },
+    {
+      "kind": "invariant_inner_loop",
+      "lean_statement": "∀ (i j : Nat), i < n → j ≤ i →\n  let a' := state_during_inner i j in\n  (Sorted (a'.toList.take j)) ∧\n  (∀ k, k < j → a'[k] ≤ a'[j]) ∧\n  (Permutation a'.toList (a0.toList))",
+      "nl_gloss": "During the inner loop (shifting elements to insert the key), the already-processed part remains sorted, the key is being moved left correctly, and the array remains a permutation of the original."
+    },
+    {
+      "kind": "key_insertion_correctness",
+      "lean_statement": "∀ (i : Nat), i < n →\n  let key := a0[i] in\n  let a' := state_after_outer (i+1) in\n  (∃ p, a'.toList = (a'.toList.take p) ++ [key] ++ (a'.toList.drop (p+1))) ∧\n  (∀ t < p, a'[t] ≤ key) ∧\n  (∀ t > p, key ≤ a'[t])",
+      "nl_gloss": "When inserting the element at position i (the key), it is placed at the correct position relative to the sorted prefix: all elements before are ≤ key and all after are ≥ key."
+    },
+    {
+      "kind": "permutation_preservation",
+      "lean_statement": "Permutation (final_a.toList) (a0.toList)",
+      "nl_gloss": "The algorithm only reorders elements; it does not change the multiset of values."
+    },
+    {
+      "kind": "sortedness_postcondition",
+      "lean_statement": "Sorted (final_a.toList)",
+      "nl_gloss": "After the algorithm finishes, the entire array/slice is sorted in nondecreasing order."
+    },
+    {
+      "kind": "in_place_mutation_frame",
+      "lean_statement": "∀ (idx : Nat), idx < n →\n  (final_a[idx] is defined) ∧\n  (the algorithm does not allocate/modify any memory outside the slice/array bounds)",
+      "nl_gloss": "The function mutates only the given slice/array in place and does not affect anything outside its bounds."
+    },
+    {
+      "kind": "return_type_unit",
+      "lean_statement": "result = ()",
+      "nl_gloss": "The function returns nothing (unit) and all observable effects are the in-place mutation."
+    }
+  ]
+}

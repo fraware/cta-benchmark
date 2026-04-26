@@ -1,0 +1,45 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "dp_knapsack_01_002",
+  "title": "0/1 knapsack maximum value given weights, values, and a capacity",
+  "domain": "dp",
+  "difficulty": "medium",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given equal-length slices of non-negative item weights and item values, and a non-negative integer capacity, return the maximum total value achievable by choosing a subset whose total weight does not exceed the capacity. Each item may be selected at most once.\n\n[Grid variant 002 \u2014 paired within-family control: distinct authoring emphasis on summary/scaffold hygiene, auxiliary lemmas, and scope discipline so obligations cannot smuggle hidden parameters. Algorithmic contract and oracle checks remain identical to variant 001.]",
+    "preconditions": [
+      "weights and values have the same length",
+      "every weight is a non-negative integer",
+      "every value is a non-negative integer",
+      "capacity is a non-negative integer"
+    ],
+    "required_properties": [
+      "the result is witnessed by some subset S of item indices whose total weight <= capacity and total value equals the result",
+      "no subset whose total weight <= capacity has a strictly greater total value",
+      "each item index is used at most once in any witness subset"
+    ],
+    "edge_cases": [
+      "empty input (result is 0)",
+      "capacity 0 (result is 0 unless there is a zero-weight positive-value item)",
+      "a single item with weight > capacity",
+      "multiple items of identical weight and value",
+      "all weights exceeding capacity"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/dp/dp_knapsack_01_002/reference.rs",
+    "entry_fn": "knapsack_01"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/dp/dp_knapsack_01_002/scaffold.lean",
+    "namespace": "CTA.Benchmark.DP.Knapsack01_002",
+    "reference_obligations_path": "instances/dp/dp_knapsack_01_002/reference_obligations.json",
+    "semantic_units_path": "instances/dp/dp_knapsack_01_002/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/dp/dp_knapsack_01_002/harness.json"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (arr : Array Int), True",
+      "nl_gloss": "No explicit preconditions are required by the implementation; it works for any mutable slice/array of i32 (Lean Int)."
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "∀ (arr : Array Int) (i : Nat), i < arr.size → (let j0 := i; ∃ j, j ≤ j0 ∧ (j = 0 ∨ ¬(arr.get! (j-1) > arr.get! j)))",
+      "nl_gloss": "The inner while-loop terminates because j decreases strictly on each swap and is bounded below by 0."
+    },
+    {
+      "kind": "outer_loop_invariant",
+      "lean_statement": "∀ (arr : Array Int) (i : Nat), i ≤ arr.size →\n  let a := arr in\n  (Sorted (a.subarray 0 i)) ∧ (Permutation a (a))",
+      "nl_gloss": "After completing the outer loop for index i (i.e., before processing i), the prefix arr[0..i) is sorted in ascending order. The algorithm only swaps elements, so the multiset of elements is preserved (permutation)."
+    },
+    {
+      "kind": "inner_loop_invariant",
+      "lean_statement": "∀ (arr : Array Int) (i j : Nat), i < arr.size → j ≤ i →\n  (Permutation arr arr) ∧\n  (Sorted (arr.subarray 0 j)) ∧\n  (∀ k, k < j → arr[k] ≤ arr[j])",
+      "nl_gloss": "During the inner while-loop for a fixed i, the portion before j remains sorted, and all elements in that prefix are ≤ the current element at position j. Swaps only move the current element left while maintaining these properties."
+    },
+    {
+      "kind": "inner_loop_step_preserves_invariants",
+      "lean_statement": "∀ (arr : Array Int) (i j : Nat), i < arr.size → j > 0 → j ≤ i →\n  arr[j-1] > arr[j] →\n  (let arr' := arr.swap (j-1) j in\n   Sorted (arr'.subarray 0 (j-1)) ∧\n   (∀ k, k < (j-1) → arr'[k] ≤ arr'[j-1]) ∧\n   Permutation arr arr')",
+      "nl_gloss": "If the while-condition holds (arr[j-1] > arr[j]), swapping positions j-1 and j preserves the sortedness of the already-processed prefix and maintains the relationship needed for the current element to continue moving left."
+    },
+    {
+      "kind": "postcondition_sorted",
+      "lean_statement": "∀ (arr : Array Int),\n  let a0 := arr in\n  insertion_sort a0;\n  Sorted a0",
+      "nl_gloss": "After the algorithm finishes, the entire array is sorted in ascending order."
+    },
+    {
+      "kind": "postcondition_permutation",
+      "lean_statement": "∀ (arr : Array Int),\n  let a0 := arr in\n  insertion_sort a0;\n  Permutation a0 arr",
+      "nl_gloss": "After the algorithm finishes, the output array is a permutation of the input array (it only uses swaps, so it preserves the multiset of elements)."
+    },
+    {
+      "kind": "functional characterization (optional but implied)",
+      "lean_statement": "∀ (arr : Array Int),\n  let a0 := arr in\n  insertion_sort a0;\n  (Sorted a0) ∧ (Permutation a0 arr) →\n  a0 = sort arr",
+      "nl_gloss": "Combining sortedness and permutation characterizes the result as the standard sorted version of the input (i.e., insertion sort computes the ascending sort)."
+    }
+  ]
+}

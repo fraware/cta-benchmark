@@ -40,6 +40,7 @@ Thumbs.db
 # Build artifacts
 /dist
 /out
+/artifacts/*.zip
 
 # `cta validate benchmark --release` writes a timestamped summary; keep v0.2
 # tracked when curated, but ignore v0.1 local runs unless explicitly added.

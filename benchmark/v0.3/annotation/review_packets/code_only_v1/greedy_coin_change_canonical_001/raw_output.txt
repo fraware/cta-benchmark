@@ -1,0 +1,44 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem coin_change_canonical_precondition_canonicality {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hlen : denoms.length > 0) : True := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: require the denomination system to be canonical so greedy is optimal.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem coin_change_canonical_alignment {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hamount : amount ≥ 0) (counts := coin_change_canonical denoms amount) : counts.length = denoms.length := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: the output counts vector has the same length as denoms.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem coin_change_canonical_decomposition {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hamount : amount ≥ 0) (counts := coin_change_canonical denoms amount) :\n    (∑ i in Finset.range denoms.length, (counts.get ⟨i, by simpa using Nat.lt_of_lt_of_le (Fin.isLt i) (Nat.le_of_lt_succ (Nat.lt_succ_self _)))⟩ * denoms.get ⟨i, by simpa using Nat.lt_of_lt_of_le (Fin.isLt i) (Nat.le_of_lt_succ (Nat.lt_succ_self _)))⟩) = amount := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: the weighted sum of counts by denoms equals the requested amount.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem coin_change_canonical_optimality {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hamount : amount ≥ 0) (counts := coin_change_canonical denoms amount) :\n    (∑ i in Finset.range denoms.length, counts.get ⟨i, by\n      have : i.1 < denoms.length := i.isLt\n      simpa using this⟩) ≤\n    (∑ i in Finset.range denoms.length, c.get ⟨i, by\n      have : i.1 < denoms.length := i.isLt\n      simpa using this⟩) := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: greedy yields a decomposition with minimal total number of coins among all valid decompositions.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem coin_change_canonical_nonnegativity {denoms : List Nat} {amount : Nat} (hcanon : CanonicalDenoms denoms) (hsorted : denoms.Sorted (· < ·)) (h1 : denoms.head? = some 1) (hamount : amount ≥ 0) (counts := coin_change_canonical denoms amount) :\n    ∀ i : Fin denoms.length, 0 ≤ counts.get i := by\n  -- placeholder",
+      "nl_gloss": "Benchmark-facing: every count entry is non-negative.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ]
+}

@@ -2,6 +2,8 @@
 //! These mirror manual review criteria (vacuity, path–distance linkage, coin optimality direction,
 //! LCA witness + lowestness shape, and suspicious `rfl` proofs on semantic obligations).
 
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use std::fs;
 use std::path::{Path, PathBuf};
 

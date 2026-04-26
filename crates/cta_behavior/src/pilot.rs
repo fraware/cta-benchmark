@@ -23,22 +23,142 @@ use crate::{
     OracleCheckStats, Result,
 };
 
-/// Populate a registry with all 12 pilot adapters.
+/// Populate adapters for every shipped instance id (v0.3 track: 12 families × 7).
 #[must_use]
 pub fn register_all() -> AdapterRegistry {
     let mut r = AdapterRegistry::new();
-    r.register(Box::new(arrays_binary_search::Adapter));
-    r.register(Box::new(arrays_max_subarray::Adapter));
-    r.register(Box::new(sorting_insertion_sort::Adapter));
-    r.register(Box::new(sorting_merge_sort::Adapter));
-    r.register(Box::new(graph_dijkstra::Adapter));
-    r.register(Box::new(graph_bfs_shortest_path::Adapter));
-    r.register(Box::new(greedy_interval_scheduling::Adapter));
-    r.register(Box::new(greedy_coin_change_canonical::Adapter));
-    r.register(Box::new(dp_longest_common_subsequence::Adapter));
-    r.register(Box::new(dp_knapsack_01::Adapter));
-    r.register(Box::new(trees_bst_insert::Adapter));
-    r.register(Box::new(trees_lowest_common_ancestor::Adapter));
+    for id in [
+        "arrays_binary_search_001",
+        "arrays_binary_search_002",
+        "arrays_binary_search_003",
+        "arrays_binary_search_004",
+        "arrays_binary_search_005",
+        "arrays_binary_search_006",
+        "arrays_binary_search_007",
+    ] {
+        r.register(Box::new(arrays_binary_search::Adapter(id)));
+    }
+    for id in [
+        "arrays_max_subarray_001",
+        "arrays_max_subarray_002",
+        "arrays_max_subarray_003",
+        "arrays_max_subarray_004",
+        "arrays_max_subarray_005",
+        "arrays_max_subarray_006",
+        "arrays_max_subarray_007",
+    ] {
+        r.register(Box::new(arrays_max_subarray::Adapter(id)));
+    }
+    for id in [
+        "sorting_insertion_sort_001",
+        "sorting_insertion_sort_002",
+        "sorting_insertion_sort_003",
+        "sorting_insertion_sort_004",
+        "sorting_insertion_sort_005",
+        "sorting_insertion_sort_006",
+        "sorting_insertion_sort_007",
+    ] {
+        r.register(Box::new(sorting_insertion_sort::Adapter(id)));
+    }
+    for id in [
+        "sorting_merge_sort_001",
+        "sorting_merge_sort_002",
+        "sorting_merge_sort_003",
+        "sorting_merge_sort_004",
+        "sorting_merge_sort_005",
+        "sorting_merge_sort_006",
+        "sorting_merge_sort_007",
+    ] {
+        r.register(Box::new(sorting_merge_sort::Adapter(id)));
+    }
+    for id in [
+        "graph_dijkstra_001",
+        "graph_dijkstra_002",
+        "graph_dijkstra_003",
+        "graph_dijkstra_004",
+        "graph_dijkstra_005",
+        "graph_dijkstra_006",
+        "graph_dijkstra_007",
+    ] {
+        r.register(Box::new(graph_dijkstra::Adapter(id)));
+    }
+    for id in [
+        "graph_bfs_shortest_path_001",
+        "graph_bfs_shortest_path_002",
+        "graph_bfs_shortest_path_003",
+        "graph_bfs_shortest_path_004",
+        "graph_bfs_shortest_path_005",
+        "graph_bfs_shortest_path_006",
+        "graph_bfs_shortest_path_007",
+    ] {
+        r.register(Box::new(graph_bfs_shortest_path::Adapter(id)));
+    }
+    for id in [
+        "greedy_interval_scheduling_001",
+        "greedy_interval_scheduling_002",
+        "greedy_interval_scheduling_003",
+        "greedy_interval_scheduling_004",
+        "greedy_interval_scheduling_005",
+        "greedy_interval_scheduling_006",
+        "greedy_interval_scheduling_007",
+    ] {
+        r.register(Box::new(greedy_interval_scheduling::Adapter(id)));
+    }
+    for id in [
+        "greedy_coin_change_canonical_001",
+        "greedy_coin_change_canonical_002",
+        "greedy_coin_change_canonical_003",
+        "greedy_coin_change_canonical_004",
+        "greedy_coin_change_canonical_005",
+        "greedy_coin_change_canonical_006",
+        "greedy_coin_change_canonical_007",
+    ] {
+        r.register(Box::new(greedy_coin_change_canonical::Adapter(id)));
+    }
+    for id in [
+        "dp_longest_common_subsequence_001",
+        "dp_longest_common_subsequence_002",
+        "dp_longest_common_subsequence_003",
+        "dp_longest_common_subsequence_004",
+        "dp_longest_common_subsequence_005",
+        "dp_longest_common_subsequence_006",
+        "dp_longest_common_subsequence_007",
+    ] {
+        r.register(Box::new(dp_longest_common_subsequence::Adapter(id)));
+    }
+    for id in [
+        "dp_knapsack_01_001",
+        "dp_knapsack_01_002",
+        "dp_knapsack_01_003",
+        "dp_knapsack_01_004",
+        "dp_knapsack_01_005",
+        "dp_knapsack_01_006",
+        "dp_knapsack_01_007",
+    ] {
+        r.register(Box::new(dp_knapsack_01::Adapter(id)));
+    }
+    for id in [
+        "trees_bst_insert_001",
+        "trees_bst_insert_002",
+        "trees_bst_insert_003",
+        "trees_bst_insert_004",
+        "trees_bst_insert_005",
+        "trees_bst_insert_006",
+        "trees_bst_insert_007",
+    ] {
+        r.register(Box::new(trees_bst_insert::Adapter(id)));
+    }
+    for id in [
+        "trees_lowest_common_ancestor_001",
+        "trees_lowest_common_ancestor_002",
+        "trees_lowest_common_ancestor_003",
+        "trees_lowest_common_ancestor_004",
+        "trees_lowest_common_ancestor_005",
+        "trees_lowest_common_ancestor_006",
+        "trees_lowest_common_ancestor_007",
+    ] {
+        r.register(Box::new(trees_lowest_common_ancestor::Adapter(id)));
+    }
     r
 }
 
@@ -133,10 +253,10 @@ mod arrays_binary_search {
         None
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "arrays_binary_search_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -232,10 +352,10 @@ mod arrays_max_subarray {
         best
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "arrays_max_subarray_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -263,7 +383,11 @@ mod arrays_max_subarray {
                 }
                 let out = max_subarray(&arr);
                 let oracle = quadratic_oracle(&arr);
-                let max_elem = *arr.iter().max().expect("non-empty");
+                let max_elem = *arr.iter().max().ok_or_else(|| {
+                    BehaviorError::Generator(
+                        "max_subarray harness: empty vec after non-empty guard".into(),
+                    )
+                })?;
                 let input_repr = format!("arr.len()={}", arr.len());
 
                 st.check(
@@ -326,10 +450,10 @@ mod sorting_insertion_sort {
         ax == bx
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "sorting_insertion_sort_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -427,10 +551,10 @@ mod sorting_merge_sort {
         ax == bx
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "sorting_merge_sort_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -551,10 +675,10 @@ mod graph_dijkstra {
         dist
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "graph_dijkstra_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -695,10 +819,10 @@ mod graph_bfs_shortest_path {
             .collect()
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "graph_bfs_shortest_path_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -770,7 +894,11 @@ mod greedy_interval_scheduling {
         let mut count: usize = 0;
         let mut last_end: Option<i32> = None;
         for (s, e) in sorted {
-            if last_end.is_none() || s >= last_end.unwrap() {
+            let take = match last_end {
+                None => true,
+                Some(le) => s >= le,
+            };
+            if take {
                 count += 1;
                 last_end = Some(e);
             }
@@ -807,10 +935,10 @@ mod greedy_interval_scheduling {
         best
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "greedy_interval_scheduling_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -907,10 +1035,10 @@ mod greedy_coin_change_canonical {
         dp[cap]
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "greedy_coin_change_canonical_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -1006,10 +1134,10 @@ mod dp_longest_common_subsequence {
         dp[m][n]
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "dp_longest_common_subsequence_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -1107,10 +1235,10 @@ mod dp_knapsack_01 {
         best
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "dp_knapsack_01_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -1232,10 +1360,10 @@ mod trees_bst_insert {
         t
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "trees_bst_insert_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -1394,10 +1522,10 @@ mod trees_lowest_common_ancestor {
         }
     }
 
-    pub struct Adapter;
+    pub struct Adapter(pub &'static str);
     impl HarnessAdapter for Adapter {
         fn instance_id(&self) -> &str {
-            "trees_lowest_common_ancestor_001"
+            self.0
         }
         fn run(&self, config: &HarnessConfig) -> Result<HarnessReport> {
             require_known_oracles(
@@ -1481,6 +1609,9 @@ mod trees_lowest_common_ancestor {
 
 #[cfg(test)]
 mod tests {
+    // Unit tests assert invariants on the pilot registry; `unwrap`/`unwrap_err` are intentional.
+    #![allow(clippy::unwrap_used)]
+
     use super::*;
     use serde_json::json;
 

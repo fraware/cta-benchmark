@@ -1,0 +1,386 @@
+[
+  {
+    "instance_id": "arrays_binary_search_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "arrays_binary_search_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "arrays_binary_search_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "arrays_binary_search_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "arrays_binary_search_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "arrays_binary_search_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "arrays_binary_search_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "arrays_binary_search_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "arrays_max_subarray_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "arrays_max_subarray_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "arrays_max_subarray_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "arrays_max_subarray_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "arrays_max_subarray_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "arrays_max_subarray_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "arrays_max_subarray_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "arrays_max_subarray_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "dp_knapsack_01_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "dp_knapsack_01_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "dp_knapsack_01_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "dp_knapsack_01_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "dp_knapsack_01_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "dp_knapsack_01_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "dp_knapsack_01_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "dp_knapsack_01_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "dp_longest_common_subsequence_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "dp_longest_common_subsequence_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "dp_longest_common_subsequence_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "dp_longest_common_subsequence_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "dp_longest_common_subsequence_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "dp_longest_common_subsequence_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "dp_longest_common_subsequence_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "dp_longest_common_subsequence_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "graph_bfs_shortest_path_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "graph_dijkstra_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "graph_dijkstra_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "graph_dijkstra_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "graph_dijkstra_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "graph_dijkstra_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "graph_dijkstra_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "graph_dijkstra_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "graph_dijkstra_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "greedy_coin_change_canonical_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "greedy_interval_scheduling_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "greedy_interval_scheduling_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "greedy_interval_scheduling_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "greedy_interval_scheduling_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "greedy_interval_scheduling_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "greedy_interval_scheduling_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "greedy_interval_scheduling_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "greedy_interval_scheduling_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "sorting_insertion_sort_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "sorting_insertion_sort_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "sorting_insertion_sort_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "sorting_insertion_sort_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "sorting_insertion_sort_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "sorting_insertion_sort_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "sorting_insertion_sort_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "sorting_insertion_sort_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "sorting_merge_sort_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "sorting_merge_sort_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "sorting_merge_sort_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "sorting_merge_sort_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "sorting_merge_sort_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "sorting_merge_sort_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "sorting_merge_sort_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "sorting_merge_sort_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "trees_bst_insert_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "trees_bst_insert_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "trees_bst_insert_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "trees_bst_insert_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "trees_bst_insert_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "trees_bst_insert_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "trees_bst_insert_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "trees_bst_insert_002",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_001",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_001",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_001",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_001",
+    "system_id": "full_method_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_002",
+    "system_id": "text_only_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_002",
+    "system_id": "code_only_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_002",
+    "system_id": "naive_concat_v1"
+  },
+  {
+    "instance_id": "trees_lowest_common_ancestor_002",
+    "system_id": "full_method_v1"
+  }
+]

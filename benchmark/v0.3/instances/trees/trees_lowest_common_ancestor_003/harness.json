@@ -1,0 +1,21 @@
+{
+  "schema_version": "schema_v1",
+  "harness_type": "reference_relational",
+  "seed": 65535,
+  "num_trials": 150,
+  "input_generator": {
+    "kind": "bst_with_two_keys",
+    "min_size": 2,
+    "max_size": 32,
+    "key_range": [
+      -50,
+      50
+    ]
+  },
+  "oracle_checks": [
+    "returned_key_in_tree",
+    "both_queries_in_subtree_at_returned_key",
+    "result_matches_brute_lca_oracle"
+  ],
+  "timeout_ms": 2000
+}

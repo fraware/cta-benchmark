@@ -1,0 +1,40 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "system_id": "code_only_v1",
+  "instance_id": "arrays_binary_search_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 13261,
+    "prompt_tokens": 301,
+    "completion_tokens": 1578
+  },
+  "raw_output_path": "generated/code_only_v1/raw/arrays_binary_search_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_success_index_and_value (arr : Arr) (target : Int) (hs : Sorted arr) (i : Nat) :\n  binarySearch arr target = some i → i < arr.length ∧ arr.get? i = some target",
+      "nl_gloss": "Under sortedness, if the search returns Some i, then i is in bounds and the slice value at i equals the target.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_failure_absent (arr : Arr) (target : Int)\n  (hs : Sorted arr) (h : binarySearch arr target = none) :\n  ∀ j, j < arr.length → arr.get? j ≠ some target",
+      "nl_gloss": "Under sortedness, if the search returns None, then the target does not occur at any valid index.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU3"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:c8f10db68dfc09826474cabd799c6a991dadd9554bdb7c72ba1dc7200caecfd6",
+  "seed": 0
+}

@@ -338,7 +338,8 @@ fn read_signoff_state(bench_root: &Path) -> Result<serde_json::Value> {
     Ok(json!({
         "primary_reviewer": value.get("primary_reviewer").and_then(|v| v.as_str()).unwrap_or(""),
         "secondary_reviewer": value.get("secondary_reviewer").and_then(|v| v.as_str()).unwrap_or(""),
-        "approved": value.get("approved").and_then(|v| v.as_bool()).unwrap_or(false)
+        "approved": value.get("approved").and_then(|v| v.as_bool()).unwrap_or(false),
+        "release_gold_audit_status": value.get("release_gold_audit_status").cloned().unwrap_or(json!(null))
     }))
 }
 

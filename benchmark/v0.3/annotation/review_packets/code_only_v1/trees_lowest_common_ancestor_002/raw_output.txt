@@ -1,0 +1,44 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_bst_precondition (t : Tree) (p q : Int) : BST t → True",
+      "nl_gloss": "Benchmark-facing: the algorithm relies on the input being a valid BST.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU2_presence_precondition (t : Tree) (p q : Int) : BST t → (p ∈ keys t) → (q ∈ keys t) → True",
+      "nl_gloss": "Benchmark-facing: both query keys must be present in the tree to guarantee a Some result.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_ancestor_property (t : Tree) (p q : Int) (r : Int) : BST t → p ∈ keys t → q ∈ keys t → r ∈ keys t → r = lca_bst t p q → (p ∈ keys (subtree t r)) ∧ (q ∈ keys (subtree t r))",
+      "nl_gloss": "Benchmark-facing: the returned key r is an ancestor (in the BST sense) of both query keys.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU4_lowest_property (t : Tree) (p q : Int) (r : Int) : BST t → p ∈ keys t → q ∈ keys t → r = lca_bst t p q → ¬ (∃ r' : Int, r' ∈ keys (properDescendants t r) ∧ p ∈ keys (subtree t r') ∧ q ∈ keys (subtree t r'))",
+      "nl_gloss": "Benchmark-facing: no proper descendant of the returned node contains both keys; r is the lowest common ancestor.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_key_equality_case (t : Tree) (p : Int) : BST t → p ∈ keys t → lca_bst t p p = Some p",
+      "nl_gloss": "Benchmark-facing: when p = q, the LCA is exactly that key.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ]
+}

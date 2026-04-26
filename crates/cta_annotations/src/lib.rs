@@ -637,6 +637,8 @@ impl AnnotationPack {
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
     use super::*;
 
     fn demo(annotator_id: &str, faith_label: &str) -> Annotation {

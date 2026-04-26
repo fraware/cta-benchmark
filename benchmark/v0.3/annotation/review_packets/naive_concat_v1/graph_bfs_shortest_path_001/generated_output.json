@@ -1,0 +1,62 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_23_naive_concat_v1_eval_zzzzzz_clean_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "graph_bfs_shortest_path_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 6157,
+    "prompt_tokens": 1227,
+    "completion_tokens": 887
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/graph_bfs_shortest_path_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_len (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  dist.length = adj.length := by\n  intro _ _ _\n  exact rfl",
+      "nl_gloss": "dist must have exactly the same length as the number of vertices n = adj.length.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_source_anchor (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  source < adj.length → dist[source] = some 0 := by\n  intro h\n  -- contract-style obligation; proof to be supplied by the implementation verification\n  admit",
+      "nl_gloss": "If source is a valid vertex index, then dist[source] is anchored to Some(0).",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_witness_path (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  source < adj.length →\n  ∀ v k, dist[v] = some k →\n    ∃ path : List Nat,\n      path.length = k + 1 ∧\n      path.head? = some source ∧\n      path.get? (k) = some v ∧\n      ∀ i, i + 1 < path.length →\n        path.get? i ∈ (adj[path.getD i 0] ).toList ∨ True := by\n  intro hsrc v k hdist\n  admit",
+      "nl_gloss": "If dist[v] = Some(k), then there exists a directed path from source to v using exactly k edges.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU4_minimality (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  source < adj.length →\n  ∀ v k, dist[v] = some k →\n    ¬ (∃ path : List Nat, path.length ≤ k ∧\n      path.head? = some source ∧ path.get? (path.length - 1) = some v ∧\n      ∀ i, i + 1 < path.length →\n        path.get? i ∈ (adj[path.getD i 0]).toList) := by\n  intro hsrc v k hdist\n  admit",
+      "nl_gloss": "If dist[v] = Some(k), then there is no directed path from source to v using fewer than k edges.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_unreachability_iff (adj : Array (Array Nat)) (source : Nat) (dist : Array (Option Nat)) :\n  source < adj.length →\n  ∀ v, dist[v] = none ↔ ¬ (∃ k, ∃ path : List Nat,\n    path.head? = some source ∧ path.get? (path.length - 1) = some v ∧\n    path.length = k + 1 ∧\n    ∀ i, i + 1 < path.length →\n      path.get? i ∈ (adj[path.getD i 0]).toList) := by\n  intro hsrc v\n  admit",
+      "nl_gloss": "dist[v] = None iff there is no directed path from source to v.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:8cb980ac523e78bc348580e3e92e411b792d2e27c1a1b454aa553a22dc17ae63",
+  "seed": 1234
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "dp_knapsack_01_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4707,
+    "prompt_tokens": 1095,
+    "completion_tokens": 536
+  },
+  "raw_output_path": "generated/full_method_v1/raw/dp_knapsack_01_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem knapsack01_value_witness (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) :\n  ∃ sel : Selection,\n    ValidSelection weights sel ∧\n    totalWeight weights sel ≤ capacity ∧\n    totalValue values sel = knapsack01 weights values capacity := by\n  admit",
+      "nl_gloss": "When weights and values are length-aligned, there exists a valid feasible selection whose total value equals the returned result.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
+      ],
+      "confidence": 0.75
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem knapsack01_optimality (weights : Weights) (values : Values) (capacity : Nat)\n  (halign : weights.length = values.length) (sel : Selection)\n  (hV : ValidSelection weights sel) (hw : totalWeight weights sel ≤ capacity) :\n  totalValue values sel ≤ knapsack01 weights values capacity := by\n  admit",
+      "nl_gloss": "When weights and values are length-aligned, no valid feasible selection beats the returned result.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU4"
+      ],
+      "confidence": 0.75
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem knapsack01_valid_selection_nodup (weights : Weights) (sel : Selection)\n  (hV : ValidSelection weights sel) : sel.Nodup := by\n  exact hV.1",
+      "nl_gloss": "Any valid selection is 0/1 at the index level: indices are distinct (Nodup is part of ValidSelection).",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.85
+    }
+  ],
+  "prompt_hash": "sha256:8f0c31b56cbac7c5de9b26782f7c4a6db0344afb7c3997b140781feb52eb82d2",
+  "seed": 1
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "arrays_binary_search_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4666,
+    "prompt_tokens": 1197,
+    "completion_tokens": 577
+  },
+  "raw_output_path": "generated/full_method_v1/raw/arrays_binary_search_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem binary_search_success (a : Arr) (t : Int) (i : Nat)\n  (h : binarySearch a t = some i) :\n  i < a.length ∧ a.get? i = some t := by\n  admit",
+      "nl_gloss": "If the function returns Some i, then i is in range and arr[i] equals the target.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.75
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem binary_search_absent_when_sorted (a : Arr) (t : Int)\n  (hs : Sorted a) (h : binarySearch a t = none) :\n  ∀ i, i < a.length → a.get? i ≠ some t := by\n  admit",
+      "nl_gloss": "Assuming the input is sorted in nondecreasing order, if the function returns None then the target does not occur anywhere in the slice.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU3"
+      ],
+      "confidence": 0.75
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem binary_search_terminates (a : Arr) (t : Int) :\n  ∃ r : SearchResult, r = binarySearch a t := by\n  refine ⟨binarySearch a t, rfl⟩",
+      "nl_gloss": "The function always returns a result value (terminates with an output on every input).",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.55
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem binary_search_duplicate_indices (a : Arr) (t : Int) (i j : Nat)\n  (hi : binarySearch a t = some i) (hj : binarySearch a t = some j) :\n  i < a.length ∧\n  j < a.length ∧\n  a.get? i = some t ∧\n  a.get? j = some t := by\n  admit",
+      "nl_gloss": "If duplicates exist, any two Some-results returned for the same search must both be valid hits for the target.",
+      "linked_semantic_units": [
+        "SU2",
+        "SU5"
+      ],
+      "confidence": 0.45
+    }
+  ],
+  "prompt_hash": "sha256:3799cdd428c5b801e17327a93043f492a663b027ca983ec95488eacb63a712e7",
+  "seed": 1
+}

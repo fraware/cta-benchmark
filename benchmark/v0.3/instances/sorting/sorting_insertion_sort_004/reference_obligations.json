@@ -1,0 +1,29 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "sorting_insertion_sort_004",
+  "benchmark_version": "v0.3",
+  "obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (xs : Arr), SortedLE (insertionSort xs)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "\u2200 (xs : Arr), List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ]
+}

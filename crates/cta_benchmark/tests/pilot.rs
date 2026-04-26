@@ -1,6 +1,8 @@
 //! Integration test: load the real pilot benchmark, validate, lint, and
 //! build a manifest. This is the acceptance gate for Milestones 0 and 1.
 
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use std::path::PathBuf;
 
 use cta_benchmark::{build_manifest, lint_benchmark, load_benchmark};

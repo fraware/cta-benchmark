@@ -1,0 +1,48 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "dp_longest_common_subsequence_007",
+  "benchmark_version": "v0.3",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "Range bound: the result is in [0, min(len(a), len(b))]. (LCS length (variant 7): emphasize quadratic-time witness structure without requiring explicit backpointer extraction.)",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "stating only an upper bound of min(len(a), len(b))",
+        "allowing negative values"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Existential witness: there exist strictly increasing index sequences into a and b of equal length k pointing to equal values. (LCS length (variant 7): emphasize quadratic-time witness structure without requiring explicit backpointer extraction.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the strict-increase condition on indices",
+        "dropping the 'same relative order' requirement",
+        "comparing values element-wise across slices of different lengths"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Maximality: no common subsequence strictly longer than the returned length exists. (LCS length (variant 7): emphasize quadratic-time witness structure without requiring explicit backpointer extraction.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only the witness (admits 'always return 0')",
+        "confusing maximality with uniqueness of witness"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Contiguous vs subsequence distinction: the definition allows non-contiguous index selections. (LCS length (variant 7): emphasize quadratic-time witness structure without requiring explicit backpointer extraction.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "solving the longest common substring instead of subsequence"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Symmetry: lcsLength a b = lcsLength b a. (LCS length (variant 7): emphasize quadratic-time witness structure without requiring explicit backpointer extraction.)",
+      "criticality": "optional"
+    }
+  ]
+}

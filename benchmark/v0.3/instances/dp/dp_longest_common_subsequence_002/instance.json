@@ -1,0 +1,42 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "dp_longest_common_subsequence_002",
+  "title": "Length of the longest common subsequence of two integer slices",
+  "domain": "dp",
+  "difficulty": "medium",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given two integer slices a and b, return the length of the longest sequence of integers that appears as a (not necessarily contiguous) subsequence of both a and b, in the same relative order.\n\n[Grid variant 002 \u2014 paired within-family control: distinct authoring emphasis on summary/scaffold hygiene, auxiliary lemmas, and scope discipline so obligations cannot smuggle hidden parameters. Algorithmic contract and oracle checks remain identical to variant 001.]",
+    "preconditions": [
+      "a and b are slices of i32 values of any length"
+    ],
+    "required_properties": [
+      "the result is between 0 and min(a.len(), b.len()) inclusive",
+      "there exists a sequence of indices i_1 < i_2 < ... < i_k into a and j_1 < j_2 < ... < j_k into b with a[i_m] == b[j_m] for each m and k equal to the result",
+      "no strictly longer such common subsequence exists"
+    ],
+    "edge_cases": [
+      "either input is empty",
+      "a equals b (result is len)",
+      "a and b share no elements (result is 0)",
+      "one input is a subsequence of the other",
+      "repeated elements within a single input"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/dp/dp_longest_common_subsequence_002/reference.rs",
+    "entry_fn": "lcs_length"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/dp/dp_longest_common_subsequence_002/scaffold.lean",
+    "namespace": "CTA.Benchmark.DP.LongestCommonSubsequence002",
+    "reference_obligations_path": "instances/dp/dp_longest_common_subsequence_002/reference_obligations.json",
+    "semantic_units_path": "instances/dp/dp_longest_common_subsequence_002/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/dp/dp_longest_common_subsequence_002/harness.json"
+  }
+}

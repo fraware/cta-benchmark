@@ -1,0 +1,205 @@
+{
+  "benchmark_version": "v0.3",
+  "instance_id": "arrays_max_subarray_002",
+  "system_id": "naive_concat_v1",
+  "domain": "arrays",
+  "difficulty": "medium",
+  "instance_path": "benchmark/v0.3/instances/arrays/arrays_max_subarray_002",
+  "generated_output_path": "runs/run_2026_04_22_naive_concat_v1_eval_full_001/generated/naive_concat_v1/arrays_max_subarray_002.json",
+  "informal_statement": {
+    "text": "Given a non-empty slice of integers, return the maximum sum over all contiguous non-empty subslices.",
+    "preconditions": [
+      "the input slice is non-empty"
+    ],
+    "required_properties": [
+      "the returned value equals the maximum sum over all contiguous non-empty subslices",
+      "there exist indices i <= j with i < arr.len() and j <= arr.len() such that arr[i..j] sums to the returned value",
+      "no contiguous non-empty subslice sums to a strictly greater value"
+    ],
+    "edge_cases": [
+      "single-element slice",
+      "all negative elements (max is the largest single element)",
+      "all zero elements",
+      "all positive elements (max is the whole slice)",
+      "a single large negative element interleaved among positives"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: the slice is non-empty.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the non-emptiness precondition",
+        "treating the empty-slice case as returning 0"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Existential witness: there is a contiguous non-empty subslice whose sum equals the returned value.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "stating only an upper bound without a witness",
+        "quantifying over subsequences rather than contiguous subslices"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Upper-bound property: no contiguous non-empty subslice sums strictly above the returned value.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "missing the maximality condition",
+        "quantifying only over subslices of a fixed length"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Contiguity constraint: the witness is a contiguous range i..j, not a subsequence.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "allowing gaps in the witnessed indices"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "All-negative case: the result equals the maximum single element when every element is negative.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr), arr ≠ [] → ∃ (i j : Nat), i ≤ j ∧ j ≤ arr.length ∧ i < j ∧ sliceSum arr i j = maxSubarray arr",
+      "nl_gloss": "For any non-empty input, there exists a contiguous non-empty subslice whose sum equals the returned maximum.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (arr : Arr) (i j : Nat), arr ≠ [] → i < j → j ≤ arr.length → sliceSum arr i j ≤ maxSubarray arr",
+      "nl_gloss": "For any non-empty input, no contiguous non-empty subslice has a sum strictly greater than the returned maximum.",
+      "linked_semantic_units": [
+        "SU3",
+        "SU4"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0), True",
+      "nl_gloss": "Assume the input slice/array is non-empty (size > 0), matching the task requirement.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "let n := a.size\nlet S (i j : Nat) : Int := (∑ k in Finset.range (j - i), a[(i + k).toNat])\nlet Spec : Int := ∀ i j : Nat, i < j ∧ j ≤ n → S i j\n-- equivalently: Spec is the maximum over all contiguous non-empty subslices\nTrue",
+      "nl_gloss": "Define the sum of a contiguous non-empty subslice a[i..j) and define the specification as the maximum value among all such sums.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0), ∃ r : Int, r = maxSubarraySum a",
+      "nl_gloss": "The implementation returns some integer result for any non-empty input.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  let n := a.size\n  let r := maxSubarraySum a\n  ∀ i j : Nat, i < j ∧ j ≤ n →\n    (sumContig a i j) ≤ r",
+      "nl_gloss": "The returned value is at least as large as the sum of every contiguous non-empty subslice.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  let n := a.size\n  let r := maxSubarraySum a\n  ∃ i j : Nat, i < j ∧ j ≤ n ∧ (sumContig a i j) = r",
+      "nl_gloss": "There exists at least one contiguous non-empty subslice whose sum equals the returned maximum.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  let n := a.size\n  let r := maxSubarraySum a\n  (∀ i j : Nat, i < j ∧ j ≤ n → sumContig a i j ≤ r) ∧\n  (∃ i j : Nat, i < j ∧ j ≤ n ∧ sumContig a i j = r)",
+      "nl_gloss": "Combine the two key properties to characterize r as the maximum over all contiguous non-empty subslice sums.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  -- for each iteration index t (0 ≤ t ≤ n),\n  -- maintain:\n  -- bestEndingHere = max sum of a[k..t) over k < t\n  -- bestSoFar = max sum of a[i..j) over 0 ≤ i < j ≤ t\n  True",
+      "nl_gloss": "State the core dynamic-programming invariants: the best sum of a subarray ending at the current position, and the best sum seen so far within the processed prefix.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  -- at the start (t = 1 or t = 0 depending on implementation),\n  -- the invariants hold using the first element(s)\n  True",
+      "nl_gloss": "Prove the invariants hold at the initial iteration state (typically after initializing with the first element).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  ∀ t : Nat, t < a.size →\n    -- assuming invariants hold at step t,\n    -- show they hold at step t+1 after updating the DP variables\n    True",
+      "nl_gloss": "Show that the update step preserves the invariants (the recurrence for bestEndingHere and bestSoFar).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 9,
+      "kind": "unknown",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  maxSubarraySum a terminates ∧\n  -- all array accesses are within bounds\n  True",
+      "nl_gloss": "Ensure the implementation terminates and all indexing operations are safe (no out-of-bounds access).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 10,
+      "kind": "unknown",
+      "lean_statement": "∀ (x : Int),\n  maxSubarraySum (#[x]) = x",
+      "nl_gloss": "For a single-element input, the maximum contiguous non-empty subslice sum equals that element.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/arrays_max_subarray_002/rust_summary.json"
+  }
+}

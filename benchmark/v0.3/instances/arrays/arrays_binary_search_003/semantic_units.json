@@ -1,0 +1,47 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "arrays_binary_search_003",
+  "benchmark_version": "v0.3",
+  "units": [
+    {
+      "id": "SU1",
+      "description": "Input precondition: the slice is sorted in nondecreasing order. (Variant 3 stresses boundary preconditions and explicit edge-case coverage in the informal contract.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "forgetting the precondition entirely",
+        "asserting strict ordering instead of nondecreasing"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "Success postcondition: if the return is Some(i), then i is a valid index and arr[i] == target. (Variant 3 stresses boundary preconditions and explicit edge-case coverage in the informal contract.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting the bounds check",
+        "omitting the equality check"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Failure postcondition: if the return is None, then target does not occur in arr. (Variant 3 stresses boundary preconditions and explicit edge-case coverage in the informal contract.)",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "only quantifying over a prefix or suffix",
+        "stating the weaker claim that target is not at a specific position"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Termination: the function terminates on every input (lo..hi shrinks each iteration). (Variant 3 stresses boundary preconditions and explicit edge-case coverage in the informal contract.)",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "stating termination without a variant"
+      ]
+    },
+    {
+      "id": "SU5",
+      "description": "Uniqueness is NOT required: multiple valid indices exist when duplicates are present. (Variant 3 stresses boundary preconditions and explicit edge-case coverage in the informal contract.)",
+      "criticality": "optional"
+    }
+  ]
+}

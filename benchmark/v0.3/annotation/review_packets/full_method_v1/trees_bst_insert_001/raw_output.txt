@@ -1,0 +1,50 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_precondition (t : Tree) (h : IsBst t) : IsBst t := h",
+      "nl_gloss": "Assume the input tree satisfies the BST precondition (in-order traversal is strictly ascending).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "invariant_preservation",
+      "lean_statement": "theorem SU2_bst_invariant_preserved (t : Tree) (k : Int) (h : IsBst t) : IsBst (bstInsert t k) := by\n  -- proof obligation: bstInsert must preserve the BST invariant\n  admit",
+      "nl_gloss": "The output of bstInsert is also a valid BST (in-order traversal remains strictly ascending).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.75
+    },
+    {
+      "kind": "keyset_change_absent",
+      "lean_statement": "theorem SU3_keyset_change_when_absent (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∉ keys t) : keys (bstInsert t k) = k :: keys t := by\n  -- proof obligation: if k is absent, insertion adds exactly one occurrence\n  admit",
+      "nl_gloss": "If the key k is not already present, the output key multiset equals the input keys with k added (exactly one new occurrence).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "kind": "keyset_change_present",
+      "lean_statement": "theorem SU3_keyset_change_when_present (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∈ keys t) : keys (bstInsert t k) = keys t := by\n  -- proof obligation: if k is present, insertion is a no-op on the key multiset\n  admit",
+      "nl_gloss": "If the key k is already present, the output key multiset equals the input key multiset (no new occurrence is added).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "kind": "duplicate_noop",
+      "lean_statement": "theorem SU4_duplicate_noop (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∈ keys t) : keys (bstInsert t k) = keys t := by\n  -- duplicate insertion returns unchanged key multiset\n  simpa using SU3_keyset_change_when_present (t := t) (k := k) hbst hk",
+      "nl_gloss": "Inserting an existing key returns a tree with the same key multiset (duplicate insertion is a no-op).",
+      "linked_semantic_units": [
+        "SU4",
+        "SU3"
+      ],
+      "confidence": 0.85
+    }
+  ]
+}

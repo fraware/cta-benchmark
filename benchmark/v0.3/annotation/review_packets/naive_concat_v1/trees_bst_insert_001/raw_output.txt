@@ -1,0 +1,36 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_bst_inorder_strictly_ascending_precondition (t : Tree) : IsBST t → InorderStrictAsc t",
+      "nl_gloss": "Assume the input tree is a valid BST with strictly ascending in-order traversal.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_bst_invariant_preservation (t : Tree) (key : Int) : IsBST t → IsBST (bst_insert t key)",
+      "nl_gloss": "The insertion result remains a valid BST.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_keyset_change_union_or_unchanged (t : Tree) (key : Int) : IsBST t → (if Mem t key then KeyMultiset (bst_insert t key) = KeyMultiset t else KeyMultiset (bst_insert t key) = KeyMultiset t ⊎ {key})",
+      "nl_gloss": "If the key is absent, the output key multiset is the input multiset union {key}; if present, it is unchanged.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU4_duplicate_noop_keymultiset (t : Tree) (key : Int) : IsBST t → Mem t key → KeyMultiset (bst_insert t key) = KeyMultiset t",
+      "nl_gloss": "Inserting an existing key does not change the multiset of keys.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    }
+  ]
+}

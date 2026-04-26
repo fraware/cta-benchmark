@@ -1,0 +1,64 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "graph_bfs_shortest_path_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 5908,
+    "prompt_tokens": 176,
+    "completion_tokens": 795
+  },
+  "raw_output_path": "generated/text_only_v1/raw/graph_bfs_shortest_path_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem dist_length (dist : Vector (Option Nat) n) : dist.length = n := by simpa using dist.length",
+      "nl_gloss": "The returned distance vector has length n.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (v : Fin n), True",
+      "nl_gloss": "Distances are defined for every vertex index v in Fin n.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (v : Fin n) (k : Nat), dist[v] = some k → (∃ (path : List (Fin n)), path.head? = some source ∧ path.Last? = some v ∧ path.length - 1 = k ∧ ∀ i : Nat, i + 1 < path.length → (adj path.get ⟨i, by ...⟩).contains (path.get ⟨i+1, by ...⟩))",
+      "nl_gloss": "If dist[v] = Some k, then there exists a directed path from source to v using exactly k edges.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (v : Fin n), (∃ (k : Nat), ∃ (path : List (Fin n)), path.head? = some source ∧ path.Last? = some v ∧ path.length - 1 = k ∧ ∀ i : Nat, i + 1 < path.length → (adj path.get ⟨i, by ...⟩).contains (path.get ⟨i+1, by ...⟩)) → ∃ (k : Nat), dist[v] = some k",
+      "nl_gloss": "If there exists any directed path from source to v, then dist[v] is Some k for some k.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (v : Fin n), (¬∃ (k : Nat), ∃ (path : List (Fin n)), path.head? = some source ∧ path.Last? = some v ∧ path.length - 1 = k ∧ ∀ i : Nat, i + 1 < path.length → (adj path.get ⟨i, by ...⟩).contains (path.get ⟨i+1, by ...⟩)) → dist[v] = none",
+      "nl_gloss": "If v is unreachable from source, then dist[v] = None.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (v : Fin n) (k : Nat), dist[v] = some k → (∀ (k' : Nat), (∃ (path : List (Fin n)), path.head? = some source ∧ path.Last? = some v ∧ path.length - 1 = k' ∧ ∀ i : Nat, i + 1 < path.length → (adj path.get ⟨i, by ...⟩).contains (path.get ⟨i+1, by ...⟩)) → k ≤ k')",
+      "nl_gloss": "If dist[v] = Some k, then k is the minimum number of edges among all paths from source to v.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "dist[source] = some 0",
+      "nl_gloss": "The distance from the source to itself is Some 0.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:2c860acec75ce756a16b1650f1d5148a2a820a0c142831dc0f0d3087daffda90",
+  "seed": 3
+}

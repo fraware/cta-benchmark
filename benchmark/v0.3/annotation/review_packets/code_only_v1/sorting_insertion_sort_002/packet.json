@@ -1,0 +1,139 @@
+{
+  "benchmark_version": "v0.3",
+  "instance_id": "sorting_insertion_sort_002",
+  "system_id": "code_only_v1",
+  "domain": "sorting",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.3/instances/sorting/sorting_insertion_sort_002",
+  "generated_output_path": "runs/run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001/generated/code_only_v1/sorting_insertion_sort_002.json",
+  "informal_statement": {
+    "text": "Sort a mutable slice of integers in nondecreasing order using insertion sort. The function mutates its input in place and returns nothing.",
+    "preconditions": [],
+    "required_properties": [
+      "the resulting slice is sorted in nondecreasing order",
+      "the resulting slice is a permutation of the original slice",
+      "the function terminates on every input"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice",
+      "already-sorted slice",
+      "reverse-sorted slice",
+      "slice with duplicates",
+      "slice with all equal elements"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Sortedness: the output list is sorted in nondecreasing order.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU2",
+      "description": "Permutation: the output is a permutation of the input (every element preserved, counts preserved).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting set equality without counting duplicates",
+        "asserting length preservation only"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Termination on every input.",
+      "criticality": "supporting"
+    },
+    {
+      "id": "SU4",
+      "description": "Stability is NOT required and should not be asserted.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), SortedLE (insertionSort xs)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU1_sorted_output (xs : Arr) : Sorted (insertionSort xs)",
+      "nl_gloss": "The declarative output list is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "postcondition",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU2_perm_output (xs : Arr) : List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input (duplicate counts preserved).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "termination",
+      "layer": "benchmark_facing",
+      "lean_statement": "theorem SU3_output_length (xs : Arr) : (insertionSort xs).length = xs.length",
+      "nl_gloss": "The specification-level sort preserves length, matching finite termination of the reference on every input.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "raw_source": "model"
+    }
+  ],
+  "quality_summary": {
+    "critical_units_covered_by_direct_theorems": [
+      "SU1",
+      "SU2"
+    ],
+    "critical_units_only_indirectly_covered": [],
+    "off_spec_theorems_present": false,
+    "vacuous_theorems_present": false
+  },
+  "lean_check": {
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.3/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.3/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.3/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.3/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/reference.rs",
+    "rust_summary_path": "benchmark/v0.3/annotation/review_packets/code_only_v1/sorting_insertion_sort_002/rust_summary.json"
+  }
+}

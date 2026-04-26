@@ -15,6 +15,8 @@
 //!    Some(..), error_message: Some(..) }`.
 //! 4. Valid canonical JSON always round-trips cleanly.
 
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use cta_generate::normalize_response;
 use proptest::prelude::*;
 

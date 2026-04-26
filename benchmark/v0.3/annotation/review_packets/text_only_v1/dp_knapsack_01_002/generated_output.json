@@ -1,0 +1,70 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "dp_knapsack_01_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 7472,
+    "prompt_tokens": 171,
+    "completion_tokens": 1048
+  },
+  "raw_output_path": "generated/text_only_v1/raw/dp_knapsack_01_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "def knap (w v : List Nat) (cap : Nat) : Nat := 0",
+      "nl_gloss": "Define the function to be specified (placeholder).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat), w.length = v.length → 0 ≤ cap",
+      "nl_gloss": "Assume equal-length weight/value lists and non-negative capacity (Nat already ensures non-negativity).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat), w.length = v.length → (∀ x ∈ w, True) ∧ (∀ x ∈ v, True)",
+      "nl_gloss": "Weights and values are non-negative (Nat already ensures non-negativity); no additional constraints beyond membership.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat) (S : Finset Nat), w.length = v.length →\n  (∀ i ∈ S, i < w.length) →\n  let totalW := (S.sum (fun i => w.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩))\n  let totalV := (S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩))\n  totalW ≤ cap → True",
+      "nl_gloss": "Characterize feasible solutions as subsets of indices within bounds whose total weight is ≤ capacity.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat) (S : Finset Nat), w.length = v.length →\n  (∀ i ∈ S, i < w.length) →\n  let totalW := S.sum (fun i => w.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n  let totalV := S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n  totalW ≤ cap →\n  totalV ≤ knap w v cap",
+      "nl_gloss": "The returned value is at least the value of any feasible subset (so it is an upper bound on all feasible subset values).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat), w.length = v.length →\n  ∃ (S : Finset Nat),\n    (∀ i ∈ S, i < w.length) ∧\n    let totalW := S.sum (fun i => w.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n    let totalV := S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n    totalW ≤ cap ∧ knap w v cap = totalV",
+      "nl_gloss": "There exists a feasible subset whose total value equals the returned maximum.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat), w.length = v.length →\n  knap w v cap = \n    (Finset.univ.filter (fun i => i < w.length)).sup (fun S =>\n      let totalW := S.sum (fun i => w.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n      let totalV := S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n      if totalW ≤ cap then totalV else 0)",
+      "nl_gloss": "Equate the result with the maximum total value over all feasible subsets (maximality characterization).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "∀ (w v : List Nat) (cap : Nat) (S : Finset Nat), w.length = v.length →\n  (∀ i ∈ S, i < w.length) →\n  let totalV := S.sum (fun i => v.get ⟨i, by simpa using (Fin.isLt i (by simpa using ‹i < w.length›))⟩)\n  True",
+      "nl_gloss": "Each item can be selected at most once, modeled by using a set of indices (Finset) rather than multisets.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:a39dd36ee459c77b6cad81e95b4a69a64232f664b1249c2562d1794e8c6f88e0",
+  "seed": 3
+}

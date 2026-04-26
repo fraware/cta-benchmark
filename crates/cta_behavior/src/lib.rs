@@ -184,8 +184,8 @@ impl AdapterRegistry {
         self.adapters.get(id).map(AsRef::as_ref)
     }
 
-    /// Construct a registry pre-populated with every pilot adapter in the
-    /// v0.1 benchmark.
+    /// Construct a registry pre-populated with every behavioral harness
+    /// adapter for shipped instance ids (v0.3 family grid).
     #[must_use]
     pub fn with_pilot() -> Self {
         pilot::register_all()
@@ -216,6 +216,6 @@ mod tests {
         assert!(keys.contains(&"arrays_binary_search_001"));
         assert!(keys.contains(&"sorting_insertion_sort_001"));
         assert!(keys.contains(&"graph_dijkstra_001"));
-        assert_eq!(keys.len(), 12);
+        assert_eq!(keys.len(), 84);
     }
 }

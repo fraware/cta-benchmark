@@ -1,0 +1,169 @@
+{
+  "benchmark_version": "v0.3",
+  "instance_id": "sorting_insertion_sort_001",
+  "system_id": "naive_concat_v1",
+  "domain": "sorting",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.3/instances/sorting/sorting_insertion_sort_001",
+  "generated_output_path": "runs/run_2026_04_22_naive_concat_v1_eval_full_001/generated/naive_concat_v1/sorting_insertion_sort_001.json",
+  "informal_statement": {
+    "text": "Sort a mutable slice of integers in nondecreasing order using insertion sort. The function mutates its input in place and returns nothing.",
+    "preconditions": [],
+    "required_properties": [
+      "the resulting slice is sorted in nondecreasing order",
+      "the resulting slice is a permutation of the original slice",
+      "the function terminates on every input"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice",
+      "already-sorted slice",
+      "reverse-sorted slice",
+      "slice with duplicates",
+      "slice with all equal elements"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "Sortedness: the output list is sorted in nondecreasing order.",
+      "criticality": "critical"
+    },
+    {
+      "id": "SU2",
+      "description": "Permutation: the output is a permutation of the input (every element preserved, counts preserved).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting set equality without counting duplicates",
+        "asserting length preservation only"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Termination on every input.",
+      "criticality": "supporting"
+    },
+    {
+      "id": "SU4",
+      "description": "Stability is NOT required and should not be asserted.",
+      "criticality": "optional"
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), SortedLE (insertionSort xs)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (xs : Arr), List.Perm (insertionSort xs) xs",
+      "nl_gloss": "The output is a permutation of the input.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "∀ (a : Array Int) (n : Nat), n = a.size → True",
+      "nl_gloss": "Assume the input slice/array has a well-defined length n; no additional ordering precondition is required.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "termination",
+      "lean_statement": "∃ (m : Nat), True ∧ (∀ i : Nat, i < n → Acc (fun j => j) i)",
+      "nl_gloss": "The insertion-sort loops terminate (e.g., by using a decreasing measure such as the outer index and/or inner index).",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "∀ (i : Nat), i ≤ n →\n  let a' := state_after_outer i in\n  (Sorted (a'.toList.take i)) ∧\n  (Permutation a'.toList (a0.toList))",
+      "nl_gloss": "After completing the outer loop for index i, the prefix of length i is sorted and the entire array is a permutation of the original input.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "∀ (i j : Nat), i < n → j ≤ i →\n  let a' := state_during_inner i j in\n  (Sorted (a'.toList.take j)) ∧\n  (∀ k, k < j → a'[k] ≤ a'[j]) ∧\n  (Permutation a'.toList (a0.toList))",
+      "nl_gloss": "During the inner loop (shifting elements to insert the key), the already-processed part remains sorted, the key is being moved left correctly, and the array remains a permutation of the original.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "∀ (i : Nat), i < n →\n  let key := a0[i] in\n  let a' := state_after_outer (i+1) in\n  (∃ p, a'.toList = (a'.toList.take p) ++ [key] ++ (a'.toList.drop (p+1))) ∧\n  (∀ t < p, a'[t] ≤ key) ∧\n  (∀ t > p, key ≤ a'[t])",
+      "nl_gloss": "When inserting the element at position i (the key), it is placed at the correct position relative to the sorted prefix: all elements before are ≤ key and all after are ≥ key.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 5,
+      "kind": "unknown",
+      "lean_statement": "Permutation (final_a.toList) (a0.toList)",
+      "nl_gloss": "The algorithm only reorders elements; it does not change the multiset of values.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 6,
+      "kind": "unknown",
+      "lean_statement": "Sorted (final_a.toList)",
+      "nl_gloss": "After the algorithm finishes, the entire array/slice is sorted in nondecreasing order.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 7,
+      "kind": "unknown",
+      "lean_statement": "∀ (idx : Nat), idx < n →\n  (final_a[idx] is defined) ∧\n  (the algorithm does not allocate/modify any memory outside the slice/array bounds)",
+      "nl_gloss": "The function mutates only the given slice/array in place and does not affect anything outside its bounds.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    },
+    {
+      "index": 8,
+      "kind": "unknown",
+      "lean_statement": "result = ()",
+      "nl_gloss": "The function returns nothing (unit) and all observable effects are the in-place mutation.",
+      "linked_semantic_units": [],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": false,
+    "diagnostics_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/sorting_insertion_sort_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/sorting_insertion_sort_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/sorting_insertion_sort_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/sorting_insertion_sort_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.3/annotation/review_packets/naive_concat_v1/sorting_insertion_sort_001/rust_summary.json"
+  }
+}

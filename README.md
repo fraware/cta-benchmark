@@ -220,6 +220,16 @@ paper-claim eligibility), full annotation coverage for experiments that opt
 into `require_full_annotation_coverage`, and a two-reviewer gold-audit
 signoff file under `benchmark/v0.2/audit/gold_signoff.json`.
 
+`v0.3` is the specification-stress grid: 84 instances (12 algorithm families
+× seven ids) sharing reference code and harnesses per family; see
+`docs/benchmark_spec.md`. Release validation accepts a **template** gold-audit
+posture (`benchmark/v0.3/audit/gold_signoff.json` with
+`release_gold_audit_status: "template_pending_human_review"` and
+`approved: false`) until humans complete `audit/evidence/*.csv` per
+`benchmark/v0.3/audit/review_checklist.md`. Machine-readable system cards for
+all four baselines live under `experiments/system_cards/` (`text_only_v1`,
+`code_only_v1`, `naive_concat_v1`, `full_method_v1`).
+
 Released benchmark instances are **never mutated in place**. Add a new
 version instead. The benchmark linter additionally enforces byte-identity
 between each instance scaffold and its canonical Lean module under
@@ -232,6 +242,9 @@ capturing commit hash, benchmark / schema / metrics / rubric versions,
 system and prompt identifiers, prompt SHA-256 hashes per instance, seeds,
 toolchain versions, timestamp, and provider metadata. **No result is
 accepted into the paper without a manifest.**
+
+For a **step-by-step local checklist** (v0.3 manifest, annotation pack, tables,
+Lean build, anonymous zip), see [`docs/PAPER_READINESS.md`](docs/PAPER_READINESS.md).
 
 The generation pipeline is build-pure: no network calls happen during
 `cargo build`. Live providers (`OpenAiProvider`, `AnthropicProvider`) only
@@ -251,8 +264,10 @@ Every push runs:
 - `cargo test --workspace --all-targets`
 - `cargo test --workspace --doc`
 - `cta validate schemas`
-- `cta validate benchmark --version v0.1 --release` (pilot checks)
-- `cta validate benchmark --version v0.2 --release` (paper-track checks)
+- `cta validate benchmark --version v0.1 --release` (pilot checks; runs on every push)
+- `cta validate benchmark --version v0.2 --release` and
+  `cta validate benchmark --version v0.3 --release` (paper-track gates; also run
+  on `benchmark/**` changes via `.github/workflows/benchmark-lint.yml`)
 - `cta experiment --config configs/experiments/pilot_v1.json --dry-run` and
   the full run against the stub provider, with schema validation of every
   emitted `run_manifest.json` and `results_bundle.json`.
@@ -425,7 +440,7 @@ checks for known failure modes:
 - `docs/annotation_manual.md` — rubric, adjudication, calibration
 - `docs/evaluation_contract.md` — metric definitions, acceptance criteria
 - `docs/release_process.md` — how to freeze / bump versions
-- `docs/paper_readiness.md` — paper-track release gates and run protocol
+- `docs/PAPER_READINESS.md` — paper-track release gates and run protocol
 - `docs/paper/outline.md` — paper structure and reproducibility checklist
 - `docs/authoring_examples.md` — gold obligation patterns and review-packet bar
 - `docs/obligation_audit_v0.1.md` — archived v0.1 obligation audit (with v0.2 pointers)

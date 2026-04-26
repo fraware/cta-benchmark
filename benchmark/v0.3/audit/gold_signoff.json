@@ -1,0 +1,7 @@
+{
+  "benchmark_version": "v0.3",
+  "primary_reviewer": "Unassigned (populate audit evidence CSVs before claiming completion)",
+  "secondary_reviewer": "Unassigned (populate audit evidence CSVs before claiming completion)",
+  "approved": false,
+  "release_gold_audit_status": "template_pending_human_review"
+}

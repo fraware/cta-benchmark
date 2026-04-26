@@ -1,0 +1,15 @@
+{
+  "available": true,
+  "elaborates": true,
+  "success": true,
+  "exit_code": 0,
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "benchmark/v0.3/annotation/review_packets/text_only_v1/dp_knapsack_01_001/packet_elab_check.lean"
+  ],
+  "check_file": "benchmark/v0.3/annotation/review_packets/text_only_v1/dp_knapsack_01_001/packet_elab_check.lean",
+  "stdout": "",
+  "stderr": ""
+}

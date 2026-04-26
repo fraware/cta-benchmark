@@ -1,0 +1,49 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "system_id": "code_only_v1",
+  "instance_id": "trees_bst_insert_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 8128,
+    "prompt_tokens": 304,
+    "completion_tokens": 1019
+  },
+  "raw_output_path": "generated/code_only_v1/raw/trees_bst_insert_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_bst_preserved (t : Tree) (k : Int) (hb : IsBst t) :\n  IsBst (bstInsert t k)",
+      "nl_gloss": "Strict BST validity is preserved after insertion.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_keys_absent_insert (t : Tree) (k : Int)\n  (hb : IsBst t) (habs : k ∉ keys t) :\n  List.Perm (keys (bstInsert t k)) (k :: keys t)",
+      "nl_gloss": "When the key is absent, the output key list is the input keys with one copy of the new key adjoined.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU4_keys_present_unchanged (t : Tree) (k : Int)\n  (hb : IsBst t) (hp : k ∈ keys t) :\n  List.Perm (keys (bstInsert t k)) (keys t)",
+      "nl_gloss": "When the key is already present, insertion is a no-op on the key multiset.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU4"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:ace9031882d7f664dcc2e487f61b59bc828922da866bfdcc99a11ccdcb718f05",
+  "seed": 0
+}

@@ -1,0 +1,8 @@
+{
+  "benchmark_version": "v0.3",
+  "split": "eval",
+  "required_pairs": 192,
+  "covered_pairs": 192,
+  "pack_path": "benchmark/v0.3/annotation/adjudicated_subset/pack.json",
+  "generated_at": "2026-04-26T12:55:15.4149661Z"
+}

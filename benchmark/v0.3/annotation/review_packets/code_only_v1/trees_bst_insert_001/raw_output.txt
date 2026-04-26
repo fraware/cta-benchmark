@@ -1,0 +1,36 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem bst_insert_precondition {t : Tree} {key : Int} (h : BST t) : BST t := by\n  simpa using h",
+      "nl_gloss": "Benchmark-facing: the input tree must be a valid strict BST (in-order strictly ascending).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem bst_insert_preserves_BST (t : Tree) (key : Int) (hBST : BST t) : BST (bst_insert t key)",
+      "nl_gloss": "Benchmark-facing: insertion preserves the BST property for all cases (including duplicates as no-op).",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem bst_insert_keyset_change (t : Tree) (key : Int) (hBST : BST t) :\n  (key ∈ keys t) → keys (bst_insert t key) = keys t ∪ {key} ∨\n  (key ∉ keys t) → keys (bst_insert t key) = keys t ∪ {key}",
+      "nl_gloss": "Benchmark-facing: key multiset changes by adding {key} exactly when key is absent; otherwise it stays the same.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem bst_insert_duplicate_noop (t : Tree) (key : Int) (hBST : BST t) (hmem : key ∈ keys t) :\n  keys (bst_insert t key) = keys t",
+      "nl_gloss": "Benchmark-facing: inserting an existing key is a no-op on the key multiset.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    }
+  ]
+}

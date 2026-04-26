@@ -1,0 +1,29 @@
+{
+  "schema_version": "schema_v1",
+  "harness_type": "reference_relational",
+  "seed": 11,
+  "num_trials": 100,
+  "input_generator": {
+    "kind": "knapsack_instance",
+    "min_items": 0,
+    "max_items": 10,
+    "weight_range": [
+      0,
+      15
+    ],
+    "value_range": [
+      0,
+      20
+    ],
+    "capacity_range": [
+      0,
+      50
+    ]
+  },
+  "oracle_checks": [
+    "result_matches_exhaustive_oracle",
+    "result_nonnegative",
+    "result_zero_when_capacity_zero_and_weights_positive"
+  ],
+  "timeout_ms": 6000
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "greedy_coin_change_canonical_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 5719,
+    "prompt_tokens": 196,
+    "completion_tokens": 783
+  },
+  "raw_output_path": "generated/text_only_v1/raw/greedy_coin_change_canonical_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (denoms : Array ℕ) (hpos : ∀ i, i < denoms.size → denoms[i] > 0) (htsorted : denoms.Sorted (· ≤ ·)) (amount : ℕ), amount ≥ 0",
+      "nl_gloss": "Assume denominations are positive and sorted ascending; amount is a non-negative natural number.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount; counts.size = denoms.size",
+      "nl_gloss": "The returned vector counts has the same length as the denominations array.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount; ∑ i in Finset.range denoms.size, (counts[i] * denoms[i]) = amount",
+      "nl_gloss": "The counts produced by the algorithm realize the target amount exactly as a weighted sum of denominations.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount; ∀ i : Fin denoms.size, counts[i] ≥ 0",
+      "nl_gloss": "Each count is a non-negative integer (automatic for ℕ, but stated as an obligation).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount;\n  let obj (v : Fin denoms.size → ℕ) : ℕ := ∑ i in Finset.range denoms.size, v ⟨i, by simp⟩;\n  obj counts = ∑ i in Finset.range denoms.size, counts ⟨i, by simp⟩",
+      "nl_gloss": "The objective being minimized is the total number of coins, i.e., the sum of all counts.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "let counts := greedyCounts denoms amount;\n  let obj (v : Fin denoms.size → ℕ) : ℕ := ∑ i in Finset.range denoms.size, v ⟨i, by simp⟩;\n  ∀ v : Fin denoms.size → ℕ,\n    (∑ i in Finset.range denoms.size, (v ⟨i, by simp⟩ * denoms[i])) = amount →\n    obj counts ≤ obj v",
+      "nl_gloss": "Among all vectors of non-negative counts that sum to the target amount, the returned counts have minimum total number of coins.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "canonicalSystem denoms →\n  (∀ amount : ℕ,\n    let counts := greedyCounts denoms amount;\n    ∀ v : Fin denoms.size → ℕ,\n      (∑ i in Finset.range denoms.size, (v ⟨i, by simp⟩ * denoms[i])) = amount →\n      (∑ i in Finset.range denoms.size, counts ⟨i, by simp⟩) ≤ (∑ i in Finset.range denoms.size, v ⟨i, by simp⟩))",
+      "nl_gloss": "Use the assumption that the denomination system is canonical (greedy is optimal) to justify the minimality property for all non-negative target amounts.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:f7bcfb47fd0cb81f60595f7ea6973be979d8841186dd331f112d17334d5c89cb",
+  "seed": 3
+}

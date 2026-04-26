@@ -1,0 +1,32 @@
+{
+  "benchmark_version": "v0.3",
+  "source_missing_pairs": "C:/Users/mateo/cta-benchmark/benchmark/v0.3/annotation/task_board/missing_pairs.json",
+  "policy": "strict_per_system_batches",
+  "batches": [
+    {
+      "batch_id": "batch_01",
+      "system_id": "text_only_v1",
+      "pair_count": 21,
+      "queue_path": "C:/Users/mateo/cta-benchmark/benchmark/v0.3/annotation/task_board/batches/batch_01_text_only_v1.csv"
+    },
+    {
+      "batch_id": "batch_02",
+      "system_id": "code_only_v1",
+      "pair_count": 24,
+      "queue_path": "C:/Users/mateo/cta-benchmark/benchmark/v0.3/annotation/task_board/batches/batch_02_code_only_v1.csv"
+    },
+    {
+      "batch_id": "batch_03",
+      "system_id": "naive_concat_v1",
+      "pair_count": 24,
+      "queue_path": "C:/Users/mateo/cta-benchmark/benchmark/v0.3/annotation/task_board/batches/batch_03_naive_concat_v1.csv"
+    },
+    {
+      "batch_id": "batch_04",
+      "system_id": "full_method_v1",
+      "pair_count": 24,
+      "queue_path": "C:/Users/mateo/cta-benchmark/benchmark/v0.3/annotation/task_board/batches/batch_04_full_method_v1.csv"
+    }
+  ],
+  "generated_at": "2026-04-22T12:48:03.2936509Z"
+}

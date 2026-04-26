@@ -1,0 +1,11 @@
+{
+  "schema_version": "raw_metrics_v1",
+  "description": "Copy to results/raw_metrics.json and fill faithfulness_mean per (system, family) from adjudicated scores.",
+  "rows": [
+    {
+      "system": "full_method_v1",
+      "family": "graph_bfs_shortest_path",
+      "faithfulness_mean": 3.2
+    }
+  ]
+}

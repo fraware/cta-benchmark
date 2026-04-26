@@ -1,0 +1,22 @@
+{
+  "benchmark_version": "v0.3",
+  "manifest_hash": "sha256:140d49cb129e7441792551c2466e83aa23f6bf96d826ba13f1dc782d0195e2fa",
+  "eval_size": 48,
+  "dev_size": 36,
+  "annotation_coverage": {
+    "required_pairs": 192,
+    "covered_pairs": 192,
+    "missing_pairs": 0,
+    "missing_examples": []
+  },
+  "gold_signoff": {
+    "primary_reviewer": "Unassigned (populate audit evidence CSVs before claiming completion)",
+    "secondary_reviewer": "Unassigned (populate audit evidence CSVs before claiming completion)",
+    "approved": false,
+    "release_gold_audit_status": "template_pending_human_review"
+  },
+  "release_validation": {
+    "status": "pass"
+  },
+  "timestamp": "2026-04-26T14:10:56.6675267Z"
+}

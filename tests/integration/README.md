@@ -8,10 +8,10 @@ green on every push.
 | Binary                                                  | Exercises                                                                             |
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | `cta_benchmark/tests/pilot.rs`                          | Loader + linter + manifest hash over all 12 instances                                 |
-| `cta_rust_extract/tests/golden.rs`                      | Rust semantic extractor invariants per instance                                       |
-| `cta_lean/tests/elab.rs`                                | Lake-based Lean elaboration + diagnostic parsing                                      |
-| `cta_behavior/tests/pilot.rs`                           | Behavioral harness oracles for all 12 reference implementations                       |
-| `cta_generate/tests/pipeline_smoke.rs`                  | Full generate pipeline with the stub provider and all four prompt templates          |
+| `cta_rust_extract/tests/pilot_golden.rs`                | Rust semantic extractor invariants across pilot reference implementations              |
+| `cta_lean` (unit tests in `src/lib.rs`)                 | Lean writer, `lake`-based elaboration driver, diagnostic parsing                        |
+| `cta_behavior/tests/pilot_smoke.rs`                    | Behavioral harness smoke over every registered pilot adapter                           |
+| `cta_generate/tests/pipeline_smoke.rs`                  | Full generate pipeline with the stub provider and all four prompt templates (v0.3 pilot registry) |
 | `cta_metrics/tests/m6_pipeline.rs`                      | Annotations -> adjudicated pack -> results bundle, schema-validated                   |
 | `cta_metrics/tests/multi_annotator_pipeline.rs`         | Multi-annotator adjudication policies + inter-annotator agreement metrics             |
 | `cta_generate/tests/code_only_packet_regression.rs`     | Curated `code_only_v1` review `packet.json` set: schema-adjacent checks, layers, vacuity, per-instance theorem hygiene |
@@ -25,12 +25,18 @@ End-to-end CLI orchestration is additionally exercised by
 `.github/workflows/ci.yml`:
 
 1. `cta validate schemas`
-2. `cta validate benchmark --version v0.1 --release`
-3. `cta validate benchmark --version v0.2 --release` (paper track; fails with `GOLD_AUDIT_SIGNOFF_INVALID` until `benchmark/v0.2/audit/gold_signoff.json` is completed per `docs/release_process.md`. Repository CI currently runs `v0.1 --release` only.)
+2. `cta validate benchmark --version v0.1 --release` (on every push)
+3. `cta validate benchmark --version v0.2 --release` (paper track; fails with
+   `GOLD_AUDIT_SIGNOFF_INVALID` until `benchmark/v0.2/audit/gold_signoff.json`
+   carries two reviewer names and `approved: true` per `docs/release_process.md`)
 4. `cta experiment --config configs/experiments/pilot_v1.json --dry-run`
 5. `cta experiment --config configs/experiments/pilot_v1.json`
 6. `cta validate file --schema {run_manifest, results_bundle} --path <...>`
 7. `cta annotate refresh-lean-check --benchmark-version v0.2 --packets-root benchmark/v0.2/annotation/review_packets --strict-m1`
+
+`.github/workflows/benchmark-lint.yml` (on `benchmark/**` changes) additionally
+runs `validate benchmark --version v0.3 --release` and `benchmark lint` for v0.3;
+see `docs/PAPER_READINESS.md`.
 
 Current baseline expectation for this gate: `m2_ready_packets = 94 / 94` and
 `global_proof_worklist.count = 0`.

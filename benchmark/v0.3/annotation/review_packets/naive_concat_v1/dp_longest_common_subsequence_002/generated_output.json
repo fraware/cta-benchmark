@@ -1,0 +1,82 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_naive_concat_v1_eval_full_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "dp_longest_common_subsequence_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 8832,
+    "prompt_tokens": 149,
+    "completion_tokens": 1005
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/dp_longest_common_subsequence_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_longest_common_subsequence_length\n  (a b : List Int) :\n  let res := lcsLen a b\n  res = Nat.findGreatest (fun k =>\n    ∃ s : List Int,\n      s.length = k ∧\n      IsSubsequence s a ∧\n      IsSubsequence s b)",
+      "nl_gloss": "The returned value equals the maximum length k such that there exists a list s of length k that is a subsequence of both input lists a and b.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def IsSubsequence (s t : List Int) : Prop :=\n  ∃ u v, t = u ++ s ++ v ∧ (∀ i, True)",
+      "nl_gloss": "A formal predicate IsSubsequence s t capturing that s appears in t in the same relative order (not necessarily contiguous). (This obligation is to align the Lean predicate with the intended subsequence notion used in the proofs.)",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_sound\n  (a b : List Int) :\n  let res := lcsLen a b\n  ∃ s : List Int,\n    s.length = res ∧ IsSubsequence s a ∧ IsSubsequence s b",
+      "nl_gloss": "The algorithm’s computed length is achievable: there exists a common subsequence of a and b whose length equals the returned value.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem lcsLen_optimal\n  (a b : List Int) :\n  ∀ s : List Int,\n    IsSubsequence s a → IsSubsequence s b →\n    s.length ≤ lcsLen a b",
+      "nl_gloss": "No common subsequence is longer than the algorithm’s result: every common subsequence length is bounded above by the returned value.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_recurrence\n  (a b : List Int) :\n  match a, b with\n  | [], _ => lcsLen a b = 0\n  | _, [] => lcsLen a b = 0\n  | x::xs, y::ys =>\n      if x = y then\n        lcsLen (x::xs) (y::ys) = 1 + lcsLen xs ys\n      else\n        lcsLen (x::xs) (y::ys) = Nat.max (lcsLen (x::xs) ys) (lcsLen xs (y::ys))",
+      "nl_gloss": "The implementation satisfies the standard LCS dynamic-programming recurrence on list heads/tails, including base cases for empty lists.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem lcsLen_terminates (a b : List Int) :\n  ∃ n : Nat, True",
+      "nl_gloss": "The recursive/dynamic-programming computation terminates (e.g., via structural recursion on list lengths or well-foundedness of the DP indices).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "bounds",
+      "lean_statement": "theorem lcsLen_bounds\n  (a b : List Int) :\n  lcsLen a b ≤ min a.length b.length",
+      "nl_gloss": "The returned length is always within the obvious bounds: it cannot exceed the length of either input.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_monotone_subsequence\n  (a b : List Int) :\n  ∀ a' b',\n    IsSubsequence a' a → IsSubsequence b' b →\n    lcsLen a' b' ≤ lcsLen a b",
+      "nl_gloss": "If you replace inputs by subsequences, the LCS length cannot increase beyond the original inputs.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLen_eq_dp\n  (a b : List Int) :\n  lcsLen a b = dpLcsLen a b",
+      "nl_gloss": "The Rust reference implementation’s computed result corresponds to the intended DP table formulation in Lean (dpLcsLen), ensuring the proof connects to the actual computation.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem dpLcsLen_invariant\n  (a b : List Int) :\n  ∀ i j : Nat,\n    i ≤ a.length → j ≤ b.length →\n    dp[i][j] = lcsLen (a.take i) (b.take j)",
+      "nl_gloss": "The DP table entries satisfy the invariant that dp[i][j] equals the LCS length of the prefixes of lengths i and j.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:6d9188da709aba161ff3c171ae10d4bb17c769e8626215910e690283dff8653a",
+  "seed": 1
+}

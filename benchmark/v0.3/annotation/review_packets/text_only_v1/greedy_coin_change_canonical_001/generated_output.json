@@ -1,0 +1,70 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_text_only_v1_eval_003",
+  "system_id": "text_only_v1",
+  "instance_id": "greedy_coin_change_canonical_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 6957,
+    "prompt_tokens": 196,
+    "completion_tokens": 853
+  },
+  "raw_output_path": "generated/text_only_v1/raw/greedy_coin_change_canonical_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem precond_denoms {denoms : Array ℕ} :\n  (∀ i j, i < j → denoms[i]! < denoms[j]!) ∧ (∀ d ∈ denoms, d > 0) → True",
+      "nl_gloss": "Denominations are strictly increasing and all are positive.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem precond_amount (amount : ℕ) : amount ≥ 0 → True",
+      "nl_gloss": "Target amount is non-negative (amount : ℕ).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem canonical_assumption {denoms : Array ℕ} (hcanon : CanonicalGreedy denoms) : True",
+      "nl_gloss": "The given denomination system is canonical, i.e., greedy is optimal for all amounts.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem exists_counts {denoms : Array ℕ} (hpos : ∀ d ∈ denoms, d > 0) (amount : ℕ) :\n  ∃ counts : Array ℕ,\n    counts.size = denoms.size ∧\n    (∑ i in Finset.range denoms.size, counts[i]! * denoms[i]!) = amount",
+      "nl_gloss": "There exists a vector of nonnegative counts (same length as denoms) that makes the exact amount.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem output_length {denoms : Array ℕ} (amount : ℕ)\n    (hpos : ∀ d ∈ denoms, d > 0)\n    (hcanon : CanonicalGreedy denoms) :\n  let counts := greedyCounts denoms amount\n  counts.size = denoms.size",
+      "nl_gloss": "The returned counts vector has the same length as the denominations.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem output_nonneg {denoms : Array ℕ} (amount : ℕ)\n    (hcanon : CanonicalGreedy denoms) :\n  ∀ i : Fin denoms.size, (greedyCounts denoms amount)[i]! ≥ 0",
+      "nl_gloss": "All returned counts are nonnegative.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem exact_change {denoms : Array ℕ} (amount : ℕ)\n    (hcanon : CanonicalGreedy denoms) :\n  let counts := greedyCounts denoms amount\n  (∑ i in Finset.range denoms.size, counts[i]! * denoms[i]!) = amount",
+      "nl_gloss": "The returned counts realize the target amount exactly.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem optimality_min_total_coins {denoms : Array ℕ} (amount : ℕ)\n    (hcanon : CanonicalGreedy denoms) :\n  let counts := greedyCounts denoms amount\n  ∀ counts' : Array ℕ,\n    counts'.size = denoms.size →\n    (∑ i in Finset.range denoms.size, counts'[i]! * denoms[i]!) = amount →\n    (∑ i in Finset.range denoms.size, counts[i]!) ≤ (∑ i in Finset.range denoms.size, counts'[i]!)",
+      "nl_gloss": "Among all exact representations, the returned counts minimize the total number of coins (sum of counts).",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:f7bcfb47fd0cb81f60595f7ea6973be979d8841186dd331f112d17334d5c89cb",
+  "seed": 3
+}

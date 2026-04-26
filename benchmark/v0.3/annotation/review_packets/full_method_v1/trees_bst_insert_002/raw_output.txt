@@ -1,0 +1,49 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_bst_precondition (t : Tree) (h : IsBst t) : IsBst t := h",
+      "nl_gloss": "Assume the input tree satisfies the BST precondition (in-order traversal is strictly ascending).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "invariant_preservation",
+      "lean_statement": "theorem SU2_output_is_bst (t : Tree) (k : Int) (h : IsBst t) : IsBst (bstInsert t k) := by\n  -- proof obligation: bstInsert preserves the BST invariant\n  admit",
+      "nl_gloss": "The output of bstInsert is also a valid BST (in-order traversal remains strictly ascending).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.75
+    },
+    {
+      "kind": "keyset_change_absent",
+      "lean_statement": "theorem SU3_keyset_union_when_absent (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∉ keys t) : keys (bstInsert t k) = k :: keys t := by\n  -- proof obligation: if k is absent, insert adds exactly one occurrence\n  admit",
+      "nl_gloss": "If the key k is not already present, the output key multiset equals the input keys with one additional k.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.6
+    },
+    {
+      "kind": "keyset_change_present",
+      "lean_statement": "theorem SU3_keyset_unchanged_when_present (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∈ keys t) : keys (bstInsert t k) = keys t := by\n  -- proof obligation: if k is present, insertion is a no-op on the key multiset\n  admit",
+      "nl_gloss": "If the key k is already present, the output key multiset equals the input key multiset.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.6
+    },
+    {
+      "kind": "duplicate_noop",
+      "lean_statement": "theorem SU4_duplicate_noop (t : Tree) (k : Int) (hbst : IsBst t) (hk : k ∈ keys t) :\n    keys (bstInsert t k) = keys t := by\n  -- derived from the present-key case\n  simpa using (SU3_keyset_unchanged_when_present t k hbst hk)",
+      "nl_gloss": "Inserting an existing key returns a tree whose key multiset is unchanged.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.85
+    }
+  ]
+}

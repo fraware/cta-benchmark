@@ -1,0 +1,42 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "arrays_max_subarray_006",
+  "title": "Maximum-sum contiguous subarray (Kadane's algorithm)",
+  "domain": "arrays",
+  "difficulty": "medium",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given a non-empty slice of integers, return the maximum sum over all contiguous non-empty subslices.\n\nBenchmark note (arrays_max_subarray_006): Variant 6 stresses adversarial small inputs (n<=3 style) while preserving asymptotic-agnostic correctness.\nAuthoring lens: Lens 6 guards against proof sketches that only discuss big instances.",
+    "preconditions": [
+      "the input slice is non-empty"
+    ],
+    "required_properties": [
+      "the returned value equals the maximum sum over all contiguous non-empty subslices",
+      "there exist indices i <= j with i < arr.len() and j <= arr.len() such that arr[i..j] sums to the returned value",
+      "no contiguous non-empty subslice sums to a strictly greater value"
+    ],
+    "edge_cases": [
+      "single-element slice",
+      "all negative elements (max is the largest single element)",
+      "all zero elements",
+      "all positive elements (max is the whole slice)",
+      "a single large negative element interleaved among positives"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/arrays/arrays_max_subarray_006/reference.rs",
+    "entry_fn": "max_subarray"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/arrays/arrays_max_subarray_006/scaffold.lean",
+    "namespace": "CTA.Benchmark.Arrays.MaxSubarray006",
+    "reference_obligations_path": "instances/arrays/arrays_max_subarray_006/reference_obligations.json",
+    "semantic_units_path": "instances/arrays/arrays_max_subarray_006/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/arrays/arrays_max_subarray_002/harness.json"
+  }
+}

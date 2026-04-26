@@ -1,0 +1,88 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_naive_concat_v1_eval_full_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "sorting_merge_sort_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 8927,
+    "prompt_tokens": 132,
+    "completion_tokens": 917
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/sorting_merge_sort_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_returns_sorted_permutation (xs : List Int) :\n  let ys := sort xs\n  Sorted (· ≤ ·) ys ∧ ys ~ xs",
+      "nl_gloss": "The function returns a list `ys` that is sorted in nondecreasing order and is a permutation of the input `xs` (same multiset).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_sorted (xs : List Int) :\n  Sorted (· ≤ ·) (sort xs)",
+      "nl_gloss": "The output list is sorted in nondecreasing order.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem spec_permutation (xs : List Int) :\n  sort xs ~ xs",
+      "nl_gloss": "The output list is a permutation of the input list, hence contains exactly the same elements with the same multiplicities.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem impl_matches_sort (xs : List Int) :\n  sort xs = impl_sort xs",
+      "nl_gloss": "The Lean model `sort` corresponds to the Rust reference implementation `impl_sort` on lists.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem impl_sort_terminates (xs : List Int) :\n  ∃ n : Nat, impl_sort xs = impl_sort_n xs n",
+      "nl_gloss": "The reference implementation terminates for all finite inputs (modeled via a bounded unfolding/measure).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "theorem merge_preserves_multiset (a b : List Int) :\n  merge a b ~ a ++ b",
+      "nl_gloss": "For the algorithm’s key combining step (e.g., merge in merge sort), the result is a permutation of the concatenation of the inputs.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "theorem merge_preserves_sorted (a b : List Int) :\n  Sorted (· ≤ ·) a → Sorted (· ≤ ·) b → Sorted (· ≤ ·) (merge a b)",
+      "nl_gloss": "If the combining step inputs are individually sorted, then the combined output is also sorted.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "theorem split_preserves_multiset (xs : List Int) :\n  let (l, r) := split xs\n  l ++ r ~ xs",
+      "nl_gloss": "If the algorithm uses splitting (e.g., merge sort), the split parts together contain exactly the same multiset as the original list.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "invariant",
+      "lean_statement": "theorem split_length (xs : List Int) :\n  let (l, r) := split xs\n  l.length + r.length = xs.length",
+      "nl_gloss": "The split operation partitions the list without losing or duplicating elements (length accounting).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem correctness_by_induction (xs : List Int) :\n  (∀ ys, ys.length < xs.length → (Sorted (· ≤ ·) (impl_sort ys) ∧ impl_sort ys ~ ys)) →\n  (Sorted (· ≤ ·) (impl_sort xs) ∧ impl_sort xs ~ xs)",
+      "nl_gloss": "Inductive step: assuming correctness for smaller inputs, the algorithm is correct for the current input.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem correctness_base_cases :\n  (Sorted (· ≤ ·) (impl_sort []) ∧ impl_sort [] ~ []) ∧\n  (Sorted (· ≤ ·) (impl_sort [x]) ∧ impl_sort [x] ~ [x])",
+      "nl_gloss": "Correctness holds for the base cases (empty list and singleton list).",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:8f3a7cb9b1373b0f7ef88d153afb2614ffce3688016ccea519c698dc07372f05",
+  "seed": 1
+}

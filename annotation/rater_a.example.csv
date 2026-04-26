@@ -1,0 +1,3 @@
+packet_id,semantic_faithfulness,code_consistency,proof_utility,coverage_label
+example_packet_001,3,3,2,partial
+example_packet_002,4,4,4,full

@@ -1,5 +1,7 @@
 //! End-to-end M6 pipeline test: annotations -> adjudicated pack -> results bundle.
 
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 

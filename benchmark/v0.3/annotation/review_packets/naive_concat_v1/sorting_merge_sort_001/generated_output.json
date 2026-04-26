@@ -1,0 +1,60 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_23_naive_concat_v1_eval_zzzzzz_clean_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "sorting_merge_sort_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4636,
+    "prompt_tokens": 1025,
+    "completion_tokens": 467
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/sorting_merge_sort_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_length_preserved (arr : List Int) : length (merge_sort arr) = length arr",
+      "nl_gloss": "The output has the same length as the input.",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_sorted_nondec (arr : List Int) : Sorted (· ≤ ·) (merge_sort arr)",
+      "nl_gloss": "The output is sorted in nondecreasing order.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem merge_sort_permutation (arr : List Int) : merge_sort arr ~p arr",
+      "nl_gloss": "The output is a permutation of the input (same multiset of elements).",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem merge_sort_terminates (arr : List Int) : Acc (fun a b => length b < length a) arr",
+      "nl_gloss": "Top-down merge sort terminates because recursive calls are on strictly smaller lists.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem merge_sort_output_length_optimal (arr : List Int) : length (merge_sort arr) = length arr",
+      "nl_gloss": "The algorithm returns exactly one element per input element (no loss or duplication).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:3106c0707b9d47c0563b717b5615e529dbf331460647ac4d2a89e35846f21138",
+  "seed": 1234
+}

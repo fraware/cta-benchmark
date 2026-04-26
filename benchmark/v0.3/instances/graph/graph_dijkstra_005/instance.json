@@ -1,0 +1,48 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "graph_dijkstra_005",
+  "title": "Single-source shortest paths on a non-negative-weighted directed graph",
+  "domain": "graph",
+  "difficulty": "medium",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given a directed graph with non-negative integer edge weights, a source vertex, and a vertex count n, return a vector dist of length n where dist[v] is the length of the shortest path from source to v, or None if no such path exists.\n\nBenchmark note (graph_dijkstra_005): Single-source shortest paths (variant 5): emphasize unreachable vertices and `None` distance semantics.\nAuthoring lens: Lens 5 checks iff-style unreachable characterizations vs one-sided implications.",
+    "preconditions": [
+      "n >= 1",
+      "0 <= source < n",
+      "every edge's endpoints are in [0, n)",
+      "every edge weight is non-negative"
+    ],
+    "required_properties": [
+      "dist has length n",
+      "dist[source] == Some(0)",
+      "for every v, if dist[v] == Some(d), there exists a path from source to v of total weight d",
+      "for every v, if dist[v] == Some(d), no path from source to v has total weight less than d",
+      "for every v, if dist[v] == None, there is no path from source to v"
+    ],
+    "edge_cases": [
+      "graph with no edges",
+      "source with no outgoing edges",
+      "disconnected components (unreachable vertices)",
+      "self-loops with zero weight",
+      "parallel edges of differing weights",
+      "n == 1 graph"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/graph/graph_dijkstra_005/reference.rs",
+    "entry_fn": "dijkstra"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/graph/graph_dijkstra_005/scaffold.lean",
+    "namespace": "CTA.Benchmark.Graph.Dijkstra005",
+    "reference_obligations_path": "instances/graph/graph_dijkstra_005/reference_obligations.json",
+    "semantic_units_path": "instances/graph/graph_dijkstra_005/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/graph/graph_dijkstra_002/harness.json"
+  }
+}

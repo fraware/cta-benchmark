@@ -1,0 +1,7 @@
+{
+  "benchmark_version": "v0.3",
+  "packets_root": "benchmark/v0.3/annotation/review_packets",
+  "generated_at": "2026-04-25T11:09:26.282659Z",
+  "global_batch_source_count": 0,
+  "tracks": []
+}

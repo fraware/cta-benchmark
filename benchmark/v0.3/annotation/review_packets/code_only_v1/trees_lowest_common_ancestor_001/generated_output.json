@@ -1,0 +1,48 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_23_code_only_v1_eval_zzzzzzzzzzzz_900",
+  "system_id": "code_only_v1",
+  "instance_id": "trees_lowest_common_ancestor_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 5439,
+    "prompt_tokens": 1237,
+    "completion_tokens": 570
+  },
+  "raw_output_path": "generated/code_only_v1/raw/trees_lowest_common_ancestor_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_subtree_witness (t : Tree) (p q a : Int)\n  (hb : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hl : lcaBst t p q = some a) :\n  ∃ sub : Tree,\n    IsSubtree sub t ∧\n    (match sub with\n     | Tree.nil => False\n     | Tree.node _ k _ => k = a) ∧\n    HasKey sub p ∧\n    HasKey sub q",
+      "nl_gloss": "When the BST contains both keys, the returned key roots a subtree of t that still contains both queries.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU4_lowestness (t : Tree) (p q a : Int)\n  (hb : IsBst t) (hp : HasKey t p) (hq : HasKey t q)\n  (hl : lcaBst t p q = some a) :\n  ∀ d : Tree,\n    IsProperSubtree d t →\n    (match d with\n     | Tree.nil => True\n     | Tree.node _ k _ => k = a → False) →\n    HasKey d p →\n    HasKey d q →\n    False",
+      "nl_gloss": "No proper subtree strictly below the returned root can still contain both query keys.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_equal_keys (t : Tree) (p : Int)\n  (hb : IsBst t) (hp : HasKey t p) :\n  lcaBst t p p = some p",
+      "nl_gloss": "When p equals q, the LCA is that shared key.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:3290cd1318e2ba0ef66db942451de12379ebeeda98db975096b70f6811cc0fff",
+  "seed": 123
+}

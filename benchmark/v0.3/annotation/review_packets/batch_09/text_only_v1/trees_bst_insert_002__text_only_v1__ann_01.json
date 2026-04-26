@@ -1,0 +1,25 @@
+{
+    "schema_version":  "schema_v1",
+    "rubric_version":  "rubric_v1",
+    "instance_id":  "trees_bst_insert_002",
+    "system_id":  "text_only_v1",
+    "annotator_id":  "adjudicator",
+    "set_level_scores":  {
+                             "semantic_faithfulness":  0,
+                             "code_consistency":  0,
+                             "vacuity_rate":  0,
+                             "proof_utility":  0
+                         },
+    "critical_unit_coverage":  {
+                                   "covered":  [
+
+                                               ],
+                                   "missed":  [
+
+                                              ]
+                               },
+    "generated_obligations":  [
+
+                              ],
+    "annotator_notes":  "TODO"
+}

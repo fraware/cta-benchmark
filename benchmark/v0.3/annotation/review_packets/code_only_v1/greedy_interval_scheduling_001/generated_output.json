@@ -1,0 +1,54 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzzzzzzzzz_695",
+  "system_id": "code_only_v1",
+  "instance_id": "greedy_interval_scheduling_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 5296,
+    "prompt_tokens": 1205,
+    "completion_tokens": 634
+  },
+  "raw_output_path": "generated/code_only_v1/raw/greedy_interval_scheduling_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_feasibility_witness {intervals : List (Int \u00c3\u2014 Int)} (hlt : \u00e2\u02c6\u20ac iv \u00e2\u02c6\u02c6 intervals, iv.1 < iv.2) :\n  \u00e2\u02c6\u0192 S : List (Int \u00c3\u2014 Int),\n   (\u00e2\u02c6\u20ac iv, iv \u00e2\u02c6\u02c6 S \u00e2\u2020\u2019 iv \u00e2\u02c6\u02c6 intervals) \u00e2\u02c6\u00a7\n   pairwise_nonoverlapping S \u00e2\u02c6\u00a7\n   S.length = interval_scheduling intervals",
+      "nl_gloss": "The returned count is witnessed by some subset of the input that is pairwise non-overlapping.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU3_optimality {intervals : List (Int \u00c3\u2014 Int)} (hlt : \u00e2\u02c6\u20ac iv \u00e2\u02c6\u02c6 intervals, iv.1 < iv.2)\n  (k : Nat) (hk : k = interval_scheduling intervals) :\n  \u00e2\u02c6\u20ac T : List (Int \u00c3\u2014 Int),\n   (T \u00e2\u0160\u2020 intervals) \u00e2\u2020\u2019\n   pairwise_nonoverlapping T \u00e2\u2020\u2019\n   T.length \u00e2\u2030\u00a4 k",
+      "nl_gloss": "No pairwise non-overlapping subset of the input is strictly larger than the returned count.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_empty_input : interval_scheduling ([] : List (Int \u00c3\u2014 Int)) = 0",
+      "nl_gloss": "Empty input: the result is 0 when the input is empty.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    },
+    {
+      "kind": "auxiliary",
+      "lean_statement": "theorem SU4_endpoint_convention {a b : Int \u00c3\u2014 Int}\n  (ha : a.1 < a.2) (hb : b.1 < b.2) :\n  (a.2 \u00e2\u2030\u00a4 b.1) \u00e2\u2020\u2019 nonoverlapping a b",
+      "nl_gloss": "Endpoint convention: intervals sharing only an endpoint are non-overlapping (using [start,end) so a.2 = b.1 is allowed).",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:df623ade8e3e086c9705329bfe0196d34520ccafb0241cabff4fdc9eaa9365ed",
+  "seed": 95
+}

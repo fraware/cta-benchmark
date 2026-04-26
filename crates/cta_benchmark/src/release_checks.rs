@@ -497,6 +497,11 @@ struct GoldAuditSignoff {
     pub primary_reviewer: String,
     pub secondary_reviewer: String,
     pub approved: bool,
+    /// When set to `template_pending_human_review`, the repository is explicitly
+    /// **not** claiming a completed dual-pass human gold audit: `approved` must
+    /// remain `false` until curators finish the evidence CSVs and flip status.
+    #[serde(default)]
+    pub release_gold_audit_status: Option<String>,
 }
 
 fn check_gold_audit_signoff(ctx: &ReleaseCheckContext<'_>, issues: &mut Vec<LintIssue>) {
@@ -543,6 +548,49 @@ fn check_gold_audit_signoff(ctx: &ReleaseCheckContext<'_>, issues: &mut Vec<Lint
             return;
         }
     };
+    let template_pending = signoff
+        .release_gold_audit_status
+        .as_deref()
+        .is_some_and(|s| s == "template_pending_human_review");
+
+    if template_pending {
+        if signoff.benchmark_version != ctx.benchmark.version.as_str() {
+            issues.push(LintIssue {
+                instance_id: "<global>".to_string(),
+                severity: LintSeverity::Error,
+                code: "GOLD_AUDIT_SIGNOFF_INVALID",
+                message: format!(
+                    "gold_signoff.json benchmark_version must match {} while release_gold_audit_status is template_pending_human_review",
+                    ctx.benchmark.version.as_str()
+                ),
+                path: Some(signoff_path.clone()),
+            });
+        }
+        if signoff.approved {
+            issues.push(LintIssue {
+                instance_id: "<global>".to_string(),
+                severity: LintSeverity::Error,
+                code: "GOLD_AUDIT_SIGNOFF_INVALID",
+                message: "when release_gold_audit_status is template_pending_human_review, approved must be false until human audit completes"
+                    .to_string(),
+                path: Some(signoff_path.clone()),
+            });
+        }
+        if signoff.primary_reviewer.trim().is_empty()
+            || signoff.secondary_reviewer.trim().is_empty()
+        {
+            issues.push(LintIssue {
+                instance_id: "<global>".to_string(),
+                severity: LintSeverity::Error,
+                code: "GOLD_AUDIT_SIGNOFF_INVALID",
+                message: "gold_signoff.json must name primary and secondary reviewer slots (use explicit Unassigned lines while in template posture)"
+                    .to_string(),
+                path: Some(signoff_path.clone()),
+            });
+        }
+        return;
+    }
+
     if signoff.benchmark_version != ctx.benchmark.version.as_str()
         || signoff.primary_reviewer.trim().is_empty()
         || signoff.secondary_reviewer.trim().is_empty()
@@ -552,7 +600,7 @@ fn check_gold_audit_signoff(ctx: &ReleaseCheckContext<'_>, issues: &mut Vec<Lint
             instance_id: "<global>".to_string(),
             severity: LintSeverity::Error,
             code: "GOLD_AUDIT_SIGNOFF_INVALID",
-            message: "gold audit signoff must match benchmark version, name two reviewers, and set approved=true"
+            message: "gold audit signoff must match benchmark version, name two reviewers, and set approved=true (or set release_gold_audit_status to template_pending_human_review with approved=false)"
                 .to_string(),
             path: Some(signoff_path),
         });
@@ -662,6 +710,8 @@ pub fn load_manifest(version_root: &Path) -> anyhow::Result<Option<BenchmarkMani
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
     use super::*;
     use crate::loader::LoadedBenchmark;
     use crate::splits::{Split, SplitName};

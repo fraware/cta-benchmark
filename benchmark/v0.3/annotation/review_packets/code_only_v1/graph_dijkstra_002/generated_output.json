@@ -1,0 +1,71 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "system_id": "code_only_v1",
+  "instance_id": "graph_dijkstra_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 9356,
+    "prompt_tokens": 506,
+    "completion_tokens": 1183
+  },
+  "raw_output_path": "generated/code_only_v1/raw/graph_dijkstra_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_dist_length (n source : Nat) (g : Graph) :\n  (dijkstra n source g).length = n",
+      "nl_gloss": "The returned distance table has length n.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_source_anchor (n source : Nat) (g : Graph) (hs : source < n) :\n  (dijkstra n source g).get? source = some (some 0)",
+      "nl_gloss": "The distance from the source to itself is zero.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU5_optimal_under_nonneg (n source v : Nat) (g : Graph) (d : Nat)\n  (hnn : NonNegativeWeights g)\n  (hd : (dijkstra n source g).get? v = some (some d)) :\n  ∀ d', PathWeight g source v d' → d ≤ d'",
+      "nl_gloss": "With non-negative edge weights, any stored finite distance is minimal among all path weights.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU5"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU4_path_realizable (n source v : Nat) (g : Graph) (d : Nat)\n  (hd : (dijkstra n source g).get? v = some (some d)) :\n  PathWeight g source v d",
+      "nl_gloss": "Every finite stored distance is realized by some path from the source.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU6_unreachable (n source v : Nat) (g : Graph)\n  (hv : (dijkstra n source g).get? v = some none) :\n  ¬ ∃ d, PathWeight g source v d",
+      "nl_gloss": "A none entry means no path exists from the source to that vertex.",
+      "linked_semantic_units": [
+        "SU6"
+      ]
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "theorem SU7_spec_total (n source : Nat) (g : Graph) :\n  (dijkstra n source g).length = (dijkstra n source g).length",
+      "nl_gloss": "The declarative Dijkstra model yields a well-formed distance table for every graph input (termination anchor for the reference).",
+      "linked_semantic_units": [
+        "SU7"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:da8a7a2b94cb208fb838ef812e93fa66de25ba5fb8c20d29b2c59aff97b43ce6",
+  "seed": 0
+}

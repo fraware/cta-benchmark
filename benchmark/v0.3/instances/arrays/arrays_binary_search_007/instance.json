@@ -1,0 +1,43 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "arrays_binary_search_007",
+  "title": "Binary search on a sorted integer slice",
+  "domain": "arrays",
+  "difficulty": "easy",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given a sorted slice of integers in nondecreasing order and a target value, return Some(i) where arr[i] == target, or None if the target is absent. If multiple indices match, returning any valid index is acceptable.\n\nBenchmark note (arrays_binary_search_007): Variant 7 stresses cross-family confusion: obligations must reference this instance's types and entry point only.\nAuthoring lens: Lens 7 catches template leakage from other algorithm families.",
+    "preconditions": [
+      "arr is sorted in nondecreasing order"
+    ],
+    "required_properties": [
+      "if the function returns Some(i), then i < arr.len() and arr[i] == target",
+      "if the function returns None, then target does not occur in arr",
+      "the function terminates for every input"
+    ],
+    "edge_cases": [
+      "empty slice",
+      "single-element slice containing the target",
+      "single-element slice not containing the target",
+      "target smaller than all elements",
+      "target larger than all elements",
+      "duplicates of the target"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/arrays/arrays_binary_search_007/reference.rs",
+    "entry_fn": "binary_search"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/arrays/arrays_binary_search_007/scaffold.lean",
+    "namespace": "CTA.Benchmark.Arrays.BinarySearch007",
+    "reference_obligations_path": "instances/arrays/arrays_binary_search_007/reference_obligations.json",
+    "semantic_units_path": "instances/arrays/arrays_binary_search_007/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/arrays/arrays_binary_search_002/harness.json"
+  }
+}

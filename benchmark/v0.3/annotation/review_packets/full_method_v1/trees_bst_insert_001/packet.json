@@ -1,0 +1,173 @@
+{
+  "benchmark_version": "v0.3",
+  "instance_id": "trees_bst_insert_001",
+  "system_id": "full_method_v1",
+  "domain": "trees",
+  "difficulty": "easy",
+  "instance_path": "benchmark/v0.3/instances/trees/trees_bst_insert_001",
+  "generated_output_path": "runs/run_2026_04_22_full_method_v1_eval_full_001/generated/full_method_v1/trees_bst_insert_001.json",
+  "informal_statement": {
+    "text": "Given a binary search tree whose in-order traversal is sorted strictly ascending and an integer key, return a new BST identical to the input on every existing key plus an additional node with the given key, unless the key is already present, in which case the tree is returned unchanged.",
+    "preconditions": [
+      "the input tree is a valid BST (in-order traversal is strictly ascending)"
+    ],
+    "required_properties": [
+      "the output tree is a valid BST",
+      "the multiset of keys in the output equals the multiset of keys in the input union {key} if the key was absent, else equals the multiset of keys in the input",
+      "every key present in the input is also present in the output"
+    ],
+    "edge_cases": [
+      "empty input tree",
+      "single-node tree, key less than root",
+      "single-node tree, key greater than root",
+      "single-node tree, key equal to root (unchanged)",
+      "left-leaning chain",
+      "right-leaning chain"
+    ]
+  },
+  "semantic_units": [
+    {
+      "id": "SU1",
+      "description": "BST precondition: the input tree is a valid BST (in-order strictly ascending).",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "relaxing to nondecreasing (allowing duplicates)",
+        "omitting the precondition"
+      ]
+    },
+    {
+      "id": "SU2",
+      "description": "BST invariant preservation: the output tree is also a valid BST.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "omitting invariant preservation",
+        "asserting it only when the key is absent"
+      ]
+    },
+    {
+      "id": "SU3",
+      "description": "Key-set change: the output's key multiset is the input's multiset union {key} if the key was absent, else equals the input's multiset.",
+      "criticality": "critical",
+      "common_failure_modes": [
+        "asserting insertion regardless of duplicates (breaks BST uniqueness)",
+        "asserting subset only"
+      ]
+    },
+    {
+      "id": "SU4",
+      "description": "Duplicate no-op: inserting an existing key returns a tree with the same key multiset.",
+      "criticality": "supporting",
+      "common_failure_modes": [
+        "allowing duplicates after insertion"
+      ]
+    }
+  ],
+  "reference_obligations": [
+    {
+      "id": "obl_001",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (k : Int), IsBst t → IsBst (bstInsert t k)",
+      "nl_gloss": "If the input tree is a valid BST, the output tree preserves the BST invariant.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_002",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (k : Int), IsBst t → (k ∈ keys t ∨ (keys (bstInsert t k)).Perm (k :: keys t))",
+      "nl_gloss": "If the input tree is a valid BST and the key was absent, the output's keys are the input's keys plus the new key.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "importance": "critical",
+      "proof_relevance": "direct"
+    },
+    {
+      "id": "obl_003",
+      "kind": "postcondition",
+      "lean_statement": "∀ (t : Tree) (k : Int), IsBst t → k ∈ keys t → (keys (bstInsert t k)).Perm (keys t)",
+      "nl_gloss": "If the input tree is a valid BST and the key was already present, the output's keys are a permutation of the input's.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "importance": "supporting",
+      "proof_relevance": "auxiliary"
+    }
+  ],
+  "generated_obligations": [
+    {
+      "index": 0,
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_precondition (t : Tree) (h : IsBst t) : IsBst t := h",
+      "nl_gloss": "Assume the input tree satisfies the BST precondition (in-order traversal is strictly ascending).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 1,
+      "kind": "unknown",
+      "lean_statement": "theorem SU2_bst_invariant_preserved (t : Tree) (k : Int) (h : IsBst t) :\n    IsBst (bstInsert t k) :=\n  CTA.Benchmark.Trees.BstInsertTheory.bstInsert_preserves_bst t k h",
+      "nl_gloss": "The output of bstInsert is also a valid BST (in-order traversal remains strictly ascending).",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 2,
+      "kind": "unknown",
+      "lean_statement": "theorem SU3_keyset_change_when_absent (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∉ keys t) : (keys (bstInsert t k)).Perm (k :: keys t) :=\n  CTA.Benchmark.Trees.BstInsertTheory.keys_bstInsert_perm_of_not_mem t k hbst hk",
+      "nl_gloss": "If the key k is not already present, the output key multiset equals the input keys with k added (exactly one new occurrence).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 3,
+      "kind": "unknown",
+      "lean_statement": "theorem SU3_keyset_change_when_present (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∈ keys t) : keys (bstInsert t k) = keys t :=\n  CTA.Benchmark.Trees.BstInsertTheory.keys_bstInsert_eq_of_mem t k hbst hk",
+      "nl_gloss": "If the key k is already present, the output key multiset equals the input key multiset (no new occurrence is added).",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "raw_source": "model"
+    },
+    {
+      "index": 4,
+      "kind": "unknown",
+      "lean_statement": "theorem SU4_duplicate_noop (t : Tree) (k : Int) (hbst : IsBst t)\n    (hk : k ∈ keys t) : keys (bstInsert t k) = keys t := by\n  -- duplicate insertion returns unchanged key multiset\n  simpa using SU3_keyset_change_when_present (t := t) (k := k) hbst hk",
+      "nl_gloss": "Inserting an existing key returns a tree with the same key multiset (duplicate insertion is a no-op).",
+      "linked_semantic_units": [
+        "SU4",
+        "SU3"
+      ],
+      "raw_source": "model"
+    }
+  ],
+  "lean_check": {
+    "elaborated": true,
+    "diagnostics_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/trees_bst_insert_001/lean_diagnostics.json",
+    "admit_count": 0,
+    "axiom_dependencies": [],
+    "proof_mode": "definition_backed"
+  },
+  "behavior_check": {
+    "report_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/trees_bst_insert_001/behavior_report.json",
+    "summary": {
+      "has_counterexample": false,
+      "counterexample_count": 0
+    }
+  },
+  "context": {
+    "scaffold_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/trees_bst_insert_001/scaffold.lean",
+    "reference_rs_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/trees_bst_insert_001/reference.rs",
+    "rust_summary_path": "benchmark/v0.3/annotation/review_packets/full_method_v1/trees_bst_insert_001/rust_summary.json"
+  }
+}

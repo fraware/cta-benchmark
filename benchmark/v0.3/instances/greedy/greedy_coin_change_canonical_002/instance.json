@@ -1,0 +1,47 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "greedy_coin_change_canonical_002",
+  "title": "Greedy coin change on a canonical denomination system",
+  "domain": "greedy",
+  "difficulty": "easy",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given a sorted-ascending slice of positive integer coin denominations that forms a canonical system (greedy is optimal), and a non-negative target amount, return a vector `counts` of the same length as the denominations such that `sum(counts[i] * denoms[i]) == amount` and `sum(counts)` is the minimum possible over all such vectors.\n\n[Grid variant 002 \u2014 paired within-family control: distinct authoring emphasis on summary/scaffold hygiene, auxiliary lemmas, and scope discipline so obligations cannot smuggle hidden parameters. Algorithmic contract and oracle checks remain identical to variant 001.]",
+    "preconditions": [
+      "denoms is sorted strictly ascending",
+      "denoms[0] == 1",
+      "every denomination is a positive integer",
+      "the denomination system is canonical (greedy yields the optimum)",
+      "amount >= 0"
+    ],
+    "required_properties": [
+      "counts has the same length as denoms",
+      "sum over i of counts[i] * denoms[i] equals amount",
+      "sum of counts is minimum over all valid decompositions",
+      "every counts[i] is non-negative"
+    ],
+    "edge_cases": [
+      "amount == 0 (all zero counts)",
+      "amount exactly equal to a denomination",
+      "amount smaller than the second-smallest denomination",
+      "very large amount requiring many units of the penny",
+      "denoms of length 1 ([1])"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/greedy/greedy_coin_change_canonical_002/reference.rs",
+    "entry_fn": "coin_change_canonical"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/greedy/greedy_coin_change_canonical_002/scaffold.lean",
+    "namespace": "CTA.Benchmark.Greedy.CoinChangeCanonical002",
+    "reference_obligations_path": "instances/greedy/greedy_coin_change_canonical_002/reference_obligations.json",
+    "semantic_units_path": "instances/greedy/greedy_coin_change_canonical_002/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/greedy/greedy_coin_change_canonical_002/harness.json"
+  }
+}

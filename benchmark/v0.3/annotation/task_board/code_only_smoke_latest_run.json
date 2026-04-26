@@ -1,0 +1,7 @@
+{
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "pairs_file": "benchmark/v0.3/annotation/task_board/code_only_smoke_pairs.json",
+  "provider": "openai",
+  "canonical_manifest": "benchmark/v0.3/annotation/task_board/code_only_v1_latest_eval_run.json",
+  "note": "Smoke five are a subset of the eval-wide refresh; packets for these instances use the same canonical run_id as the full code_only_v1 eval regeneration."
+}

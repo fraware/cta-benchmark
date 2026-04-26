@@ -1,0 +1,44 @@
+{
+  "benchmark_version": "v0.3",
+  "split": "eval",
+  "instance_count": 48,
+  "checklist_metadata": {
+    "per_instance_columns": {
+      "instance_id": "Canonical instance id from eval split",
+      "domain": "Instance domain from instance.json",
+      "reviewed_by_primary": "Full name of primary reviewer",
+      "reviewed_by_secondary": "Full name of secondary reviewer",
+      "status": "pending|in_review|needs_adjudication|approved",
+      "critical_units_ok": "true when all critical units are correctly represented",
+      "gold_obligations_ok": "true when obligations are non-vacuous and semantically aligned",
+      "harness_ok": "true when harness behavior matches intended semantics",
+      "notes": "Free-form reviewer notes and adjudication rationale"
+    },
+    "per_obligation_columns": {
+      "instance_id": "Canonical instance id",
+      "obligation_id": "Reference obligation id (obl_###)",
+      "kind": "Obligation kind from reference_obligations.json",
+      "linked_semantic_units": "Semicolon-separated linked SU ids",
+      "primary_review": "Primary reviewer verdict",
+      "secondary_review": "Secondary reviewer verdict",
+      "disposition": "agreed|adjudicated|deferred",
+      "notes": "Evidence and disposition notes"
+    }
+  },
+  "scope": {
+    "per_instance_review_required": true,
+    "per_obligation_review_required": true,
+    "double_review_required": true,
+    "adjudication_required_on_disagreement": true
+  },
+  "command_surface": {
+    "build_workbook": "cta benchmark audit-workbook --version v0.3",
+    "release_gate": "cargo run -p cta_cli -- validate benchmark --version v0.3 --release",
+    "paper_orchestrator": "cta benchmark paper-orchestrate --benchmark-version v0.3 --canonical-run-ids <run_ids>"
+  },
+  "artifacts": {
+    "per_instance_audit": "benchmark/v0.3/audit/evidence/per_instance_audit.csv",
+    "obligation_audit": "benchmark/v0.3/audit/evidence/obligation_audit.csv",
+    "notes": "benchmark/v0.3/audit/evidence/signoff_notes.md"
+  }
+}

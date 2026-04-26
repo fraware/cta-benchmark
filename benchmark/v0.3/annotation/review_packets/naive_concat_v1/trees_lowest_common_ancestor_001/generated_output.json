@@ -1,0 +1,130 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_naive_concat_v1_eval_full_001",
+  "system_id": "naive_concat_v1",
+  "instance_id": "trees_lowest_common_ancestor_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 10129,
+    "prompt_tokens": 145,
+    "completion_tokens": 1304
+  },
+  "raw_output_path": "generated/naive_concat_v1/raw/trees_lowest_common_ancestor_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "def InOrder (t : BST α) : List α := ...",
+      "nl_gloss": "Define the in-order traversal of the BST as a list of keys.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def Subtree (t : BST α) (x : α) : Prop := x ∈ keys(t) ∧ (x is in the subtree rooted at some node of t)",
+      "nl_gloss": "Define what it means for a key to be in a subtree (or equivalently, define the set of keys contained in a subtree).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def LowestBoth (t : BST α) (k1 k2 : α) : Prop := ∃ n, n is a node of t ∧ k1 ∈ keys(subtree(n)) ∧ k2 ∈ keys(subtree(n)) ∧ ∀ m, m is a node on the path from root to n (excluding n) → ¬(k1 ∈ keys(subtree(m)) ∧ k2 ∈ keys(subtree(m)))",
+      "nl_gloss": "Define the specification: the lowest node whose subtree contains both keys (i.e., closest to leaves among nodes containing both).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def LCAKey (t : BST α) (k1 k2 : α) : α := ...",
+      "nl_gloss": "Optionally define the key returned by the algorithm as the key stored at the lowest node whose subtree contains both keys (often equivalent to the LCA in a BST when both keys are present).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "(∀ x ∈ InOrder t, True) ∧ StrictAsc (InOrder t)",
+      "nl_gloss": "Assume the BST is well-formed in the sense that its in-order traversal is strictly ascending.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "k1 ∈ keys(t) ∧ k2 ∈ keys(t)",
+      "nl_gloss": "Assume both keys are present in the tree.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "def PathTo (t : BST α) (k : α) : List (Node α) := ...",
+      "nl_gloss": "Define the unique search path from the root to the node containing key k in a BST.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "StrictAsc (InOrder t) → BSTProperty t",
+      "nl_gloss": "From strict ascending in-order traversal, derive the BST ordering property (left subtree keys < node key < right subtree keys).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "BSTProperty t → ∀ k ∈ keys(t), PathTo t k ends at the unique node whose key is k",
+      "nl_gloss": "In a BST, searching for a present key reaches exactly the node containing that key.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "BSTProperty t → ∀ n, keys(subtree(left(n))) ⊆ {x | x < key(n)} ∧ keys(subtree(right(n))) ⊆ {x | x > key(n)}",
+      "nl_gloss": "State the ordering constraints on keys in left/right subtrees for any node.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "BSTProperty t → ∀ n, (k1 ∈ keys(subtree(n)) ∧ k2 ∈ keys(subtree(n))) ↔ (n lies on both PathTo t k1 and PathTo t k2)",
+      "nl_gloss": "Characterize nodes whose subtrees contain both keys as exactly the common ancestors (or equivalently nodes on both search paths).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "BSTProperty t → ∃! n, n is a node of t ∧ k1 ∈ keys(subtree(n)) ∧ k2 ∈ keys(subtree(n)) ∧ ∀ m on path root→n excluding n, ¬(k1 ∈ keys(subtree(m)) ∧ k2 ∈ keys(subtree(m)))",
+      "nl_gloss": "Prove existence and uniqueness of the lowest node whose subtree contains both keys.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "let r := rust_reference t k1 k2; LowestBoth t k1 k2 ∧ r = key(n) for the unique n satisfying LowestBoth t k1 k2",
+      "nl_gloss": "Main correctness: the implementation returns the key stored at the unique lowest node whose subtree contains both keys.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "let r := rust_reference t k1 k2; (k1 ∈ keys(t) ∧ k2 ∈ keys(t) ∧ StrictAsc (InOrder t)) → (∃ n, n is node of t ∧ key(n)=r ∧ k1 ∈ keys(subtree(n)) ∧ k2 ∈ keys(subtree(n)))",
+      "nl_gloss": "Soundness: the returned key corresponds to a node whose subtree contains both keys.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "let r := rust_reference t k1 k2; (k1 ∈ keys(t) ∧ k2 ∈ keys(t) ∧ StrictAsc (InOrder t)) → ∀ m, m is node on path root→node(r) excluding node(r) → ¬(k1 ∈ keys(subtree(m)) ∧ k2 ∈ keys(subtree(m)))",
+      "nl_gloss": "Minimality: no proper ancestor of the returned node has both keys in its subtree.",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "termination",
+      "lean_statement": "rust_reference t k1 k2 terminates for all finite BSTs t",
+      "nl_gloss": "Prove the Rust implementation terminates (e.g., recursion/loop decreases along the search path).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "(k1 ∈ keys(t) ∧ k2 ∈ keys(t)) → ∃ r, rust_reference t k1 k2 = r",
+      "nl_gloss": "If both keys are present, the function returns some key (no failure/None case).",
+      "linked_semantic_units": []
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "StrictAsc (InOrder t) → (k1 ≠ k2 → returned key is well-defined and unique)",
+      "nl_gloss": "If keys are distinct, the returned key is uniquely determined by the lowest-both-node property.",
+      "linked_semantic_units": []
+    }
+  ],
+  "prompt_hash": "sha256:641f82355b13222510caa1ae06af3dabc93b1c37009d1b581a7aa7b731c59eb8",
+  "seed": 1
+}

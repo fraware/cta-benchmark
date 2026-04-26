@@ -1237,7 +1237,10 @@ pub fn refresh_lean_check(workspace: &Path, args: RefreshLeanCheckArgs) -> Resul
                 if layer != "benchmark_facing" {
                     continue;
                 }
-                let stmt = ob.get("lean_statement").and_then(|v| v.as_str()).unwrap_or("");
+                let stmt = ob
+                    .get("lean_statement")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("");
                 if is_wrapper_self_copy_theorem(stmt) {
                     violations.push(
                         "benchmark-facing theorem uses wrapper self-copy assumption".to_string(),
@@ -2261,11 +2264,7 @@ fn extract_trusted_symbols(workspace: &Path, scaffold_src: &str) -> Vec<String> 
             continue;
         };
         if let Some(raw) = parts.next() {
-            let name = raw
-                .split([':', '('])
-                .next()
-                .unwrap_or(raw)
-                .trim();
+            let name = raw.split([':', '(']).next().unwrap_or(raw).trim();
             if !name.is_empty() {
                 out.push(name.to_string());
             }
@@ -2314,11 +2313,7 @@ fn collect_trusted_symbols_from_module(
             continue;
         };
         if let Some(raw) = parts.next() {
-            let name = raw
-                .split([':', '('])
-                .next()
-                .unwrap_or(raw)
-                .trim();
+            let name = raw.split([':', '(']).next().unwrap_or(raw).trim();
             if !name.is_empty() {
                 out.push(name.to_string());
             }

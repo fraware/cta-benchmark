@@ -1,0 +1,49 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem canonicality_precond {denoms : Denoms} {amount : Nat} (hcan : Canonical denoms) : Canonical denoms := hcan",
+      "nl_gloss": "Assume the denomination system is canonical (greedy is optimal).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.55
+    },
+    {
+      "kind": "alignment",
+      "lean_statement": "theorem alignment_length (denoms : Denoms) (amount : Nat) : (coinChangeCanonical denoms amount).length = denoms.length",
+      "nl_gloss": "The returned counts vector has the same length as the denominations.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "kind": "decomposition",
+      "lean_statement": "theorem decomposition_correct (denoms : Denoms) (amount : Nat) : Decomposes denoms (coinChangeCanonical denoms amount) amount",
+      "nl_gloss": "The returned counts decompose the target amount via the weighted sum.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.8
+    },
+    {
+      "kind": "nonnegativity",
+      "lean_statement": "theorem counts_nonneg (denoms : Denoms) (amount : Nat) : ∀ i, i < (coinChangeCanonical denoms amount).length → 0 ≤ (coinChangeCanonical denoms amount).get ⟨i, by simpa using ‹i < (coinChangeCanonical denoms amount).length›⟩",
+      "nl_gloss": "Every count entry is non-negative.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.6
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem optimality_min_sum (denoms : Denoms) (amount : Nat) (hcan : Canonical denoms) : ∀ counts : Counts, Decomposes denoms counts amount → (List.sum counts) ≤ (List.sum (coinChangeCanonical denoms amount))",
+      "nl_gloss": "Among all valid decompositions, the returned counts minimize the total number of coins.",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.75
+    }
+  ]
+}

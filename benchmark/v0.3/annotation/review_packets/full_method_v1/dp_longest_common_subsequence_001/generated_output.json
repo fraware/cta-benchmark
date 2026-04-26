@@ -1,0 +1,67 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_full_method_v1_eval_full_001",
+  "system_id": "full_method_v1",
+  "instance_id": "dp_longest_common_subsequence_001",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 6732,
+    "prompt_tokens": 1135,
+    "completion_tokens": 799
+  },
+  "raw_output_path": "generated/full_method_v1/raw/dp_longest_common_subsequence_001.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_range (a b : Arr) : 0 ≤ lcsLength a b ∧ lcsLength a b ≤ Nat.min a.length b.length := by\n  -- proof obligation: result is within [0, min(len(a), len(b))]\n  admit",
+      "nl_gloss": "The returned LCS length is always between 0 and min(length a, length b).",
+      "linked_semantic_units": [
+        "SU1"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_witness (a b : Arr) :\n  ∃ k : Nat, ∃ ia ib : List Nat,\n    CommonSubseq a b ia ib ∧ ia.length = k ∧ k = lcsLength a b := by\n  -- proof obligation: there exist strictly increasing index sequences into a and b\n  -- of equal length whose selected values match, and that length equals lcsLength.\n  admit",
+      "nl_gloss": "There exist strictly increasing index lists into a and b selecting equal values in order, with common length equal to lcsLength a b.",
+      "linked_semantic_units": [
+        "SU2"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_maximal (a b : Arr) :\n  ∀ ia ib : List Nat,\n    CommonSubseq a b ia ib → ia.length ≤ lcsLength a b := by\n  -- proof obligation: no common subsequence longer than the returned length exists.\n  admit",
+      "nl_gloss": "Any common subsequence (witnessed by strictly increasing indices with equal selected values) has length at most lcsLength a b.",
+      "linked_semantic_units": [
+        "SU3"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_subsequence_order (a b : Arr) :\n  ∀ ia ib : List Nat,\n    CommonSubseq a b ia ib →\n      (∀ m : Nat, m + 1 < ia.length →\n        a.get? (ia.get! m) = b.get? (ib.get! m) ∧\n        a.get? (ia.get! (m+1)) = b.get? (ib.get! (m+1))) := by\n  -- proof obligation: the definition uses non-contiguous, order-preserving indices.\n  -- This obligation extracts the order-preserving equality at consecutive positions in the subsequence.\n  admit",
+      "nl_gloss": "For any witnessed common subsequence, the equality of selected elements holds for consecutive positions in the subsequence order (capturing subsequence, not contiguity).",
+      "linked_semantic_units": [
+        "SU4"
+      ],
+      "confidence": 0.6
+    },
+    {
+      "kind": "unknown",
+      "lean_statement": "theorem lcsLength_symm (a b : Arr) : lcsLength a b = lcsLength b a := by\n  -- proof obligation: symmetry of LCS length.\n  admit",
+      "nl_gloss": "The LCS length is symmetric in its arguments.",
+      "linked_semantic_units": [
+        "SU5"
+      ],
+      "confidence": 0.7
+    }
+  ],
+  "prompt_hash": "sha256:bd1f879cf2789130a7f1742cd5a55dc0375798974ccda3af612fbf7a274988ef",
+  "seed": 1
+}

@@ -1,0 +1,14 @@
+{
+  "benchmark_version": "v0.3",
+  "split": "eval",
+  "systems": [
+    "text_only_v1",
+    "code_only_v1",
+    "naive_concat_v1",
+    "full_method_v1"
+  ],
+  "required_pairs": 192,
+  "covered_pairs": 192,
+  "missing_pairs": 0,
+  "missing_examples": []
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": "schema_v1",
+  "harness_type": "property_based",
+  "seed": 42,
+  "num_trials": 200,
+  "input_generator": {
+    "kind": "sorted_int_vec",
+    "min_len": 0,
+    "max_len": 64,
+    "value_range": [-100, 100]
+  },
+  "oracle_checks": [
+    "success_index_in_bounds",
+    "success_points_to_target",
+    "failure_if_absent"
+  ],
+  "timeout_ms": 2000
+}

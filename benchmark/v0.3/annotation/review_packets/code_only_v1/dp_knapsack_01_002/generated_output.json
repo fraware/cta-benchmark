@@ -1,0 +1,41 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_22_code_only_v1_eval_zzzzz_full_refresh_001",
+  "system_id": "code_only_v1",
+  "instance_id": "dp_knapsack_01_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 9953,
+    "prompt_tokens": 342,
+    "completion_tokens": 1174
+  },
+  "raw_output_path": "generated/code_only_v1/raw/dp_knapsack_01_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU1_feasible_witness (ws : Weights) (vs : Values) (cap : Nat)\n  (hal : ws.length = vs.length) :\n  ∃ sel : Selection,\n    ValidSelection ws sel ∧\n    totalWeight ws sel ≤ cap ∧\n    totalValue vs sel = knapsack01 ws vs cap",
+      "nl_gloss": "When weights and values align, some valid selection achieves the returned optimum within the capacity.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU2",
+        "SU3",
+        "SU5"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU4_global_optimal (ws : Weights) (vs : Values) (cap : Nat) (sel : Selection)\n  (hal : ws.length = vs.length)\n  (hv : ValidSelection ws sel)\n  (hw : totalWeight ws sel ≤ cap) :\n  totalValue vs sel ≤ knapsack01 ws vs cap",
+      "nl_gloss": "No feasible selection within the capacity beats the returned optimum.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:1427650a2b75b9912dfb5f6702b33dcb82569dd3348aa10fa1db80ca2bac21e6",
+  "seed": 0
+}

@@ -1,5 +1,10 @@
 //! Smoke test: run every pilot adapter against its committed `harness.json`
 //! with a small trial count, asserting no falsifications are observed.
+//!
+//! Clippy: this file deliberately uses `expect`/`panic` for fixture traversal;
+//! suppress noisy lints that do not apply to integration smoke tests.
+#![allow(clippy::expect_used)]
+#![allow(clippy::panic)]
 
 use std::path::PathBuf;
 

@@ -1,0 +1,59 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0), True",
+      "nl_gloss": "Assume the input slice/array is non-empty (size > 0), matching the task requirement."
+    },
+    {
+      "kind": "definition_of_spec",
+      "lean_statement": "let n := a.size\nlet S (i j : Nat) : Int := (∑ k in Finset.range (j - i), a[(i + k).toNat])\nlet Spec : Int := ∀ i j : Nat, i < j ∧ j ≤ n → S i j\n-- equivalently: Spec is the maximum over all contiguous non-empty subslices\nTrue",
+      "nl_gloss": "Define the sum of a contiguous non-empty subslice a[i..j) and define the specification as the maximum value among all such sums."
+    },
+    {
+      "kind": "algorithm_computes_some_value",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0), ∃ r : Int, r = maxSubarraySum a",
+      "nl_gloss": "The implementation returns some integer result for any non-empty input."
+    },
+    {
+      "kind": "result_is_upper_bound",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  let n := a.size\n  let r := maxSubarraySum a\n  ∀ i j : Nat, i < j ∧ j ≤ n →\n    (sumContig a i j) ≤ r",
+      "nl_gloss": "The returned value is at least as large as the sum of every contiguous non-empty subslice."
+    },
+    {
+      "kind": "result_is_attained",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  let n := a.size\n  let r := maxSubarraySum a\n  ∃ i j : Nat, i < j ∧ j ≤ n ∧ (sumContig a i j) = r",
+      "nl_gloss": "There exists at least one contiguous non-empty subslice whose sum equals the returned maximum."
+    },
+    {
+      "kind": "max_characterization",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  let n := a.size\n  let r := maxSubarraySum a\n  (∀ i j : Nat, i < j ∧ j ≤ n → sumContig a i j ≤ r) ∧\n  (∃ i j : Nat, i < j ∧ j ≤ n ∧ sumContig a i j = r)",
+      "nl_gloss": "Combine the two key properties to characterize r as the maximum over all contiguous non-empty subslice sums."
+    },
+    {
+      "kind": "loop_invariant_prefix_optimality",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  -- for each iteration index t (0 ≤ t ≤ n),\n  -- maintain:\n  -- bestEndingHere = max sum of a[k..t) over k < t\n  -- bestSoFar = max sum of a[i..j) over 0 ≤ i < j ≤ t\n  True",
+      "nl_gloss": "State the core dynamic-programming invariants: the best sum of a subarray ending at the current position, and the best sum seen so far within the processed prefix."
+    },
+    {
+      "kind": "loop_invariant_initialization",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  -- at the start (t = 1 or t = 0 depending on implementation),\n  -- the invariants hold using the first element(s)\n  True",
+      "nl_gloss": "Prove the invariants hold at the initial iteration state (typically after initializing with the first element)."
+    },
+    {
+      "kind": "loop_invariant_preservation",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  ∀ t : Nat, t < a.size →\n    -- assuming invariants hold at step t,\n    -- show they hold at step t+1 after updating the DP variables\n    True",
+      "nl_gloss": "Show that the update step preserves the invariants (the recurrence for bestEndingHere and bestSoFar)."
+    },
+    {
+      "kind": "termination_and_bounds",
+      "lean_statement": "∀ (a : Array Int) (hne : a.size > 0),\n  maxSubarraySum a terminates ∧\n  -- all array accesses are within bounds\n  True",
+      "nl_gloss": "Ensure the implementation terminates and all indexing operations are safe (no out-of-bounds access)."
+    },
+    {
+      "kind": "edge_cases_singleton",
+      "lean_statement": "∀ (x : Int),\n  maxSubarraySum (#[x]) = x",
+      "nl_gloss": "For a single-element input, the maximum contiguous non-empty subslice sum equals that element."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": "schema_v1",
+  "instance_id": "trees_lowest_common_ancestor_001",
+  "title": "Lowest common ancestor of two keys in a binary search tree",
+  "domain": "trees",
+  "difficulty": "medium",
+  "benchmark_version": "v0.3",
+  "informal_statement": {
+    "text": "Given a binary search tree whose in-order traversal is strictly ascending and two keys both present in the tree, return the key of the lowest node that has both keys in its subtree.\n\n[Grid variant 001 \u2014 baseline authoritative informal contract for this algorithm family. Same reference implementation and harness as the rest of the family grid; used for parity and verbatim drift checks across releases.]",
+    "preconditions": [
+      "the input tree is a valid BST",
+      "both query keys are present in the tree"
+    ],
+    "required_properties": [
+      "the returned key appears in the tree",
+      "both query keys are in the subtree rooted at the returned key",
+      "no proper descendant of the returned key has both query keys in its subtree"
+    ],
+    "edge_cases": [
+      "both keys equal (returned key equals them)",
+      "one key is an ancestor of the other",
+      "keys on opposite sides of the root",
+      "root is the LCA",
+      "tree with only a single path"
+    ]
+  },
+  "rust_reference": {
+    "path": "instances/trees/trees_lowest_common_ancestor_001/reference.rs",
+    "entry_fn": "lca_bst"
+  },
+  "lean_target": {
+    "scaffold_path": "instances/trees/trees_lowest_common_ancestor_001/scaffold.lean",
+    "namespace": "CTA.Benchmark.Trees.LowestCommonAncestor001",
+    "reference_obligations_path": "instances/trees/trees_lowest_common_ancestor_001/reference_obligations.json",
+    "semantic_units_path": "instances/trees/trees_lowest_common_ancestor_001/semantic_units.json"
+  },
+  "annotation": {
+    "rubric_version": "rubric_v1"
+  },
+  "behavioral_oracle": {
+    "harness_path": "instances/trees/trees_lowest_common_ancestor_001/harness.json"
+  }
+}

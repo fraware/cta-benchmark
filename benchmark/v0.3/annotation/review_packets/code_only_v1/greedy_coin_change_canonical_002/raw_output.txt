@@ -1,0 +1,44 @@
+{
+  "obligations": [
+    {
+      "kind": "precondition",
+      "lean_statement": "theorem SU1_canonicality_precondition {denoms : List Nat} (amount : Nat) (counts : List Nat) : (length denoms = length counts) → CanonicalDenoms denoms → amount = amount → True",
+      "nl_gloss": "Canonicality precondition placeholder for SU1 (greedy optimality requires canonical denomination system).",
+      "linked_semantic_units": [
+        "SU1"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_alignment_length {denoms : List Nat} (amount : Nat) (counts : List Nat) : length denoms = length (coin_change_canonical denoms amount) ",
+      "nl_gloss": "The output counts vector has the same length as denoms (no dropping/extra entries).",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_decomposition_weighted_sum {denoms : List Nat} (amount : Nat) : (SortedStrict denoms) → (denoms.head? = some 1) → CanonicalDenoms denoms → let counts := coin_change_canonical denoms amount; sum (zipWith (fun c d => c * d) counts denoms) = amount",
+      "nl_gloss": "The greedy counts decompose the amount as Σ counts[i] * denoms[i].",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU4_optimality_minimal_total {denoms : List Nat} (amount : Nat) : (SortedStrict denoms) → (denoms.head? = some 1) → CanonicalDenoms denoms → let counts := coin_change_canonical denoms amount; (∀ other : List Nat, length other = length denoms → (sum (zipWith (fun c d => c * d) other denoms) = amount) → sum other ≥ sum counts)",
+      "nl_gloss": "Among all valid decompositions with the same denoms length, the greedy solution has minimal total coin count.",
+      "linked_semantic_units": [
+        "SU4"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_nonnegativity_counts {denoms : List Nat} (amount : Nat) : let counts := coin_change_canonical denoms amount; ∀ c ∈ counts, 0 ≤ c",
+      "nl_gloss": "All entries in the output counts are non-negative.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    }
+  ]
+}

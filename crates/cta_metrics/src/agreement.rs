@@ -242,6 +242,8 @@ fn weighted_kappa_linear(pairs: &[(u8, u8)], k: u8) -> Option<f64> {
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
     use super::*;
     use cta_annotations::{
         AnnotatedObligation, ConsistencyLabel, CriticalUnitCoverage, FaithfulnessLabel,

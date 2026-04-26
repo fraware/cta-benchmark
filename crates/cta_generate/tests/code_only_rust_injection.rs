@@ -1,6 +1,8 @@
 //! Regression: `code_only_v1` / `naive_concat_v1` templates must receive verbatim
 //! `reference.rs` under both `{{reference_rs}}` and `{{rust_reference}}`.
 
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 use std::path::PathBuf;
 
 use cta_core::{InstanceId, RunId, SystemId};

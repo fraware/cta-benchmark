@@ -1,0 +1,55 @@
+{
+  "schema_version": "schema_v1",
+  "run_id": "run_2026_04_23_code_only_v1_eval_zzzzzzzzzzzz_900",
+  "system_id": "code_only_v1",
+  "instance_id": "greedy_coin_change_canonical_002",
+  "provider_metadata": {
+    "name": "openai",
+    "model": "gpt-5.4-nano",
+    "model_version": "gpt-5.4-nano-2026-03-17",
+    "latency_ms": 4439,
+    "prompt_tokens": 1237,
+    "completion_tokens": 617
+  },
+  "raw_output_path": "generated/code_only_v1/raw/greedy_coin_change_canonical_002.txt",
+  "parse_status": {
+    "ok": true
+  },
+  "normalized_obligations": [
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU2_alignment (denoms : List Nat) (amount : Nat) : (coin_change_canonical denoms amount).length = denoms.length",
+      "nl_gloss": "Counts vector aligns with denominations.",
+      "linked_semantic_units": [
+        "SU2"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU3_weighted_sum (denoms : List Nat) (amount : Nat) : dot_product (coin_change_canonical denoms amount) denoms = amount",
+      "nl_gloss": "Weighted sum equals amount.",
+      "linked_semantic_units": [
+        "SU3"
+      ]
+    },
+    {
+      "kind": "postcondition",
+      "lean_statement": "theorem SU5_nonnegative_counts (denoms : List Nat) (amount : Nat) : ? c ? coin_change_canonical denoms amount, 0 = c",
+      "nl_gloss": "All counts are non-negative.",
+      "linked_semantic_units": [
+        "SU5"
+      ]
+    },
+    {
+      "kind": "optimality",
+      "lean_statement": "theorem SU4_optimality_under_canonicality (denoms : List Nat) (amount : Nat) (hcanon : CanonicalDenoms denoms) :\n  let counts := coin_change_canonical denoms amount\n  ? counts' : List Nat, counts'.length = denoms.length ? dot_product counts' denoms = amount ? sum counts = sum counts'",
+      "nl_gloss": "Optimality is explicit and conditional on canonicality.",
+      "linked_semantic_units": [
+        "SU1",
+        "SU4"
+      ]
+    }
+  ],
+  "prompt_hash": "sha256:ab7e2b371638cb432a81029b20ade4be3a6974c6e46dfbf1bc91461ba1a8375c",
+  "seed": 123
+}
