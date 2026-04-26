@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import re
 import subprocess
@@ -83,6 +84,53 @@ def main() -> int:
             print(
                 f"error: agreement_packet_ids.csv rows {n_ag} != "
                 f"expected_agreement_packet_audit_rows {exp_ag}",
+                file=sys.stderr,
+            )
+            return 1
+
+    rep_path = ROOT / "annotation" / "agreement_report.json"
+    if rep_path.is_file() and exp_ag is not None:
+        rep = json.loads(rep_path.read_text(encoding="utf-8"))
+        n_rep = rep.get("n_packets")
+        if n_rep is not None and int(n_rep) != int(exp_ag):
+            print(
+                f"error: agreement_report.json n_packets {n_rep} != "
+                f"expected_agreement_packet_audit_rows {exp_ag}",
+                file=sys.stderr,
+            )
+            return 1
+
+    ev_path = ROOT / "results" / "paper_table_annotation_evidence.csv"
+    exp_strict = summary.get("expected_raw_metrics_strict_rows")
+    if ev_path.is_file() and exp_strict is not None:
+        found_strict_row = False
+        with ev_path.open(encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f):
+                if (row.get("metrics_view") or "").strip() != "strict_independent":
+                    continue
+                found_strict_row = True
+                try:
+                    n_ev = int((row.get("n_eval_rows") or "").strip())
+                except ValueError:
+                    print(
+                        "error: paper_table_annotation_evidence.csv strict row "
+                        "has non-integer n_eval_rows",
+                        file=sys.stderr,
+                    )
+                    return 1
+                if n_ev != int(exp_strict):
+                    print(
+                        f"error: paper_table_annotation_evidence strict "
+                        f"n_eval_rows {n_ev} != "
+                        f"expected_raw_metrics_strict_rows {exp_strict}",
+                        file=sys.stderr,
+                    )
+                    return 1
+                break
+        if not found_strict_row:
+            print(
+                "error: paper_table_annotation_evidence.csv missing "
+                "strict_independent row",
                 file=sys.stderr,
             )
             return 1

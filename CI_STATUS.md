@@ -22,11 +22,15 @@ cargo run -p cta_cli -- validate benchmark --version v0.1 --release
 cargo run -p cta_cli -- validate benchmark --version v0.3 --release
 cargo deny check
 cargo audit --deny warnings
+python scripts/compute_results.py --paper
+python scripts/export_benchmark_paper_summary.py
 python scripts/ci_reviewer_readiness.py
 ```
 
 Paper tables and adjudication artifacts: see `docs/PAPER_READINESS.md` (Python
-materializers and `compute_results.py --paper`).
+materializers and `compute_results.py --paper`). `ci_reviewer_readiness.py`
+cross-checks `agreement_report.json` vs `agreement_packet_ids.csv`, and strict
+row counts in `paper_table_annotation_evidence.csv` vs `benchmark_paper_summary.json`.
 
 Badge URLs are omitted here because they encode the public GitHub repository
 name; enable GitHub Actions badges in the camera-ready fork if permitted.

@@ -142,6 +142,11 @@ cargo audit --deny warnings
       `benchmark/<version>/manifests/benchmark_manifest.json`.
 - [ ] Supply-chain gates (`cargo deny check`, `cargo audit`) unchanged
       or improved.
+- [ ] If the PR touches v0.3 adjudication, `results/raw_metrics*.json`,
+      `annotation/agreement_*`, or `benchmark/v0.3/benchmark_paper_summary.json`:
+      run `python scripts/compute_results.py --paper`,
+      `python scripts/export_benchmark_paper_summary.py`, and
+      `python scripts/ci_reviewer_readiness.py`.
 - [ ] No placeholder prose; every comment describes intent, trade-off,
       or constraint — never "what the code does".
 - [ ] If adding or changing an evaluated quantity, bumped the relevant
