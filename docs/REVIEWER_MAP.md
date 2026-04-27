@@ -23,6 +23,7 @@
 | Inter-rater agreement (synthetic rater B) | `annotation/agreement_report.json`, `annotation/agreement_report.md` | `python scripts/reproduce_agreement_report.py` (wraps `compute_agreement_stats.py`) |
 | Agreement audit trail (packet population) | `annotation/agreement_packet_ids.csv`, `annotation/rater_a.csv`, `annotation/rater_b.csv`, `annotation/adjudication_log.csv` | `python scripts/materialize_v03_adjudication_artifacts.py` |
 | Repair selection + logs | `repairs/hotspot_selection.csv`, `repairs/repair_log.jsonl` | `python scripts/materialize_repair_hotspot_artifacts.py` |
+| Option-2 direct-adjudication wave plan | `benchmark/v0.3/annotation/human_wave_v03/direct_adjudication_wave_plan.csv`, `benchmark/v0.3/annotation/human_adjudicated/direct_adjudicated_pairs.csv` | `python scripts/plan_v03_direct_adjudication_wave.py` then `python scripts/materialize_v03_adjudication_artifacts.py` |
 | Repair sensitivity (counterfactual proxy) | `results/repair_impact_summary.json` | `python scripts/repair_counterfactual_metrics.py` |
 | One-shot audit bundle | `build/paper_build.json` (local; under `/build` in `.gitignore`) | `python scripts/paper_bundle.py` (set `PAPER_STRICT=1` to forbid `demo_synthetic` markers in scanned outputs) |
 

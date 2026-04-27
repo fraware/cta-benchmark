@@ -157,6 +157,27 @@ Output: `artifacts/cta-benchmark-anonymous.zip`.
 python scripts\validate_benchmark.py --strict-grid-near-dup
 ```
 
+## 9. Option-2 strict coverage expansion (direct adjudication wave)
+
+If you want to increase strict independent coverage beyond the current 24 unique
+instances / 94 strict rows, generate and execute a direct-adjudication wave:
+
+```powershell
+python scripts\plan_v03_direct_adjudication_wave.py --target-pairs 128
+```
+
+Curators then fill
+`benchmark/v0.3/annotation/human_adjudicated/direct_adjudicated_pairs.csv`
+with completed `(instance_id, system_id)` rows and
+`annotation_origin=direct_adjudicated` (or `direct_human`), and rerun:
+
+```powershell
+python scripts\materialize_v03_adjudication_artifacts.py
+python scripts\compute_results.py --paper
+python scripts\export_benchmark_paper_summary.py
+python scripts\ci_reviewer_readiness.py
+```
+
 ## Tables produced for the paper
 
 | Output | Path |

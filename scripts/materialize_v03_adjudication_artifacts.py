@@ -41,16 +41,50 @@ ROOT = Path(__file__).resolve().parents[1]
 V3 = ROOT / "benchmark" / "v0.3"
 PACK_DIR = V3 / "annotation" / "adjudicated_subset"
 REVIEW_ROOT = V3 / "annotation" / "review_packets"
+DIRECT_ORIGIN_OVERRIDES = (
+    V3 / "annotation" / "human_adjudicated" / "direct_adjudicated_pairs.csv"
+)
 SYSTEMS = ["text_only_v1", "code_only_v1", "naive_concat_v1", "full_method_v1"]
 ANNOTATOR_ID = "anonymized_pipeline_reviewer_v03_001"
 
 
-def compute_annotation_origin(instance_id: str, template_id: str) -> str:
+def load_direct_origin_overrides(path: Path) -> dict[tuple[str, str], str]:
+    """
+    Optional per-pair overrides for direct adjudication waves.
+
+    CSV columns: instance_id, system_id, annotation_origin
+    annotation_origin must be one of: direct_adjudicated, direct_human.
+    """
+    out: dict[tuple[str, str], str] = {}
+    if not path.is_file():
+        return out
+    with path.open(encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            iid = (row.get("instance_id") or "").strip()
+            sid = (row.get("system_id") or "").strip()
+            origin = (row.get("annotation_origin") or "").strip()
+            if not iid or not sid:
+                continue
+            if origin not in {"direct_adjudicated", "direct_human"}:
+                continue
+            out[(iid, sid)] = origin
+    return out
+
+
+def compute_annotation_origin(
+    instance_id: str,
+    template_id: str,
+    system_id: str,
+    direct_overrides: dict[tuple[str, str], str],
+) -> str:
     """
     direct_adjudicated: review packet path matches this instance_id.
     mapped_from_canonical: eval-grid or fallback used a different template packet.
     direct_human: reserved for imports from human_adjudicated/ (not set here).
     """
+    override = direct_overrides.get((instance_id, system_id))
+    if override:
+        return override
     if template_id == instance_id:
         return "direct_adjudicated"
     return "mapped_from_canonical"
@@ -195,6 +229,7 @@ def build_record(
     manifest_row: dict,
     packet: dict,
     template_id: str,
+    direct_overrides: dict[tuple[str, str], str],
 ) -> dict:
     crit_list = critical_unit_ids_from_manifest_row(manifest_row)
     crit = set(crit_list)
@@ -256,7 +291,12 @@ def build_record(
     proof_base = 0.85 if elaborated else 0.35
     proof_utility = max(0.0, min(1.0, proof_base * (0.55 + 0.45 * faith_mean) * (0.9 if not has_cex else 0.45)))
 
-    origin = compute_annotation_origin(instance_id, template_id)
+    origin = compute_annotation_origin(
+        instance_id,
+        template_id,
+        system_id,
+        direct_overrides,
+    )
     notes = (
         "Pipeline-derived adjudication from registered review packet "
         f"`benchmark/v0.3/annotation/review_packets/{system_id}/{template_id}/packet.json` "
@@ -311,7 +351,17 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--skip-pack", action="store_true")
     ap.add_argument("--skip-aux-csv", action="store_true")
+    ap.add_argument(
+        "--direct-origin-overrides",
+        type=Path,
+        default=DIRECT_ORIGIN_OVERRIDES,
+        help=(
+            "Optional CSV of (instance_id, system_id, annotation_origin) to "
+            "promote selected eval pairs to direct_human/direct_adjudicated."
+        ),
+    )
     args = ap.parse_args()
+    direct_overrides = load_direct_origin_overrides(args.direct_origin_overrides)
 
     eval_ids = json.loads((V3 / "splits" / "eval.json").read_text(encoding="utf-8"))["instance_ids"]
     eval_set = set(eval_ids)
@@ -349,11 +399,24 @@ def main() -> int:
         for sys in SYSTEMS:
             pkt_path, template_id = resolve_packet_path(sys, iid)
             packet = load_json(pkt_path)
-            rec = build_record(iid, sys, family, row, packet, template_id)
+            rec = build_record(
+                iid,
+                sys,
+                family,
+                row,
+                packet,
+                template_id,
+                direct_overrides,
+            )
             sl = rec["set_level_scores"]
             cov = rec["critical_unit_coverage"]
             n_incon = sum(1 for o in rec["generated_obligations"] if o["consistency_label"] == "inconsistent")
-            origin = compute_annotation_origin(iid, template_id)
+            origin = compute_annotation_origin(
+                iid,
+                template_id,
+                sys,
+                direct_overrides,
+            )
             raw_rows.append(
                 {
                     "instance_id": iid,
@@ -383,7 +446,15 @@ def main() -> int:
         for sys in SYSTEMS:
             pkt_path, template_id = resolve_packet_path(sys, iid)
             packet = load_json(pkt_path)
-            rec = build_record(iid, sys, family, row, packet, template_id)
+            rec = build_record(
+                iid,
+                sys,
+                family,
+                row,
+                packet,
+                template_id,
+                direct_overrides,
+            )
             records.append(rec)
 
             sl = rec["set_level_scores"]
@@ -392,7 +463,12 @@ def main() -> int:
             pid = f"{iid}__{sys}"
             audit_ord += 1
             anon_key = f"ag_{audit_ord:03d}"
-            audit_origin = compute_annotation_origin(iid, template_id)
+            audit_origin = compute_annotation_origin(
+                iid,
+                template_id,
+                sys,
+                direct_overrides,
+            )
             agreement_audit.append(
                 {
                     "ordinal": str(audit_ord),

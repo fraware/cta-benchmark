@@ -31,3 +31,33 @@ with `pack.json` and a validated `manifest.json` (see
 `schemas/annotation_pack_manifest.schema.json`). The CLI resolves the pack path
 from the experiment config when `annotation_human_pack` is set; see
 `configs/experiments/benchmark_v03.json`.
+
+## Option-2 direct-adjudication wave workflow
+
+To increase strict independent coverage beyond the current mapped-template
+baseline, run:
+
+```powershell
+python scripts/plan_v03_direct_adjudication_wave.py --target-pairs 128
+```
+
+This writes:
+
+- `benchmark/v0.3/annotation/human_wave_v03/direct_adjudication_wave_plan.csv`
+  (prioritized eval `(instance_id, system_id)` worklist), and
+- `benchmark/v0.3/annotation/human_adjudicated/direct_adjudicated_pairs.csv`
+  (header template for completed direct adjudications).
+
+After adjudication, append reviewed pairs to
+`direct_adjudicated_pairs.csv` with `annotation_origin` set to
+`direct_adjudicated` or `direct_human`, then rerun:
+
+```powershell
+python scripts/materialize_v03_adjudication_artifacts.py
+python scripts/compute_results.py --paper
+python scripts/export_benchmark_paper_summary.py
+```
+
+`materialize_v03_adjudication_artifacts.py` now accepts
+`--direct-origin-overrides` (defaulting to that CSV) and promotes listed pairs
+into `raw_metrics_strict.json` / strict summary counts.
