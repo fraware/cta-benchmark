@@ -34,6 +34,12 @@ step in `.github/workflows/ci.yml`) must pass after
 `results/paper_table_annotation_evidence.csv`, and
 `results/paper_table_agreement_evidence.csv` (see `CI_STATUS.md` for the exact fields).
 
+CI currently enforces summary/evidence-count consistency, not presence of every
+publication alias file. `results/paper_strict_*`, `results/paper_expanded_*`,
+`results/paper_annotation_origin_counts.csv`, `results/paper_system_set.md`,
+and `repairs/paper_repair_status.csv` are generated in the paper pipeline and
+should be checked in manuscript prep reviews.
+
 ## Definitions and limitations
 
 - `docs/PROVENANCE.md` — epistemic tiers.

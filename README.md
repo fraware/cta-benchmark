@@ -254,9 +254,13 @@ For a **step-by-step local checklist** (v0.3 manifest, annotation pack, tables,
 Lean build, anonymous zip), see [`docs/PAPER_READINESS.md`](docs/PAPER_READINESS.md).
 
 Paper-track **adjudication tables** (`results/raw_metrics_strict.json` vs
-expanded views, per-metric summaries, headline `results/paper_table_*.csv`,
-`results/paper_table_annotation_evidence.csv`,
-`results/paper_table_agreement_evidence.csv`, appendix copies under
+expanded views, per-metric summaries, canonical headline
+`results/paper_strict_*`, appendix robustness `results/paper_expanded_*`,
+evidence inventories `results/paper_table_annotation_evidence.csv` +
+`results/paper_annotation_origin_counts.csv`,
+`results/paper_table_agreement_evidence.csv`, declared system set
+`results/paper_system_set.md`, repair proof-status export
+`repairs/paper_repair_status.csv`, appendix copies under
 `results/appendix_mapped_evidence/`, agreement audit CSVs under `annotation/`)
 are regenerated from Python scripts; see [`REPRODUCE.md`](REPRODUCE.md),
 [`docs/REVIEWER_MAP.md`](docs/REVIEWER_MAP.md), and
