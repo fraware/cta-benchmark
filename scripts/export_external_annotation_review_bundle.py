@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -252,6 +253,25 @@ def main() -> int:
         for r in expanded_raw
         if str(r.get("annotation_origin") or "") == "mapped_from_canonical"
     ]
+    mapped_exp = sum(
+        1
+        for r in expanded_raw
+        if str(r.get("annotation_origin") or "") == "mapped_from_canonical"
+    )
+    if len(strict_rows) != len(strict_raw):
+        print(
+            "error: strict review row count "
+            f"{len(strict_rows)} != raw_metrics_strict rows {len(strict_raw)}",
+            file=sys.stderr,
+        )
+        return 1
+    if len(mapped_rows) != mapped_exp:
+        print(
+            "error: mapped review row count "
+            f"{len(mapped_rows)} != expanded mapped rows {mapped_exp}",
+            file=sys.stderr,
+        )
+        return 1
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     strict_jsonl = args.out_dir / "strict_review_queue.jsonl"

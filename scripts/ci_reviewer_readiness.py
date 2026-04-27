@@ -43,6 +43,11 @@ def load_csv_rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(f))
 
 
+def count_nonempty_jsonl_lines(path: Path) -> int:
+    with path.open(encoding="utf-8") as f:
+        return sum(1 for line in f if line.strip())
+
+
 def main() -> int:
     summary_path = ROOT / "benchmark" / "v0.3" / "benchmark_paper_summary.json"
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
@@ -83,6 +88,18 @@ def main() -> int:
                 file=sys.stderr,
             )
             return 1
+        ext_strict = (
+            ROOT / "annotation" / "external_review" / "strict_review_queue.jsonl"
+        )
+        if ext_strict.is_file():
+            n_ext = count_nonempty_jsonl_lines(ext_strict)
+            if n_ext != strict_cnt:
+                print(
+                    "error: annotation/external_review/strict_review_queue.jsonl "
+                    f"non-empty lines {n_ext} != raw_metrics_strict rows {strict_cnt}",
+                    file=sys.stderr,
+                )
+                return 1
 
     ag_path = ROOT / "annotation" / "agreement_packet_ids.csv"
     exp_ag = summary.get("expected_agreement_packet_audit_rows")
@@ -322,6 +339,26 @@ def main() -> int:
                 msg_ann = f"error: placeholder denylist matched {rel}"
                 print(msg_ann, file=sys.stderr)
                 return 1
+
+    ext_mapped = (
+        ROOT / "annotation" / "external_review" / "mapped_review_queue.jsonl"
+    )
+    if raw_path.is_file() and ext_mapped.is_file():
+        raw_mapped = json.loads(raw_path.read_text(encoding="utf-8"))
+        rows_m = raw_mapped.get("rows") or []
+        mapped_exp = sum(
+            1
+            for r in rows_m
+            if str(r.get("annotation_origin") or "") == "mapped_from_canonical"
+        )
+        n_map_j = count_nonempty_jsonl_lines(ext_mapped)
+        if n_map_j != mapped_exp:
+            print(
+                "error: annotation/external_review/mapped_review_queue.jsonl "
+                f"non-empty lines {n_map_j} != expanded mapped rows {mapped_exp}",
+                file=sys.stderr,
+            )
+            return 1
 
     onto = json.loads(ont.read_text(encoding="utf-8"))
     allowed = {str(m.get("slug", "")) for m in onto.get("modes", [])}

@@ -53,6 +53,10 @@ compares `benchmark/v0.3/benchmark_paper_summary.json` to checked-in outputs:
   row `n_packets` vs `agreement_audit_strict_independent_packet_count` (when field is set)
 - `results/paper_primary_model_registry.csv`: row count (4), headline-system membership,
   and `model_metadata_status ∈ {matched, historical_manifest_mismatch_explained}`
+- `annotation/external_review/strict_review_queue.jsonl` non-empty line count
+  matches `results/raw_metrics_strict.json` row count when both exist
+- `annotation/external_review/mapped_review_queue.jsonl` non-empty line count
+  matches `mapped_from_canonical` row count in `results/raw_metrics.json` when both exist
 - `cargo run -p cta_cli -- validate file` for adjudicated subset `manifest.json`,
   `protocol_freeze.json`, and `schemas/failure_mode_v1.json` when those paths exist
 - `failure_mode_label` values in `results/raw_metrics.json` vs `schemas/failure_mode_v1.json`
