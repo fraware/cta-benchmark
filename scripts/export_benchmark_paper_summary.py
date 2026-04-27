@@ -141,7 +141,58 @@ def main() -> int:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {OUT}")
+    write_paper_system_set_md(OUT, ROOT / "results" / "paper_system_set.md", payload)
     return 0
+
+
+def write_paper_system_set_md(
+    json_path: Path,
+    md_path: Path,
+    data: dict,
+) -> None:
+    """One-line-of-record for the manuscript: four vs three primary systems."""
+    pss = str(data.get("paper_system_set", "four_baselines"))
+    ph = str(data.get("paper_headline_policy", ""))
+    systems = [str(s) for s in (data.get("paper_systems_ordered") or [])]
+    note = str(data.get("paper_alternate_scope_note", ""))
+    lines = [
+        "# Paper system set (machine-generated)",
+        "",
+    ]
+    if pss == "three_headline" or "three_system" in ph:
+        lines.append(
+            "Main paper evaluates **three** systems; `text_only_v1` is "
+            "appendix-only calibration (not a primary headline comparator). "
+            f"Headline systems: {', '.join(s for s in systems if s != 'text_only_v1') or 'code_only_v1, naive_concat_v1, full_method_v1'}."
+        )
+    else:
+        pretty = ", ".join(systems) if systems else (
+            "text_only_v1, code_only_v1, naive_concat_v1, full_method_v1"
+        )
+        lines.append(
+            f"Main paper evaluates **four** systems: {pretty}."
+        )
+    if note:
+        lines.extend(
+            [
+                "",
+                f"Scope note (from `benchmark_paper_summary.json`): {note}",
+            ]
+        )
+    try:
+        rel = json_path.resolve().relative_to(ROOT.resolve())
+    except ValueError:
+        rel = json_path
+    lines.extend(
+        [
+            "",
+            f"Source: `{rel.as_posix()}` "
+            f"(`paper_system_set={pss!r}`, `paper_headline_policy={ph!r}`).",
+        ]
+    )
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"wrote {md_path}")
 
 
 if __name__ == "__main__":

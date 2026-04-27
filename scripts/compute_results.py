@@ -14,7 +14,9 @@ and ``appendix_mapped_evidence/`` receives the expanded mapped re-run for
 robustness tables. ``paper_table_annotation_evidence.csv`` summarizes row
 counts by ``annotation_origin`` for both views. Also writes
 ``paper_table_agreement_evidence.csv`` (dual-annotation audit population from
-``annotation/agreement_packet_ids.csv``).
+``annotation/agreement_packet_ids.csv``). Also writes ``paper_annotation_origin_counts.csv``,
+``paper_strict_*`` / ``paper_expanded_*`` canonical filenames (via ``export_paper_tables.py``),
+and triggers ``export_paper_repair_status.py`` for ``repairs/paper_repair_status.csv``.
 """
 
 from __future__ import annotations
@@ -328,6 +330,31 @@ def write_agreement_packet_evidence_table(
         )
         w.writerow(["full_audit_population", *tally(audit_rows)])
         w.writerow(["strict_independent_only", *tally(strict_only)])
+
+
+def write_paper_annotation_origin_counts(
+    out_path: Path,
+    strict_rows: list[dict],
+    expanded_rows: list[dict] | None,
+) -> None:
+    """Tiny evidence-mass table: strict vs expanded row counts by origin."""
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["category", "count"])
+        n, nu, nh, nd, nm = count_annotation_origin_tally(strict_rows)
+        w.writerow(["strict_independent_n_eval_rows", n])
+        w.writerow(["strict_independent_n_unique_instances", nu])
+        w.writerow(["strict_independent_direct_human", nh])
+        w.writerow(["strict_independent_direct_adjudicated", nd])
+        w.writerow(["strict_independent_mapped_from_canonical", nm])
+        if expanded_rows is not None:
+            n2, nu2, nh2, nd2, nm2 = count_annotation_origin_tally(expanded_rows)
+            w.writerow(["expanded_propagated_n_eval_rows", n2])
+            w.writerow(["expanded_propagated_n_unique_instances", nu2])
+            w.writerow(["expanded_propagated_direct_human", nh2])
+            w.writerow(["expanded_propagated_direct_adjudicated", nd2])
+            w.writerow(["expanded_propagated_mapped_from_canonical", nm2])
 
 
 def write_paper_annotation_evidence_table(
@@ -942,6 +969,11 @@ def main() -> int:
             list(raw_rows),
             raw_rows_expanded_inventory,
         )
+        write_paper_annotation_origin_counts(
+            args.out_dir / "paper_annotation_origin_counts.csv",
+            list(raw_rows),
+            raw_rows_expanded_inventory,
+        )
         write_agreement_packet_evidence_table(
             ROOT / "annotation" / "agreement_packet_ids.csv",
             args.out_dir / "paper_table_agreement_evidence.csv",
@@ -977,6 +1009,21 @@ def main() -> int:
             cwd=str(ROOT),
             check=True,
             env={**os.environ, "CTA_COMPUTE_APPENDIX": "1"},
+        )
+
+    if args.paper and not use_demo and by_sys_inst:
+        import importlib.util
+
+        fin_path = ROOT / "scripts" / "export_paper_tables.py"
+        spec = importlib.util.spec_from_file_location("export_paper_tables_mod", fin_path)
+        if spec and spec.loader:
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            mod.finalize_expanded_paper_layer(args.out_dir)
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "export_paper_repair_status.py")],
+            cwd=str(ROOT),
+            check=True,
         )
 
     extra_paths = [

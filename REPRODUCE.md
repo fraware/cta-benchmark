@@ -56,11 +56,16 @@ python scripts/export_benchmark_paper_summary.py
 python scripts/ci_reviewer_readiness.py
 ```
 
+Canonical filenames for manuscript layers (also emitted by **`compute_results.py --paper`**):
+**`results/paper_strict_*`** (strict independent headline), **`results/paper_expanded_*`** (expanded mapped appendix),
+**`results/paper_strict_system_metrics_long.csv`**, **`results/paper_system_set.md`**, and **`repairs/paper_repair_status.csv`**.
+Run **`python scripts/export_benchmark_paper_summary.py`** after metric export so **`paper_system_set.md`** stays aligned with **`benchmark/v0.3/benchmark_paper_summary.json`**.
+
 Headline paper tables from **`python scripts/compute_results.py --paper`** use
 **`raw_metrics_strict.json`** only; expanded mapped summaries are written to
 **`results/appendix_mapped_evidence/`**. Row-count transparency is in
-**`results/paper_table_annotation_evidence.csv`** and
-**`results/paper_table_agreement_evidence.csv`** (agreement packet origins). For
+**`results/paper_table_annotation_evidence.csv`**, **`results/paper_annotation_origin_counts.csv`**,
+and **`results/paper_table_agreement_evidence.csv`** (agreement packet origins). For
 ad-hoc analysis outside that pipeline, use **`raw_metrics_expanded.json`** (or
 `raw_metrics.json`) when family-grid propagation is intended.
 
