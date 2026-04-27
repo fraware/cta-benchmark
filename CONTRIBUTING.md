@@ -22,7 +22,9 @@ promises its consumers.
    live providers are runtime-only and gated on credential env vars.
 5. **No placeholders or stub comments.** `todo!()`, `unimplemented!()`,
    TODO/FIXME comments, and "implemented in milestone N" prose are
-   rejected in review. Clippy lints enforce the first two.
+   rejected in review. Clippy lints enforce the first two. CI also runs
+   `scripts/ci_reviewer_readiness.py`, which denylists common placeholder
+   phrases in committed `annotation/` and `results/` text artifacts.
 
 ## Development loop
 
@@ -70,10 +72,10 @@ cargo run -p cta_cli -- benchmark lint --version v0.1
 cargo run -p cta_cli -- benchmark lint --version v0.2
 cargo run -p cta_cli -- benchmark lint --version v0.3 --release
 
-# 3f. v0.3 gold audit workbook (regenerate skeleton CSVs from eval split)
+# 3e. v0.3 gold audit workbook (regenerate skeleton CSVs from eval split)
 cargo run -p cta_cli -- benchmark audit-workbook --version v0.3
 
-# 3e. review-packet Lean proof status (when touching review `packet.json`,
+# 3f. review-packet Lean proof status (when touching review `packet.json`,
 #     `scaffold.lean` copies, `lean/CTA/Benchmark/**` used by packets, or
 #     `is_m1_target_packet` in `crates/cta_cli/src/cmd/annotate.rs`)
 cargo run -p cta_cli -- annotate refresh-lean-check \

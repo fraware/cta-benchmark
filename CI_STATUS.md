@@ -28,9 +28,24 @@ python scripts/ci_reviewer_readiness.py
 ```
 
 Paper tables and adjudication artifacts: see `docs/PAPER_READINESS.md` (Python
-materializers and `compute_results.py --paper`). `ci_reviewer_readiness.py`
-cross-checks `agreement_report.json` vs `agreement_packet_ids.csv`, and strict
-row counts in `paper_table_annotation_evidence.csv` vs `benchmark_paper_summary.json`.
+materializers and `compute_results.py --paper`).
+
+`scripts/ci_reviewer_readiness.py` (also the **`ci.yml`** step *paper reviewer readiness*)
+compares `benchmark/v0.3/benchmark_paper_summary.json` to checked-in outputs:
+
+- `results/instance_level.csv` row count vs `expected_instance_level_rows`
+- `results/raw_metrics.json` row count vs `expected_raw_metrics_rows` (when present)
+- `results/raw_metrics_strict.json` row count vs `expected_raw_metrics_strict_rows` (when present)
+- `annotation/agreement_packet_ids.csv` and `annotation/agreement_report.json` `n_packets`
+  vs `expected_agreement_packet_audit_rows` (when those files and field exist)
+- `results/paper_table_annotation_evidence.csv`: `metrics_view == strict_independent`
+  row `n_eval_rows` vs `expected_raw_metrics_strict_rows` (when evidence file and field exist)
+- `results/paper_table_agreement_evidence.csv`: `agreement_subset == strict_independent_only`
+  row `n_packets` vs `agreement_audit_strict_independent_packet_count` (when field is set)
+- `cargo run -p cta_cli -- validate file` for adjudicated subset `manifest.json`,
+  `protocol_freeze.json`, and `schemas/failure_mode_v1.json` when those paths exist
+- `failure_mode_label` values in `results/raw_metrics.json` vs `schemas/failure_mode_v1.json`
+- Placeholder denylist scan over `annotation/` and `results/` (selected text extensions)
 
 Badge URLs are omitted here because they encode the public GitHub repository
 name; enable GitHub Actions badges in the camera-ready fork if permitted.

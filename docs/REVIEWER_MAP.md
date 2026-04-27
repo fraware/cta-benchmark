@@ -20,6 +20,16 @@
 | Repair sensitivity (counterfactual proxy) | `results/repair_impact_summary.json` | `python scripts/repair_counterfactual_metrics.py` |
 | One-shot audit bundle | `build/paper_build.json` (local; under `/build` in `.gitignore`) | `python scripts/paper_bundle.py` (set `PAPER_STRICT=1` to forbid `demo_synthetic` markers in scanned outputs) |
 
+### CI-enforced summary contract
+
+`python scripts/ci_reviewer_readiness.py` (same command as the *paper reviewer readiness*
+step in `.github/workflows/ci.yml`) must pass after
+`python scripts/export_benchmark_paper_summary.py`. It ties
+`benchmark/v0.3/benchmark_paper_summary.json` to `results/instance_level.csv`,
+`results/raw_metrics.json` / `raw_metrics_strict.json`, agreement audit CSV/JSON,
+`results/paper_table_annotation_evidence.csv`, and
+`results/paper_table_agreement_evidence.csv` (see `CI_STATUS.md` for the exact fields).
+
 ## Definitions and limitations
 
 - `docs/PROVENANCE.md` — epistemic tiers.

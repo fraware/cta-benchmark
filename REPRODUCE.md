@@ -53,6 +53,7 @@ python scripts/reproduce_agreement_report.py
 python scripts/compute_results.py --paper
 python scripts/repair_counterfactual_metrics.py
 python scripts/export_benchmark_paper_summary.py
+python scripts/ci_reviewer_readiness.py
 ```
 
 Headline paper tables from **`python scripts/compute_results.py --paper`** use

@@ -48,7 +48,8 @@ cta-benchmark/
 ├── schemas/                # JSON schemas (authoritative)
 ├── benchmark/
 │   ├── v0.1/               # Pilot benchmark artifacts (immutable)
-│   └── v0.2/               # Paper-track benchmark artifacts (in progress)
+│   ├── v0.2/               # Paper-track review packets + adjudicated subset
+│   └── v0.3/               # Specification-stress grid (84 instances; paper summary)
 ├── lean/                   # Lean 4 project (scaffolds, generated, proofs)
 ├── crates/                 # Rust crates (see below)
 ├── runs/                   # Immutable per-run output directories
@@ -272,23 +273,35 @@ can be set once in the repo root for interactive runs.
 
 ## Quality gates
 
-Every push runs:
+**`ci.yml` (every push / PR to `main`):**
 
 - `cargo fmt --all --check`
 - `cargo clippy --workspace --all-targets --no-deps`
 - `cargo test --workspace --all-targets`
 - `cargo test --workspace --doc`
 - `cta validate schemas`
-- `cta validate benchmark --version v0.1 --release` (pilot checks; runs on every push)
-- `cta validate benchmark --version v0.2 --release` and
-  `cta validate benchmark --version v0.3 --release` (paper-track gates; also run
-  on `benchmark/**` changes via `.github/workflows/benchmark-lint.yml`)
-- `cta experiment --config configs/experiments/pilot_v1.json --dry-run` and
-  the full run against the stub provider, with schema validation of every
-  emitted `run_manifest.json` and `results_bundle.json`.
-- `cargo-deny check --all-features` and `cargo audit --deny warnings`
-  (see `.github/workflows/supply-chain.yml`).
-- `lake build` in `lean/` over the full `CTA` Lean project (scaffolds must compile).
+- `cta validate benchmark --version v0.1 --release`
+- `cta annotate verify-review-packets` and `cta annotate refresh-lean-check`
+  on the committed `benchmark/v0.2/annotation/review_packets` tree (strict M1 gate)
+- `cta experiment` dry-run and stub-backed runs (`pilot_v1`, `pilot_all_systems_v1`),
+  with `validate file` on emitted `run_manifest.json` / `results_bundle.json`
+- `python3 scripts/ci_reviewer_readiness.py` (paper summary vs `results/*.csv`,
+  evidence tables, agreement audit counts, JSON schema checks, placeholder denylist)
+- `lake build` in `lean/` (separate job)
+
+**`benchmark-lint.yml`** (when `benchmark/**`, `schemas/**`, or selected crates change):
+
+- `cta validate benchmark --version v0.1 --release` plus extra v0.1 `benchmark lint` modes
+- `cta validate benchmark --version v0.3 --release` and `benchmark lint --version v0.3 --release`
+- the same v0.2 verify-review-packets / refresh-lean-check steps as `ci.yml`
+- `cargo test -p cta_generate review_packets_benchmark_facing_lean_lints`
+
+**Not automated on every main-branch push:** full `cta validate benchmark --version v0.2 --release`
+(that gate is required for paper-track releases and is in the local loop in
+`CONTRIBUTING.md` / `docs/release_process.md`).
+
+**Supply chain:** `cargo deny check` and `cargo audit` on push/PR to `main`,
+plus a weekly schedule (see `.github/workflows/supply-chain.yml`).
 
 Snapshot tests in `crates/cta_reports` and `crates/cta_generate` pin the
 exact CSV/Markdown/LaTeX shape of every report artifact and the rendered

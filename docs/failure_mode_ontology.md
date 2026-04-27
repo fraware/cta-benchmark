@@ -9,7 +9,11 @@ Machine-readable list: `schemas/failure_mode_v1.json` (mirrored under
 ## CI
 
 `python scripts/compute_results.py --paper` refuses unknown labels.
-`scripts/ci_reviewer_readiness.py` re-checks labels against the ontology.
+
+`scripts/ci_reviewer_readiness.py` (run in `.github/workflows/ci.yml`) validates
+`schemas/failure_mode_v1.json` with `cta validate file --schema failure_mode_ontology`
+when that file is present, then checks every non-empty `failure_mode_label` in
+`results/raw_metrics.json` against the ontology `modes[].slug` set.
 
 ## Derived modes
 

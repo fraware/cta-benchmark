@@ -46,6 +46,7 @@ python scripts\reproduce_agreement_report.py
 python scripts\compute_results.py --paper
 python scripts\repair_counterfactual_metrics.py
 python scripts\export_benchmark_paper_summary.py
+python scripts\ci_reviewer_readiness.py
 ```
 
 **Bash (same steps):**
@@ -70,6 +71,7 @@ python3 scripts/reproduce_agreement_report.py
 python3 scripts/compute_results.py --paper
 python3 scripts/repair_counterfactual_metrics.py
 python3 scripts/export_benchmark_paper_summary.py
+python3 scripts/ci_reviewer_readiness.py
 ```
 
 **If `annotate coverage` must be skipped** (no Cargo on PATH):
@@ -106,7 +108,24 @@ cargo test --workspace --all-targets
 cargo test --workspace --doc
 ```
 
-## 5. Annotation agreement (after rater CSVs exist)
+## 5. Reviewer readiness script (same as `ci.yml`)
+
+After `export_benchmark_paper_summary.py`, run:
+
+```powershell
+python scripts\ci_reviewer_readiness.py
+```
+
+This mirrors the GitHub Actions *paper reviewer readiness* step: it asserts
+`benchmark/v0.3/benchmark_paper_summary.json` matches row counts in
+`results/instance_level.csv`, `results/raw_metrics*.json`, agreement audit
+artifacts, and the strict rows in `results/paper_table_*_evidence.csv`; runs
+`cta validate file` on a few frozen JSON artifacts; checks `failure_mode_label`
+values against `schemas/failure_mode_v1.json`; and scans `annotation/` and
+`results/` for disallowed placeholder phrasing. Full field list is summarized in
+`CI_STATUS.md`.
+
+## 6. Annotation agreement (after rater CSVs exist)
 
 ```powershell
 python scripts\reproduce_agreement_report.py
@@ -123,7 +142,7 @@ python scripts\compute_agreement_stats.py `
 Example inputs: `annotation/rater_a.example.csv` and
 `annotation/rater_b.example.csv`. Audit population: `annotation/agreement_packet_ids.csv`.
 
-## 6. Anonymous artifact zip (optional upload bundle)
+## 7. Anonymous artifact zip (optional upload bundle)
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
@@ -132,7 +151,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 
 Output: `artifacts/cta-benchmark-anonymous.zip`.
 
-## 7. Strict near-duplicate check (optional)
+## 8. Strict near-duplicate check (optional)
 
 ```powershell
 python scripts\validate_benchmark.py --strict-grid-near-dup

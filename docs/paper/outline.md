@@ -46,25 +46,30 @@ Obligation Generation from Rust Reference Code".
    (`results/paper_table_*.csv`, per-metric summaries, reliability) plus run
    bundles from `cta reports build` where model generations are reported.
 7. Analysis — failure taxonomy and qualitative cases.
+8. Limitations — what our benchmark does not measure.
 
 Reviewer-facing indexes: `docs/REVIEWER_MAP.md`, `docs/LIMITATIONS.md`, and
 `docs/PROVENANCE.md` map each section to committed artifacts and regeneration
 commands.
-8. Limitations — what our benchmark does not measure.
 
 ## Reproducibility statement
 
 Every reported number is backed by a `run_manifest.json` capturing
 commit hash, benchmark version, schema version, metrics version,
 rubric version, toolchains, provider + model name, seed, and per-
-instance SHA-256 prompt hashes. Every table and figure is regenerable
-from a single `cta reports build --run <run_id>` invocation against the
-stored run directory, and is additionally pinned by snapshot tests in
-`crates/cta_reports/tests/snapshots/` so the surface shape cannot drift
-without a deliberate update. Paper-track adjudication additionally relies on
-`cta annotate verify-review-packets` (signed
-`verification_summary.signed.json`) and the `cta_generate` packet regression
-tests (`code_only_packet_regression`, `family_packet_regression`,
+instance SHA-256 prompt hashes. Run-scoped tables and figures are regenerable
+from `cta reports build --run <run_id>` against the stored run directory, with
+snapshot tests in `crates/cta_reports/tests/snapshots/` pinning export shape.
+
+v0.3 headline aggregates and evidence tables come from the Python paper track
+(`python scripts/compute_results.py --paper`,
+`python scripts/export_benchmark_paper_summary.py`), checked into `results/`
+and `benchmark/v0.3/benchmark_paper_summary.json`, and guarded by
+`python scripts/ci_reviewer_readiness.py` in CI (row-count and label contracts).
+
+Paper-track adjudication additionally relies on `cta annotate verify-review-packets`
+(signed `verification_summary.signed.json`) and the `cta_generate` packet
+regression tests (`code_only_packet_regression`, `family_packet_regression`,
 `naive_concat_packet_regression`, `text_only_packet_regression`,
 `full_method_priority1_packet_regression`,
 `full_method_priority2_packet_regression`, `review_packet_lean_lint`) so
