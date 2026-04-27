@@ -193,7 +193,7 @@ python scripts\ci_reviewer_readiness.py
 | Manuscript-ready aggregates — **headline (strict)** | `results/paper_table_*.csv` (legacy names) and explicit layer files: `results/paper_strict_system_summary.csv`, `results/paper_strict_family_summary.csv`, `results/paper_strict_failure_modes.csv`, `results/paper_strict_instance_level.csv`, plus per-metric aliases `results/paper_strict_system_*_summary.csv` and stacked `results/paper_strict_system_metrics_long.csv` |
 | Appendix — expanded mapped robustness | `results/paper_expanded_system_summary.csv`, `results/paper_expanded_family_summary.csv`, `results/paper_expanded_failure_modes.csv` (copies promoted from `results/appendix_mapped_evidence/` after `compute_results.py --paper`) |
 | Evidence mass (direct vs propagated row counts) | `results/paper_annotation_origin_counts.csv` |
-| Declared primary system set (four vs three+appendix calibration) | `results/paper_system_set.md` (also `benchmark/v0.3/benchmark_paper_summary.json`) |
+| Declared primary system set (four-system primary study) | `results/paper_system_set.md` (also `benchmark/v0.3/benchmark_paper_summary.json`) |
 | Per-metric system summaries + reliability | `results/system_faithfulness_summary.csv`, `results/system_consistency_summary.csv`, `results/system_vacuity_summary.csv`, `results/system_proof_utility_summary.csv`, `results/system_reliability_summary.csv`, `results/system_reliability_sensitivity.csv` |
 | Per-metric family summaries | `results/family_faithfulness_summary.csv`, `results/family_consistency_summary.csv`, `results/family_vacuity_summary.csv`, `results/family_proof_utility_summary.csv` |
 | Faithfulness-only legacy alias | `results/system_summary.csv`, `results/family_summary.csv` (same pooling as faithfulness columns; not a composite “reliability” score) |
@@ -201,7 +201,7 @@ python scripts\ci_reviewer_readiness.py
 | Repair sensitivity (counterfactual proxy) | `results/repair_impact_summary.json` from `python scripts/repair_counterfactual_metrics.py` (after `compute_results.py --paper` when instance rows include repair flags) |
 | Repair study proof-status export | `repairs/paper_repair_status.csv` from `python scripts/export_paper_repair_status.py` (also run automatically at end of `compute_results.py --paper`) |
 | Repair manuscript subset (selected hotspots only) | `repairs/paper_repair_success_subset.csv` (`selected_for_repair_budget=true` rows with `repair_success`, `elaborated`, `admit_count`, `axiom_count`, `proof_mode`) |
-| Repair proof-facing subset (Lean elaborated only) | `repairs/paper_repair_proof_subset.csv` (analysis subset) and `repairs/paper_proof_facing_subset.csv` (paper-facing minimal schema: packet/system/instance + elaboration/proof fields) |
+| Repair proof-facing subset (Lean elaborated only) | `repairs/paper_repair_proof_subset.csv` (selected-budget + elaborated analysis subset) and `repairs/paper_proof_facing_subset.csv` (paper-facing minimal schema over all hotspot packets with `elaborated=true`) |
 | Bootstrap on pooled means | `results/system_summary_with_ci.json` |
 | Prompt appendix | `appendix/PROMPTS_APPENDIX.md` |
 | Canonical manifest | `benchmark/manifest.jsonl` |

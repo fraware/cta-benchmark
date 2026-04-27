@@ -13,12 +13,9 @@ Obligation Generation from Rust Reference Code".
    behavioral harness, a Lean scaffold with byte-identity enforced
    between the instance-local copy and the canonical
    `lean/CTA/Benchmark/**` module, and an adjudicated annotation subset.
-2. **System scope (default: four-system primary study):** baseline generators
+2. **System scope (four-system primary study):** baseline generators
    `text_only_v1`, `code_only_v1`, `naive_concat_v1`, and `full_method_v1` are
-   first-class comparators unless the manuscript explicitly adopts the optional
-   **calibration-only** scope for `text_only_v1` (see `docs/paper/system_scope.md`
-   and `benchmark_paper_summary.json` fields `paper_headline_policy` /
-   `paper_alternate_scope_note`). **Headline** metrics tables use the strict
+   first-class comparators. **Headline** metrics tables use the strict
    independent evidence view (`results/paper_strict_*`); expanded mapped
    propagation is appendix-only (`results/paper_expanded_*` and
    `results/appendix_mapped_evidence/`). Evidence-mass transparency is in
@@ -71,7 +68,8 @@ and `benchmark/v0.3/benchmark_paper_summary.json`, and guarded by
 `python scripts/ci_reviewer_readiness.py` in CI (row-count and label contracts).
 Canonical manuscript filenames are `results/paper_strict_*` (headline strict),
 `results/paper_expanded_*` (appendix expanded), `results/paper_system_set.md`,
-and `repairs/paper_repair_status.csv`.
+`repairs/paper_repair_status.csv`, `repairs/paper_repair_success_subset.csv`,
+and `repairs/paper_proof_facing_subset.csv`.
 
 Paper-track adjudication additionally relies on `cta annotate verify-review-packets`
 (signed `verification_summary.signed.json`) and the `cta_generate` packet

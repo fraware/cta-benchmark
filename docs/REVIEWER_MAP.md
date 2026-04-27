@@ -20,7 +20,7 @@
 | Per-metric winners (stacked) | `results/paper_strict_system_metrics_long.csv`, `results/paper_strict_system_*_summary.csv` | same as headline `compute_results.py --paper` |
 | Repair proof-status roster | `repairs/paper_repair_status.csv` | `python scripts/export_paper_repair_status.py` (also end of `compute_results.py --paper`) |
 | Repair manuscript subset (selected only) | `repairs/paper_repair_success_subset.csv` | same |
-| Repair proof-facing subset (elaborated only) | `repairs/paper_repair_proof_subset.csv` (analysis view), `repairs/paper_proof_facing_subset.csv` (paper-facing minimal view) | same |
+| Repair proof-facing subset (elaborated only) | `repairs/paper_repair_proof_subset.csv` (selected-budget + elaborated analysis view), `repairs/paper_proof_facing_subset.csv` (paper-facing minimal view over all hotspot rows with `elaborated=true`) | same |
 | Inter-rater agreement (synthetic rater B) | `annotation/agreement_report.json`, `annotation/agreement_report.md` | `python scripts/reproduce_agreement_report.py` (wraps `compute_agreement_stats.py`) |
 | Agreement audit trail (packet population) | `annotation/agreement_packet_ids.csv`, `annotation/rater_a.csv`, `annotation/rater_b.csv`, `annotation/adjudication_log.csv` | `python scripts/materialize_v03_adjudication_artifacts.py` |
 | Repair selection + logs | `repairs/hotspot_selection.csv`, `repairs/repair_log.jsonl` | `python scripts/materialize_repair_hotspot_artifacts.py` |

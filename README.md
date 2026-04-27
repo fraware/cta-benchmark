@@ -260,7 +260,8 @@ evidence inventories `results/paper_table_annotation_evidence.csv` +
 `results/paper_annotation_origin_counts.csv`,
 `results/paper_table_agreement_evidence.csv`, declared system set
 `results/paper_system_set.md`, repair proof-status export
-`repairs/paper_repair_status.csv`, appendix copies under
+`repairs/paper_repair_status.csv`, `repairs/paper_repair_success_subset.csv`,
+`repairs/paper_proof_facing_subset.csv`, appendix copies under
 `results/appendix_mapped_evidence/`, agreement audit CSVs under `annotation/`)
 are regenerated from Python scripts; see [`REPRODUCE.md`](REPRODUCE.md),
 [`docs/REVIEWER_MAP.md`](docs/REVIEWER_MAP.md), and

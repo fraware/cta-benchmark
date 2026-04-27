@@ -4,20 +4,10 @@ The repository’s **primary** paper configuration is a **four-system** study:
 `text_only_v1`, `code_only_v1`, `naive_concat_v1`, and `full_method_v1` (see
 `benchmark/v0.3/benchmark_paper_summary.json` field `paper_systems_ordered`).
 
-## Headline vs optional three-system scope
+## Headline policy
 
-If the narrative should **not** treat `text_only_v1` as a first-class comparator:
-
-1. State explicitly that `text_only_v1` is a **calibration / ablation** baseline.
-2. Restrict **headline** tables and prose claims to the remaining three systems
-   while keeping `text_only_v1` in **appendix** or robustness exports (filter
-   columns or regenerate summaries with a three-system manifest override in
-   analysis, not by silently dropping rows in the committed pack).
-3. Keep `paper_systems_ordered` in the JSON for reproducibility, and add a
-   sentence in the methods section naming the excluded system and the reason.
-
-The inverse default (this repo’s contract) is **`paper_headline_policy`:
-`four_system_primary_study`**: all four systems appear in headline
+The repo contract is **`paper_headline_policy: four_system_primary_study`**:
+all four systems appear in headline
 `results/paper_strict_*` files produced under `compute_results.py --paper`
 (legacy compatibility exports still exist under `results/paper_table_*.csv`).
 

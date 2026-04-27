@@ -99,10 +99,12 @@ def main() -> int:
         print(f"wrote empty {args.out} (no {args.hotspot_selection})")
         return 0
 
+    hotspot_rows: list[dict[str, str]] = []
     with args.hotspot_selection.open(encoding="utf-8", newline="") as fin:
         reader = csv.DictReader(fin)
         rows_out: list[dict[str, str]] = []
         for row in reader:
+            hotspot_rows.append({k: (v or "").strip() for k, v in row.items()})
             pid = (row.get("packet_id") or "").strip()
             pkt_rel = (row.get("packet_json_path") or "").strip()
             pkt_path = (ROOT / pkt_rel) if pkt_rel else Path()
@@ -171,36 +173,35 @@ def main() -> int:
         "outcome_summary",
     ]
     subset_rows: list[dict[str, str]] = []
-    with args.hotspot_selection.open(encoding="utf-8", newline="") as fin:
-        for row in csv.DictReader(fin):
-            if (row.get("selected") or "").strip().lower() != "true":
-                continue
-            pid = (row.get("packet_id") or "").strip()
-            status_row = next(
-                (r for r in rows_out if r["packet_id"] == pid),
-                {},
-            )
-            out = status_row.get("outcome_summary", "").strip().lower()
-            repair_success = (
-                out.startswith("repaired_") or out == "repair_success"
-            )
-            subset_rows.append(
-                {
-                    "packet_id": pid,
-                    "system_id": (row.get("system_id") or "").strip(),
-                    "instance_id": (row.get("instance_id") or "").strip(),
-                    "selected_for_repair_budget": "true",
-                    "repair_success": "true" if repair_success else "false",
-                    "elaborated": status_row.get("elaborated", ""),
-                    "admit_count": status_row.get("admit_count", ""),
-                    "axiom_count": status_row.get("axiom_count", ""),
-                    "proof_mode": status_row.get("proof_mode", ""),
-                    "pre_repair_failure_type": status_row.get(
-                        "pre_repair_failure_type", ""
-                    ),
-                    "outcome_summary": status_row.get("outcome_summary", ""),
-                }
-            )
+    for row in hotspot_rows:
+        if (row.get("selected") or "").strip().lower() != "true":
+            continue
+        pid = (row.get("packet_id") or "").strip()
+        status_row = next(
+            (r for r in rows_out if r["packet_id"] == pid),
+            {},
+        )
+        out = status_row.get("outcome_summary", "").strip().lower()
+        repair_success = (
+            out.startswith("repaired_") or out == "repair_success"
+        )
+        subset_rows.append(
+            {
+                "packet_id": pid,
+                "system_id": (row.get("system_id") or "").strip(),
+                "instance_id": (row.get("instance_id") or "").strip(),
+                "selected_for_repair_budget": "true",
+                "repair_success": "true" if repair_success else "false",
+                "elaborated": status_row.get("elaborated", ""),
+                "admit_count": status_row.get("admit_count", ""),
+                "axiom_count": status_row.get("axiom_count", ""),
+                "proof_mode": status_row.get("proof_mode", ""),
+                "pre_repair_failure_type": status_row.get(
+                    "pre_repair_failure_type", ""
+                ),
+                "outcome_summary": status_row.get("outcome_summary", ""),
+            }
+        )
     args.out_success_subset.parent.mkdir(parents=True, exist_ok=True)
     with args.out_success_subset.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=succ_fields)
@@ -215,7 +216,7 @@ def main() -> int:
         w.writeheader()
         w.writerows(proof_rows)
 
-    # Paper-facing proof subset with stable minimal columns only.
+    # Paper-facing subset across all hotspot rows with elaborated Lean proofs.
     proof_facing_fields = [
         "packet_id",
         "system_id",
@@ -231,19 +232,22 @@ def main() -> int:
         r["packet_id"]: r.get("imported_modules", "") for r in rows_out
     }
     proof_facing_rows: list[dict[str, str]] = []
-    for r in proof_rows:
-        pid = r.get("packet_id", "")
+    for row in hotspot_rows:
+        pid = (row.get("packet_id") or "").strip()
+        status_row = next((r for r in rows_out if r["packet_id"] == pid), {})
+        if status_row.get("elaborated") != "true":
+            continue
         proof_facing_rows.append(
             {
                 "packet_id": pid,
-                "system_id": r.get("system_id", ""),
-                "instance_id": r.get("instance_id", ""),
-                "elaborated": r.get("elaborated", ""),
-                "admit_count": r.get("admit_count", ""),
-                "axiom_count": r.get("axiom_count", ""),
-                "proof_mode": r.get("proof_mode", ""),
+                "system_id": row.get("system_id", ""),
+                "instance_id": row.get("instance_id", ""),
+                "elaborated": status_row.get("elaborated", ""),
+                "admit_count": status_row.get("admit_count", ""),
+                "axiom_count": status_row.get("axiom_count", ""),
+                "proof_mode": status_row.get("proof_mode", ""),
                 "imported_modules": imports_by_packet.get(pid, ""),
-                "outcome_summary": r.get("outcome_summary", ""),
+                "outcome_summary": status_row.get("outcome_summary", ""),
             }
         )
     args.out_proof_facing_subset.parent.mkdir(parents=True, exist_ok=True)

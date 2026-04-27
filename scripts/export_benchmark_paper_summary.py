@@ -65,7 +65,8 @@ def main() -> int:
         strict_payload = json.loads(strict_path.read_text(encoding="utf-8"))
         strict_n = len(strict_payload.get("rows") or [])
     elif RAW.is_file():
-        raw_rows = json.loads(RAW.read_text(encoding="utf-8")).get("rows") or []
+        raw_payload = json.loads(RAW.read_text(encoding="utf-8"))
+        raw_rows = raw_payload.get("rows") or []
         strict_n = sum(
             1
             for r in raw_rows
@@ -90,9 +91,13 @@ def main() -> int:
             ag_rows = list(rdr)
         ag_audit_rows = len(ag_rows)
         if ag_rows:
-            origins = [str(x.get("annotation_origin", "")).strip() for x in ag_rows]
+            origins = [
+                str(x.get("annotation_origin", "")).strip() for x in ag_rows
+            ]
             ag_strict_packets = sum(
-                1 for o in origins if o in ("direct_human", "direct_adjudicated")
+                1
+                for o in origins
+                if o in ("direct_human", "direct_adjudicated")
             )
             ag_all_mapped = all(o == "mapped_from_canonical" for o in origins)
 
@@ -101,11 +106,6 @@ def main() -> int:
         "benchmark_version": "v0.3",
         "paper_system_set": "four_baselines",
         "paper_headline_policy": "four_system_primary_study",
-        "paper_alternate_scope_note": (
-            "Optional three-headline-system scope: treat text_only_v1 as "
-            "calibration-only and exclude it from primary tables while keeping "
-            "it in appendix robustness exports."
-        ),
         "paper_systems_ordered": list(DEFAULT_FOUR),
         "total_instances": len(v3),
         "systems_profiled": systems,
@@ -131,8 +131,12 @@ def main() -> int:
     }
     if ag_audit_rows:
         payload["expected_agreement_packet_audit_rows"] = ag_audit_rows
-        payload["agreement_audit_strict_independent_packet_count"] = ag_strict_packets
-        payload["agreement_audit_all_packets_mapped_from_canonical"] = ag_all_mapped
+        payload["agreement_audit_strict_independent_packet_count"] = (
+            ag_strict_packets
+        )
+        payload["agreement_audit_all_packets_mapped_from_canonical"] = (
+            ag_all_mapped
+        )
         payload["agreement_audit_design_note"] = (
             "Audit rows are eval-split (instance, system) pairs; canonical "
             "template packets yield mapped_from_canonical unless instance_id "
@@ -141,7 +145,9 @@ def main() -> int:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {OUT}")
-    write_paper_system_set_md(OUT, ROOT / "results" / "paper_system_set.md", payload)
+    write_paper_system_set_md(
+        OUT, ROOT / "results" / "paper_system_set.md", payload
+    )
     return 0
 
 
@@ -154,31 +160,16 @@ def write_paper_system_set_md(
     pss = str(data.get("paper_system_set", "four_baselines"))
     ph = str(data.get("paper_headline_policy", ""))
     systems = [str(s) for s in (data.get("paper_systems_ordered") or [])]
-    note = str(data.get("paper_alternate_scope_note", ""))
     lines = [
         "# Paper system set (machine-generated)",
         "",
     ]
-    if pss == "three_headline" or "three_system" in ph:
-        lines.append(
-            "Main paper evaluates **three** systems; `text_only_v1` is "
-            "appendix-only calibration (not a primary headline comparator). "
-            f"Headline systems: {', '.join(s for s in systems if s != 'text_only_v1') or 'code_only_v1, naive_concat_v1, full_method_v1'}."
-        )
-    else:
-        pretty = ", ".join(systems) if systems else (
-            "text_only_v1, code_only_v1, naive_concat_v1, full_method_v1"
-        )
-        lines.append(
-            f"Main paper evaluates **four** systems: {pretty}."
-        )
-    if note:
-        lines.extend(
-            [
-                "",
-                f"Scope note (from `benchmark_paper_summary.json`): {note}",
-            ]
-        )
+    pretty = ", ".join(systems) if systems else (
+        "text_only_v1, code_only_v1, naive_concat_v1, full_method_v1"
+    )
+    lines.append(
+        f"Main paper evaluates **four** systems: {pretty}."
+    )
     try:
         rel = json_path.resolve().relative_to(ROOT.resolve())
     except ValueError:

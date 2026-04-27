@@ -3,7 +3,6 @@
   "benchmark_version": "v0.3",
   "paper_system_set": "four_baselines",
   "paper_headline_policy": "four_system_primary_study",
-  "paper_alternate_scope_note": "Optional three-headline-system scope: treat text_only_v1 as calibration-only and exclude it from primary tables while keeping it in appendix robustness exports.",
   "paper_systems_ordered": [
     "text_only_v1",
     "code_only_v1",
