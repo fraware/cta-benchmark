@@ -20,7 +20,7 @@
 | Per-metric winners (stacked) | `results/paper_strict_system_metrics_long.csv`, `results/paper_strict_system_*_summary.csv` | same as headline `compute_results.py --paper` |
 | Repair proof-status roster | `repairs/paper_repair_status.csv` | `python scripts/export_paper_repair_status.py` (also end of `compute_results.py --paper`) |
 | Repair manuscript subset (selected only) | `repairs/paper_repair_success_subset.csv` | same |
-| Repair proof-facing subset (elaborated only) | `repairs/paper_repair_proof_subset.csv` (selected-budget + elaborated analysis view), `repairs/paper_proof_facing_subset.csv` (paper-facing minimal view over all hotspot rows with `elaborated=true`) | same |
+| Repair proof-facing subset (elaborated only) | `repairs/paper_repair_proof_subset.csv` (selected-budget + elaborated analysis view), `repairs/paper_proof_facing_subset.csv` (paper-facing metadata-rich view over all hotspot rows with `elaborated=true`) | same |
 | Inter-rater agreement (tier declared in report audit metadata) | `annotation/agreement_report.json`, `annotation/agreement_report.md` | `python scripts/reproduce_agreement_report.py` (prefers `annotation/rater_b_human.csv` when present, else `rater_b.csv`) |
 | Agreement audit trail (packet population) | `annotation/agreement_packet_ids.csv`, `annotation/rater_a.csv`, `annotation/rater_b.csv` (or `annotation/rater_b_human.csv`), `annotation/adjudication_log.csv` | `python scripts/materialize_v03_adjudication_artifacts.py` + optional human `rater_b_human.csv` import |
 | Repair selection + logs | `repairs/hotspot_selection.csv`, `repairs/repair_log.jsonl` | `python scripts/materialize_repair_hotspot_artifacts.py` |
@@ -28,6 +28,7 @@
 | Repair sensitivity (counterfactual proxy) | `results/repair_impact_summary.json` | `python scripts/repair_counterfactual_metrics.py` |
 | Strict coverage gap disclosure | `results/paper_strict_coverage_gap.csv` (missing strict unique instances/families vs expanded view) | `python scripts/compute_results.py --paper` |
 | Cost/runtime accounting | `results/paper_cost_runtime_accounting.csv` | `python scripts/export_cost_runtime_accounting.py` (also run by `compute_results.py --paper`) |
+| Model metadata reconciliation | `results/paper_model_metadata_registry.csv` | `python scripts/export_model_metadata_registry.py` (also run by `compute_results.py --paper`) |
 | One-shot audit bundle | `build/paper_build.json` (local; under `/build` in `.gitignore`) | `python scripts/paper_bundle.py` (set `PAPER_STRICT=1` to forbid `demo_synthetic` markers in scanned outputs) |
 
 ### CI-enforced summary contract

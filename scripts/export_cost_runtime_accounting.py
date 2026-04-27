@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+MISSING_REASON = "historical_provider_runs_missing_usage_export"
 
 
 def scan_run_manifests() -> list[Path]:
@@ -46,9 +47,15 @@ def main() -> int:
                 "total_input_tokens": str(doc.get("total_input_tokens", "")),
                 "total_output_tokens": str(doc.get("total_output_tokens", "")),
                 "wall_clock_seconds": str(doc.get("wall_clock_seconds", "")),
-                "estimated_or_billed_cost_usd": str(cost.get("estimated_cost_usd", "")),
-                "cost_status": str(cost.get("status", "")),
-                "cost_reason_code": str(cost.get("reason_code", "")),
+                "estimated_or_billed_cost_usd": str(
+                    cost.get("estimated_cost_usd", "")
+                ),
+                "cost_status": str(
+                    cost.get("status") or "unreported_with_reason"
+                ),
+                "cost_reason_code": str(
+                    cost.get("reason_code") or MISSING_REASON
+                ),
                 "runner_hostname": str(runner.get("hostname", "")),
                 "runner_os": str(runner.get("os", "")),
                 "runner_arch": str(runner.get("arch", "")),
@@ -85,4 +92,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

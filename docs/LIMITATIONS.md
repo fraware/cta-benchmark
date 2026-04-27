@@ -5,9 +5,11 @@
 - Default adjudication artifacts are **pipeline-derived** from curated review
   packets, not independent crowdsourced gold. Wording in the paper must match
   the tier named in `docs/PROVENANCE.md`.
-- Inter-rater agreement CSVs include a **deterministic synthetic rater B**
-  layer so coefficients are numerically stable; treat them as methodology
-  demos, not human reliability from two independent experts. The agreement
+- Inter-rater agreement defaults to a **deterministic synthetic rater B**
+  layer unless `annotation/rater_b_human.csv` is provided and used to
+  regenerate `annotation/agreement_report*.{json,md}`. Treat synthetic-mode
+  agreement as an audit/stress-test artifact, not independent two-human
+  reliability. The agreement
   packet population is still **pipeline-keyed** to eval `(instance, system)`
   rows; cite `annotation/agreement_packet_ids.csv` and distinguish headline
   **strict** metrics rows from agreement table construction in the text.

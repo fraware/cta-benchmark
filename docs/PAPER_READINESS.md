@@ -159,6 +159,14 @@ Set-ExecutionPolicy -Scope Process Bypass
 
 Output: `artifacts/cta-benchmark-anonymous.zip`.
 
+Optional final parity evidence artifact:
+
+```powershell
+python scripts\export_final_ci_evidence.py
+```
+
+Output: `artifacts/final_ci_run_YYYYMMDD.md`.
+
 ## 8. Strict near-duplicate check (optional)
 
 ```powershell
@@ -213,6 +221,7 @@ python scripts\ci_reviewer_readiness.py
 | Repair manuscript subset (selected hotspots only) | `repairs/paper_repair_success_subset.csv` (`selected_for_repair_budget=true` rows with `repair_success`, `elaborated`, `admit_count`, `axiom_count`, `proof_mode`) |
 | Repair proof-facing subset (Lean elaborated only) | `repairs/paper_repair_proof_subset.csv` (selected-budget + elaborated analysis subset) and `repairs/paper_proof_facing_subset.csv` (paper-facing metadata-rich subset over all hotspot packets with `elaborated=true`) |
 | Cost/runtime accounting | `results/paper_cost_runtime_accounting.csv` (tokens/time/cost/runner metadata when present in run manifests) |
+| Model/run metadata registry | `results/paper_model_metadata_registry.csv` (system card vs run-manifest model metadata reconciliation) |
 | Bootstrap on pooled means | `results/system_summary_with_ci.json` |
 | Prompt appendix | `appendix/PROMPTS_APPENDIX.md` |
 | Canonical manifest | `benchmark/manifest.jsonl` |

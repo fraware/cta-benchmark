@@ -1159,6 +1159,11 @@ def main() -> int:
             cwd=str(ROOT),
             check=True,
         )
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "export_model_metadata_registry.py")],
+            cwd=str(ROOT),
+            check=True,
+        )
 
     extra_paths = [
         p
