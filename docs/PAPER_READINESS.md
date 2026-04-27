@@ -139,6 +139,14 @@ python scripts\compute_agreement_stats.py `
   --second annotation\rater_b.csv
 ```
 
+If a real second human pass exists, use:
+
+```powershell
+python scripts\compute_agreement_stats.py `
+  --first annotation\rater_a.csv `
+  --second annotation\rater_b_human.csv
+```
+
 Example inputs: `annotation/rater_a.example.csv` and
 `annotation/rater_b.example.csv`. Audit population: `annotation/agreement_packet_ids.csv`.
 
@@ -196,12 +204,15 @@ python scripts\ci_reviewer_readiness.py
 | Declared primary system set (four-system primary study) | `results/paper_system_set.md` (also `benchmark/v0.3/benchmark_paper_summary.json`) |
 | Per-metric system summaries + reliability | `results/system_faithfulness_summary.csv`, `results/system_consistency_summary.csv`, `results/system_vacuity_summary.csv`, `results/system_proof_utility_summary.csv`, `results/system_reliability_summary.csv`, `results/system_reliability_sensitivity.csv` |
 | Per-metric family summaries | `results/family_faithfulness_summary.csv`, `results/family_consistency_summary.csv`, `results/family_vacuity_summary.csv`, `results/family_proof_utility_summary.csv` |
+| Family reliability summary | `results/family_reliability_summary.csv`, `results/paper_strict_family_reliability_summary.csv`, `results/paper_expanded_family_reliability_summary.csv` |
 | Faithfulness-only legacy alias | `results/system_summary.csv`, `results/family_summary.csv` (same pooling as faithfulness columns; not a composite “reliability” score) |
 | Failure / instance / composite | `results/failure_mode_counts.csv`, `results/instance_level.csv`, `results/composite_sensitivity.csv` |
+| Strict coverage-gap disclosure | `results/paper_strict_coverage_gap.csv` (missing strict unique instances/families relative to expanded) |
 | Repair sensitivity (counterfactual proxy) | `results/repair_impact_summary.json` from `python scripts/repair_counterfactual_metrics.py` (after `compute_results.py --paper` when instance rows include repair flags) |
 | Repair study proof-status export | `repairs/paper_repair_status.csv` from `python scripts/export_paper_repair_status.py` (also run automatically at end of `compute_results.py --paper`) |
 | Repair manuscript subset (selected hotspots only) | `repairs/paper_repair_success_subset.csv` (`selected_for_repair_budget=true` rows with `repair_success`, `elaborated`, `admit_count`, `axiom_count`, `proof_mode`) |
-| Repair proof-facing subset (Lean elaborated only) | `repairs/paper_repair_proof_subset.csv` (selected-budget + elaborated analysis subset) and `repairs/paper_proof_facing_subset.csv` (paper-facing minimal schema over all hotspot packets with `elaborated=true`) |
+| Repair proof-facing subset (Lean elaborated only) | `repairs/paper_repair_proof_subset.csv` (selected-budget + elaborated analysis subset) and `repairs/paper_proof_facing_subset.csv` (paper-facing metadata-rich subset over all hotspot packets with `elaborated=true`) |
+| Cost/runtime accounting | `results/paper_cost_runtime_accounting.csv` (tokens/time/cost/runner metadata when present in run manifests) |
 | Bootstrap on pooled means | `results/system_summary_with_ci.json` |
 | Prompt appendix | `appendix/PROMPTS_APPENDIX.md` |
 | Canonical manifest | `benchmark/manifest.jsonl` |

@@ -5115,7 +5115,7 @@
           "notes": "canonical_packet=graph_bfs_shortest_path_001; gloss_traced"
         }
       ],
-      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/code_only_v1/graph_bfs_shortest_path_001/packet.json` mapped to eval instance `graph_bfs_shortest_path_004` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [semantic_faithfulness]; Final labels taken from pipeline adjudication record (pack.json)."
+      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/code_only_v1/graph_bfs_shortest_path_001/packet.json` mapped to eval instance `graph_bfs_shortest_path_004` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [semantic_faithfulness|vacuity_label]; Final labels taken from pipeline adjudication record (pack.json)."
     },
     {
       "schema_version": "schema_v1",
@@ -6403,7 +6403,7 @@
           "notes": "canonical_packet=graph_dijkstra_001; gloss_traced"
         }
       ],
-      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/text_only_v1/graph_dijkstra_001/packet.json` mapped to eval instance `graph_dijkstra_004` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export."
+      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/text_only_v1/graph_dijkstra_001/packet.json` mapped to eval instance `graph_dijkstra_004` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [vacuity_label]; Final labels taken from pipeline adjudication record (pack.json)."
     },
     {
       "schema_version": "schema_v1",
@@ -6595,7 +6595,7 @@
           "notes": "canonical_packet=graph_dijkstra_001; gloss_traced"
         }
       ],
-      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/naive_concat_v1/graph_dijkstra_001/packet.json` mapped to eval instance `graph_dijkstra_004` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export."
+      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/naive_concat_v1/graph_dijkstra_001/packet.json` mapped to eval instance `graph_dijkstra_004` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [vacuity_label]; Final labels taken from pipeline adjudication record (pack.json)."
     },
     {
       "schema_version": "schema_v1",
@@ -9091,7 +9091,7 @@
           "notes": "canonical_packet=greedy_coin_change_canonical_002; gloss_traced"
         }
       ],
-      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/code_only_v1/greedy_coin_change_canonical_002/packet.json` mapped to eval instance `greedy_coin_change_canonical_007` (same algorithm family grid). annotation_origin=mapped_from_canonical. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [proof_utility]; Final labels taken from pipeline adjudication record (pack.json)."
+      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/code_only_v1/greedy_coin_change_canonical_002/packet.json` mapped to eval instance `greedy_coin_change_canonical_007` (same algorithm family grid). annotation_origin=mapped_from_canonical. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [proof_utility|vacuity_label]; Final labels taken from pipeline adjudication record (pack.json)."
     },
     {
       "schema_version": "schema_v1",
@@ -10884,7 +10884,7 @@
           "notes": "canonical_packet=sorting_insertion_sort_002; gloss_traced"
         }
       ],
-      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/text_only_v1/sorting_insertion_sort_002/packet.json` mapped to eval instance `sorting_insertion_sort_004` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [coverage_label]; Final labels taken from pipeline adjudication record (pack.json)."
+      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/text_only_v1/sorting_insertion_sort_002/packet.json` mapped to eval instance `sorting_insertion_sort_004` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [vacuity_label|coverage_label]; Final labels taken from pipeline adjudication record (pack.json)."
     },
     {
       "schema_version": "schema_v1",
@@ -12809,7 +12809,7 @@
           "notes": "canonical_packet=sorting_merge_sort_001; gloss_traced"
         }
       ],
-      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/code_only_v1/sorting_merge_sort_001/packet.json` mapped to eval instance `sorting_merge_sort_006` (same algorithm family grid). annotation_origin=mapped_from_canonical. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export."
+      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/code_only_v1/sorting_merge_sort_001/packet.json` mapped to eval instance `sorting_merge_sort_006` (same algorithm family grid). annotation_origin=mapped_from_canonical. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [vacuity_label]; Final labels taken from pipeline adjudication record (pack.json)."
     },
     {
       "schema_version": "schema_v1",
@@ -13953,7 +13953,7 @@
           "notes": "canonical_packet=trees_bst_insert_002; gloss_traced"
         }
       ],
-      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/full_method_v1/trees_bst_insert_002/packet.json` mapped to eval instance `trees_bst_insert_005` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [proof_utility]; Final labels taken from pipeline adjudication record (pack.json)."
+      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/full_method_v1/trees_bst_insert_002/packet.json` mapped to eval instance `trees_bst_insert_005` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [proof_utility|vacuity_label]; Final labels taken from pipeline adjudication record (pack.json)."
     },
     {
       "schema_version": "schema_v1",
@@ -14209,7 +14209,7 @@
           "notes": "canonical_packet=trees_bst_insert_001; gloss_traced"
         }
       ],
-      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/naive_concat_v1/trees_bst_insert_001/packet.json` mapped to eval instance `trees_bst_insert_006` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export."
+      "annotator_notes": "Pipeline-derived adjudication from registered review packet `benchmark/v0.3/annotation/review_packets/naive_concat_v1/trees_bst_insert_001/packet.json` mapped to eval instance `trees_bst_insert_006` (same algorithm family grid). annotation_origin=direct_adjudicated. Disagreements between automated obligation hygiene checks were not applicable; no dual-human rater merge was required for this export. Rater disagreement on [vacuity_label]; Final labels taken from pipeline adjudication record (pack.json)."
     },
     {
       "schema_version": "schema_v1",

@@ -38,7 +38,13 @@ run the reproducible wrapper:
 python scripts/reproduce_agreement_report.py
 ```
 
-Equivalent direct invocation:
+Equivalent direct invocation (human second pass):
+
+```powershell
+python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b_human.csv
+```
+
+Fallback (synthetic second pass):
 
 ```powershell
 python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv

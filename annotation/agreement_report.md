@@ -9,7 +9,7 @@ Inputs:
 - Row-count breakdown (eval audit vs strict subset): `results/paper_table_agreement_evidence.csv`
 - Population note: Audit rows are eval-split (instance, system) pairs; canonical template packets yield mapped_from_canonical unless instance_id equals the template stem.
 
-Notes: Rater B includes a small deterministic jitter layer for ordinal scales and occasional coverage-label disagreement so agreement statistics are non-degenerate; adjudicated gold labels for metrics live in `benchmark/v0.3/annotation/adjudicated_subset/pack.json`.
+Notes: Rater-B provenance tier is `synthetic_inter_rater`; adjudicated gold labels for metrics live in `benchmark/v0.3/annotation/adjudicated_subset/pack.json`.
 
 ## Ordinal scales (semantic faithfulness, code consistency, proof utility)
 
@@ -33,6 +33,11 @@ Krippendorff's α (interval metric, squared distance on 1..4; two raters, pooled
 - Cohen's κ (unweighted nominal, full|partial|failed): **0.9221** (bootstrap 95% CI: [0.8608, 0.9699])
 - Gwet's AC1 (nominal coverage labels): **0.9221**
 - Pooled label prevalence (both raters): `{'full': 0.6640625, 'partial': 0.2994791666666667, 'failed': 0.036458333333333336}`
+
+## Vacuity labels
+
+- Cohen's κ (unweighted nominal): **0.0000** (bootstrap 95% CI: [0.0000, 0.0000])
+- Percent agreement: **0.9583**
 
 ## Raw agreement tables (ordinal confusion matrices)
 

@@ -8,24 +8,26 @@
 | Per-instance metrics (strict independent evidence) | `results/raw_metrics_strict.json` | same materializer (`direct_human` / `direct_adjudicated` rows only) |
 | Aggregate tables (per metric; preferred) | `results/system_faithfulness_summary.csv`, `results/system_consistency_summary.csv`, `results/system_vacuity_summary.csv`, `results/system_proof_utility_summary.csv`, `results/system_reliability_summary.csv`, `results/system_reliability_sensitivity.csv`, `results/instance_level.csv` | `python scripts/compute_results.py --paper` |
 | Legacy faithfulness-only aliases | `results/system_summary.csv`, `results/family_summary.csv` | same; **do not** describe as full “system reliability” without naming the metric |
-| Family × system (per metric) | `results/family_faithfulness_summary.csv`, `results/family_consistency_summary.csv`, `results/family_vacuity_summary.csv`, `results/family_proof_utility_summary.csv` | same as `compute_results.py --paper` |
+| Family × system (per metric) | `results/family_faithfulness_summary.csv`, `results/family_consistency_summary.csv`, `results/family_vacuity_summary.csv`, `results/family_proof_utility_summary.csv`, `results/family_reliability_summary.csv` | same as `compute_results.py --paper` |
 | Bootstrap summaries | `results/system_summary_with_ci.json` | same as `compute_results.py` |
 | Annotation evidence inventory (eval metrics rows; quote in paper) | `results/paper_table_annotation_evidence.csv` | `python scripts/compute_results.py --paper` |
 | Agreement audit population (packet-level origins) | `results/paper_table_agreement_evidence.csv` | same (joins `annotation/agreement_packet_ids.csv`) |
 | Publication-facing tables — **headline (strict)** | `results/paper_strict_*` (explicit strict layer), `results/paper_table_*.csv` (legacy compat) | `python scripts/compute_results.py --paper` → `scripts/export_paper_tables.py` |
 | Appendix — **expanded mapped** | `results/paper_expanded_*` (copies promoted to `results/`), `results/appendix_mapped_evidence/paper_table_*.csv` | same pipeline (appendix pass inside `compute_results.py --paper`) |
-| Failure-mode exports (manuscript-ready) | `results/paper_strict_failure_modes.csv`, `results/paper_expanded_failure_modes.csv` (`evidence_view`, `system`, `family`, `failure_mode`, `count`, `share_within_system`, `share_global`) | same |
+| Failure-mode exports (manuscript-ready) | `results/paper_strict_failure_modes.csv`, `results/paper_expanded_failure_modes.csv` (`evidence_view`, `system`, `family`, `failure_mode`, `count`, `share_within_system`, `share_global`, denominator/rate columns) | same |
 | Evidence mass | `results/paper_annotation_origin_counts.csv` | same |
 | Primary system-set statement | `results/paper_system_set.md`, `benchmark/v0.3/benchmark_paper_summary.json` | `python scripts/export_benchmark_paper_summary.py` |
 | Per-metric winners (stacked) | `results/paper_strict_system_metrics_long.csv`, `results/paper_strict_system_*_summary.csv` | same as headline `compute_results.py --paper` |
 | Repair proof-status roster | `repairs/paper_repair_status.csv` | `python scripts/export_paper_repair_status.py` (also end of `compute_results.py --paper`) |
 | Repair manuscript subset (selected only) | `repairs/paper_repair_success_subset.csv` | same |
 | Repair proof-facing subset (elaborated only) | `repairs/paper_repair_proof_subset.csv` (selected-budget + elaborated analysis view), `repairs/paper_proof_facing_subset.csv` (paper-facing minimal view over all hotspot rows with `elaborated=true`) | same |
-| Inter-rater agreement (synthetic rater B) | `annotation/agreement_report.json`, `annotation/agreement_report.md` | `python scripts/reproduce_agreement_report.py` (wraps `compute_agreement_stats.py`) |
-| Agreement audit trail (packet population) | `annotation/agreement_packet_ids.csv`, `annotation/rater_a.csv`, `annotation/rater_b.csv`, `annotation/adjudication_log.csv` | `python scripts/materialize_v03_adjudication_artifacts.py` |
+| Inter-rater agreement (tier declared in report audit metadata) | `annotation/agreement_report.json`, `annotation/agreement_report.md` | `python scripts/reproduce_agreement_report.py` (prefers `annotation/rater_b_human.csv` when present, else `rater_b.csv`) |
+| Agreement audit trail (packet population) | `annotation/agreement_packet_ids.csv`, `annotation/rater_a.csv`, `annotation/rater_b.csv` (or `annotation/rater_b_human.csv`), `annotation/adjudication_log.csv` | `python scripts/materialize_v03_adjudication_artifacts.py` + optional human `rater_b_human.csv` import |
 | Repair selection + logs | `repairs/hotspot_selection.csv`, `repairs/repair_log.jsonl` | `python scripts/materialize_repair_hotspot_artifacts.py` |
 | Option-2 direct-adjudication wave plan | `benchmark/v0.3/annotation/human_wave_v03/direct_adjudication_wave_plan.csv`, `benchmark/v0.3/annotation/human_adjudicated/direct_adjudicated_pairs.csv` | `python scripts/plan_v03_direct_adjudication_wave.py` then `python scripts/materialize_v03_adjudication_artifacts.py` |
 | Repair sensitivity (counterfactual proxy) | `results/repair_impact_summary.json` | `python scripts/repair_counterfactual_metrics.py` |
+| Strict coverage gap disclosure | `results/paper_strict_coverage_gap.csv` (missing strict unique instances/families vs expanded view) | `python scripts/compute_results.py --paper` |
+| Cost/runtime accounting | `results/paper_cost_runtime_accounting.csv` | `python scripts/export_cost_runtime_accounting.py` (also run by `compute_results.py --paper`) |
 | One-shot audit bundle | `build/paper_build.json` (local; under `/build` in `.gitignore`) | `python scripts/paper_bundle.py` (set `PAPER_STRICT=1` to forbid `demo_synthetic` markers in scanned outputs) |
 
 ### CI-enforced summary contract

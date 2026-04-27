@@ -4,7 +4,8 @@ Compute inter-rater agreement from two CSVs (same join-key rows).
 
 Expected columns (case-sensitive):
   anonymized_packet_key (preferred) or packet_id,
-  semantic_faithfulness, code_consistency, proof_utility, coverage_label
+  semantic_faithfulness, code_consistency, proof_utility, coverage_label,
+  optional vacuity_label
 
 Ordinal columns use integers 1–4. coverage_label uses strings full|partial|failed.
 
@@ -193,6 +194,17 @@ def _repo_rel(p: Path) -> str:
         return p.resolve().as_posix()
 
 
+def infer_rater_tier(path: Path) -> str:
+    name = path.name.lower()
+    if "human" in name:
+        return "human_independent"
+    if "example" in name:
+        return "synthetic_inter_rater_example"
+    if name == "rater_b.csv":
+        return "synthetic_inter_rater"
+    return "unspecified"
+
+
 def write_markdown(report: dict, path: Path, first: Path, second: Path) -> None:
     def fmt_num(x: object) -> str:
         if isinstance(x, (int, float)) and math.isfinite(float(x)):
@@ -221,9 +233,12 @@ def write_markdown(report: dict, path: Path, first: Path, second: Path) -> None:
         )
     lines += [
         "",
-        "Notes: Rater B includes a small deterministic jitter layer for ordinal scales and "
-        "occasional coverage-label disagreement so agreement statistics are non-degenerate; "
-        "adjudicated gold labels for metrics live in `benchmark/v0.3/annotation/adjudicated_subset/pack.json`.",
+        (
+            "Notes: Rater-B provenance tier is "
+            f"`{(report.get('audit') or {}).get('rater_b_tier', 'unspecified')}`; "
+            "adjudicated gold labels for metrics live in "
+            "`benchmark/v0.3/annotation/adjudicated_subset/pack.json`."
+        ),
         "",
         "## Ordinal scales (semantic faithfulness, code consistency, proof utility)",
         "",
@@ -271,6 +286,23 @@ def write_markdown(report: dict, path: Path, first: Path, second: Path) -> None:
     prev = report.get("coverage_prevalence_pooled")
     if isinstance(prev, dict):
         lines.append(f"- Pooled label prevalence (both raters): `{prev}`")
+    vac = report.get("vacuity_label") or {}
+    if vac:
+        lines += [
+            "",
+            "## Vacuity labels",
+            "",
+            (
+                "- Cohen's κ (unweighted nominal): "
+                f"**{fmt_num(vac.get('cohens_kappa_unweighted'))}** "
+                f"(bootstrap 95% CI: [{fmt_num((vac.get('bootstrap_ci95') or [None, None])[0])}, "
+                f"{fmt_num((vac.get('bootstrap_ci95') or [None, None])[1])}])"
+            ),
+            (
+                "- Percent agreement: "
+                f"**{fmt_num(vac.get('percent_agreement'))}**"
+            ),
+        ]
     lines += ["", "## Raw agreement tables (ordinal confusion matrices)", ""]
     mats = report.get("ordinal_confusion_matrices") or {}
     for col, mat in mats.items():
@@ -324,6 +356,8 @@ def main() -> int:
         "agreement_packet_ids_csv": "annotation/agreement_packet_ids.csv",
         "rater_a": _repo_rel(first),
         "rater_b": _repo_rel(second),
+        "rater_a_tier": infer_rater_tier(first),
+        "rater_b_tier": infer_rater_tier(second),
         "reproduce_command": (
             "python scripts/reproduce_agreement_report.py  "
             "# or: python scripts/compute_agreement_stats.py "
@@ -364,6 +398,7 @@ def main() -> int:
         "coverage_kappa_bootstrap_ci95": None,
         "coverage_gwet_ac1": None,
         "coverage_prevalence_pooled": None,
+        "vacuity_label": {},
         "ordinal_confusion_matrices": {},
     }
 
@@ -424,6 +459,17 @@ def main() -> int:
         prev = {c: pool.count(c) / tot for c in ("full", "partial", "failed")}
         report["coverage_prevalence_pooled"] = prev
 
+    vx = [a[pid].get("vacuity_label", "") for pid in common]
+    vy = [b[pid].get("vacuity_label", "") for pid in common]
+    if all(vx) and all(vy):
+        vk, (vlo, vhi) = bootstrap_kappa_nominal(vx, vy, rng=rng)
+        report["vacuity_label"] = {
+            "cohens_kappa_unweighted": vk,
+            "bootstrap_ci95": [vlo, vhi],
+            "percent_agreement": agreement_rate(vx, vy),
+            "labels": sorted(set(vx) | set(vy)),
+        }
+
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(
         json.dumps(json_sanitize(report), indent=2, allow_nan=False) + "\n",
@@ -455,6 +501,18 @@ def main() -> int:
                     int(vac == vbc) if vac and vbc else "",
                 ]
             )
+            vav = a[pid].get("vacuity_label", "")
+            vbv = b[pid].get("vacuity_label", "")
+            if vav and vbv:
+                w.writerow(
+                    [
+                        pid,
+                        "vacuity_label",
+                        vav,
+                        vbv,
+                        int(vav == vbv),
+                    ]
+                )
 
     write_markdown(report, OUT_MD, first, second)
 

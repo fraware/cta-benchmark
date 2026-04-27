@@ -32,7 +32,8 @@ materializers and `compute_results.py --paper`). Canonical manuscript layer
 files are `results/paper_strict_*` (headline strict evidence) and
 `results/paper_expanded_*` (appendix expanded evidence), with evidence mass in
 `results/paper_annotation_origin_counts.csv`, declared system set in
-`results/paper_system_set.md`, and repair proof-status in
+`results/paper_system_set.md`, strict-gap disclosure in
+`results/paper_strict_coverage_gap.csv`, and repair proof-status in
 `repairs/paper_repair_status.csv` / `repairs/paper_repair_success_subset.csv` /
 `repairs/paper_repair_proof_subset.csv` / `repairs/paper_proof_facing_subset.csv`.
 

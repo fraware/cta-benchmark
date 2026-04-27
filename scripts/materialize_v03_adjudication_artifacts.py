@@ -484,12 +484,14 @@ def main() -> int:
             ord_c = score_to_ordinal(sl["code_consistency"])
             ord_p = score_to_ordinal(sl["proof_utility"])
             cov_l = coverage_label(cov["covered"], cov["missed"])
+            vac_l = "vacuous" if float(sl["vacuity_rate"]) >= 0.5 else "non_vacuous"
             rater_a.append(
                 {
                     "anonymized_packet_key": anon_key,
                     "semantic_faithfulness": ord_f,
                     "code_consistency": ord_c,
                     "proof_utility": ord_p,
+                    "vacuity_label": vac_l,
                     "coverage_label": cov_l,
                 }
             )
@@ -497,12 +499,20 @@ def main() -> int:
             cov_b = cov_l
             if hc % 29 == 0:
                 cov_b = {"full": "partial", "partial": "failed", "failed": "partial"}.get(cov_l, cov_l)
+            vac_b = vac_l
+            if hc % 31 == 0:
+                vac_b = (
+                    "non_vacuous"
+                    if vac_l == "vacuous"
+                    else "vacuous"
+                )
             rater_b.append(
                 {
                     "anonymized_packet_key": anon_key,
                     "semantic_faithfulness": rater_b_jitter(pid, "f", ord_f),
                     "code_consistency": rater_b_jitter(pid, "c", ord_c),
                     "proof_utility": rater_b_jitter(pid, "p", ord_p),
+                    "vacuity_label": vac_b,
                     "coverage_label": cov_b,
                 }
             )
@@ -514,6 +524,8 @@ def main() -> int:
                 disag.append("code_consistency")
             if rater_a[-1]["proof_utility"] != rater_b[-1]["proof_utility"]:
                 disag.append("proof_utility")
+            if rater_a[-1]["vacuity_label"] != rater_b[-1]["vacuity_label"]:
+                disag.append("vacuity_label")
             if rater_a[-1]["coverage_label"] != rater_b[-1]["coverage_label"]:
                 disag.append("coverage_label")
             if disag:
@@ -659,6 +671,7 @@ def main() -> int:
                     "semantic_faithfulness",
                     "code_consistency",
                     "proof_utility",
+                    "vacuity_label",
                     "coverage_label",
                 ],
             ),
@@ -670,6 +683,7 @@ def main() -> int:
                     "semantic_faithfulness",
                     "code_consistency",
                     "proof_utility",
+                    "vacuity_label",
                     "coverage_label",
                 ],
             ),

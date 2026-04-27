@@ -20,13 +20,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main() -> int:
     py = sys.executable
+    second = ROOT / "annotation" / "rater_b.csv"
+    human_second = ROOT / "annotation" / "rater_b_human.csv"
+    if human_second.is_file():
+        second = human_second
     argv = [
         py,
         str(ROOT / "scripts" / "compute_agreement_stats.py"),
         "--first",
         str(ROOT / "annotation" / "rater_a.csv"),
         "--second",
-        str(ROOT / "annotation" / "rater_b.csv"),
+        str(second),
     ]
     print("reproduce_agreement_report:", " ".join(argv), file=sys.stderr)
     return subprocess.call(argv, cwd=ROOT)

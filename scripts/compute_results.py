@@ -245,6 +245,86 @@ def write_family_metric_csv(
                 )
 
 
+def write_family_reliability_csv(
+    path: Path,
+    systems: list[str],
+    fams: list[str],
+    by_sys_inst: dict[tuple[str, str], dict],
+    manifest_rows: list[dict],
+    rng: random.Random,
+) -> None:
+    by_inst = {str(r.get("instance_id", "")): r for r in manifest_rows}
+    with path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(
+            [
+                "family",
+                "domain",
+                "system",
+                "mean",
+                "sd",
+                "median",
+                "iqr",
+                "bootstrap_ci95_low",
+                "bootstrap_ci95_high",
+                "n",
+                "aggregate_metric",
+                "w_faithfulness",
+                "w_code_consistency",
+                "w_proof_utility",
+                "w_vacuity",
+                "w_contradiction",
+                "w_missing_critical",
+                "reliability_definition",
+            ]
+        )
+        definition = (
+            "wf*faithfulness + wc*code_consistency + wp*proof_utility "
+            "- wv*vacuity_rate - wx*I(contradiction) - wm*min(1,missing/6)"
+        )
+        for fam in fams:
+            dom = domain_of_family(fam)
+            inst_ids = [
+                str(r.get("instance_id", ""))
+                for r in manifest_rows
+                if str(r.get("family", "")) == fam
+            ]
+            for sid in systems:
+                xs: list[float] = []
+                for iid in inst_ids:
+                    row = by_sys_inst.get((sid, iid))
+                    if not row:
+                        continue
+                    xs.append(
+                        instance_reliability(
+                            row, REL_WF, REL_WC, REL_WP, REL_WV, REL_WX, REL_WM
+                        )
+                    )
+                lo, hi = bootstrap_ci95(xs, rng) if xs else (float("nan"), float("nan"))
+                w.writerow(
+                    [
+                        fam,
+                        dom,
+                        sid,
+                        f"{mean(xs):.4f}" if xs else "",
+                        f"{std_sample(xs):.4f}" if xs else "",
+                        f"{median(xs):.4f}" if xs else "",
+                        f"{iqr(xs):.4f}" if xs else "",
+                        f"{lo:.4f}" if xs else "",
+                        f"{hi:.4f}" if xs else "",
+                        len(xs),
+                        "reliability_mean",
+                        REL_WF,
+                        REL_WC,
+                        REL_WP,
+                        REL_WV,
+                        REL_WX,
+                        REL_WM,
+                        definition,
+                    ]
+                )
+
+
 def load_failure_slugs(ontology_path: Path) -> set[str]:
     data = json.loads(ontology_path.read_text(encoding="utf-8"))
     return {str(m.get("slug", "")) for m in data.get("modes", [])}
@@ -381,6 +461,41 @@ def write_paper_annotation_evidence_table(
         if expanded_rows is not None:
             n2, nu2, nh2, nd2, nm2 = count_annotation_origin_tally(expanded_rows)
             w.writerow(["expanded_mapped", n2, nu2, nh2, nd2, nm2])
+
+
+def write_strict_coverage_gap_table(
+    out_path: Path,
+    strict_rows: list[dict],
+    expanded_rows: list[dict] | None,
+) -> None:
+    if expanded_rows is None:
+        return
+    strict_ids = {
+        str(r.get("instance_id", "")).strip()
+        for r in strict_rows
+        if str(r.get("instance_id", "")).strip()
+    }
+    expanded_ids = {
+        str(r.get("instance_id", "")).strip()
+        for r in expanded_rows
+        if str(r.get("instance_id", "")).strip()
+    }
+    missing_ids = sorted(expanded_ids - strict_ids)
+    fam_counts: dict[str, int] = defaultdict(int)
+    for iid in missing_ids:
+        fam = "_".join(iid.split("_")[:-1]) if "_" in iid else "unknown"
+        fam_counts[fam] += 1
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["section", "key", "value"])
+        w.writerow(["summary", "strict_unique_instances", len(strict_ids)])
+        w.writerow(["summary", "expanded_unique_instances", len(expanded_ids)])
+        w.writerow(["summary", "missing_unique_instances", len(missing_ids)])
+        for fam, n in sorted(fam_counts.items()):
+            w.writerow(["missing_family_counts", fam, n])
+        for iid in missing_ids:
+            w.writerow(["missing_instance_ids", iid, "mapped_from_canonical_only"])
 
 
 def main() -> int:
@@ -611,6 +726,7 @@ def main() -> int:
     fam_cons = args.out_dir / "family_consistency_summary.csv"
     fam_vac = args.out_dir / "family_vacuity_summary.csv"
     fam_pu = args.out_dir / "family_proof_utility_summary.csv"
+    fam_rel = args.out_dir / "family_reliability_summary.csv"
     if not use_demo and by_sys_inst:
         write_family_metric_csv(
             fam_faith, systems, fams, "faithfulness_mean", multi_by_sys_fam, rng
@@ -621,6 +737,14 @@ def main() -> int:
         write_family_metric_csv(fam_vac, systems, fams, "vacuity_rate", multi_by_sys_fam, rng)
         write_family_metric_csv(
             fam_pu, systems, fams, "proof_utility_mean", multi_by_sys_fam, rng
+        )
+        write_family_reliability_csv(
+            fam_rel,
+            systems,
+            fams,
+            by_sys_inst,
+            mrows,
+            rng,
         )
     fam_path = args.out_dir / "family_summary.csv"
     if fam_faith.is_file():
@@ -974,6 +1098,11 @@ def main() -> int:
             list(raw_rows),
             raw_rows_expanded_inventory,
         )
+        write_strict_coverage_gap_table(
+            args.out_dir / "paper_strict_coverage_gap.csv",
+            list(raw_rows),
+            raw_rows_expanded_inventory,
+        )
         write_agreement_packet_evidence_table(
             ROOT / "annotation" / "agreement_packet_ids.csv",
             args.out_dir / "paper_table_agreement_evidence.csv",
@@ -1025,10 +1154,23 @@ def main() -> int:
             cwd=str(ROOT),
             check=True,
         )
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "export_cost_runtime_accounting.py")],
+            cwd=str(ROOT),
+            check=True,
+        )
 
     extra_paths = [
         p
-        for p in (sys_faith, sys_cons, sys_vac, sys_pu, rel_path, rel_sens_path)
+        for p in (
+            sys_faith,
+            sys_cons,
+            sys_vac,
+            sys_pu,
+            rel_path,
+            rel_sens_path,
+            fam_rel,
+        )
         if p.is_file()
     ]
     extra = (", " + ", ".join(str(p) for p in extra_paths)) if extra_paths else ""

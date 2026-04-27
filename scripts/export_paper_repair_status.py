@@ -5,10 +5,77 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
+import subprocess
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+M1_ALLOWLIST: set[tuple[str, str]] = {
+    ("full_method_v1", "graph_dijkstra_001"),
+    ("full_method_v1", "graph_dijkstra_002"),
+    ("full_method_v1", "graph_bfs_shortest_path_002"),
+    ("full_method_v1", "greedy_coin_change_canonical_002"),
+    ("full_method_v1", "trees_lowest_common_ancestor_001"),
+    ("full_method_v1", "trees_lowest_common_ancestor_002"),
+    ("full_method_v1", "greedy_interval_scheduling_001"),
+    ("full_method_v1", "greedy_interval_scheduling_002"),
+    ("full_method_v1", "sorting_insertion_sort_001"),
+    ("full_method_v1", "sorting_insertion_sort_002"),
+    ("full_method_v1", "sorting_merge_sort_001"),
+    ("full_method_v1", "sorting_merge_sort_002"),
+    ("full_method_v1", "trees_bst_insert_001"),
+    ("full_method_v1", "trees_bst_insert_002"),
+    ("full_method_v1", "dp_knapsack_01_001"),
+    ("full_method_v1", "dp_knapsack_01_002"),
+    ("code_only_v1", "graph_dijkstra_001"),
+    ("code_only_v1", "graph_dijkstra_002"),
+    ("code_only_v1", "dp_knapsack_01_001"),
+    ("code_only_v1", "dp_knapsack_01_002"),
+    ("naive_concat_v1", "graph_dijkstra_001"),
+    ("naive_concat_v1", "graph_dijkstra_002"),
+    ("naive_concat_v1", "dp_knapsack_01_001"),
+    ("naive_concat_v1", "dp_knapsack_01_002"),
+    ("text_only_v1", "dp_knapsack_01_001"),
+    ("text_only_v1", "dp_knapsack_01_002"),
+    ("text_only_v1", "graph_dijkstra_001"),
+    ("text_only_v1", "graph_dijkstra_002"),
+}
+
+
+def tool_versions() -> tuple[str, str]:
+    lean_ver = ""
+    lake_ver = ""
+    lean_toolchain = ROOT / "lean" / "lean-toolchain"
+    if lean_toolchain.is_file():
+        lean_ver = lean_toolchain.read_text(encoding="utf-8").strip()
+    try:
+        out = subprocess.check_output(
+            ["lake", "--version"],
+            text=True,
+            encoding="utf-8",
+            cwd=ROOT / "lean",
+            stderr=subprocess.STDOUT,
+        )
+        lake_ver = out.strip().splitlines()[0] if out.strip() else ""
+    except (OSError, subprocess.CalledProcessError):
+        lake_ver = ""
+    return lean_ver, lake_ver
+
+
+def sha256_file(path: Path) -> str:
+    if not path.is_file():
+        return ""
+    return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def file_mtime_iso(path: Path) -> str:
+    if not path.is_file():
+        return ""
+    return datetime.fromtimestamp(
+        path.stat().st_mtime, tz=UTC
+    ).isoformat()
 
 
 def load_repair_log_index(path: Path) -> dict[str, dict]:
@@ -75,6 +142,7 @@ def main() -> int:
         default=ROOT / "repairs" / "paper_proof_facing_subset.csv",
     )
     args = ap.parse_args()
+    lean_ver, lake_ver = tool_versions()
 
     log_idx = load_repair_log_index(args.repair_log)
     args.out.parent.mkdir(parents=True, exist_ok=True)
@@ -227,6 +295,13 @@ def main() -> int:
         "proof_mode",
         "imported_modules",
         "outcome_summary",
+        "lean_version",
+        "lake_version",
+        "diagnostics_path",
+        "diagnostics_sha256",
+        "checked_command",
+        "check_timestamp",
+        "m1_allowlisted",
     ]
     imports_by_packet = {
         r["packet_id"]: r.get("imported_modules", "") for r in rows_out
@@ -237,17 +312,43 @@ def main() -> int:
         status_row = next((r for r in rows_out if r["packet_id"] == pid), {})
         if status_row.get("elaborated") != "true":
             continue
+        diagnostics_rel = (row.get("lean_diagnostics_path") or "").strip()
+        diagnostics_path = (
+            (ROOT / diagnostics_rel) if diagnostics_rel else Path()
+        )
+        checked_command = ""
+        if diagnostics_path.is_file():
+            try:
+                diag = json.loads(
+                    diagnostics_path.read_text(encoding="utf-8")
+                )
+                cmd = diag.get("command")
+                if isinstance(cmd, list):
+                    checked_command = " ".join(str(x) for x in cmd)
+            except (json.JSONDecodeError, OSError):
+                checked_command = ""
+        sid = row.get("system_id", "")
+        iid = row.get("instance_id", "")
+        template_id = (row.get("source_template_id") or iid).strip()
+        allowlisted = (sid, template_id) in M1_ALLOWLIST
         proof_facing_rows.append(
             {
                 "packet_id": pid,
-                "system_id": row.get("system_id", ""),
-                "instance_id": row.get("instance_id", ""),
+                "system_id": sid,
+                "instance_id": iid,
                 "elaborated": status_row.get("elaborated", ""),
                 "admit_count": status_row.get("admit_count", ""),
                 "axiom_count": status_row.get("axiom_count", ""),
                 "proof_mode": status_row.get("proof_mode", ""),
                 "imported_modules": imports_by_packet.get(pid, ""),
                 "outcome_summary": status_row.get("outcome_summary", ""),
+                "lean_version": lean_ver,
+                "lake_version": lake_ver,
+                "diagnostics_path": diagnostics_rel,
+                "diagnostics_sha256": sha256_file(diagnostics_path),
+                "checked_command": checked_command,
+                "check_timestamp": file_mtime_iso(diagnostics_path),
+                "m1_allowlisted": "true" if allowlisted else "false",
             }
         )
     args.out_proof_facing_subset.parent.mkdir(parents=True, exist_ok=True)

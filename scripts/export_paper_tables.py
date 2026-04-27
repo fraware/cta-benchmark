@@ -217,6 +217,40 @@ def write_failure_mode_export(
                     if mode:
                         counts_fam[(sid, fam, mode)] += 1
 
+    # Build denominator stats from raw-metrics rows in the matching evidence view.
+    raw_name = (
+        "raw_metrics_strict.json"
+        if evidence_view == "strict_independent"
+        else "raw_metrics.json"
+    )
+    raw_path = ROOT / "results" / raw_name
+    rows_for_system: dict[str, int] = defaultdict(int)
+    miss_crit_for_system: dict[str, int] = defaultdict(int)
+    crit_by_instance: dict[str, int] = {}
+    manifest = ROOT / "benchmark" / "manifest.jsonl"
+    if manifest.is_file():
+        with manifest.open(encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                row = json.loads(line)
+                iid = str(row.get("instance_id", "")).strip()
+                if not iid:
+                    continue
+                crit_by_instance[iid] = int(row.get("critical_unit_count", 0) or 0)
+    crit_opps_for_system: dict[str, int] = defaultdict(int)
+    if raw_path.is_file():
+        payload = json.loads(raw_path.read_text(encoding="utf-8"))
+        for row in payload.get("rows") or []:
+            sid = str(row.get("system", "")).strip()
+            iid = str(row.get("instance_id", "")).strip()
+            if not sid or not iid:
+                continue
+            rows_for_system[sid] += 1
+            miss_crit_for_system[sid] += int(row.get("missing_critical_units", 0) or 0)
+            crit_opps_for_system[sid] += crit_by_instance.get(iid, 0)
+
     # Build complete system x mode global table with explicit zeros.
     mode_set = sorted({k[2] for k in counts_fam} or {"no_failures_recorded"})
     if not systems:
@@ -252,6 +286,10 @@ def write_failure_mode_export(
                 "count",
                 "share_within_system",
                 "share_global",
+                "n_rows_for_system",
+                "critical_unit_opportunities",
+                "failure_events_per_row",
+                "missing_critical_units_per_critical_unit_opportunity",
             ]
         )
         for r in sorted(
@@ -263,18 +301,27 @@ def write_failure_mode_export(
             ),
         ):
             c = int(r.get("count") or "0")
-            sys_total = by_system.get(r.get("system", ""), 0)
+            sid = r.get("system", "")
+            sys_total = by_system.get(sid, 0)
             share_sys = (c / sys_total) if sys_total else 0.0
             share_global = (c / total) if total else 0.0
+            n_rows = rows_for_system.get(sid, 0)
+            crit_opps = crit_opps_for_system.get(sid, 0)
+            events_per_row = (c / n_rows) if n_rows else 0.0
+            miss_rate = (c / crit_opps) if crit_opps else 0.0
             w.writerow(
                 [
                     evidence_view,
-                    r.get("system", ""),
+                    sid,
                     r.get("family", "") or "global",
                     r.get("failure_mode", ""),
                     c,
                     f"{share_sys:.6f}",
                     f"{share_global:.6f}",
+                    n_rows,
+                    crit_opps,
+                    f"{events_per_row:.6f}",
+                    f"{miss_rate:.6f}",
                 ]
             )
 
@@ -289,6 +336,12 @@ def finalize_strict_paper_layer(results_dir: Path) -> None:
     shutil.copyfile(pt_sys, results_dir / "paper_strict_system_summary.csv")
 
     write_merged_family_table(results_dir, results_dir / "paper_strict_family_summary.csv")
+    fam_rel = results_dir / "family_reliability_summary.csv"
+    if fam_rel.is_file():
+        shutil.copyfile(
+            fam_rel,
+            results_dir / "paper_strict_family_reliability_summary.csv",
+        )
 
     write_failure_mode_export(
         results_dir / "failure_mode_counts.csv",
@@ -313,6 +366,12 @@ def finalize_expanded_paper_layer(results_root: Path) -> None:
     shutil.copyfile(apx_sys, results_root / "paper_expanded_system_summary.csv")
 
     write_merged_family_table(apx, results_root / "paper_expanded_family_summary.csv")
+    apx_fam_rel = apx / "family_reliability_summary.csv"
+    if apx_fam_rel.is_file():
+        shutil.copyfile(
+            apx_fam_rel,
+            results_root / "paper_expanded_family_reliability_summary.csv",
+        )
 
     write_failure_mode_export(
         apx / "failure_mode_counts.csv",

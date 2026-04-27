@@ -1,1 +1,3 @@
 system,repair_n,observed_mean_faithfulness,counterfactual_mean_faithfulness,delta_obs_minus_counterfactual,non_repair_eval_n
+naive_concat_v1,4,0.52275,0.7538657142857144,-0.2311157142857143,35
+text_only_v1,8,0.52275,0.7504394736842105,-0.22768947368421044,38

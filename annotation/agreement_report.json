@@ -200,11 +200,13 @@
     "agreement_packet_ids_csv": "annotation/agreement_packet_ids.csv",
     "rater_a": "annotation/rater_a.csv",
     "rater_b": "annotation/rater_b.csv",
+    "rater_a_tier": "unspecified",
+    "rater_b_tier": "synthetic_inter_rater",
     "reproduce_command": "python scripts/reproduce_agreement_report.py  # or: python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv",
     "paper_table_agreement_evidence_csv": "results/paper_table_agreement_evidence.csv",
     "agreement_audit_design_note": "Audit rows are eval-split (instance, system) pairs; canonical template packets yield mapped_from_canonical unless instance_id equals the template stem.",
-    "agreement_audit_strict_independent_packet_count": 0,
-    "agreement_audit_all_packets_mapped_from_canonical": true
+    "agreement_audit_strict_independent_packet_count": 128,
+    "agreement_audit_all_packets_mapped_from_canonical": false
   },
   "weighted_kappa_linear": {
     "semantic_faithfulness": 0.9068764820004311,
@@ -265,6 +267,18 @@
     "full": 0.6640625,
     "partial": 0.2994791666666667,
     "failed": 0.036458333333333336
+  },
+  "vacuity_label": {
+    "cohens_kappa_unweighted": 0.0,
+    "bootstrap_ci95": [
+      0.0,
+      0.0
+    ],
+    "percent_agreement": 0.9583333333333334,
+    "labels": [
+      "non_vacuous",
+      "vacuous"
+    ]
   },
   "ordinal_confusion_matrices": {
     "semantic_faithfulness": {
