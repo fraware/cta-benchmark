@@ -64,6 +64,11 @@ def main() -> int:
         type=Path,
         default=ROOT / "repairs" / "paper_repair_success_subset.csv",
     )
+    ap.add_argument(
+        "--out-proof-subset",
+        type=Path,
+        default=ROOT / "repairs" / "paper_repair_proof_subset.csv",
+    )
     args = ap.parse_args()
 
     log_idx = load_repair_log_index(args.repair_log)
@@ -197,8 +202,17 @@ def main() -> int:
         w.writeheader()
         w.writerows(subset_rows)
 
+    # Proof-facing subset: only selected rows that elaborated successfully.
+    proof_rows = [r for r in subset_rows if r.get("elaborated") == "true"]
+    args.out_proof_subset.parent.mkdir(parents=True, exist_ok=True)
+    with args.out_proof_subset.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=succ_fields)
+        w.writeheader()
+        w.writerows(proof_rows)
+
     print(f"wrote {args.out} ({len(rows_out)} rows)")
     print(f"wrote {args.out_success_subset} ({len(subset_rows)} rows)")
+    print(f"wrote {args.out_proof_subset} ({len(proof_rows)} rows)")
     return 0
 
 

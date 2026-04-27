@@ -1,2 +1,13 @@
 evidence_view,system,family,failure_mode,count,share_within_system,share_global
+strict_independent,code_only_v1,global,low_semantic_faithfulness,0,0.000000,0.000000
+strict_independent,code_only_v1,global,missing_critical_semantic_unit,0,0.000000,0.000000
 strict_independent,code_only_v1,global,no_failures_recorded,0,0.000000,0.000000
+strict_independent,full_method_v1,global,low_semantic_faithfulness,0,0.000000,0.000000
+strict_independent,full_method_v1,global,missing_critical_semantic_unit,0,0.000000,0.000000
+strict_independent,full_method_v1,global,no_failures_recorded,0,0.000000,0.000000
+strict_independent,naive_concat_v1,global,low_semantic_faithfulness,4,0.133333,0.052632
+strict_independent,naive_concat_v1,global,missing_critical_semantic_unit,26,0.866667,0.342105
+strict_independent,naive_concat_v1,global,no_failures_recorded,0,0.000000,0.000000
+strict_independent,text_only_v1,global,low_semantic_faithfulness,10,0.217391,0.131579
+strict_independent,text_only_v1,global,missing_critical_semantic_unit,36,0.782609,0.473684
+strict_independent,text_only_v1,global,no_failures_recorded,0,0.000000,0.000000

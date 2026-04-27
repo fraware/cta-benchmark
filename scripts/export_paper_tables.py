@@ -176,58 +176,70 @@ def write_failure_mode_export(
 ) -> None:
     """Write manuscript-ready failure table with share columns and view tag."""
     out_csv.parent.mkdir(parents=True, exist_ok=True)
-    rows: list[dict[str, str]] = []
+    systems = sorted(
+        read_system_metric_table(
+            ROOT / "results" / "system_faithfulness_summary.csv"
+        ).keys()
+    )
+
+    # Count family-level failures from the pipeline count table first.
+    counts_fam: dict[tuple[str, str, str], int] = defaultdict(int)
     if src_counts_csv.is_file():
         with src_counts_csv.open(encoding="utf-8", newline="") as f:
             for row in csv.DictReader(f):
-                rows.append({k: (v or "").strip() for k, v in row.items()})
-    if not rows:
-        rows = [
-            {
-                "system": "global",
-                "family": "global",
-                "failure_mode": "no_failures_recorded",
-                "count": "0",
-            }
-        ]
+                sid = (row.get("system") or "").strip()
+                fam = (row.get("family") or "").strip() or "global"
+                mode = (row.get("failure_mode") or "").strip()
+                c = int((row.get("count") or "0").strip() or 0)
+                if sid and mode:
+                    counts_fam[(sid, fam, mode)] += c
 
-    total = sum(int(r.get("count") or "0") for r in rows)
-    if total == 0:
-        # Fallback: derive operational failure signals from hotspot candidate reasons.
-        # This avoids publishing a degenerate one-line "no_failures_recorded" table.
-        hs = ROOT / "repairs" / "hotspot_selection.csv"
-        derived: dict[tuple[str, str, str], int] = defaultdict(int)
-        if hs.is_file():
-            with hs.open(encoding="utf-8", newline="") as f:
-                for row in csv.DictReader(f):
-                    origin = (row.get("annotation_origin") or "").strip()
-                    if evidence_view == "strict_independent":
-                        if origin not in {"direct_human", "direct_adjudicated"}:
-                            continue
-                    reason = (row.get("candidate_reason") or "").strip()
-                    if not reason or reason == "routine_eval_obligation_hygiene":
+    # Add operational signals from hotspot candidate_reason so strict view does
+    # not collapse to a placeholder when ontology-tagged failures are sparse.
+    hs = ROOT / "repairs" / "hotspot_selection.csv"
+    if hs.is_file():
+        with hs.open(encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f):
+                origin = (row.get("annotation_origin") or "").strip()
+                if evidence_view == "strict_independent":
+                    if origin not in {"direct_human", "direct_adjudicated"}:
                         continue
-                    iid = (row.get("instance_id") or "").strip()
-                    fam = "_".join(iid.split("_")[:-1]) if "_" in iid else "global"
-                    sid = (row.get("system_id") or "").strip() or "global"
-                    for tok in reason.split(";"):
-                        mode = tok.strip()
-                        if mode:
-                            derived[(sid, fam, mode)] += 1
-        if derived:
-            rows = [
+                reason = (row.get("candidate_reason") or "").strip()
+                if not reason or reason == "routine_eval_obligation_hygiene":
+                    continue
+                iid = (row.get("instance_id") or "").strip()
+                fam = "_".join(iid.split("_")[:-1]) if "_" in iid else "global"
+                sid = (row.get("system_id") or "").strip()
+                if not sid:
+                    continue
+                for tok in reason.split(";"):
+                    mode = tok.strip()
+                    if mode:
+                        counts_fam[(sid, fam, mode)] += 1
+
+    # Build complete system x mode global table with explicit zeros.
+    mode_set = sorted({k[2] for k in counts_fam} or {"no_failures_recorded"})
+    if not systems:
+        systems = sorted({k[0] for k in counts_fam} or ["global"])
+    counts_global: dict[tuple[str, str], int] = defaultdict(int)
+    for (sid, _fam, mode), c in counts_fam.items():
+        counts_global[(sid, mode)] += c
+    rows: list[dict[str, str]] = []
+    for sid in systems:
+        for mode in mode_set:
+            rows.append(
                 {
                     "system": sid,
-                    "family": fam,
+                    "family": "global",
                     "failure_mode": mode,
-                    "count": str(c),
+                    "count": str(counts_global.get((sid, mode), 0)),
                 }
-                for (sid, fam, mode), c in sorted(derived.items())
-            ]
-            total = sum(int(r["count"]) for r in rows)
+            )
+
+    total = sum(int(r.get("count") or "0") for r in rows)
     by_system: dict[str, int] = defaultdict(int)
     for r in rows:
-        by_system[r.get("system", "")] += int(r.get("count") or "0")
+        by_system[r["system"]] += int(r["count"])
 
     with out_csv.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)

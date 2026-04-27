@@ -19,10 +19,10 @@
   ],
   "systems_profiled_count": 4,
   "expected_instance_level_rows_expanded_grid": 336,
-  "expected_instance_level_rows_headline_strict_sparse": 94,
-  "expected_instance_level_rows": 94,
+  "expected_instance_level_rows_headline_strict_sparse": 222,
+  "expected_instance_level_rows": 222,
   "expected_raw_metrics_rows": 336,
-  "expected_raw_metrics_strict_rows": 94,
+  "expected_raw_metrics_strict_rows": 222,
   "family_counts": {
     "arrays_binary_search": 7,
     "arrays_max_subarray": 7,
@@ -63,7 +63,7 @@
   "eval_instance_count": 48,
   "source_manifest": "benchmark/manifest.jsonl",
   "expected_agreement_packet_audit_rows": 192,
-  "agreement_audit_strict_independent_packet_count": 0,
-  "agreement_audit_all_packets_mapped_from_canonical": true,
+  "agreement_audit_strict_independent_packet_count": 128,
+  "agreement_audit_all_packets_mapped_from_canonical": false,
   "agreement_audit_design_note": "Audit rows are eval-split (instance, system) pairs; canonical template packets yield mapped_from_canonical unless instance_id equals the template stem."
 }

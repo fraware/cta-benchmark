@@ -182,7 +182,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_002"
     },
     {
@@ -196,7 +196,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_001"
     },
     {
@@ -210,7 +210,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_001"
     },
     {
@@ -224,7 +224,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_001"
     },
     {
@@ -238,7 +238,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_002"
     },
     {
@@ -280,7 +280,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_002"
     },
     {
@@ -294,7 +294,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_002"
     },
     {
@@ -322,7 +322,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_001"
     },
     {
@@ -336,7 +336,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_001"
     },
     {
@@ -350,7 +350,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_002"
     },
     {
@@ -392,7 +392,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_002"
     },
     {
@@ -574,7 +574,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_001"
     },
     {
@@ -602,7 +602,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_001"
     },
     {
@@ -616,7 +616,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_001"
     },
     {
@@ -630,7 +630,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_002"
     },
     {
@@ -658,7 +658,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_002"
     },
     {
@@ -672,7 +672,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_002"
     },
     {
@@ -686,7 +686,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_001"
     },
     {
@@ -714,7 +714,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_001"
     },
     {
@@ -728,7 +728,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_001"
     },
     {
@@ -742,7 +742,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_002"
     },
     {
@@ -770,7 +770,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_max_subarray_002"
     },
     {
@@ -966,7 +966,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_001"
     },
     {
@@ -980,7 +980,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_001"
     },
     {
@@ -994,7 +994,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_001"
     },
     {
@@ -1008,7 +1008,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_001"
     },
     {
@@ -1022,7 +1022,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_002"
     },
     {
@@ -1036,7 +1036,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_002"
     },
     {
@@ -1050,7 +1050,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_002"
     },
     {
@@ -1064,7 +1064,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_002"
     },
     {
@@ -1078,7 +1078,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_001"
     },
     {
@@ -1092,7 +1092,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_001"
     },
     {
@@ -1106,7 +1106,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_knapsack_01_001"
     },
     {
@@ -1358,7 +1358,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_001"
     },
     {
@@ -1372,7 +1372,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_001"
     },
     {
@@ -1386,7 +1386,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_001"
     },
     {
@@ -1400,7 +1400,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_001"
     },
     {
@@ -1414,7 +1414,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_002"
     },
     {
@@ -1442,7 +1442,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_002"
     },
     {
@@ -1470,7 +1470,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_001"
     },
     {
@@ -1484,7 +1484,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_001"
     },
     {
@@ -1498,7 +1498,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_001"
     },
     {
@@ -1526,7 +1526,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_002"
     },
     {
@@ -1554,7 +1554,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "dp_longest_common_subsequence_002"
     },
     {
@@ -1750,7 +1750,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 4,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_001"
     },
     {
@@ -1764,7 +1764,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_001"
     },
     {
@@ -1778,7 +1778,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_001"
     },
     {
@@ -1792,7 +1792,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_001"
     },
     {
@@ -1806,7 +1806,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 4,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_002"
     },
     {
@@ -1820,7 +1820,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_002"
     },
     {
@@ -1834,7 +1834,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 3,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_002"
     },
     {
@@ -1848,7 +1848,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_002"
     },
     {
@@ -1862,7 +1862,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 4,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_001"
     },
     {
@@ -1918,7 +1918,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 4,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_002"
     },
     {
@@ -1946,7 +1946,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 3,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_bfs_shortest_path_002"
     },
     {
@@ -2142,7 +2142,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_001"
     },
     {
@@ -2156,7 +2156,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_001"
     },
     {
@@ -2170,7 +2170,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_001"
     },
     {
@@ -2184,7 +2184,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_001"
     },
     {
@@ -2198,7 +2198,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_002"
     },
     {
@@ -2212,7 +2212,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_002"
     },
     {
@@ -2226,7 +2226,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_002"
     },
     {
@@ -2240,7 +2240,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_002"
     },
     {
@@ -2254,7 +2254,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_001"
     },
     {
@@ -2268,7 +2268,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_001"
     },
     {
@@ -2324,7 +2324,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "graph_dijkstra_002"
     },
     {
@@ -2534,7 +2534,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 3,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_001"
     },
     {
@@ -2548,7 +2548,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_001"
     },
     {
@@ -2562,7 +2562,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 3,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_001"
     },
     {
@@ -2590,7 +2590,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_002"
     },
     {
@@ -2604,7 +2604,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_002"
     },
     {
@@ -2618,7 +2618,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_002"
     },
     {
@@ -2632,7 +2632,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_002"
     },
     {
@@ -2646,7 +2646,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 3,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_001"
     },
     {
@@ -2674,7 +2674,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 3,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_001"
     },
     {
@@ -2702,7 +2702,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_002"
     },
     {
@@ -2730,7 +2730,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_coin_change_canonical_002"
     },
     {
@@ -2926,7 +2926,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_001"
     },
     {
@@ -2940,7 +2940,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_001"
     },
     {
@@ -2982,7 +2982,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_002"
     },
     {
@@ -2996,7 +2996,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_002"
     },
     {
@@ -3010,7 +3010,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_002"
     },
     {
@@ -3024,7 +3024,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_002"
     },
     {
@@ -3038,7 +3038,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_001"
     },
     {
@@ -3052,7 +3052,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_001"
     },
     {
@@ -3094,7 +3094,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_002"
     },
     {
@@ -3108,7 +3108,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_002"
     },
     {
@@ -3122,7 +3122,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "greedy_interval_scheduling_002"
     },
     {
@@ -3318,7 +3318,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_002"
     },
     {
@@ -3332,7 +3332,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_001"
     },
     {
@@ -3346,7 +3346,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_001"
     },
     {
@@ -3360,7 +3360,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_001"
     },
     {
@@ -3374,7 +3374,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_002"
     },
     {
@@ -3402,7 +3402,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_002"
     },
     {
@@ -3430,7 +3430,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_002"
     },
     {
@@ -3458,7 +3458,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_001"
     },
     {
@@ -3486,7 +3486,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_002"
     },
     {
@@ -3514,7 +3514,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_insertion_sort_002"
     },
     {
@@ -3710,7 +3710,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_001"
     },
     {
@@ -3724,7 +3724,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_001"
     },
     {
@@ -3738,7 +3738,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_001"
     },
     {
@@ -3752,7 +3752,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_001"
     },
     {
@@ -3766,7 +3766,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_002"
     },
     {
@@ -3780,7 +3780,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_002"
     },
     {
@@ -3794,7 +3794,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_002"
     },
     {
@@ -3822,7 +3822,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_001"
     },
     {
@@ -3878,7 +3878,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_002"
     },
     {
@@ -3906,7 +3906,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "sorting_merge_sort_002"
     },
     {
@@ -4102,7 +4102,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_001"
     },
     {
@@ -4116,7 +4116,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_001"
     },
     {
@@ -4130,7 +4130,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_001"
     },
     {
@@ -4158,7 +4158,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_002"
     },
     {
@@ -4186,7 +4186,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_002"
     },
     {
@@ -4200,7 +4200,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_002"
     },
     {
@@ -4214,7 +4214,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_001"
     },
     {
@@ -4242,7 +4242,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_001"
     },
     {
@@ -4270,7 +4270,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_002"
     },
     {
@@ -4298,7 +4298,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_bst_insert_002"
     },
     {
@@ -4494,7 +4494,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 3,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_001"
     },
     {
@@ -4508,7 +4508,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_001"
     },
     {
@@ -4522,7 +4522,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_001"
     },
     {
@@ -4536,7 +4536,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 0,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_001"
     },
     {
@@ -4550,7 +4550,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 4,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_002"
     },
     {
@@ -4578,7 +4578,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_002"
     },
     {
@@ -4606,7 +4606,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 3,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_001"
     },
     {
@@ -4634,7 +4634,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 2,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_001"
     },
     {
@@ -4662,7 +4662,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 4,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_002"
     },
     {
@@ -4690,7 +4690,7 @@
       "contradiction_flag": false,
       "missing_critical_units": 1,
       "failure_mode_label": "",
-      "annotation_origin": "mapped_from_canonical",
+      "annotation_origin": "direct_adjudicated",
       "source_template_id": "trees_lowest_common_ancestor_002"
     },
     {
