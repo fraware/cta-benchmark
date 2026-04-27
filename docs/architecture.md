@@ -151,8 +151,10 @@ model, prompt hash, seed), and halts on the first schema violation.
 A cross-experiment summary is emitted at
 `runs/experiments/<experiment_id>/summary.json`.
 
-Local CI repeats the full pipeline (schemas → benchmark → experiment
-run → per-artifact `cta validate file`) on every push.
+GitHub Actions repeats the core validation and experiment smoke paths on
+each push to `main` (`ci.yml`), with additional benchmark lint and v0.3
+release validation when `benchmark/**` or related paths change
+(`benchmark-lint.yml`); see `README.md` (*Quality gates*).
 
 ## Observability
 

@@ -16,8 +16,9 @@ invoked by:
 cargo run -p cta_cli --quiet -- benchmark lint --version v0.1 --strict-authoring
 ```
 
-CI runs this in `benchmark-lint.yml` on every push and PR that touches
-`benchmark/**`.
+CI runs this in `benchmark-lint.yml` when a push or PR changes
+`benchmark/**`, `schemas/**`, or the benchmark/schema crates wired in that
+workflow (see `.github/workflows/benchmark-lint.yml`).
 
 ## Rigorous addendum (`2026-04-24`)
 
