@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CI checks: paper summary row expectations, JSON validation (cargo), placeholder denylist."""
+"""CI checks: paper summary vs CSV rows, JSON validation (cargo), denylist."""
 
 from __future__ import annotations
 
@@ -46,7 +46,8 @@ def main() -> int:
     n = count_csv_rows(inst)
     if n != expected:
         print(
-            f"error: instance_level.csv rows {n} != benchmark_paper_summary expected {expected}",
+            f"error: instance_level.csv rows {n} != "
+            f"benchmark_paper_summary expected {expected}",
             file=sys.stderr,
         )
         return 1
@@ -58,14 +59,16 @@ def main() -> int:
         exp_raw = int(summary.get("expected_raw_metrics_rows", expected))
         if rcount != exp_raw:
             print(
-                f"error: raw_metrics rows {rcount} != expected_raw_metrics_rows {exp_raw}",
+                f"error: raw_metrics rows {rcount} != "
+                f"expected_raw_metrics_rows {exp_raw}",
                 file=sys.stderr,
             )
             return 1
 
     strict_path = ROOT / "results" / "raw_metrics_strict.json"
     if strict_path.is_file():
-        strict_rows = json.loads(strict_path.read_text(encoding="utf-8")).get("rows") or []
+        strict_body = json.loads(strict_path.read_text(encoding="utf-8"))
+        strict_rows = strict_body.get("rows") or []
         strict_cnt = len(strict_rows)
         exp_strict = summary.get("expected_raw_metrics_strict_rows")
         if exp_strict is not None and int(exp_strict) != strict_cnt:
@@ -106,15 +109,16 @@ def main() -> int:
         found_strict_row = False
         with ev_path.open(encoding="utf-8", newline="") as f:
             for row in csv.DictReader(f):
-                if (row.get("metrics_view") or "").strip() != "strict_independent":
+                mview = (row.get("metrics_view") or "").strip()
+                if mview != "strict_independent":
                     continue
                 found_strict_row = True
                 try:
                     n_ev = int((row.get("n_eval_rows") or "").strip())
                 except ValueError:
                     print(
-                        "error: paper_table_annotation_evidence.csv strict row "
-                        "has non-integer n_eval_rows",
+                        "error: paper_table_annotation_evidence.csv "
+                        "strict row has non-integer n_eval_rows",
                         file=sys.stderr,
                     )
                     return 1
@@ -135,7 +139,64 @@ def main() -> int:
             )
             return 1
 
-    man = ROOT / "benchmark" / "v0.3" / "annotation" / "adjudicated_subset" / "manifest.json"
+    exp_ag_strict = summary.get(
+        "agreement_audit_strict_independent_packet_count"
+    )
+    ag_evi_path = ROOT / "results" / "paper_table_agreement_evidence.csv"
+    if exp_ag_strict is not None:
+        if not ag_evi_path.is_file():
+            rel_ag = ag_evi_path.relative_to(ROOT)
+            print(
+                "error: benchmark_paper_summary.json declares "
+                f"agreement_audit_strict_independent_packet_count="
+                f"{exp_ag_strict} but {rel_ag} is missing",
+                file=sys.stderr,
+            )
+            return 1
+        found_ag_strict_row = False
+        with ag_evi_path.open(encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f):
+                ag_sub = (row.get("agreement_subset") or "").strip()
+                if ag_sub != "strict_independent_only":
+                    continue
+                found_ag_strict_row = True
+                try:
+                    n_ag_pk = int((row.get("n_packets") or "").strip())
+                except ValueError:
+                    print(
+                        "error: paper_table_agreement_evidence.csv "
+                        "strict_independent_only row has non-integer "
+                        "n_packets",
+                        file=sys.stderr,
+                    )
+                    return 1
+                if n_ag_pk != int(exp_ag_strict):
+                    print(
+                        "error: paper_table_agreement_evidence "
+                        "strict_independent_only n_packets "
+                        f"{n_ag_pk} != "
+                        "agreement_audit_strict_independent_packet_count "
+                        f"{exp_ag_strict}",
+                        file=sys.stderr,
+                    )
+                    return 1
+                break
+        if not found_ag_strict_row:
+            print(
+                "error: paper_table_agreement_evidence.csv missing "
+                "strict_independent_only row",
+                file=sys.stderr,
+            )
+            return 1
+
+    man = (
+        ROOT
+        / "benchmark"
+        / "v0.3"
+        / "annotation"
+        / "adjudicated_subset"
+        / "manifest.json"
+    )
     if man.is_file():
         cargo_validate("annotation_pack_manifest", man)
 
@@ -162,16 +223,22 @@ def main() -> int:
             if not p.is_file():
                 continue
             rel = p.relative_to(ROOT).as_posix()
-            if ".example." in p.name or "/human_wave_v03/" in rel.replace("\\", "/"):
+            rel_slash = rel.replace("\\", "/")
+            skip_wave = (
+                ".example." in p.name or "/human_wave_v03/" in rel_slash
+            )
+            if skip_wave:
                 continue
-            if p.suffix.lower() not in {".csv", ".json", ".jsonl", ".md", ".txt"}:
+            text_suffixes = {".csv", ".json", ".jsonl", ".md", ".txt"}
+            if p.suffix.lower() not in text_suffixes:
                 continue
             try:
                 txt = p.read_text(encoding="utf-8", errors="ignore")
             except OSError:
                 continue
             if deny.search(txt):
-                print(f"error: placeholder denylist matched {rel}", file=sys.stderr)
+                msg = f"error: placeholder denylist matched {rel}"
+                print(msg, file=sys.stderr)
                 return 1
 
     v3_ann = ROOT / "benchmark" / "v0.3" / "annotation"
@@ -186,7 +253,11 @@ def main() -> int:
             if rel_ann.parts[:1] == ("review_packets",):
                 continue
             rel = p.relative_to(ROOT).as_posix()
-            if ".example." in p.name or "/human_wave_v03/" in rel.replace("\\", "/"):
+            rel_slash_ann = rel.replace("\\", "/")
+            skip_ann = (
+                ".example." in p.name or "/human_wave_v03/" in rel_slash_ann
+            )
+            if skip_ann:
                 continue
             suf = p.suffix.lower()
             if suf == ".csv":
@@ -202,16 +273,21 @@ def main() -> int:
             except OSError:
                 continue
             if deny.search(txt):
-                print(f"error: placeholder denylist matched {rel}", file=sys.stderr)
+                msg_ann = f"error: placeholder denylist matched {rel}"
+                print(msg_ann, file=sys.stderr)
                 return 1
 
     onto = json.loads(ont.read_text(encoding="utf-8"))
     allowed = {str(m.get("slug", "")) for m in onto.get("modes", [])}
-    raw_rows_list = json.loads(raw_path.read_text(encoding="utf-8")).get("rows") or []
+    raw_doc = json.loads(raw_path.read_text(encoding="utf-8"))
+    raw_rows_list = raw_doc.get("rows") or []
     for row in raw_rows_list:
         lab = str(row.get("failure_mode_label") or "").strip()
         if lab and lab not in allowed:
-            print(f"error: failure_mode_label {lab!r} not in ontology", file=sys.stderr)
+            print(
+                f"error: failure_mode_label {lab!r} not in ontology",
+                file=sys.stderr,
+            )
             return 1
 
     print("ci_reviewer_readiness: ok")
