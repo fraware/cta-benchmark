@@ -193,6 +193,7 @@ with completed `(instance_id, system_id)` rows and
 `annotation_origin=direct_adjudicated` (or `direct_human`), and rerun:
 
 ```powershell
+python scripts\strict_gap_13x4_worklist.py
 python scripts\materialize_v03_adjudication_artifacts.py
 python scripts\compute_results.py --paper
 python scripts\export_benchmark_paper_summary.py
@@ -222,6 +223,8 @@ python scripts\ci_reviewer_readiness.py
 | Repair proof-facing subset (Lean elaborated only) | `repairs/paper_repair_proof_subset.csv` (selected-budget + elaborated analysis subset) and `repairs/paper_proof_facing_subset.csv` (paper-facing metadata-rich subset over all hotspot packets with `elaborated=true`) |
 | Cost/runtime accounting | `results/paper_cost_runtime_accounting.csv` (tokens/time/cost/runner metadata when present in run manifests) |
 | Model/run metadata registry | `results/paper_model_metadata_registry.csv` (system card vs run-manifest model metadata reconciliation) |
+| Paper-primary model registry (headline runs only) | `results/paper_primary_model_registry.csv` (one row per headline system with `model_metadata_status`) |
+| External annotation audit bundle | `annotation/external_review/strict_review_queue.jsonl`, `annotation/external_review/strict_review_queue.csv`, `annotation/external_review/mapped_review_queue.jsonl`, `annotation/external_review/review_schema.md` |
 | Bootstrap on pooled means | `results/system_summary_with_ci.json` |
 | Prompt appendix | `appendix/PROMPTS_APPENDIX.md` |
 | Canonical manifest | `benchmark/manifest.jsonl` |

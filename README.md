@@ -265,7 +265,9 @@ evidence inventories `results/paper_table_annotation_evidence.csv` +
 `results/paper_strict_coverage_gap.csv`, family reliability
 `results/family_reliability_summary.csv`, and cost/runtime accounting
 `results/paper_cost_runtime_accounting.csv` plus model-metadata registry
-`results/paper_model_metadata_registry.csv`, appendix copies under
+`results/paper_model_metadata_registry.csv`, paper-primary model registry
+`results/paper_primary_model_registry.csv`, external annotation review
+queues under `annotation/external_review/`, appendix copies under
 `results/appendix_mapped_evidence/`, agreement audit CSVs under `annotation/`)
 are regenerated from Python scripts; see [`REPRODUCE.md`](REPRODUCE.md),
 [`docs/REVIEWER_MAP.md`](docs/REVIEWER_MAP.md), and

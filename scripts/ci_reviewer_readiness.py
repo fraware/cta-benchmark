@@ -38,6 +38,11 @@ def count_csv_rows(path: Path) -> int:
         return max(0, sum(1 for _ in f) - 1)
 
 
+def load_csv_rows(path: Path) -> list[dict[str, str]]:
+    with path.open(encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
+
+
 def main() -> int:
     summary_path = ROOT / "benchmark" / "v0.3" / "benchmark_paper_summary.json"
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
@@ -189,6 +194,45 @@ def main() -> int:
             )
             return 1
 
+    primary_registry = ROOT / "results" / "paper_primary_model_registry.csv"
+    if not primary_registry.is_file():
+        print(
+            "error: missing results/paper_primary_model_registry.csv",
+            file=sys.stderr,
+        )
+        return 1
+    primary_rows = load_csv_rows(primary_registry)
+    if len(primary_rows) != 4:
+        print(
+            "error: paper_primary_model_registry.csv must contain exactly 4 rows "
+            f"(found {len(primary_rows)})",
+            file=sys.stderr,
+        )
+        return 1
+    headline_set = {
+        str(x)
+        for x in (summary.get("paper_systems_ordered") or [])
+        if str(x).strip()
+    }
+    allowed_status = {"matched", "historical_manifest_mismatch_explained"}
+    for row in primary_rows:
+        sid = (row.get("system_id") or "").strip()
+        if sid not in headline_set:
+            print(
+                "error: paper_primary_model_registry system_id "
+                f"{sid!r} not in paper_systems_ordered",
+                file=sys.stderr,
+            )
+            return 1
+        status = (row.get("model_metadata_status") or "").strip()
+        if status not in allowed_status:
+            print(
+                "error: invalid model_metadata_status in paper_primary_model_registry: "
+                f"{status!r}",
+                file=sys.stderr,
+            )
+            return 1
+
     man = (
         ROOT
         / "benchmark"
@@ -224,6 +268,8 @@ def main() -> int:
                 continue
             rel = p.relative_to(ROOT).as_posix()
             rel_slash = rel.replace("\\", "/")
+            if "/external_review/" in rel_slash:
+                continue
             skip_wave = (
                 ".example." in p.name or "/human_wave_v03/" in rel_slash
             )

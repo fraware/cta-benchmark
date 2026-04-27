@@ -1164,6 +1164,27 @@ def main() -> int:
             cwd=str(ROOT),
             check=True,
         )
+        subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "export_paper_primary_model_registry.py"),
+            ],
+            cwd=str(ROOT),
+            check=True,
+        )
+        subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "export_external_annotation_review_bundle.py"),
+            ],
+            cwd=str(ROOT),
+            check=True,
+        )
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "strict_gap_13x4_worklist.py")],
+            cwd=str(ROOT),
+            check=True,
+        )
 
     extra_paths = [
         p

@@ -33,7 +33,9 @@ files are `results/paper_strict_*` (headline strict evidence) and
 `results/paper_expanded_*` (appendix expanded evidence), with evidence mass in
 `results/paper_annotation_origin_counts.csv`, declared system set in
 `results/paper_system_set.md`, strict-gap disclosure in
-`results/paper_strict_coverage_gap.csv`, and repair proof-status in
+`results/paper_strict_coverage_gap.csv`, paper-primary model identity in
+`results/paper_primary_model_registry.csv`, external annotation review queues in
+`annotation/external_review/`, and repair proof-status in
 `repairs/paper_repair_status.csv` / `repairs/paper_repair_success_subset.csv` /
 `repairs/paper_repair_proof_subset.csv` / `repairs/paper_proof_facing_subset.csv`.
 
@@ -49,6 +51,8 @@ compares `benchmark/v0.3/benchmark_paper_summary.json` to checked-in outputs:
   row `n_eval_rows` vs `expected_raw_metrics_strict_rows` (when evidence file and field exist)
 - `results/paper_table_agreement_evidence.csv`: `agreement_subset == strict_independent_only`
   row `n_packets` vs `agreement_audit_strict_independent_packet_count` (when field is set)
+- `results/paper_primary_model_registry.csv`: row count (4), headline-system membership,
+  and `model_metadata_status ∈ {matched, historical_manifest_mismatch_explained}`
 - `cargo run -p cta_cli -- validate file` for adjudicated subset `manifest.json`,
   `protocol_freeze.json`, and `schemas/failure_mode_v1.json` when those paths exist
 - `failure_mode_label` values in `results/raw_metrics.json` vs `schemas/failure_mode_v1.json`

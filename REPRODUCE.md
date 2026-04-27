@@ -64,7 +64,9 @@ Canonical filenames for manuscript layers (also emitted by **`compute_results.py
 **`repairs/paper_repair_proof_subset.csv`**, and
 **`repairs/paper_proof_facing_subset.csv`**; plus
 **`results/paper_cost_runtime_accounting.csv`** and
-**`results/paper_model_metadata_registry.csv`**.
+**`results/paper_model_metadata_registry.csv`**,
+**`results/paper_primary_model_registry.csv`**, and
+**`annotation/external_review/`** review queues.
 Run **`python scripts/export_benchmark_paper_summary.py`** after metric export so **`paper_system_set.md`** stays aligned with **`benchmark/v0.3/benchmark_paper_summary.json`**.
 
 Headline paper tables from **`python scripts/compute_results.py --paper`** use

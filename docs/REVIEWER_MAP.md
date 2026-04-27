@@ -29,6 +29,9 @@
 | Strict coverage gap disclosure | `results/paper_strict_coverage_gap.csv` (missing strict unique instances/families vs expanded view) | `python scripts/compute_results.py --paper` |
 | Cost/runtime accounting | `results/paper_cost_runtime_accounting.csv` | `python scripts/export_cost_runtime_accounting.py` (also run by `compute_results.py --paper`) |
 | Model metadata reconciliation | `results/paper_model_metadata_registry.csv` | `python scripts/export_model_metadata_registry.py` (also run by `compute_results.py --paper`) |
+| Paper-primary model registry | `results/paper_primary_model_registry.csv` (headline-run-only model/provider metadata) | `python scripts/export_paper_primary_model_registry.py` (also run by `compute_results.py --paper`) |
+| External annotation review bundle | `annotation/external_review/strict_review_queue.jsonl`, `annotation/external_review/strict_review_queue.csv`, `annotation/external_review/mapped_review_queue.jsonl`, `annotation/external_review/review_schema.md` | `python scripts/export_external_annotation_review_bundle.py` (also run by `compute_results.py --paper`) |
+| Strict-gap fixed 13x4 worklist | `benchmark/v0.3/annotation/human_wave_v03/strict_gap_13x4_worklist.csv`, `benchmark/v0.3/annotation/human_wave_v03/strict_gap_13x4_completion.csv` | `python scripts/strict_gap_13x4_worklist.py` |
 | One-shot audit bundle | `build/paper_build.json` (local; under `/build` in `.gitignore`) | `python scripts/paper_bundle.py` (set `PAPER_STRICT=1` to forbid `demo_synthetic` markers in scanned outputs) |
 
 ### CI-enforced summary contract
