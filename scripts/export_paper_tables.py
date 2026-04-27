@@ -23,6 +23,7 @@ import csv
 import json
 import os
 import shutil
+from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -168,6 +169,104 @@ def copy_paper_strict_metric_aliases(results_dir: Path) -> None:
             shutil.copyfile(src, dst)
 
 
+def write_failure_mode_export(
+    src_counts_csv: Path,
+    out_csv: Path,
+    evidence_view: str,
+) -> None:
+    """Write manuscript-ready failure table with share columns and view tag."""
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    rows: list[dict[str, str]] = []
+    if src_counts_csv.is_file():
+        with src_counts_csv.open(encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f):
+                rows.append({k: (v or "").strip() for k, v in row.items()})
+    if not rows:
+        rows = [
+            {
+                "system": "global",
+                "family": "global",
+                "failure_mode": "no_failures_recorded",
+                "count": "0",
+            }
+        ]
+
+    total = sum(int(r.get("count") or "0") for r in rows)
+    if total == 0:
+        # Fallback: derive operational failure signals from hotspot candidate reasons.
+        # This avoids publishing a degenerate one-line "no_failures_recorded" table.
+        hs = ROOT / "repairs" / "hotspot_selection.csv"
+        derived: dict[tuple[str, str, str], int] = defaultdict(int)
+        if hs.is_file():
+            with hs.open(encoding="utf-8", newline="") as f:
+                for row in csv.DictReader(f):
+                    origin = (row.get("annotation_origin") or "").strip()
+                    if evidence_view == "strict_independent":
+                        if origin not in {"direct_human", "direct_adjudicated"}:
+                            continue
+                    reason = (row.get("candidate_reason") or "").strip()
+                    if not reason or reason == "routine_eval_obligation_hygiene":
+                        continue
+                    iid = (row.get("instance_id") or "").strip()
+                    fam = "_".join(iid.split("_")[:-1]) if "_" in iid else "global"
+                    sid = (row.get("system_id") or "").strip() or "global"
+                    for tok in reason.split(";"):
+                        mode = tok.strip()
+                        if mode:
+                            derived[(sid, fam, mode)] += 1
+        if derived:
+            rows = [
+                {
+                    "system": sid,
+                    "family": fam,
+                    "failure_mode": mode,
+                    "count": str(c),
+                }
+                for (sid, fam, mode), c in sorted(derived.items())
+            ]
+            total = sum(int(r["count"]) for r in rows)
+    by_system: dict[str, int] = defaultdict(int)
+    for r in rows:
+        by_system[r.get("system", "")] += int(r.get("count") or "0")
+
+    with out_csv.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(
+            [
+                "evidence_view",
+                "system",
+                "family",
+                "failure_mode",
+                "count",
+                "share_within_system",
+                "share_global",
+            ]
+        )
+        for r in sorted(
+            rows,
+            key=lambda x: (
+                x.get("system", ""),
+                x.get("family", ""),
+                x.get("failure_mode", ""),
+            ),
+        ):
+            c = int(r.get("count") or "0")
+            sys_total = by_system.get(r.get("system", ""), 0)
+            share_sys = (c / sys_total) if sys_total else 0.0
+            share_global = (c / total) if total else 0.0
+            w.writerow(
+                [
+                    evidence_view,
+                    r.get("system", ""),
+                    r.get("family", "") or "global",
+                    r.get("failure_mode", ""),
+                    c,
+                    f"{share_sys:.6f}",
+                    f"{share_global:.6f}",
+                ]
+            )
+
+
 def finalize_strict_paper_layer(results_dir: Path) -> None:
     """Canonical strict-independent filenames under ``results/`` (not for appendix tmp)."""
     if os.environ.get("CTA_COMPUTE_APPENDIX") == "1":
@@ -179,9 +278,11 @@ def finalize_strict_paper_layer(results_dir: Path) -> None:
 
     write_merged_family_table(results_dir, results_dir / "paper_strict_family_summary.csv")
 
-    fail_src = results_dir / "failure_mode_counts.csv"
-    if fail_src.is_file():
-        shutil.copyfile(fail_src, results_dir / "paper_strict_failure_modes.csv")
+    write_failure_mode_export(
+        results_dir / "failure_mode_counts.csv",
+        results_dir / "paper_strict_failure_modes.csv",
+        "strict_independent",
+    )
 
     inst = results_dir / "instance_level.csv"
     if inst.is_file():
@@ -201,9 +302,11 @@ def finalize_expanded_paper_layer(results_root: Path) -> None:
 
     write_merged_family_table(apx, results_root / "paper_expanded_family_summary.csv")
 
-    apx_fail = apx / "failure_mode_counts.csv"
-    if apx_fail.is_file():
-        shutil.copyfile(apx_fail, results_root / "paper_expanded_failure_modes.csv")
+    write_failure_mode_export(
+        apx / "failure_mode_counts.csv",
+        results_root / "paper_expanded_failure_modes.csv",
+        "expanded_propagated",
+    )
 
 
 def main() -> int:

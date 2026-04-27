@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Emit repairs/paper_repair_status.csv for manuscript repair-study transparency."""
+"""Emit repair-status CSVs for manuscript repair-study transparency."""
 
 from __future__ import annotations
 
@@ -58,6 +58,11 @@ def main() -> int:
         "--out",
         type=Path,
         default=ROOT / "repairs" / "paper_repair_status.csv",
+    )
+    ap.add_argument(
+        "--out-success-subset",
+        type=Path,
+        default=ROOT / "repairs" / "paper_repair_success_subset.csv",
     )
     args = ap.parse_args()
 
@@ -120,8 +125,12 @@ def main() -> int:
                 {
                     "packet_id": pid,
                     "selected_for_repair_budget": "true" if sel else "false",
-                    "annotation_origin": (row.get("annotation_origin") or "").strip(),
-                    "pre_repair_failure_type": (row.get("candidate_reason") or "").strip(),
+                    "annotation_origin": (
+                        row.get("annotation_origin") or ""
+                    ).strip(),
+                    "pre_repair_failure_type": (
+                        row.get("candidate_reason") or ""
+                    ).strip(),
                     "elaborated": str(lc.get("elaborated", "")).lower()
                     if "elaborated" in lc
                     else "",
@@ -138,7 +147,58 @@ def main() -> int:
         w.writeheader()
         w.writerows(rows_out)
 
+    succ_fields = [
+        "packet_id",
+        "system_id",
+        "instance_id",
+        "selected_for_repair_budget",
+        "repair_success",
+        "elaborated",
+        "admit_count",
+        "axiom_count",
+        "proof_mode",
+        "pre_repair_failure_type",
+        "outcome_summary",
+    ]
+    subset_rows: list[dict[str, str]] = []
+    with args.hotspot_selection.open(encoding="utf-8", newline="") as fin:
+        for row in csv.DictReader(fin):
+            if (row.get("selected") or "").strip().lower() != "true":
+                continue
+            pid = (row.get("packet_id") or "").strip()
+            status_row = next(
+                (r for r in rows_out if r["packet_id"] == pid),
+                {},
+            )
+            out = status_row.get("outcome_summary", "").strip().lower()
+            repair_success = (
+                out.startswith("repaired_") or out == "repair_success"
+            )
+            subset_rows.append(
+                {
+                    "packet_id": pid,
+                    "system_id": (row.get("system_id") or "").strip(),
+                    "instance_id": (row.get("instance_id") or "").strip(),
+                    "selected_for_repair_budget": "true",
+                    "repair_success": "true" if repair_success else "false",
+                    "elaborated": status_row.get("elaborated", ""),
+                    "admit_count": status_row.get("admit_count", ""),
+                    "axiom_count": status_row.get("axiom_count", ""),
+                    "proof_mode": status_row.get("proof_mode", ""),
+                    "pre_repair_failure_type": status_row.get(
+                        "pre_repair_failure_type", ""
+                    ),
+                    "outcome_summary": status_row.get("outcome_summary", ""),
+                }
+            )
+    args.out_success_subset.parent.mkdir(parents=True, exist_ok=True)
+    with args.out_success_subset.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=succ_fields)
+        w.writeheader()
+        w.writerows(subset_rows)
+
     print(f"wrote {args.out} ({len(rows_out)} rows)")
+    print(f"wrote {args.out_success_subset} ({len(subset_rows)} rows)")
     return 0
 
 

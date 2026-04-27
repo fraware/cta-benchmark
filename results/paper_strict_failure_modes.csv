@@ -1,2 +1,2 @@
-system,family,failure_mode,count
-code_only_v1,global,no_failures_recorded,0
+evidence_view,system,family,failure_mode,count,share_within_system,share_global
+strict_independent,code_only_v1,global,no_failures_recorded,0,0.000000,0.000000

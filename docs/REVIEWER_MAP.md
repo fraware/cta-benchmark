@@ -14,10 +14,12 @@
 | Agreement audit population (packet-level origins) | `results/paper_table_agreement_evidence.csv` | same (joins `annotation/agreement_packet_ids.csv`) |
 | Publication-facing tables — **headline (strict)** | `results/paper_strict_*` (explicit strict layer), `results/paper_table_*.csv` (legacy compat) | `python scripts/compute_results.py --paper` → `scripts/export_paper_tables.py` |
 | Appendix — **expanded mapped** | `results/paper_expanded_*` (copies promoted to `results/`), `results/appendix_mapped_evidence/paper_table_*.csv` | same pipeline (appendix pass inside `compute_results.py --paper`) |
+| Failure-mode exports (manuscript-ready) | `results/paper_strict_failure_modes.csv`, `results/paper_expanded_failure_modes.csv` (`evidence_view`, `system`, `family`, `failure_mode`, `count`, `share_within_system`, `share_global`) | same |
 | Evidence mass | `results/paper_annotation_origin_counts.csv` | same |
 | Primary system-set statement | `results/paper_system_set.md`, `benchmark/v0.3/benchmark_paper_summary.json` | `python scripts/export_benchmark_paper_summary.py` |
 | Per-metric winners (stacked) | `results/paper_strict_system_metrics_long.csv`, `results/paper_strict_system_*_summary.csv` | same as headline `compute_results.py --paper` |
 | Repair proof-status roster | `repairs/paper_repair_status.csv` | `python scripts/export_paper_repair_status.py` (also end of `compute_results.py --paper`) |
+| Repair manuscript subset (selected only) | `repairs/paper_repair_success_subset.csv` | same |
 | Inter-rater agreement (synthetic rater B) | `annotation/agreement_report.json`, `annotation/agreement_report.md` | `python scripts/reproduce_agreement_report.py` (wraps `compute_agreement_stats.py`) |
 | Agreement audit trail (packet population) | `annotation/agreement_packet_ids.csv`, `annotation/rater_a.csv`, `annotation/rater_b.csv`, `annotation/adjudication_log.csv` | `python scripts/materialize_v03_adjudication_artifacts.py` |
 | Repair selection + logs | `repairs/hotspot_selection.csv`, `repairs/repair_log.jsonl` | `python scripts/materialize_repair_hotspot_artifacts.py` |
