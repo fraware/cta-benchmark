@@ -19,8 +19,11 @@ Obligation Generation from Rust Reference Code".
    **calibration-only** scope for `text_only_v1` (see `docs/paper/system_scope.md`
    and `benchmark_paper_summary.json` fields `paper_headline_policy` /
    `paper_alternate_scope_note`). **Headline** metrics tables use the strict
-   independent evidence view; expanded mapped propagation is appendix-only
-   (`results/appendix_mapped_evidence/`, `paper_table_annotation_evidence.csv`).
+   independent evidence view (`results/paper_strict_*`); expanded mapped
+   propagation is appendix-only (`results/paper_expanded_*` and
+   `results/appendix_mapped_evidence/`). Evidence-mass transparency is in
+   `results/paper_annotation_origin_counts.csv` and
+   `results/paper_table_annotation_evidence.csv`.
 3. A reproducible Rust pipeline with frozen metric (`metrics_v2`), schema
    (`schema_v1`), and rubric (`rubric_v1`) contracts.
 4. A metric suite decomposed into `elaboration_rate`,
@@ -43,7 +46,7 @@ Obligation Generation from Rust Reference Code".
 5. Metrics — primary and secondary definitions with acceptance
    criteria, including inter-annotator agreement methodology.
 6. Results — primary tables from `python scripts/compute_results.py --paper`
-   (`results/paper_table_*.csv`, per-metric summaries, reliability) plus run
+   (`results/paper_strict_*`, per-metric summaries, reliability) plus run
    bundles from `cta reports build` where model generations are reported.
 7. Analysis — failure taxonomy and qualitative cases.
 8. Limitations — what our benchmark does not measure.
@@ -66,6 +69,9 @@ v0.3 headline aggregates and evidence tables come from the Python paper track
 `python scripts/export_benchmark_paper_summary.py`), checked into `results/`
 and `benchmark/v0.3/benchmark_paper_summary.json`, and guarded by
 `python scripts/ci_reviewer_readiness.py` in CI (row-count and label contracts).
+Canonical manuscript filenames are `results/paper_strict_*` (headline strict),
+`results/paper_expanded_*` (appendix expanded), `results/paper_system_set.md`,
+and `repairs/paper_repair_status.csv`.
 
 Paper-track adjudication additionally relies on `cta annotate verify-review-packets`
 (signed `verification_summary.signed.json`) and the `cta_generate` packet

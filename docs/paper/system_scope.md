@@ -18,15 +18,17 @@ If the narrative should **not** treat `text_only_v1` as a first-class comparator
 
 The inverse default (this repo’s contract) is **`paper_headline_policy`:
 `four_system_primary_study`**: all four systems appear in headline
-`paper_table_*.csv` files produced under `compute_results.py --paper`.
+`results/paper_strict_*` files produced under `compute_results.py --paper`
+(legacy compatibility exports still exist under `results/paper_table_*.csv`).
 
 ## Evidence view (strict vs expanded)
 
 Headline statistical tables are computed from **`raw_metrics_strict.json`**
 (independent adjudication / direct human rows only). The expanded mapped view
-lives under **`results/appendix_mapped_evidence/`** for appendix or
-sensitivity checks. Row-count transparency is in
-**`results/paper_table_annotation_evidence.csv`**.
+is promoted to **`results/paper_expanded_*`** and also kept under
+**`results/appendix_mapped_evidence/`** for appendix/sensitivity checks.
+Row-count transparency is in **`results/paper_table_annotation_evidence.csv`**
+and **`results/paper_annotation_origin_counts.csv`**.
 
 ## Agreement κ population vs headline eval metrics
 
