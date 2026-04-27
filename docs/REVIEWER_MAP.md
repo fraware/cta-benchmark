@@ -49,3 +49,4 @@ should be checked in manuscript prep reviews.
 - `docs/LIMITATIONS.md` — threats to validity.
 - `docs/evaluation_contract.md` — metric definitions.
 - `docs/annotator_calibration_v03.md` — human-wave calibration anchors.
+- `docs/direct_adjudication_wave_checklist.md` — 128-pair wave execution + acceptance gates.

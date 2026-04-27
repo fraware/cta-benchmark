@@ -166,6 +166,9 @@ instances / 94 strict rows, generate and execute a direct-adjudication wave:
 python scripts\plan_v03_direct_adjudication_wave.py --target-pairs 128
 ```
 
+Use `docs/direct_adjudication_wave_checklist.md` for the curator batch protocol
+(recommended: 4 batches x 32 pairs with acceptance gates per batch).
+
 Curators then fill
 `benchmark/v0.3/annotation/human_adjudicated/direct_adjudicated_pairs.csv`
 with completed `(instance_id, system_id)` rows and

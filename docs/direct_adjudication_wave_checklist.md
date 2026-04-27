@@ -1,0 +1,117 @@
+# Direct Adjudication Wave Checklist (128 pairs)
+
+This checklist operationalizes Option-2 strict-coverage expansion for v0.3.
+It assumes `benchmark/v0.3/annotation/human_wave_v03/direct_adjudication_wave_plan.csv`
+already exists and targets 128 mapped eval `(instance_id, system_id)` pairs.
+
+## Objective
+
+- Promote 128 planned eval pairs from `mapped_from_canonical` to direct evidence
+  (`direct_adjudicated` and optionally `direct_human`) in four curated batches.
+- Preserve reproducibility and avoid accidental inflation from unreviewed pairs.
+
+## Canonical Files
+
+- Plan input:
+  `benchmark/v0.3/annotation/human_wave_v03/direct_adjudication_wave_plan.csv`
+- Override output (curator-edited):
+  `benchmark/v0.3/annotation/human_adjudicated/direct_adjudicated_pairs.csv`
+- Regenerated artifacts:
+  `results/raw_metrics_strict.json`,
+  `benchmark/v0.3/benchmark_paper_summary.json`,
+  `results/paper_table_annotation_evidence.csv`,
+  `results/paper_annotation_origin_counts.csv`.
+
+## Batch Structure
+
+- Batch 1: ranks 1-32
+- Batch 2: ranks 33-64
+- Batch 3: ranks 65-96
+- Batch 4: ranks 97-128
+
+Use the `wave_rank` column in `direct_adjudication_wave_plan.csv` as source of truth.
+
+## One-Time Setup
+
+- [ ] Confirm working tree is clean (`git status`).
+- [ ] Regenerate the latest plan if needed:
+  `python scripts/plan_v03_direct_adjudication_wave.py --target-pairs 128`
+- [ ] Ensure override template exists with header:
+  `instance_id,system_id,annotation_origin,adjudication_note`
+- [ ] Freeze branch for this wave (no unrelated edits).
+
+## Per-Batch Execution Checklist (repeat 4 times)
+
+### 1) Select Batch Rows
+
+- [ ] Extract the next 32 plan rows by `wave_rank` range.
+- [ ] Verify each row currently has `current_annotation_origin=mapped_from_canonical`.
+- [ ] Verify no duplicate `(instance_id, system_id)` in current batch.
+
+### 2) Curate and Record Decisions
+
+For each of the 32 rows:
+
+- [ ] Review packet/scaffold context and adjudication evidence.
+- [ ] Decide `annotation_origin`:
+  - `direct_adjudicated` (default target for this wave), or
+  - `direct_human` (only if true human adjudication source applies).
+- [ ] Append one row to
+  `benchmark/v0.3/annotation/human_adjudicated/direct_adjudicated_pairs.csv`
+  with:
+  `instance_id,system_id,annotation_origin,adjudication_note`
+- [ ] Ensure `adjudication_note` is specific (why this pair is direct now).
+
+### 3) Regenerate Artifacts
+
+- [ ] `python scripts/materialize_v03_adjudication_artifacts.py`
+- [ ] `python scripts/compute_results.py --paper`
+- [ ] `python scripts/export_benchmark_paper_summary.py`
+- [ ] `python scripts/ci_reviewer_readiness.py`
+
+### 4) Batch Acceptance Gates (must all pass)
+
+- [ ] `ci_reviewer_readiness: ok`.
+- [ ] Strict count increases by exactly batch size:
+  - `expected_raw_metrics_strict_rows` in
+    `benchmark/v0.3/benchmark_paper_summary.json`
+    rises by +32 versus prior accepted batch.
+- [ ] Strict unique instance count is non-decreasing in:
+  `results/paper_annotation_origin_counts.csv`
+  (`strict_independent_n_unique_instances`).
+- [ ] No regression in schema validation outputs (manifest/protocol/ontology checks).
+- [ ] Override file has no duplicates and valid origins only
+  (`direct_adjudicated` / `direct_human`).
+
+### 5) Commit Gate
+
+- [ ] Commit only batch-related updates (override CSV + regenerated artifacts).
+- [ ] Commit message includes batch range, e.g.
+  `option2(batch-1): promote ranks 1-32 to direct adjudicated`.
+- [ ] Push and tag batch checkpoint in PR notes.
+
+## Final Wave Acceptance (after Batch 4)
+
+- [ ] Total promoted rows in `direct_adjudicated_pairs.csv` is 128.
+- [ ] `expected_raw_metrics_strict_rows` increased by +128 from pre-wave baseline.
+- [ ] Manuscript evidence split remains internally consistent:
+  - strict row counts align across summary and evidence tables,
+  - expanded row counts unchanged unless source data changed.
+- [ ] Re-run full paper command chain once more:
+  - `python scripts/materialize_v03_adjudication_artifacts.py`
+  - `python scripts/materialize_repair_hotspot_artifacts.py`
+  - `python scripts/reproduce_agreement_report.py`
+  - `python scripts/compute_results.py --paper`
+  - `python scripts/repair_counterfactual_metrics.py`
+  - `python scripts/export_benchmark_paper_summary.py`
+  - `python scripts/ci_reviewer_readiness.py`
+
+## Failure / Rollback Policy
+
+- If any batch gate fails:
+  - [ ] Stop.
+  - [ ] Revert only uncommitted batch edits.
+  - [ ] Diagnose before adding more rows.
+- Never mix two batches in one commit.
+- Never edit previous batch rows silently; use explicit corrective commit if needed.
+
