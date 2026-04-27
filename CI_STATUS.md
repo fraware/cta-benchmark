@@ -33,7 +33,8 @@ files are `results/paper_strict_*` (headline strict evidence) and
 `results/paper_expanded_*` (appendix expanded evidence), with evidence mass in
 `results/paper_annotation_origin_counts.csv`, declared system set in
 `results/paper_system_set.md`, and repair proof-status in
-`repairs/paper_repair_status.csv`.
+`repairs/paper_repair_status.csv` / `repairs/paper_repair_success_subset.csv` /
+`repairs/paper_repair_proof_subset.csv`.
 
 `scripts/ci_reviewer_readiness.py` (also the **`ci.yml`** step *paper reviewer readiness*)
 compares `benchmark/v0.3/benchmark_paper_summary.json` to checked-in outputs:

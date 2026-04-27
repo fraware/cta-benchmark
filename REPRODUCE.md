@@ -59,7 +59,9 @@ python scripts/ci_reviewer_readiness.py
 Canonical filenames for manuscript layers (also emitted by **`compute_results.py --paper`**):
 **`results/paper_strict_*`** (strict independent headline), **`results/paper_expanded_*`** (expanded mapped appendix),
 **`results/paper_strict_system_metrics_long.csv`**, **`results/paper_system_set.md`**,
-**`repairs/paper_repair_status.csv`**, and **`repairs/paper_repair_success_subset.csv`**.
+**`repairs/paper_repair_status.csv`**, **`repairs/paper_repair_success_subset.csv`**,
+**`repairs/paper_repair_proof_subset.csv`**, and
+**`repairs/paper_proof_facing_subset.csv`**.
 Run **`python scripts/export_benchmark_paper_summary.py`** after metric export so **`paper_system_set.md`** stays aligned with **`benchmark/v0.3/benchmark_paper_summary.json`**.
 
 Headline paper tables from **`python scripts/compute_results.py --paper`** use

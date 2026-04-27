@@ -159,8 +159,10 @@ python scripts\validate_benchmark.py --strict-grid-near-dup
 
 ## 9. Option-2 strict coverage expansion (direct adjudication wave)
 
-If you want to increase strict independent coverage beyond the current 24 unique
-instances / 94 strict rows, generate and execute a direct-adjudication wave:
+Current strict-independent coverage after the Option-2 wave is
+**71 unique instances / 222 strict rows** (expanded remains 84 / 336 with
+114 mapped-from-canonical rows). If you want to increase strict coverage
+further, generate and execute another direct-adjudication wave:
 
 ```powershell
 python scripts\plan_v03_direct_adjudication_wave.py --target-pairs 128
@@ -199,7 +201,7 @@ python scripts\ci_reviewer_readiness.py
 | Repair sensitivity (counterfactual proxy) | `results/repair_impact_summary.json` from `python scripts/repair_counterfactual_metrics.py` (after `compute_results.py --paper` when instance rows include repair flags) |
 | Repair study proof-status export | `repairs/paper_repair_status.csv` from `python scripts/export_paper_repair_status.py` (also run automatically at end of `compute_results.py --paper`) |
 | Repair manuscript subset (selected hotspots only) | `repairs/paper_repair_success_subset.csv` (`selected_for_repair_budget=true` rows with `repair_success`, `elaborated`, `admit_count`, `axiom_count`, `proof_mode`) |
-| Repair proof-facing subset (Lean elaborated only) | `repairs/paper_repair_proof_subset.csv` (subset of selected rows where `elaborated=true`) |
+| Repair proof-facing subset (Lean elaborated only) | `repairs/paper_repair_proof_subset.csv` (analysis subset) and `repairs/paper_proof_facing_subset.csv` (paper-facing minimal schema: packet/system/instance + elaboration/proof fields) |
 | Bootstrap on pooled means | `results/system_summary_with_ci.json` |
 | Prompt appendix | `appendix/PROMPTS_APPENDIX.md` |
 | Canonical manifest | `benchmark/manifest.jsonl` |

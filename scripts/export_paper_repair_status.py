@@ -69,6 +69,11 @@ def main() -> int:
         type=Path,
         default=ROOT / "repairs" / "paper_repair_proof_subset.csv",
     )
+    ap.add_argument(
+        "--out-proof-facing-subset",
+        type=Path,
+        default=ROOT / "repairs" / "paper_proof_facing_subset.csv",
+    )
     args = ap.parse_args()
 
     log_idx = load_repair_log_index(args.repair_log)
@@ -210,9 +215,51 @@ def main() -> int:
         w.writeheader()
         w.writerows(proof_rows)
 
+    # Paper-facing proof subset with stable minimal columns only.
+    proof_facing_fields = [
+        "packet_id",
+        "system_id",
+        "instance_id",
+        "elaborated",
+        "admit_count",
+        "axiom_count",
+        "proof_mode",
+        "imported_modules",
+        "outcome_summary",
+    ]
+    imports_by_packet = {
+        r["packet_id"]: r.get("imported_modules", "") for r in rows_out
+    }
+    proof_facing_rows: list[dict[str, str]] = []
+    for r in proof_rows:
+        pid = r.get("packet_id", "")
+        proof_facing_rows.append(
+            {
+                "packet_id": pid,
+                "system_id": r.get("system_id", ""),
+                "instance_id": r.get("instance_id", ""),
+                "elaborated": r.get("elaborated", ""),
+                "admit_count": r.get("admit_count", ""),
+                "axiom_count": r.get("axiom_count", ""),
+                "proof_mode": r.get("proof_mode", ""),
+                "imported_modules": imports_by_packet.get(pid, ""),
+                "outcome_summary": r.get("outcome_summary", ""),
+            }
+        )
+    args.out_proof_facing_subset.parent.mkdir(parents=True, exist_ok=True)
+    with args.out_proof_facing_subset.open(
+        "w", newline="", encoding="utf-8"
+    ) as f:
+        w = csv.DictWriter(f, fieldnames=proof_facing_fields)
+        w.writeheader()
+        w.writerows(proof_facing_rows)
+
     print(f"wrote {args.out} ({len(rows_out)} rows)")
     print(f"wrote {args.out_success_subset} ({len(subset_rows)} rows)")
     print(f"wrote {args.out_proof_subset} ({len(proof_rows)} rows)")
+    print(
+        f"wrote {args.out_proof_facing_subset} ({len(proof_facing_rows)} rows)"
+    )
     return 0
 
 
