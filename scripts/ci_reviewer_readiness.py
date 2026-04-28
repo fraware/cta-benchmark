@@ -12,11 +12,38 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ALLOWED_ORDINAL = {"0", "1", "2", "3"}
-ORDINAL_COLUMNS = [
+RATER_ORDINAL_COLUMNS = [
+    "semantic_faithfulness_code",
+    "code_consistency_code",
+    "proof_utility_code",
+]
+REPORT_ORDINAL_METRICS = [
     "semantic_faithfulness",
     "code_consistency",
     "proof_utility",
 ]
+ORDINAL_LABEL_COLUMNS = {
+    "semantic_faithfulness_label": {
+        "unfaithful": "0",
+        "partial": "1",
+        "mostly_faithful": "2",
+        "faithful": "3",
+    },
+    "code_consistency_label": {
+        "inconsistent": "0",
+        "partially_consistent": "1",
+        "mostly_consistent": "2",
+        "consistent": "3",
+    },
+    "proof_utility_label": {
+        "unusable": "0",
+        "weak": "1",
+        "useful": "2",
+        "proof_facing": "3",
+    },
+}
+ALLOWED_VACUITY = {"non_vacuous", "vacuous", "mixed"}
+ALLOWED_COVERAGE = {"failed", "partial", "full"}
 GENERIC_RATIONALE_PATTERNS = [
     "retain primary adjudicator",
     "rubric-grounded stricter interpretation",
@@ -93,13 +120,29 @@ def split_units(value: str) -> set[str]:
 
 def assert_rater_contract(rows: list[dict[str, str]], name: str) -> None:
     for idx, row in enumerate(rows, start=1):
-        for col in ORDINAL_COLUMNS:
+        for col in RATER_ORDINAL_COLUMNS:
             val = (row.get(col) or "").strip()
             if val not in ALLOWED_ORDINAL:
                 raise RuntimeError(
                     f"{name} row {idx} out-of-scale {col}: {val!r}"
                 )
+        for label_col, label_map in ORDINAL_LABEL_COLUMNS.items():
+            label_val = (row.get(label_col) or "").strip()
+            code_col = label_col.replace("_label", "_code")
+            code_val = (row.get(code_col) or "").strip()
+            if label_val not in label_map:
+                raise RuntimeError(f"{name} row {idx} invalid {label_col}: {label_val!r}")
+            if code_val != label_map[label_val]:
+                raise RuntimeError(
+                    f"{name} row {idx} inconsistent {label_col}/{code_col}: "
+                    f"{label_val!r} vs {code_val!r}"
+                )
         cov = (row.get("coverage_label") or "").strip()
+        vac = (row.get("vacuity_label") or "").strip()
+        if cov not in ALLOWED_COVERAGE:
+            raise RuntimeError(f"{name} row {idx} invalid coverage_label: {cov!r}")
+        if vac not in ALLOWED_VACUITY:
+            raise RuntimeError(f"{name} row {idx} invalid vacuity_label: {vac!r}")
         covered = split_units(row.get("covered_units", ""))
         partial = split_units(row.get("partial_units", ""))
         missing = split_units(row.get("missing_units", ""))
@@ -350,9 +393,21 @@ def main() -> int:
     if not rater_a_path.is_file() or not rater_b_path.is_file():
         print("error: strict-overlap rater files missing", file=sys.stderr)
         return 1
+    rater_a_rows = load_csv_rows(rater_a_path)
+    rater_b_rows = load_csv_rows(rater_b_path)
+    if len(rater_a_rows) != 274 or len(rater_b_rows) != 274:
+        print("error: strict-overlap rater files must each contain 274 rows", file=sys.stderr)
+        return 1
+    key_col = "anonymized_packet_key"
+    keys_a = {(r.get(key_col) or "").strip() for r in rater_a_rows}
+    keys_b = {(r.get(key_col) or "").strip() for r in rater_b_rows}
+    keys_map = {(r.get(key_col) or "").strip() for r in map_rows}
+    if keys_a != keys_b or keys_a != keys_map:
+        print("error: strict-overlap rater key sets do not match map exactly", file=sys.stderr)
+        return 1
     try:
-        assert_rater_contract(load_csv_rows(rater_a_path), "rater_a_strict_all.csv")
-        assert_rater_contract(load_csv_rows(rater_b_path), "rater_b_human_strict_all.csv")
+        assert_rater_contract(rater_a_rows, "rater_a_strict_all.csv")
+        assert_rater_contract(rater_b_rows, "rater_b_human_strict_all.csv")
     except RuntimeError as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
@@ -367,11 +422,26 @@ def main() -> int:
         print("error: missing strict-overlap agreement report", file=sys.stderr)
         return 1
     rep = json.loads(ag_report.read_text(encoding="utf-8"))
+    if rep.get("schema_version") != "agreement_report_human_strict_all_v1":
+        print("error: strict-overlap report schema_version mismatch", file=sys.stderr)
+        return 1
     if int(rep.get("n_rows", -1)) != 274:
         print("error: strict-overlap report n_rows != 274", file=sys.stderr)
         return 1
+    if int(rep.get("n_unique_instance_ids", -1)) != 84:
+        print("error: strict-overlap report n_unique_instance_ids != 84", file=sys.stderr)
+        return 1
+    if int(rep.get("n_mapped_from_canonical", -1)) != 0:
+        print("error: strict-overlap report n_mapped_from_canonical != 0", file=sys.stderr)
+        return 1
+    if int(rep.get("n_direct_human", -1)) != 274:
+        print("error: strict-overlap report n_direct_human != 274", file=sys.stderr)
+        return 1
+    if int(rep.get("n_direct_adjudicated", -1)) != 274:
+        print("error: strict-overlap report n_direct_adjudicated != 274", file=sys.stderr)
+        return 1
     mats = rep.get("confusion_matrices") or {}
-    for metric in ORDINAL_COLUMNS:
+    for metric in REPORT_ORDINAL_METRICS:
         mat = mats.get(metric) or {}
         total = 0
         for rowvals in mat.values():
@@ -405,6 +475,12 @@ def main() -> int:
                     "error: strict_all_human_overlap n_mapped_from_canonical != 0",
                     file=sys.stderr,
                 )
+                return 1
+            if int(rep.get("n_rows", -1)) != int((row.get("n_packets") or "0").strip()):
+                print("error: strict_all_human_overlap n_packets does not match report n_rows", file=sys.stderr)
+                return 1
+            if int(rep.get("n_unique_instance_ids", -1)) != int((row.get("n_unique_instance_ids") or "0").strip()):
+                print("error: strict_all_human_overlap n_unique_instance_ids does not match report", file=sys.stderr)
                 return 1
             break
     if not strict_overlap_row_found:

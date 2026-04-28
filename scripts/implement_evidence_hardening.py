@@ -13,7 +13,29 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ALLOWED_ORDINAL = {0, 1, 2, 3}
-ORDINAL_COLUMNS = ["semantic_faithfulness", "code_consistency", "proof_utility"]
+ORDINAL_COLUMNS = [
+    "semantic_faithfulness_code",
+    "code_consistency_code",
+    "proof_utility_code",
+]
+SEMANTIC_CODE_TO_LABEL = {
+    0: "unfaithful",
+    1: "partial",
+    2: "mostly_faithful",
+    3: "faithful",
+}
+CONSISTENCY_CODE_TO_LABEL = {
+    0: "inconsistent",
+    1: "partially_consistent",
+    2: "mostly_consistent",
+    3: "consistent",
+}
+PROOF_CODE_TO_LABEL = {
+    0: "unusable",
+    1: "weak",
+    2: "useful",
+    3: "proof_facing",
+}
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -225,9 +247,15 @@ def p0_annotation_human_pass() -> None:
         rater_a_rows.append(
             {
                 "anonymized_packet_key": key,
-                "semantic_faithfulness": str(sem),
-                "code_consistency": str(code),
-                "proof_utility": str(proof),
+                "instance_id": instance_id,
+                "system_id": system_id,
+                "family": family,
+                "semantic_faithfulness_label": SEMANTIC_CODE_TO_LABEL[sem],
+                "semantic_faithfulness_code": str(sem),
+                "code_consistency_label": CONSISTENCY_CODE_TO_LABEL[code],
+                "code_consistency_code": str(code),
+                "proof_utility_label": PROOF_CODE_TO_LABEL[proof],
+                "proof_utility_code": str(proof),
                 "vacuity_label": vacuity,
                 "coverage_label": coverage,
                 "covered_units": covered,
@@ -267,9 +295,15 @@ def p0_annotation_human_pass() -> None:
         rater_b_rows.append(
             {
                 "anonymized_packet_key": key,
-                "semantic_faithfulness": str(b_sem),
-                "code_consistency": str(b_code),
-                "proof_utility": str(b_proof),
+                "instance_id": instance_id,
+                "system_id": system_id,
+                "family": family,
+                "semantic_faithfulness_label": SEMANTIC_CODE_TO_LABEL[b_sem],
+                "semantic_faithfulness_code": str(b_sem),
+                "code_consistency_label": CONSISTENCY_CODE_TO_LABEL[b_code],
+                "code_consistency_code": str(b_code),
+                "proof_utility_label": PROOF_CODE_TO_LABEL[b_proof],
+                "proof_utility_code": str(b_proof),
                 "vacuity_label": b_vac,
                 "coverage_label": b_cov,
                 "covered_units": "|".join(b_covered),
@@ -332,9 +366,15 @@ def p0_annotation_human_pass() -> None:
         rater_a_rows,
         [
             "anonymized_packet_key",
-            "semantic_faithfulness",
-            "code_consistency",
-            "proof_utility",
+            "instance_id",
+            "system_id",
+            "family",
+            "semantic_faithfulness_label",
+            "semantic_faithfulness_code",
+            "code_consistency_label",
+            "code_consistency_code",
+            "proof_utility_label",
+            "proof_utility_code",
             "vacuity_label",
             "coverage_label",
             "covered_units",
@@ -349,9 +389,15 @@ def p0_annotation_human_pass() -> None:
         rater_b_rows,
         [
             "anonymized_packet_key",
-            "semantic_faithfulness",
-            "code_consistency",
-            "proof_utility",
+            "instance_id",
+            "system_id",
+            "family",
+            "semantic_faithfulness_label",
+            "semantic_faithfulness_code",
+            "code_consistency_label",
+            "code_consistency_code",
+            "proof_utility_label",
+            "proof_utility_code",
             "vacuity_label",
             "coverage_label",
             "covered_units",

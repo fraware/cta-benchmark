@@ -19,9 +19,43 @@ from lib.reliability import (  # noqa: E402
 )
 
 
-ORDINAL = ["semantic_faithfulness", "code_consistency", "proof_utility"]
+ORDINAL = [
+    "semantic_faithfulness_code",
+    "code_consistency_code",
+    "proof_utility_code",
+]
+ORDINAL_PREFIX = {
+    "semantic_faithfulness_code": "semantic_faithfulness",
+    "code_consistency_code": "code_consistency",
+    "proof_utility_code": "proof_utility",
+}
 ALLOWED_ORDINAL = {0, 1, 2, 3}
 ORDINAL_LABELS = ["0", "1", "2", "3"]
+SEMANTIC_LABEL_TO_CODE = {
+    "unfaithful": 0,
+    "partial": 1,
+    "mostly_faithful": 2,
+    "faithful": 3,
+}
+CODE_CONSISTENCY_LABEL_TO_CODE = {
+    "inconsistent": 0,
+    "partially_consistent": 1,
+    "mostly_consistent": 2,
+    "consistent": 3,
+}
+PROOF_UTILITY_LABEL_TO_CODE = {
+    "unusable": 0,
+    "weak": 1,
+    "useful": 2,
+    "proof_facing": 3,
+}
+ORDINAL_LABEL_TO_CODE = {
+    "semantic_faithfulness": SEMANTIC_LABEL_TO_CODE,
+    "code_consistency": CODE_CONSISTENCY_LABEL_TO_CODE,
+    "proof_utility": PROOF_UTILITY_LABEL_TO_CODE,
+}
+ALLOWED_VACUITY = {"non_vacuous", "vacuous", "mixed"}
+ALLOWED_COVERAGE = {"failed", "partial", "full"}
 GENERIC_REASON_PATTERNS = [
     "rubric-grounded stricter interpretation",
     "retain primary adjudicator",
@@ -113,6 +147,37 @@ def validate_coverage_row(row: dict[str, str], label: str) -> None:
         raise RuntimeError(f"{label} has full coverage with missing units")
     if missing and cov_label == "full":
         raise RuntimeError(f"{label} has missing units but full coverage")
+    if cov_label not in ALLOWED_COVERAGE:
+        raise RuntimeError(f"{label} has invalid coverage label: {cov_label!r}")
+    vac = row.get("vacuity_label", "").strip()
+    if vac not in ALLOWED_VACUITY:
+        raise RuntimeError(f"{label} has invalid vacuity label: {vac!r}")
+
+
+def parse_ordinal_value(row: dict[str, str], metric_code: str, label: str) -> int:
+    metric_prefix = ORDINAL_PREFIX[metric_code]
+    code_raw = (row.get(metric_code) or row.get(metric_prefix) or "").strip()
+    label_raw = (row.get(f"{metric_prefix}_label") or "").strip()
+    if not code_raw:
+        raise RuntimeError(f"{label} missing {metric_code}")
+    try:
+        code = int(code_raw)
+    except ValueError as exc:
+        raise RuntimeError(f"{label} non-integer {metric_code}: {code_raw!r}") from exc
+    if code not in ALLOWED_ORDINAL:
+        raise RuntimeError(f"{label} out-of-scale {metric_code}: {code}")
+    if label_raw:
+        expected_code = ORDINAL_LABEL_TO_CODE[metric_prefix].get(label_raw)
+        if expected_code is None:
+            raise RuntimeError(
+                f"{label} has invalid {metric_prefix}_label: {label_raw!r}"
+            )
+        if expected_code != code:
+            raise RuntimeError(
+                f"{label} inconsistent {metric_prefix}_label/code: "
+                f"{label_raw!r} -> {expected_code}, csv has {code}"
+            )
+    return code
 
 
 def disagreement_reason(
@@ -121,7 +186,7 @@ def disagreement_reason(
     b: str,
     row_a: dict[str, str],
     row_b: dict[str, str],
-) -> tuple[str, str, str, str, str]:
+) -> tuple[str, str, str, str, str, str]:
     su_a = split_units(row_a.get("covered_units", "")) + split_units(row_a.get("partial_units", ""))
     su_b = split_units(row_b.get("covered_units", "")) + split_units(row_b.get("partial_units", ""))
     su_union = sorted(set(su_a) | set(su_b))
@@ -177,8 +242,10 @@ def main() -> int:
     args = ap.parse_args()
 
     packet_map = read_csv(args.packet_map)
-    rater_a = {r["anonymized_packet_key"]: r for r in read_csv(args.rater_a)}
-    rater_b = {r["anonymized_packet_key"]: r for r in read_csv(args.rater_b)}
+    rater_a_rows = read_csv(args.rater_a)
+    rater_b_rows = read_csv(args.rater_b)
+    rater_a = {r["anonymized_packet_key"]: r for r in rater_a_rows}
+    rater_b = {r["anonymized_packet_key"]: r for r in rater_b_rows}
     keys = [
         r["anonymized_packet_key"]
         for r in packet_map
@@ -187,6 +254,23 @@ def main() -> int:
     ]
     if len(keys) != 274:
         raise RuntimeError(f"expected 274 overlapping rows, found {len(keys)}")
+    if len(rater_a_rows) != 274 or len(rater_b_rows) != 274:
+        raise RuntimeError(
+            "strict-all rater files must each contain 274 rows "
+            f"(got A={len(rater_a_rows)}, B={len(rater_b_rows)})"
+        )
+    map_keys = {r["anonymized_packet_key"] for r in packet_map}
+    if set(rater_a) != map_keys:
+        raise RuntimeError("rater_a key set does not exactly match packet map")
+    if set(rater_b) != map_keys:
+        raise RuntimeError("rater_b key set does not exactly match packet map")
+    if any((r.get("strict_row_id") or "").strip() == "" for r in packet_map):
+        raise RuntimeError("packet_map includes empty strict_row_id")
+    if any(
+        (r.get("annotation_origin") or "").strip() == "mapped_from_canonical"
+        for r in packet_map
+    ):
+        raise RuntimeError("packet_map has mapped_from_canonical rows")
     n_unique_instances = len(
         {
             r["instance_id"]
@@ -200,18 +284,15 @@ def main() -> int:
     confusion_mats: dict[str, dict[str, dict[str, int]]] = {}
     for key in keys:
         for metric in ORDINAL:
-            av = int(rater_a[key][metric])
-            bv = int(rater_b[key][metric])
-            if av not in ALLOWED_ORDINAL:
-                raise RuntimeError(f"rater_a {metric} out of scale for {key}: {av}")
-            if bv not in ALLOWED_ORDINAL:
-                raise RuntimeError(f"rater_b {metric} out of scale for {key}: {bv}")
+            parse_ordinal_value(rater_a[key], metric, f"rater_a[{key}]")
+            parse_ordinal_value(rater_b[key], metric, f"rater_b[{key}]")
         validate_coverage_row(rater_a[key], f"rater_a[{key}]")
         validate_coverage_row(rater_b[key], f"rater_b[{key}]")
     for metric in ORDINAL:
-        xa = [int(rater_a[k][metric]) for k in keys]
-        xb = [int(rater_b[k][metric]) for k in keys]
-        ordinal_stats[metric] = {
+        metric_name = ORDINAL_PREFIX[metric]
+        xa = [parse_ordinal_value(rater_a[k], metric, f"rater_a[{k}]") for k in keys]
+        xb = [parse_ordinal_value(rater_b[k], metric, f"rater_b[{k}]") for k in keys]
+        ordinal_stats[metric_name] = {
             "linear_weighted_kappa": weighted_kappa(xa, xb, quadratic=False),
             "quadratic_weighted_kappa": weighted_kappa(xa, xb, quadratic=True),
             "krippendorff_alpha": krippendorff_alpha_interval_two_raters(xa, xb),
@@ -225,9 +306,9 @@ def main() -> int:
         mat_total = sum(v for row in mat.values() for v in row.values())
         if mat_total != len(keys):
             raise RuntimeError(
-                f"confusion matrix total mismatch for {metric}: {mat_total} != {len(keys)}"
+                f"confusion matrix total mismatch for {metric_name}: {mat_total} != {len(keys)}"
             )
-        confusion_mats[metric] = mat
+        confusion_mats[metric_name] = mat
 
     vac_a = [rater_a[k]["vacuity_label"] for k in keys]
     vac_b = [rater_b[k]["vacuity_label"] for k in keys]
@@ -254,11 +335,16 @@ def main() -> int:
     disagreement_counts_family: Counter[str] = Counter()
     for key in keys:
         for metric in ORDINAL + ["vacuity_label", "coverage_label"]:
-            av, bv = rater_a[key].get(metric, ""), rater_b[key].get(metric, "")
+            metric_name = ORDINAL_PREFIX.get(metric, metric)
+            if metric in ORDINAL:
+                av = str(parse_ordinal_value(rater_a[key], metric, f"rater_a[{key}]"))
+                bv = str(parse_ordinal_value(rater_b[key], metric, f"rater_b[{key}]"))
+            else:
+                av, bv = rater_a[key].get(metric, ""), rater_b[key].get(metric, "")
             if av == bv:
                 continue
             resolved, reason, source, obligation_idx, su_ids, ref_ids = disagreement_reason(
-                metric,
+                metric_name,
                 av,
                 bv,
                 rater_a[key],
@@ -270,7 +356,8 @@ def main() -> int:
                     "anonymized_packet_key": key,
                     "instance_id": meta.get("instance_id", ""),
                     "system_id": meta.get("system_id", ""),
-                    "metric": metric,
+                    "family": meta.get("family", ""),
+                    "metric": metric_name,
                     "rater_a": av,
                     "rater_b_human": bv,
                     "adjudicated_resolution": resolved,
@@ -282,7 +369,7 @@ def main() -> int:
                     "adjudicator_id": "adjudicator_v3",
                 }
             )
-            disagreement_counts_metric[metric] += 1
+            disagreement_counts_metric[metric_name] += 1
             disagreement_counts_system[meta.get("system_id", "")] += 1
             disagreement_counts_family[meta.get("family", "")] += 1
 
@@ -293,6 +380,7 @@ def main() -> int:
             "anonymized_packet_key",
             "instance_id",
             "system_id",
+            "family",
             "metric",
             "rater_a",
             "rater_b_human",
@@ -333,6 +421,12 @@ def main() -> int:
         "disagreement_examples": disagreements[:20],
         "annotator_qualification_summary": "Both raters completed CTA-Bench rubric training and blind packet calibration before strict-all pass.",
     }
+    if report["n_unique_instance_ids"] != 84:
+        raise RuntimeError("strict-all report n_unique_instance_ids must be 84")
+    if report["n_mapped_from_canonical"] != 0:
+        raise RuntimeError("strict-all report n_mapped_from_canonical must be 0")
+    if report["n_direct_human"] != len(keys) or report["n_direct_adjudicated"] != len(keys):
+        raise RuntimeError("strict-all direct row counts must equal overlap size")
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(
         json.dumps(report, indent=2) + "\n",
@@ -348,7 +442,7 @@ def main() -> int:
         "",
         "## Ordinal Metrics",
     ]
-    for m in ORDINAL:
+    for m in ("semantic_faithfulness", "code_consistency", "proof_utility"):
         md.append(
             f"- {m}: linear_weighted_kappa={ordinal_stats[m]['linear_weighted_kappa']:.4f}, "
             f"quadratic_weighted_kappa={ordinal_stats[m]['quadratic_weighted_kappa']:.4f}, "
