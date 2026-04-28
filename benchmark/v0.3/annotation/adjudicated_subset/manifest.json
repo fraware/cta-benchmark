@@ -11,7 +11,7 @@
   "input_hashes": {
     "eval_split_json": "sha256:275b46d4c601b302cded53e33cf12cfec666505161e40eac3fe60a632b129d5e",
     "experiment_config_benchmark_v03": "sha256:9b245e5d4845b2270df238676c14d5d1053fa76f3690d64ad6633c59d1cdc7a4",
-    "annotation_pack_json": "sha256:af784928a8876023cc3408815eb23612712232cf91a0685899628f254f69a402"
+    "annotation_pack_json": "sha256:f82491586e3eeb696a8d759d827498c43f723cf26d0b03a9cc6d9d37ff0a480a"
   },
   "protocol_freeze_sha256": "sha256:19e58bd64751189591c3cb17471c7eb1e924442b21a22829bbbf44b59013967e"
 }

@@ -24,6 +24,11 @@ future human imports.
 
 Annotator id is a stable anonymized pipeline reviewer id so the pack is not
 misread as crowdsourced gold.
+
+Human-reviewed obligation faithfulness overlays (audit trail, not silent edits):
+optional ``annotation/external_review/semantic_corrections_v1.csv`` keyed by
+canonical packet ``instance_id`` (resolved ``template_id``), ``system_id``, and
+``obligation_index``. Rows are merged after deterministic pipeline scoring.
 """
 
 from __future__ import annotations
@@ -41,11 +46,63 @@ ROOT = Path(__file__).resolve().parents[1]
 V3 = ROOT / "benchmark" / "v0.3"
 PACK_DIR = V3 / "annotation" / "adjudicated_subset"
 REVIEW_ROOT = V3 / "annotation" / "review_packets"
+SEMANTIC_CORRECTIONS_CSV = (
+    ROOT / "annotation" / "external_review" / "semantic_corrections_v1.csv"
+)
 DIRECT_ORIGIN_OVERRIDES = (
     V3 / "annotation" / "human_adjudicated" / "direct_adjudicated_pairs.csv"
 )
 SYSTEMS = ["text_only_v1", "code_only_v1", "naive_concat_v1", "full_method_v1"]
 ANNOTATOR_ID = "anonymized_pipeline_reviewer_v03_001"
+
+
+def load_semantic_corrections(path: Path) -> list[dict[str, str]]:
+    if not path.is_file():
+        return []
+    rows: list[dict[str, str]] = []
+    with path.open(encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            rows.append({k.strip(): (v or "").strip() for k, v in row.items()})
+    return rows
+
+
+def apply_semantic_corrections(
+    ann_obs: list[dict],
+    template_id: str,
+    system_id: str,
+    corrections: list[dict[str, str]],
+) -> int:
+    """Apply audit overlays when ``old_faithfulness`` matches the pipeline label."""
+    applied = 0
+    for row in corrections:
+        if row.get("system_id") != system_id:
+            continue
+        if row.get("instance_id") != template_id:
+            continue
+        try:
+            idx = int(row.get("obligation_index", "-1"))
+        except ValueError:
+            continue
+        old_f = row.get("old_faithfulness", "")
+        new_f = row.get("new_faithfulness", "")
+        reason = row.get("reason", "")
+        reviewer = row.get("reviewer", "")
+        for o in ann_obs:
+            if int(o["obligation_index"]) != idx:
+                continue
+            if o["faithfulness_label"] != old_f:
+                continue
+            o["faithfulness_label"] = new_f
+            note = (
+                f"semantic_corrections_v1 ({reviewer}): {reason}"
+            )
+            prev = o.get("notes") or ""
+            o["notes"] = f"{prev}; {note}" if prev else note
+            if new_f == "unfaithful":
+                o["consistency_label"] = "inconsistent"
+            applied += 1
+            break
+    return applied
 
 
 def load_direct_origin_overrides(path: Path) -> dict[tuple[str, str], str]:
@@ -230,6 +287,7 @@ def build_record(
     packet: dict,
     template_id: str,
     direct_overrides: dict[tuple[str, str], str],
+    corrections: list[dict[str, str]],
 ) -> dict:
     crit_list = critical_unit_ids_from_manifest_row(manifest_row)
     crit = set(crit_list)
@@ -269,6 +327,8 @@ def build_record(
             }
         )
 
+    apply_semantic_corrections(ann_obs, template_id, system_id, corrections)
+
     covered: set[str] = set()
     if isinstance(qs.get("critical_units_covered_by_direct_theorems"), list):
         covered |= set(qs["critical_units_covered_by_direct_theorems"]) & crit
@@ -297,6 +357,12 @@ def build_record(
         system_id,
         direct_overrides,
     )
+    overlay_note = ""
+    if SEMANTIC_CORRECTIONS_CSV.is_file():
+        overlay_note = (
+            f" Optional overlay rows may apply from `{SEMANTIC_CORRECTIONS_CSV.relative_to(ROOT).as_posix()}` "
+            "when ``old_faithfulness`` matches pipeline labels."
+        )
     notes = (
         "Pipeline-derived adjudication from registered review packet "
         f"`benchmark/v0.3/annotation/review_packets/{system_id}/{template_id}/packet.json` "
@@ -304,6 +370,7 @@ def build_record(
         f"annotation_origin={origin}. "
         "Disagreements between automated obligation hygiene checks were not applicable; "
         "no dual-human rater merge was required for this export."
+        f"{overlay_note}"
     )
 
     return {
@@ -362,6 +429,7 @@ def main() -> int:
     )
     args = ap.parse_args()
     direct_overrides = load_direct_origin_overrides(args.direct_origin_overrides)
+    corrections = load_semantic_corrections(SEMANTIC_CORRECTIONS_CSV)
 
     eval_ids = json.loads((V3 / "splits" / "eval.json").read_text(encoding="utf-8"))["instance_ids"]
     eval_set = set(eval_ids)
@@ -396,17 +464,18 @@ def main() -> int:
     for iid in sorted(manifest_by_id.keys()):
         row = manifest_by_id[iid]
         family = row["family"]
-        for sys in SYSTEMS:
-            pkt_path, template_id = resolve_packet_path(sys, iid)
+        for sid in SYSTEMS:
+            pkt_path, template_id = resolve_packet_path(sid, iid)
             packet = load_json(pkt_path)
             rec = build_record(
                 iid,
-                sys,
+                sid,
                 family,
                 row,
                 packet,
                 template_id,
                 direct_overrides,
+                corrections,
             )
             sl = rec["set_level_scores"]
             cov = rec["critical_unit_coverage"]
@@ -414,14 +483,14 @@ def main() -> int:
             origin = compute_annotation_origin(
                 iid,
                 template_id,
-                sys,
+                sid,
                 direct_overrides,
             )
             raw_rows.append(
                 {
                     "instance_id": iid,
                     "family": family,
-                    "system": sys,
+                    "system": sid,
                     "faithfulness_mean": sl["semantic_faithfulness"],
                     "code_consistency_mean": sl["code_consistency"],
                     "vacuity_rate": sl["vacuity_rate"],
@@ -443,30 +512,31 @@ def main() -> int:
             print(f"missing manifest row for eval instance {iid}", file=sys.stderr)
             return 1
         family = row["family"]
-        for sys in SYSTEMS:
-            pkt_path, template_id = resolve_packet_path(sys, iid)
+        for sid in SYSTEMS:
+            pkt_path, template_id = resolve_packet_path(sid, iid)
             packet = load_json(pkt_path)
             rec = build_record(
                 iid,
-                sys,
+                sid,
                 family,
                 row,
                 packet,
                 template_id,
                 direct_overrides,
+                corrections,
             )
             records.append(rec)
 
             sl = rec["set_level_scores"]
             cov = rec["critical_unit_coverage"]
 
-            pid = f"{iid}__{sys}"
+            pid = f"{iid}__{sid}"
             audit_ord += 1
             anon_key = f"ag_{audit_ord:03d}"
             audit_origin = compute_annotation_origin(
                 iid,
                 template_id,
-                sys,
+                sid,
                 direct_overrides,
             )
             agreement_audit.append(
@@ -475,7 +545,7 @@ def main() -> int:
                     "anonymized_packet_key": anon_key,
                     "real_packet_id": pid,
                     "instance_id": iid,
-                    "system_id": sys,
+                    "system_id": sid,
                     "annotation_origin": audit_origin,
                     "source_template_id": template_id,
                 }
@@ -534,7 +604,7 @@ def main() -> int:
                         "adjudication_id": f"adj_{anon_key}",
                         "anonymized_packet_key": anon_key,
                         "instance_id": iid,
-                        "system_id": sys,
+                        "system_id": sid,
                         "reviewer_pair": "rater_a|rater_b",
                         "disagreement_axes": "|".join(disag),
                         "resolution_notes": "Final labels taken from pipeline adjudication record (pack.json).",

@@ -1,6 +1,6 @@
 family,domain,system,mean,sd,median,iqr,bootstrap_ci95_low,bootstrap_ci95_high,n,aggregate_metric
 arrays_binary_search,arrays,code_only_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,3,faithfulness_mean
-arrays_binary_search,arrays,full_method_v1,0.8750,0.0000,0.8750,0.0000,0.8750,0.8750,6,faithfulness_mean
+arrays_binary_search,arrays,full_method_v1,0.6875,0.2054,0.6875,0.3750,0.5625,0.8125,6,faithfulness_mean
 arrays_binary_search,arrays,naive_concat_v1,0.9062,0.0625,0.8750,0.0312,0.8750,0.9688,4,faithfulness_mean
 arrays_binary_search,arrays,text_only_v1,0.8571,0.0000,0.8571,0.0000,0.8571,0.8571,5,faithfulness_mean
 arrays_max_subarray,arrays,code_only_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,2,faithfulness_mean

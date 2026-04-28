@@ -15,17 +15,17 @@ Notes: Rater-B provenance tier is `synthetic_inter_rater`; adjudicated gold labe
 
 Weighted Cohen's κ (linear weights on 1–4):
 
-- **semantic_faithfulness**: κ = 0.9069 ; bootstrap 95% CI = [0.8443, 0.9620]
-- **code_consistency**: κ = 0.5200 ; bootstrap 95% CI = [0.1740, 0.7904]
-- **proof_utility**: κ = 0.7764 ; bootstrap 95% CI = [0.6947, 0.8503]
+- **semantic_faithfulness**: κ = 0.9115 ; bootstrap 95% CI = [0.8496, 0.9650]
+- **code_consistency**: κ = 0.6164 ; bootstrap 95% CI = [0.3228, 0.8281]
+- **proof_utility**: κ = 0.7803 ; bootstrap 95% CI = [0.7017, 0.8530]
 
 ### Supplemental coefficients (same ordinal columns)
 
 Krippendorff's α (interval metric, squared distance on 1..4; two raters, pooled bootstrap):
 
-- **semantic_faithfulness**: α_interval = 0.9201 ; bootstrap 95% CI = [0.8545, 0.9651] ; Gwet AC1 (digits treated as nominal labels) = 0.8984 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.9069
-- **code_consistency**: α_interval = 0.5735 ; bootstrap 95% CI = [0.1577, 0.7947] ; Gwet AC1 (digits treated as nominal labels) = 0.4824 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.5168
-- **proof_utility**: α_interval = 0.8314 ; bootstrap 95% CI = [0.7579, 0.8887] ; Gwet AC1 (digits treated as nominal labels) = 0.7334 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.7755
+- **semantic_faithfulness**: α_interval = 0.9267 ; bootstrap 95% CI = [0.8681, 0.9682] ; Gwet AC1 (digits treated as nominal labels) = 0.9012 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.9115
+- **code_consistency**: α_interval = 0.6510 ; bootstrap 95% CI = [0.3230, 0.8517] ; Gwet AC1 (digits treated as nominal labels) = 0.5930 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.6144
+- **proof_utility**: α_interval = 0.8359 ; bootstrap 95% CI = [0.7683, 0.8912] ; Gwet AC1 (digits treated as nominal labels) = 0.7369 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.7796
 
 ## Coverage labels (full / partial / failed)
 
@@ -46,9 +46,9 @@ Krippendorff's α (interval metric, squared distance on 1..4; two raters, pooled
 | A \ B | 1 | 2 | 3 | 4 |
 | --- | --- | --- | --- | --- |
 | 1 | 0 | 0 | 0 | 0 |
-| 2 | 0 | 6 | 0 | 0 |
+| 2 | 0 | 8 | 0 | 0 |
 | 3 | 0 | 0 | 53 | 3 |
-| 4 | 0 | 0 | 6 | 124 |
+| 4 | 0 | 0 | 6 | 122 |
 
 ### code_consistency
 
@@ -56,15 +56,15 @@ Krippendorff's α (interval metric, squared distance on 1..4; two raters, pooled
 | --- | --- | --- | --- | --- |
 | 1 | 0 | 0 | 0 | 0 |
 | 2 | 0 | 0 | 0 | 0 |
-| 3 | 0 | 1 | 3 | 0 |
-| 4 | 0 | 0 | 6 | 182 |
+| 3 | 0 | 1 | 5 | 0 |
+| 4 | 0 | 0 | 6 | 180 |
 
 ### proof_utility
 
 | A \ B | 1 | 2 | 3 | 4 |
 | --- | --- | --- | --- | --- |
-| 1 | 4 | 2 | 0 | 0 |
-| 2 | 11 | 108 | 11 | 0 |
+| 1 | 5 | 3 | 0 | 0 |
+| 2 | 11 | 107 | 10 | 0 |
 | 3 | 0 | 1 | 45 | 2 |
 | 4 | 0 | 0 | 0 | 8 |
 

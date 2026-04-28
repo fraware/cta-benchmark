@@ -1,0 +1,3 @@
+instance_id,system_id,obligation_index,old_faithfulness,new_faithfulness,old_coverage,new_coverage,reason,reviewer
+arrays_binary_search_001,full_method_v1,0,faithful,partial,SU2,partial_SU2,"success theorem proves only disjunction and assumes hit; does not establish bounds ∧ equality",external_review
+arrays_binary_search_001,full_method_v1,1,faithful,unfaithful,SU1|SU3,SU1_only_or_none,"absence theorem restates binarySearch = none; does not prove target absent",external_review
