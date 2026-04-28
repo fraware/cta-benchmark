@@ -54,6 +54,7 @@ python scripts/compute_results.py --paper
 python scripts/repair_counterfactual_metrics.py
 python scripts/export_benchmark_paper_summary.py
 python scripts/ci_reviewer_readiness.py
+python scripts/export_final_ci_evidence.py
 ```
 
 Canonical filenames for manuscript layers (also emitted by **`compute_results.py --paper`**):
@@ -68,6 +69,9 @@ Canonical filenames for manuscript layers (also emitted by **`compute_results.py
 **`results/paper_primary_model_registry.csv`**, and
 **`annotation/external_review/`** review queues.
 Run **`python scripts/export_benchmark_paper_summary.py`** after metric export so **`paper_system_set.md`** stays aligned with **`benchmark/v0.3/benchmark_paper_summary.json`**.
+If semantic relabeling is needed, record it in
+**`annotation/external_review/semantic_corrections_v1.csv`** and rerun
+**`materialize_v03_adjudication_artifacts.py`** before recomputing paper outputs.
 
 Headline paper tables from **`python scripts/compute_results.py --paper`** use
 **`raw_metrics_strict.json`** only; expanded mapped summaries are written to
@@ -76,6 +80,8 @@ Headline paper tables from **`python scripts/compute_results.py --paper`** use
 and **`results/paper_table_agreement_evidence.csv`** (agreement packet origins). For
 ad-hoc analysis outside that pipeline, use **`raw_metrics_expanded.json`** (or
 `raw_metrics.json`) when family-grid propagation is intended.
+In `paper_strict_failure_modes.csv`, `missing_critical_semantic_unit` counts come
+from strict rows with `missing_critical_units > 0` in `raw_metrics_strict.json`.
 
 CI / quick checkout (demo fabric if `raw_metrics.json` is absent; stderr warning):
 

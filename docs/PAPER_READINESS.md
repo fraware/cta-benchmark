@@ -47,6 +47,7 @@ python scripts\compute_results.py --paper
 python scripts\repair_counterfactual_metrics.py
 python scripts\export_benchmark_paper_summary.py
 python scripts\ci_reviewer_readiness.py
+python scripts\export_final_ci_evidence.py
 ```
 
 **Bash (same steps):**
@@ -124,6 +125,19 @@ artifacts, and the strict rows in `results/paper_table_*_evidence.csv`; runs
 values against `schemas/failure_mode_v1.json`; and scans `annotation/` and
 `results/` for disallowed placeholder phrasing. Full field list is summarized in
 `CI_STATUS.md`.
+
+If external review identifies semantic mislabeling, record corrections in
+`annotation/external_review/semantic_corrections_v1.csv` and rerun:
+
+```powershell
+python scripts\materialize_v03_adjudication_artifacts.py
+python scripts\compute_results.py --paper
+python scripts\export_benchmark_paper_summary.py
+python scripts\ci_reviewer_readiness.py
+python scripts\export_final_ci_evidence.py
+```
+
+This preserves an explicit correction audit trail instead of silent packet edits.
 
 ## 6. Annotation agreement (after rater CSVs exist)
 
@@ -207,7 +221,7 @@ python scripts\ci_reviewer_readiness.py
 | Table 1 (inventory) | `results/table1_benchmark_overview.csv`, `results/table1_family_semantic_load.csv` |
 | Annotation evidence (strict vs expanded eval rows) | `results/paper_table_annotation_evidence.csv` |
 | Agreement packet evidence (audit population origins) | `results/paper_table_agreement_evidence.csv` |
-| Manuscript-ready aggregates — **headline (strict)** | `results/paper_table_*.csv` (legacy names) and explicit layer files: `results/paper_strict_system_summary.csv`, `results/paper_strict_family_summary.csv`, `results/paper_strict_failure_modes.csv`, `results/paper_strict_instance_level.csv`, plus per-metric aliases `results/paper_strict_system_*_summary.csv` and stacked `results/paper_strict_system_metrics_long.csv` |
+| Manuscript-ready aggregates — **headline (strict)** | `results/paper_table_*.csv` (legacy names) and explicit layer files: `results/paper_strict_system_summary.csv`, `results/paper_strict_family_summary.csv`, `results/paper_strict_failure_modes.csv`, `results/paper_strict_instance_level.csv`, plus per-metric aliases `results/paper_strict_system_*_summary.csv` and stacked `results/paper_strict_system_metrics_long.csv` (`missing_critical_semantic_unit` in strict failure tables is sourced from strict rows where `missing_critical_units > 0`) |
 | Appendix — expanded mapped robustness | `results/paper_expanded_system_summary.csv`, `results/paper_expanded_family_summary.csv`, `results/paper_expanded_failure_modes.csv` (copies promoted from `results/appendix_mapped_evidence/` after `compute_results.py --paper`) |
 | Evidence mass (direct vs propagated row counts) | `results/paper_annotation_origin_counts.csv` |
 | Declared primary system set (four-system primary study) | `results/paper_system_set.md` (also `benchmark/v0.3/benchmark_paper_summary.json`) |

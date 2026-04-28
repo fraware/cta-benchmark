@@ -15,6 +15,7 @@
 | Publication-facing tables — **headline (strict)** | `results/paper_strict_*` (explicit strict layer), `results/paper_table_*.csv` (legacy compat) | `python scripts/compute_results.py --paper` → `scripts/export_paper_tables.py` |
 | Appendix — **expanded mapped** | `results/paper_expanded_*` (copies promoted to `results/`), `results/appendix_mapped_evidence/paper_table_*.csv` | same pipeline (appendix pass inside `compute_results.py --paper`) |
 | Failure-mode exports (manuscript-ready) | `results/paper_strict_failure_modes.csv`, `results/paper_expanded_failure_modes.csv` (`evidence_view`, `system`, `family`, `failure_mode`, `count`, `share_within_system`, `share_global`, denominator/rate columns) | same |
+| Semantic correction overlay (external audit) | `annotation/external_review/semantic_corrections_v1.csv` (obligation-level overrides keyed by canonical `instance_id`, `system_id`, `obligation_index`) | update CSV then rerun `python scripts/materialize_v03_adjudication_artifacts.py` and `python scripts/compute_results.py --paper` |
 | Evidence mass | `results/paper_annotation_origin_counts.csv` | same |
 | Primary system-set statement | `results/paper_system_set.md`, `benchmark/v0.3/benchmark_paper_summary.json` | `python scripts/export_benchmark_paper_summary.py` |
 | Per-metric winners (stacked) | `results/paper_strict_system_metrics_long.csv`, `results/paper_strict_system_*_summary.csv` | same as headline `compute_results.py --paper` |
@@ -51,6 +52,9 @@ and repair exports (`repairs/paper_repair_status.csv`,
 `repairs/paper_repair_success_subset.csv`, `repairs/paper_repair_proof_subset.csv`,
 `repairs/paper_proof_facing_subset.csv`) are generated in the paper pipeline and
 should be checked in manuscript prep reviews.
+
+In strict failure exports, `missing_critical_semantic_unit` is sourced from strict
+raw rows with `missing_critical_units > 0` rather than hotspot proxy tags.
 
 ## Definitions and limitations
 

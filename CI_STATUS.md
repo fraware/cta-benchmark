@@ -57,10 +57,16 @@ compares `benchmark/v0.3/benchmark_paper_summary.json` to checked-in outputs:
   matches `results/raw_metrics_strict.json` row count when both exist
 - `annotation/external_review/mapped_review_queue.jsonl` non-empty line count
   matches `mapped_from_canonical` row count in `results/raw_metrics.json` when both exist
+- if present, `annotation/external_review/semantic_corrections_v1.csv` is applied by
+  `materialize_v03_adjudication_artifacts.py` as an explicit overlay (not silent edits)
 - `cargo run -p cta_cli -- validate file` for adjudicated subset `manifest.json`,
   `protocol_freeze.json`, and `schemas/failure_mode_v1.json` when those paths exist
 - `failure_mode_label` values in `results/raw_metrics.json` vs `schemas/failure_mode_v1.json`
 - Placeholder denylist scan over `annotation/` and `results/` (selected text extensions)
+
+For manuscript interpretation, `results/paper_strict_failure_modes.csv`
+`missing_critical_semantic_unit` counts are computed from strict `raw_metrics` rows
+with `missing_critical_units > 0`.
 
 Badge URLs are omitted here because they encode the public GitHub repository
 name; enable GitHub Actions badges in the camera-ready fork if permitted.
