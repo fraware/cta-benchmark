@@ -1,6 +1,6 @@
 family,domain,system,faithfulness_mean,faithfulness_ci95_low,faithfulness_ci95_high,n_instances
 arrays_binary_search,arrays,code_only_v1,1.0000,1.0000,1.0000,3
-arrays_binary_search,arrays,full_method_v1,0.8750,0.8750,0.8750,6
+arrays_binary_search,arrays,full_method_v1,0.5625,0.3542,0.7708,6
 arrays_binary_search,arrays,naive_concat_v1,0.9062,0.8750,0.9688,4
 arrays_binary_search,arrays,text_only_v1,0.8571,0.8571,0.8571,5
 arrays_max_subarray,arrays,code_only_v1,1.0000,1.0000,1.0000,2

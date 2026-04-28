@@ -37,6 +37,13 @@ METRIC_FILES = (
 )
 
 
+def canonical_failure_mode(mode: str) -> str:
+    m = (mode or "").strip()
+    if m == "low_faithfulness":
+        return "low_semantic_faithfulness"
+    return m
+
+
 def read_system_metric_table(path: Path) -> dict[str, dict[str, str]]:
     by_sys: dict[str, dict[str, str]] = {}
     if not path.is_file():
@@ -189,7 +196,7 @@ def write_failure_mode_export(
             for row in csv.DictReader(f):
                 sid = (row.get("system") or "").strip()
                 fam = (row.get("family") or "").strip() or "global"
-                mode = (row.get("failure_mode") or "").strip()
+                mode = canonical_failure_mode(row.get("failure_mode") or "")
                 c = int((row.get("count") or "0").strip() or 0)
                 if sid and mode:
                     counts_fam[(sid, fam, mode)] += c
@@ -213,7 +220,7 @@ def write_failure_mode_export(
                 if not sid:
                     continue
                 for tok in reason.split(";"):
-                    mode = tok.strip()
+                    mode = canonical_failure_mode(tok.strip())
                     if (
                         evidence_view == "strict_independent"
                         and mode == "missing_critical_semantic_unit"

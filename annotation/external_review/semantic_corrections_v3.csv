@@ -1,0 +1,14 @@
+template_id,system_id,obligation_index,old_faithfulness,new_faithfulness,old_vacuity,new_vacuity,old_coverage,new_coverage,reason,reviewer
+arrays_binary_search_001,full_method_v1,0,faithful,partial,false,false,SU2,partial_SU2,"success theorem proves only disjunction and assumes hit; does not establish bounds ∧ equality",external_review
+arrays_binary_search_001,full_method_v1,1,faithful,unfaithful,false,false,SU1|SU3,SU1_only_or_none,"absence theorem restates binarySearch = none; does not prove target absent",external_review
+arrays_binary_search_001,full_method_v1,3,faithful,unfaithful,false,false,SU2|SU5,,"Determinism of two Some-results does not establish the success postcondition i < length ∧ arr[i] = target; uniqueness is optional and not required.",external_review
+dp_longest_common_subsequence_001,full_method_v1,1,faithful,unfaithful,false,false,SU2,,"Trivial existence of k = lcsLength; does not state CommonSubseq, increasing indices, equal selected values, or witness length.",external_review
+dp_longest_common_subsequence_001,full_method_v1,2,faithful,unfaithful,false,false,SU3,,"Only proves lcsLength <= min length; does not quantify over arbitrary CommonSubseq witnesses.",external_review
+dp_longest_common_subsequence_001,full_method_v1,3,faithful,unfaithful,false,true,SU4,,"Tautology lcsLength a b = lcsLength a b; does not express subsequence-vs-substring semantics.",external_review
+dp_longest_common_subsequence_002,full_method_v1,2,faithful,unfaithful,false,false,SU2,,"Trivial existence of k; no CommonSubseq witness tied to returned length.",external_review
+dp_longest_common_subsequence_002,full_method_v1,3,faithful,partial,false,false,SU2|SU4,partial_SU4,"Unpacks CommonSubseq strict-increase structure but does not establish existence of a returned-length witness.",external_review
+dp_longest_common_subsequence_002,full_method_v1,4,faithful,partial,false,false,SU2,partial_SU4,"States value equality for an assumed CommonSubseq but does not establish existence or returned-length witness.",external_review
+dp_longest_common_subsequence_002,full_method_v1,5,faithful,unfaithful,false,false,SU3,,"Only states lcsLength <= min length; not maximality over CommonSubseq.",external_review
+dp_longest_common_subsequence_002,full_method_v1,6,faithful,unfaithful,false,true,SU4,,"Conclusion contains disjunction with True and proof exact Or.inr trivial; vacuous for subsequence semantics.",external_review
+trees_lowest_common_ancestor_001,full_method_v1,0,faithful,partial,false,false,SU1|SU2|SU3,SU1|SU2|partial_SU3,"Subtree witness is not tied to returned key a; missing root-key equality required by reference obligation.",external_review
+trees_lowest_common_ancestor_002,full_method_v1,0,faithful,partial,false,false,SU1|SU2|SU3,SU1|SU2|partial_SU3,"Subtree witness is not tied to returned key a; missing root-key equality required by reference obligation.",external_review

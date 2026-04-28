@@ -26,10 +26,10 @@ Annotator id is a stable anonymized pipeline reviewer id so the pack is not
 misread as crowdsourced gold.
 
 Human-reviewed obligation overlays (audit trail, not silent edits): optional
-``annotation/external_review/semantic_corrections_v2.csv`` (preferred) or
-``semantic_corrections_v1.csv`` keyed by canonical packet template id,
-``system_id``, and ``obligation_index``. Rows are merged after deterministic
-pipeline scoring.
+``annotation/external_review/semantic_corrections_v3.csv`` (preferred), or
+cumulative load of ``semantic_corrections_v1.csv`` + ``v2.csv``. Rows are keyed
+by canonical packet template id, ``system_id``, and ``obligation_index`` and
+merged after deterministic pipeline scoring.
 """
 
 from __future__ import annotations
@@ -52,6 +52,9 @@ SEMANTIC_CORRECTIONS_V2_CSV = (
 )
 SEMANTIC_CORRECTIONS_V1_CSV = (
     ROOT / "annotation" / "external_review" / "semantic_corrections_v1.csv"
+)
+SEMANTIC_CORRECTIONS_V3_CSV = (
+    ROOT / "annotation" / "external_review" / "semantic_corrections_v3.csv"
 )
 DIRECT_ORIGIN_OVERRIDES = (
     V3 / "annotation" / "human_adjudicated" / "direct_adjudicated_pairs.csv"
@@ -79,46 +82,6 @@ def correction_is_vacuity_match(row: dict[str, str], observed: bool) -> bool:
     if not old_v:
         return True
     return old_v == ("true" if observed else "false")
-
-
-def parse_coverage_tokens(spec: str) -> tuple[set[str], set[str]]:
-    exact: set[str] = set()
-    partial: set[str] = set()
-    for tok in [t.strip() for t in (spec or "").split("|") if t.strip()]:
-        if tok.startswith("partial_"):
-            partial.add(tok.replace("partial_", "", 1))
-        elif tok.startswith("SU"):
-            exact.add(tok)
-    return exact, partial
-
-
-def apply_semantic_correction_coverage(
-    corrections: list[dict[str, str]],
-    template_id: str,
-    system_id: str,
-    covered: set[str],
-    crit: set[str],
-) -> None:
-    """
-    Shrink ``covered`` using ``new_coverage`` from semantic corrections CSV.
-
-    Tokens are audit-defined (not inferred): they remove critical units still
-    present only because ``quality_summary.critical_units_covered_by_direct_theorems``
-    over-asserted coverage relative to obligation-level review.
-    """
-    for row in corrections:
-        if row.get("system_id") != system_id:
-            continue
-        if correction_template_id(row) != template_id:
-            continue
-        nc = (row.get("new_coverage") or "").strip()
-        if not nc:
-            continue
-        exact, partial = parse_coverage_tokens(nc)
-        allowed = (exact | partial) & crit
-        if not allowed:
-            continue
-        covered.intersection_update(allowed)
 
 
 def apply_semantic_corrections(
@@ -167,6 +130,31 @@ def apply_semantic_corrections(
             applied += 1
             break
     return applied
+
+
+def load_cumulative_semantic_corrections() -> tuple[Path | None, list[dict[str, str]]]:
+    """
+    Load semantic corrections cumulatively.
+
+    Priority:
+      1) v3 only, if present.
+      2) v1 + v2 merged in order.
+      3) whichever legacy file exists.
+    """
+    if SEMANTIC_CORRECTIONS_V3_CSV.is_file():
+        return SEMANTIC_CORRECTIONS_V3_CSV, load_semantic_corrections(
+            SEMANTIC_CORRECTIONS_V3_CSV
+        )
+
+    rows: list[dict[str, str]] = []
+    source: Path | None = None
+    if SEMANTIC_CORRECTIONS_V1_CSV.is_file():
+        rows.extend(load_semantic_corrections(SEMANTIC_CORRECTIONS_V1_CSV))
+        source = SEMANTIC_CORRECTIONS_V1_CSV
+    if SEMANTIC_CORRECTIONS_V2_CSV.is_file():
+        rows.extend(load_semantic_corrections(SEMANTIC_CORRECTIONS_V2_CSV))
+        source = SEMANTIC_CORRECTIONS_V2_CSV if source else SEMANTIC_CORRECTIONS_V2_CSV
+    return source, rows
 
 
 def load_direct_origin_overrides(path: Path) -> dict[tuple[str, str], str]:
@@ -395,14 +383,11 @@ def build_record(
     apply_semantic_corrections(ann_obs, template_id, system_id, corrections)
 
     covered: set[str] = set()
-    if isinstance(qs.get("critical_units_covered_by_direct_theorems"), list):
-        covered |= set(qs["critical_units_covered_by_direct_theorems"]) & crit
     for o in ann_obs:
         if o["faithfulness_label"] == "faithful" and not o["is_vacuous"]:
             for su in o["linked_semantic_units"]:
                 if su in crit:
                     covered.add(su)
-    apply_semantic_correction_coverage(corrections, template_id, system_id, covered, crit)
     missed = sorted(crit - covered)
 
     n_ob = max(1, len(ann_obs))
@@ -424,7 +409,7 @@ def build_record(
         direct_overrides,
     )
     overlay_note = ""
-    if corrections_path.is_file():
+    if corrections_path and corrections_path.is_file():
         overlay_note = (
             f" Optional overlay rows may apply from `{corrections_path.relative_to(ROOT).as_posix()}` "
             "when old label columns match pipeline labels."
@@ -495,12 +480,7 @@ def main() -> int:
     )
     args = ap.parse_args()
     direct_overrides = load_direct_origin_overrides(args.direct_origin_overrides)
-    corrections_path = (
-        SEMANTIC_CORRECTIONS_V2_CSV
-        if SEMANTIC_CORRECTIONS_V2_CSV.is_file()
-        else SEMANTIC_CORRECTIONS_V1_CSV
-    )
-    corrections = load_semantic_corrections(corrections_path)
+    corrections_path, corrections = load_cumulative_semantic_corrections()
 
     eval_ids = json.loads((V3 / "splits" / "eval.json").read_text(encoding="utf-8"))["instance_ids"]
     eval_set = set(eval_ids)
