@@ -3,6 +3,9 @@
 - `strict_review_queue.jsonl`: strict independent rows from `results/raw_metrics_strict.json`.
 - `mapped_review_queue.jsonl`: mapped rows from `results/raw_metrics_expanded.json` where `annotation_origin=mapped_from_canonical`.
 - `strict_review_queue.csv`: flattened strict queue for spreadsheet workflows.
+- `semantic_corrections_v2.csv`: reviewer correction overlay (preferred) for
+  obligation-level faithfulness/vacuity/coverage adjustments keyed by
+  `template_id`, `system_id`, and `obligation_index`.
 
 ## JSONL row fields
 - `instance_id`, `family`, `system_id`: row identity.

@@ -127,7 +127,7 @@ values against `schemas/failure_mode_v1.json`; and scans `annotation/` and
 `CI_STATUS.md`.
 
 If external review identifies semantic mislabeling, record corrections in
-`annotation/external_review/semantic_corrections_v1.csv` and rerun:
+`annotation/external_review/semantic_corrections_v2.csv` (preferred) and rerun:
 
 ```powershell
 python scripts\materialize_v03_adjudication_artifacts.py
@@ -138,6 +138,8 @@ python scripts\export_final_ci_evidence.py
 ```
 
 This preserves an explicit correction audit trail instead of silent packet edits.
+If `semantic_corrections_v2.csv` is absent, the materializer falls back to
+`semantic_corrections_v1.csv` for backward compatibility.
 
 ## 6. Annotation agreement (after rater CSVs exist)
 

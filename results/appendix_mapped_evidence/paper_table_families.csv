@@ -1,6 +1,6 @@
 family,domain,system,faithfulness_mean,faithfulness_ci95_low,faithfulness_ci95_high,n_instances
 arrays_binary_search,arrays,code_only_v1,1.0000,1.0000,1.0000,7
-arrays_binary_search,arrays,full_method_v1,0.6607,0.5536,0.8214,7
+arrays_binary_search,arrays,full_method_v1,0.8750,0.8750,0.8750,7
 arrays_binary_search,arrays,naive_concat_v1,0.9286,0.8750,0.9821,7
 arrays_binary_search,arrays,text_only_v1,0.8571,0.8571,0.8571,7
 arrays_max_subarray,arrays,code_only_v1,1.0000,1.0000,1.0000,7
@@ -12,7 +12,7 @@ dp_knapsack_01,dp,full_method_v1,0.8333,0.8333,0.8333,7
 dp_knapsack_01,dp,naive_concat_v1,0.8333,0.8333,0.8333,7
 dp_knapsack_01,dp,text_only_v1,0.8333,0.8333,0.8333,7
 dp_longest_common_subsequence,dp,code_only_v1,0.8571,0.7857,0.9643,7
-dp_longest_common_subsequence,dp,full_method_v1,0.8054,0.8018,0.8107,7
+dp_longest_common_subsequence,dp,full_method_v1,0.2482,0.2161,0.2964,7
 dp_longest_common_subsequence,dp,naive_concat_v1,0.5734,0.5558,0.5851,7
 dp_longest_common_subsequence,dp,text_only_v1,0.5586,0.5566,0.5615,7
 graph_bfs_shortest_path,graph,code_only_v1,1.0000,1.0000,1.0000,7
@@ -44,6 +44,6 @@ trees_bst_insert,trees,full_method_v1,0.9571,0.9143,0.9857,7
 trees_bst_insert,trees,naive_concat_v1,0.8000,0.7250,0.8500,7
 trees_bst_insert,trees,text_only_v1,0.5736,0.5549,0.6017,7
 trees_lowest_common_ancestor,trees,code_only_v1,0.8333,0.8333,0.8333,7
-trees_lowest_common_ancestor,trees,full_method_v1,0.8333,0.8333,0.8333,7
+trees_lowest_common_ancestor,trees,full_method_v1,0.6667,0.6667,0.6667,7
 trees_lowest_common_ancestor,trees,naive_concat_v1,0.6190,0.5952,0.6548,7
 trees_lowest_common_ancestor,trees,text_only_v1,0.5519,0.5130,0.5779,7

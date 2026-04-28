@@ -1,6 +1,6 @@
 family,domain,system,mean,sd,median,iqr,bootstrap_ci95_low,bootstrap_ci95_high,n,aggregate_metric
 arrays_binary_search,arrays,code_only_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
-arrays_binary_search,arrays,full_method_v1,0.8571,0.1336,0.7500,0.2500,0.7500,0.9286,7,code_consistency_mean
+arrays_binary_search,arrays,full_method_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
 arrays_binary_search,arrays,naive_concat_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
 arrays_binary_search,arrays,text_only_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
 arrays_max_subarray,arrays,code_only_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
@@ -12,7 +12,7 @@ dp_knapsack_01,dp,full_method_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,cod
 dp_knapsack_01,dp,naive_concat_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
 dp_knapsack_01,dp,text_only_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
 dp_longest_common_subsequence,dp,code_only_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
-dp_longest_common_subsequence,dp,full_method_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
+dp_longest_common_subsequence,dp,full_method_v1,0.5918,0.1145,0.5000,0.2143,0.5306,0.6837,7,code_consistency_mean
 dp_longest_common_subsequence,dp,naive_concat_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
 dp_longest_common_subsequence,dp,text_only_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean
 graph_bfs_shortest_path,graph,code_only_v1,1.0000,0.0000,1.0000,0.0000,1.0000,1.0000,7,code_consistency_mean

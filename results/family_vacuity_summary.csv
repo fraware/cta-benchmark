@@ -12,7 +12,7 @@ dp_knapsack_01,dp,full_method_v1,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,4,vac
 dp_knapsack_01,dp,naive_concat_v1,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,5,vacuity_rate
 dp_knapsack_01,dp,text_only_v1,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,5,vacuity_rate
 dp_longest_common_subsequence,dp,code_only_v1,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,4,vacuity_rate
-dp_longest_common_subsequence,dp,full_method_v1,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,3,vacuity_rate
+dp_longest_common_subsequence,dp,full_method_v1,0.1750,0.0433,0.2000,0.0375,0.1250,0.2000,3,vacuity_rate
 dp_longest_common_subsequence,dp,naive_concat_v1,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,6,vacuity_rate
 dp_longest_common_subsequence,dp,text_only_v1,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,6,vacuity_rate
 graph_bfs_shortest_path,graph,code_only_v1,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,4,vacuity_rate

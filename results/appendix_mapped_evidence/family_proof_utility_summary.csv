@@ -1,6 +1,6 @@
 family,domain,system,mean,sd,median,iqr,bootstrap_ci95_low,bootstrap_ci95_high,n,aggregate_metric
 arrays_binary_search,arrays,code_only_v1,0.3150,0.0000,0.3150,0.0000,0.3150,0.3150,7,proof_utility_mean
-arrays_binary_search,arrays,full_method_v1,0.2669,0.0284,0.2441,0.0532,0.2517,0.2897,7,proof_utility_mean
+arrays_binary_search,arrays,full_method_v1,0.2973,0.0000,0.2973,0.0000,0.2973,0.2973,7,proof_utility_mean
 arrays_binary_search,arrays,naive_concat_v1,0.3049,0.0095,0.2973,0.0177,0.2998,0.3099,7,proof_utility_mean
 arrays_binary_search,arrays,text_only_v1,0.2947,0.0000,0.2947,0.0000,0.2947,0.2947,7,proof_utility_mean
 arrays_max_subarray,arrays,code_only_v1,0.3150,0.0000,0.3150,0.0000,0.3150,0.3150,7,proof_utility_mean
@@ -12,7 +12,7 @@ dp_knapsack_01,dp,full_method_v1,0.7076,0.0000,0.7076,0.0000,0.7076,0.7076,7,pro
 dp_knapsack_01,dp,naive_concat_v1,0.7076,0.0000,0.7076,0.0000,0.7076,0.7076,7,proof_utility_mean
 dp_knapsack_01,dp,text_only_v1,0.7076,0.0000,0.7076,0.0000,0.7076,0.7076,7,proof_utility_mean
 dp_longest_common_subsequence,dp,code_only_v1,0.2948,0.0189,0.2796,0.0354,0.2847,0.3099,7,proof_utility_mean
-dp_longest_common_subsequence,dp,full_method_v1,0.2874,0.0009,0.2867,0.0017,0.2869,0.2882,7,proof_utility_mean
+dp_longest_common_subsequence,dp,full_method_v1,0.2084,0.0085,0.2016,0.0159,0.2039,0.2152,7,proof_utility_mean
 dp_longest_common_subsequence,dp,naive_concat_v1,0.2545,0.0031,0.2570,0.0058,0.2520,0.2570,7,proof_utility_mean
 dp_longest_common_subsequence,dp,text_only_v1,0.2524,0.0005,0.2520,0.0010,0.2521,0.2529,7,proof_utility_mean
 graph_bfs_shortest_path,graph,code_only_v1,0.3150,0.0000,0.3150,0.0000,0.3150,0.3150,7,proof_utility_mean
@@ -44,6 +44,6 @@ trees_bst_insert,trees,full_method_v1,0.7503,0.0184,0.7650,0.0344,0.7355,0.7601,
 trees_bst_insert,trees,naive_concat_v1,0.2867,0.0133,0.2973,0.0248,0.2760,0.2938,7,proof_utility_mean
 trees_bst_insert,trees,text_only_v1,0.2546,0.0050,0.2506,0.0093,0.2506,0.2586,7,proof_utility_mean
 trees_lowest_common_ancestor,trees,code_only_v1,0.2914,0.0000,0.2914,0.0000,0.2914,0.2914,7,proof_utility_mean
-trees_lowest_common_ancestor,trees,full_method_v1,0.7076,0.0000,0.7076,0.0000,0.7076,0.7076,7,proof_utility_mean
+trees_lowest_common_ancestor,trees,full_method_v1,0.6502,0.0000,0.6502,0.0000,0.6502,0.6502,7,proof_utility_mean
 trees_lowest_common_ancestor,trees,naive_concat_v1,0.2610,0.0063,0.2559,0.0118,0.2576,0.2643,7,proof_utility_mean
 trees_lowest_common_ancestor,trees,text_only_v1,0.2515,0.0069,0.2570,0.0129,0.2478,0.2552,7,proof_utility_mean

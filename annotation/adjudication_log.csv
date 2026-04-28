@@ -13,7 +13,6 @@ adj_ag_052,ag_052,dp_longest_common_subsequence_004,full_method_v1,rater_a|rater
 adj_ag_053,ag_053,dp_longest_common_subsequence_005,text_only_v1,rater_a|rater_b,proof_utility,Final labels taken from pipeline adjudication record (pack.json).,,
 adj_ag_055,ag_055,dp_longest_common_subsequence_005,naive_concat_v1,rater_a|rater_b,proof_utility,Final labels taken from pipeline adjudication record (pack.json).,,
 adj_ag_059,ag_059,dp_longest_common_subsequence_006,naive_concat_v1,rater_a|rater_b,proof_utility,Final labels taken from pipeline adjudication record (pack.json).,,
-adj_ag_060,ag_060,dp_longest_common_subsequence_006,full_method_v1,rater_a|rater_b,semantic_faithfulness,Final labels taken from pipeline adjudication record (pack.json).,,
 adj_ag_064,ag_064,dp_longest_common_subsequence_007,full_method_v1,rater_a|rater_b,coverage_label,Final labels taken from pipeline adjudication record (pack.json).,,
 adj_ag_066,ag_066,graph_bfs_shortest_path_004,code_only_v1,rater_a|rater_b,semantic_faithfulness|vacuity_label,Final labels taken from pipeline adjudication record (pack.json).,,
 adj_ag_069,ag_069,graph_bfs_shortest_path_005,text_only_v1,rater_a|rater_b,proof_utility,Final labels taken from pipeline adjudication record (pack.json).,,
