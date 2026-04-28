@@ -25,10 +25,11 @@ future human imports.
 Annotator id is a stable anonymized pipeline reviewer id so the pack is not
 misread as crowdsourced gold.
 
-Human-reviewed obligation faithfulness overlays (audit trail, not silent edits):
-optional ``annotation/external_review/semantic_corrections_v1.csv`` keyed by
-canonical packet ``instance_id`` (resolved ``template_id``), ``system_id``, and
-``obligation_index``. Rows are merged after deterministic pipeline scoring.
+Human-reviewed obligation overlays (audit trail, not silent edits): optional
+``annotation/external_review/semantic_corrections_v2.csv`` (preferred) or
+``semantic_corrections_v1.csv`` keyed by canonical packet template id,
+``system_id``, and ``obligation_index``. Rows are merged after deterministic
+pipeline scoring.
 """
 
 from __future__ import annotations
@@ -46,7 +47,10 @@ ROOT = Path(__file__).resolve().parents[1]
 V3 = ROOT / "benchmark" / "v0.3"
 PACK_DIR = V3 / "annotation" / "adjudicated_subset"
 REVIEW_ROOT = V3 / "annotation" / "review_packets"
-SEMANTIC_CORRECTIONS_CSV = (
+SEMANTIC_CORRECTIONS_V2_CSV = (
+    ROOT / "annotation" / "external_review" / "semantic_corrections_v2.csv"
+)
+SEMANTIC_CORRECTIONS_V1_CSV = (
     ROOT / "annotation" / "external_review" / "semantic_corrections_v1.csv"
 )
 DIRECT_ORIGIN_OVERRIDES = (
@@ -66,6 +70,28 @@ def load_semantic_corrections(path: Path) -> list[dict[str, str]]:
     return rows
 
 
+def correction_template_id(row: dict[str, str]) -> str:
+    return (row.get("template_id") or row.get("instance_id") or "").strip()
+
+
+def correction_is_vacuity_match(row: dict[str, str], observed: bool) -> bool:
+    old_v = (row.get("old_vacuity") or "").strip().lower()
+    if not old_v:
+        return True
+    return old_v == ("true" if observed else "false")
+
+
+def parse_coverage_tokens(spec: str) -> tuple[set[str], set[str]]:
+    exact: set[str] = set()
+    partial: set[str] = set()
+    for tok in [t.strip() for t in (spec or "").split("|") if t.strip()]:
+        if tok.startswith("partial_"):
+            partial.add(tok.replace("partial_", "", 1))
+        elif tok.startswith("SU"):
+            exact.add(tok)
+    return exact, partial
+
+
 def apply_semantic_correction_coverage(
     corrections: list[dict[str, str]],
     template_id: str,
@@ -74,7 +100,7 @@ def apply_semantic_correction_coverage(
     crit: set[str],
 ) -> None:
     """
-    Shrink ``covered`` using ``new_coverage`` from semantic_corrections_v1.csv.
+    Shrink ``covered`` using ``new_coverage`` from semantic corrections CSV.
 
     Tokens are audit-defined (not inferred): they remove critical units still
     present only because ``quality_summary.critical_units_covered_by_direct_theorems``
@@ -83,15 +109,16 @@ def apply_semantic_correction_coverage(
     for row in corrections:
         if row.get("system_id") != system_id:
             continue
-        if row.get("instance_id") != template_id:
+        if correction_template_id(row) != template_id:
             continue
         nc = (row.get("new_coverage") or "").strip()
-        if nc == "partial_SU2":
-            if "SU2" in crit:
-                covered.discard("SU2")
-        elif nc == "SU1_only_or_none":
-            if "SU3" in crit:
-                covered.discard("SU3")
+        if not nc:
+            continue
+        exact, partial = parse_coverage_tokens(nc)
+        allowed = (exact | partial) & crit
+        if not allowed:
+            continue
+        covered.intersection_update(allowed)
 
 
 def apply_semantic_corrections(
@@ -100,12 +127,12 @@ def apply_semantic_corrections(
     system_id: str,
     corrections: list[dict[str, str]],
 ) -> int:
-    """Apply audit overlays when ``old_faithfulness`` matches the pipeline label."""
+    """Apply audit overlays when old labels match pipeline labels."""
     applied = 0
     for row in corrections:
         if row.get("system_id") != system_id:
             continue
-        if row.get("instance_id") != template_id:
+        if correction_template_id(row) != template_id:
             continue
         try:
             idx = int(row.get("obligation_index", "-1"))
@@ -113,6 +140,7 @@ def apply_semantic_corrections(
             continue
         old_f = row.get("old_faithfulness", "")
         new_f = row.get("new_faithfulness", "")
+        new_v = (row.get("new_vacuity") or "").strip().lower()
         reason = row.get("reason", "")
         reviewer = row.get("reviewer", "")
         for o in ann_obs:
@@ -120,14 +148,22 @@ def apply_semantic_corrections(
                 continue
             if o["faithfulness_label"] != old_f:
                 continue
+            if not correction_is_vacuity_match(row, bool(o["is_vacuous"])):
+                continue
             o["faithfulness_label"] = new_f
+            if new_v in {"true", "false"}:
+                o["is_vacuous"] = (new_v == "true")
             note = (
-                f"semantic_corrections_v1 ({reviewer}): {reason}"
+                f"semantic_corrections ({reviewer}): {reason}"
             )
             prev = o.get("notes") or ""
             o["notes"] = f"{prev}; {note}" if prev else note
-            if new_f == "unfaithful":
+            if o["is_vacuous"]:
+                o["consistency_label"] = "not_applicable"
+            elif new_f == "unfaithful":
                 o["consistency_label"] = "inconsistent"
+            elif o.get("consistency_label") == "not_applicable":
+                o["consistency_label"] = "consistent"
             applied += 1
             break
     return applied
@@ -316,6 +352,7 @@ def build_record(
     template_id: str,
     direct_overrides: dict[tuple[str, str], str],
     corrections: list[dict[str, str]],
+    corrections_path: Path,
 ) -> dict:
     crit_list = critical_unit_ids_from_manifest_row(manifest_row)
     crit = set(crit_list)
@@ -387,10 +424,10 @@ def build_record(
         direct_overrides,
     )
     overlay_note = ""
-    if SEMANTIC_CORRECTIONS_CSV.is_file():
+    if corrections_path.is_file():
         overlay_note = (
-            f" Optional overlay rows may apply from `{SEMANTIC_CORRECTIONS_CSV.relative_to(ROOT).as_posix()}` "
-            "when ``old_faithfulness`` matches pipeline labels."
+            f" Optional overlay rows may apply from `{corrections_path.relative_to(ROOT).as_posix()}` "
+            "when old label columns match pipeline labels."
         )
     notes = (
         "Pipeline-derived adjudication from registered review packet "
@@ -458,7 +495,12 @@ def main() -> int:
     )
     args = ap.parse_args()
     direct_overrides = load_direct_origin_overrides(args.direct_origin_overrides)
-    corrections = load_semantic_corrections(SEMANTIC_CORRECTIONS_CSV)
+    corrections_path = (
+        SEMANTIC_CORRECTIONS_V2_CSV
+        if SEMANTIC_CORRECTIONS_V2_CSV.is_file()
+        else SEMANTIC_CORRECTIONS_V1_CSV
+    )
+    corrections = load_semantic_corrections(corrections_path)
 
     eval_ids = json.loads((V3 / "splits" / "eval.json").read_text(encoding="utf-8"))["instance_ids"]
     eval_set = set(eval_ids)
@@ -505,6 +547,7 @@ def main() -> int:
                 template_id,
                 direct_overrides,
                 corrections,
+                corrections_path,
             )
             sl = rec["set_level_scores"]
             cov = rec["critical_unit_coverage"]
@@ -553,6 +596,7 @@ def main() -> int:
                 template_id,
                 direct_overrides,
                 corrections,
+                corrections_path,
             )
             records.append(rec)
 
