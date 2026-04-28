@@ -209,64 +209,64 @@
     "agreement_audit_all_packets_mapped_from_canonical": false
   },
   "weighted_kappa_linear": {
-    "semantic_faithfulness": 0.9292296350903057,
-    "code_consistency": 0.7283751010509242,
-    "proof_utility": 0.7863501483679521
+    "semantic_faithfulness": 0.934133790737564,
+    "code_consistency": 0.7886792452830145,
+    "proof_utility": 0.789815115147583
   },
   "weighted_kappa_bootstrap_ci95": {
     "semantic_faithfulness": [
-      0.8770564476406261,
-      0.9738253203671724
+      0.8842277543285376,
+      0.975613886536833
     ],
     "code_consistency": [
-      0.45591939546599464,
-      0.8979085430698327
+      0.5765595463137996,
+      0.9195305951383046
     ],
     "proof_utility": [
-      0.7072900304906208,
-      0.856953642384106
+      0.7123380028466537,
+      0.8598767434317217
     ]
   },
   "krippendorff_alpha_interval": {
-    "semantic_faithfulness": 0.9474512487170715,
-    "code_consistency": 0.8005786779434676,
-    "proof_utility": 0.8420258719202816
+    "semantic_faithfulness": 0.9549269323317096,
+    "code_consistency": 0.8594656767919695,
+    "proof_utility": 0.8458771238720995
   },
   "krippendorff_alpha_interval_bootstrap_ci95": {
     "semantic_faithfulness": [
-      0.9013731107379236,
-      0.9802140047747454
+      0.9146666666666666,
+      0.9833330922033016
     ],
     "code_consistency": [
-      0.5191986644407346,
-      0.9313181899481309
+      0.663453111305872,
+      0.9541875447387258
     ],
     "proof_utility": [
-      0.7723214285714286,
-      0.8959094370796814
+      0.7789523261290492,
+      0.8988001941882239
     ]
   },
   "gwet_ac1_ordinal_as_nominal": {
-    "semantic_faithfulness": 0.9166372690021981,
-    "code_consistency": 0.6660454714871408,
-    "proof_utility": 0.7424547283702214
+    "semantic_faithfulness": 0.9187108041597205,
+    "code_consistency": 0.7158862699503222,
+    "proof_utility": 0.745501853261003
   },
   "gwet_ac2_linear_ordinal": {
-    "semantic_faithfulness": 0.9292263742339771,
-    "code_consistency": 0.7273557155898159,
-    "proof_utility": 0.7856921391512847
+    "semantic_faithfulness": 0.9341309661649301,
+    "code_consistency": 0.7880627611763776,
+    "proof_utility": 0.7893153969640931
   },
   "coverage_percent_agreement": 0.9635416666666666,
-  "coverage_cohens_kappa_unweighted": 0.9276563677467972,
+  "coverage_cohens_kappa_unweighted": 0.9308214947498454,
   "coverage_kappa_bootstrap_ci95": [
-    0.8696939782823297,
-    0.9713589577842972
+    0.8765273311897107,
+    0.9726300784034212
   ],
-  "coverage_gwet_ac1": 0.9276310475728938,
+  "coverage_gwet_ac1": 0.9307983420436114,
   "coverage_prevalence_pooled": {
-    "full": 0.625,
-    "partial": 0.3203125,
-    "failed": 0.0546875
+    "full": 0.59375,
+    "partial": 0.3411458333333333,
+    "failed": 0.06510416666666667
   },
   "vacuity_label": {
     "cohens_kappa_unweighted": 0.0,
@@ -283,7 +283,7 @@
   "ordinal_confusion_matrices": {
     "semantic_faithfulness": {
       "1": {
-        "1": 2,
+        "1": 4,
         "2": 0,
         "3": 0,
         "4": 0
@@ -304,7 +304,7 @@
         "1": 0,
         "2": 0,
         "3": 4,
-        "4": 118
+        "4": 116
       }
     },
     "code_consistency": {
@@ -316,7 +316,7 @@
       },
       "2": {
         "1": 0,
-        "2": 2,
+        "2": 4,
         "3": 0,
         "4": 0
       },
@@ -330,20 +330,20 @@
         "1": 0,
         "2": 0,
         "3": 6,
-        "4": 178
+        "4": 176
       }
     },
     "proof_utility": {
       "1": {
-        "1": 7,
-        "2": 3,
+        "1": 8,
+        "2": 4,
         "3": 0,
         "4": 0
       },
       "2": {
         "1": 11,
-        "2": 105,
-        "3": 10,
+        "2": 104,
+        "3": 9,
         "4": 0
       },
       "3": {

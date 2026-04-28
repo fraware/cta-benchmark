@@ -15,24 +15,24 @@ Notes: Rater-B provenance tier is `synthetic_inter_rater`; adjudicated gold labe
 
 Weighted Cohen's κ (linear weights on 1–4):
 
-- **semantic_faithfulness**: κ = 0.9292 ; bootstrap 95% CI = [0.8771, 0.9738]
-- **code_consistency**: κ = 0.7284 ; bootstrap 95% CI = [0.4559, 0.8979]
-- **proof_utility**: κ = 0.7864 ; bootstrap 95% CI = [0.7073, 0.8570]
+- **semantic_faithfulness**: κ = 0.9341 ; bootstrap 95% CI = [0.8842, 0.9756]
+- **code_consistency**: κ = 0.7887 ; bootstrap 95% CI = [0.5766, 0.9195]
+- **proof_utility**: κ = 0.7898 ; bootstrap 95% CI = [0.7123, 0.8599]
 
 ### Supplemental coefficients (same ordinal columns)
 
 Krippendorff's α (interval metric, squared distance on 1..4; two raters, pooled bootstrap):
 
-- **semantic_faithfulness**: α_interval = 0.9475 ; bootstrap 95% CI = [0.9014, 0.9802] ; Gwet AC1 (digits treated as nominal labels) = 0.9166 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.9292
-- **code_consistency**: α_interval = 0.8006 ; bootstrap 95% CI = [0.5192, 0.9313] ; Gwet AC1 (digits treated as nominal labels) = 0.6660 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.7274
-- **proof_utility**: α_interval = 0.8420 ; bootstrap 95% CI = [0.7723, 0.8959] ; Gwet AC1 (digits treated as nominal labels) = 0.7425 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.7857
+- **semantic_faithfulness**: α_interval = 0.9549 ; bootstrap 95% CI = [0.9147, 0.9833] ; Gwet AC1 (digits treated as nominal labels) = 0.9187 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.9341
+- **code_consistency**: α_interval = 0.8595 ; bootstrap 95% CI = [0.6635, 0.9542] ; Gwet AC1 (digits treated as nominal labels) = 0.7159 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.7881
+- **proof_utility**: α_interval = 0.8459 ; bootstrap 95% CI = [0.7790, 0.8988] ; Gwet AC1 (digits treated as nominal labels) = 0.7455 ; Gwet AC2 (linear ordinal, pooled prevalence) = 0.7893
 
 ## Coverage labels (full / partial / failed)
 
 - Percent agreement: **0.9635**
-- Cohen's κ (unweighted nominal, full|partial|failed): **0.9277** (bootstrap 95% CI: [0.8697, 0.9714])
-- Gwet's AC1 (nominal coverage labels): **0.9276**
-- Pooled label prevalence (both raters): `{'full': 0.625, 'partial': 0.3203125, 'failed': 0.0546875}`
+- Cohen's κ (unweighted nominal, full|partial|failed): **0.9308** (bootstrap 95% CI: [0.8765, 0.9726])
+- Gwet's AC1 (nominal coverage labels): **0.9308**
+- Pooled label prevalence (both raters): `{'full': 0.59375, 'partial': 0.3411458333333333, 'failed': 0.06510416666666667}`
 
 ## Vacuity labels
 
@@ -45,26 +45,26 @@ Krippendorff's α (interval metric, squared distance on 1..4; two raters, pooled
 
 | A \ B | 1 | 2 | 3 | 4 |
 | --- | --- | --- | --- | --- |
-| 1 | 2 | 0 | 0 | 0 |
+| 1 | 4 | 0 | 0 | 0 |
 | 2 | 0 | 8 | 0 | 0 |
 | 3 | 0 | 1 | 56 | 3 |
-| 4 | 0 | 0 | 4 | 118 |
+| 4 | 0 | 0 | 4 | 116 |
 
 ### code_consistency
 
 | A \ B | 1 | 2 | 3 | 4 |
 | --- | --- | --- | --- | --- |
 | 1 | 0 | 0 | 0 | 0 |
-| 2 | 0 | 2 | 0 | 0 |
+| 2 | 0 | 4 | 0 | 0 |
 | 3 | 0 | 1 | 5 | 0 |
-| 4 | 0 | 0 | 6 | 178 |
+| 4 | 0 | 0 | 6 | 176 |
 
 ### proof_utility
 
 | A \ B | 1 | 2 | 3 | 4 |
 | --- | --- | --- | --- | --- |
-| 1 | 7 | 3 | 0 | 0 |
-| 2 | 11 | 105 | 10 | 0 |
+| 1 | 8 | 4 | 0 | 0 |
+| 2 | 11 | 104 | 9 | 0 |
 | 3 | 0 | 1 | 45 | 2 |
 | 4 | 0 | 0 | 0 | 8 |
 

@@ -28,7 +28,8 @@
   `docs/evaluation_contract.md`). Do not describe `system_summary.csv` as a full
   reliability headline without also citing the per-metric and reliability CSVs.
 - Failure-mode labels are sparse; empty labels with low faithfulness are folded
-  into derived `low_faithfulness` counts for tables (`docs/failure_mode_ontology.md`).
+  into derived counts and manuscript exports canonicalize the label as
+  `low_semantic_faithfulness` (`docs/failure_mode_ontology.md`).
 
 ## Repairs
 

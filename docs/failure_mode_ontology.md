@@ -18,6 +18,7 @@ when that file is present, then checks every non-empty `failure_mode_label` in
 ## Derived modes
 
 When `failure_mode_label` is empty but `faithfulness_mean` is below the
-reporting threshold, `scripts/compute_results.py` still increments
-`low_faithfulness` in `failure_mode_counts.csv` so tables remain informative.
+reporting threshold, `scripts/compute_results.py` derives a low-faithfulness
+mode in `failure_mode_counts.csv`; paper-facing exports canonicalize this to
+`low_semantic_faithfulness` so labels are not duplicated.
 Those rows are **derived**, not additional ontology slugs.

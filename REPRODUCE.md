@@ -70,9 +70,10 @@ Canonical filenames for manuscript layers (also emitted by **`compute_results.py
 **`annotation/external_review/`** review queues.
 Run **`python scripts/export_benchmark_paper_summary.py`** after metric export so **`paper_system_set.md`** stays aligned with **`benchmark/v0.3/benchmark_paper_summary.json`**.
 If semantic relabeling is needed, record it in
-**`annotation/external_review/semantic_corrections_v2.csv`** (preferred; includes
-faithfulness, vacuity, and coverage overlays). The materializer falls back to
-`semantic_corrections_v1.csv` if v2 is absent. Rerun
+**`annotation/external_review/semantic_corrections_v3.csv`** (preferred; includes
+faithfulness, vacuity, and coverage overlays). If v3 is absent, the materializer
+loads **`semantic_corrections_v1.csv`** and **`semantic_corrections_v2.csv`**
+cumulatively. Rerun
 **`materialize_v03_adjudication_artifacts.py`** before recomputing paper outputs.
 
 Headline paper tables from **`python scripts/compute_results.py --paper`** use

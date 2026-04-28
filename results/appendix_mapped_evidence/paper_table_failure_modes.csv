@@ -1,2 +1,3 @@
 system,family,failure_mode,count
+full_method_v1,arrays_binary_search,low_faithfulness,4
 full_method_v1,dp_longest_common_subsequence,low_faithfulness,7

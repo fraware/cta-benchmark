@@ -1,5 +1,5 @@
 system,mean,sd,median,iqr,bootstrap_ci95_low,bootstrap_ci95_high,n,w_faithfulness,w_code_consistency,w_proof_utility,w_vacuity,w_contradiction,w_missing_critical,reliability_definition
-code_only_v1,0.7559,0.0629,0.7740,0.0645,0.7422,0.7693,84,0.34,0.33,0.33,0.15,0.1,0.1,"wf*faithfulness + wc*code_consistency + wp*proof_utility - wv*vacuity_rate - wx*I(contradiction) - wm*min(1,missing/6)"
-full_method_v1,0.7669,0.1942,0.8204,0.1451,0.7248,0.8036,84,0.34,0.33,0.33,0.15,0.1,0.1,"wf*faithfulness + wc*code_consistency + wp*proof_utility - wv*vacuity_rate - wx*I(contradiction) - wm*min(1,missing/6)"
+code_only_v1,0.7546,0.0648,0.7740,0.0645,0.7403,0.7683,84,0.34,0.33,0.33,0.15,0.1,0.1,"wf*faithfulness + wc*code_consistency + wp*proof_utility - wv*vacuity_rate - wx*I(contradiction) - wm*min(1,missing/6)"
+full_method_v1,0.7376,0.2328,0.8204,0.1591,0.6874,0.7829,84,0.34,0.33,0.33,0.15,0.1,0.1,"wf*faithfulness + wc*code_consistency + wp*proof_utility - wv*vacuity_rate - wx*I(contradiction) - wm*min(1,missing/6)"
 naive_concat_v1,0.6837,0.1222,0.6733,0.1682,0.6580,0.7090,84,0.34,0.33,0.33,0.15,0.1,0.1,"wf*faithfulness + wc*code_consistency + wp*proof_utility - wv*vacuity_rate - wx*I(contradiction) - wm*min(1,missing/6)"
 text_only_v1,0.6443,0.1361,0.5803,0.1799,0.6170,0.6742,84,0.34,0.33,0.33,0.15,0.1,0.1,"wf*faithfulness + wc*code_consistency + wp*proof_utility - wv*vacuity_rate - wx*I(contradiction) - wm*min(1,missing/6)"

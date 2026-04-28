@@ -73,6 +73,7 @@ python3 scripts/compute_results.py --paper
 python3 scripts/repair_counterfactual_metrics.py
 python3 scripts/export_benchmark_paper_summary.py
 python3 scripts/ci_reviewer_readiness.py
+python3 scripts/export_final_ci_evidence.py
 ```
 
 **If `annotate coverage` must be skipped** (no Cargo on PATH):
@@ -127,7 +128,7 @@ values against `schemas/failure_mode_v1.json`; and scans `annotation/` and
 `CI_STATUS.md`.
 
 If external review identifies semantic mislabeling, record corrections in
-`annotation/external_review/semantic_corrections_v2.csv` (preferred) and rerun:
+`annotation/external_review/semantic_corrections_v3.csv` (preferred) and rerun:
 
 ```powershell
 python scripts\materialize_v03_adjudication_artifacts.py
@@ -138,8 +139,9 @@ python scripts\export_final_ci_evidence.py
 ```
 
 This preserves an explicit correction audit trail instead of silent packet edits.
-If `semantic_corrections_v2.csv` is absent, the materializer falls back to
-`semantic_corrections_v1.csv` for backward compatibility.
+If `semantic_corrections_v3.csv` is absent, the materializer loads
+`semantic_corrections_v1.csv` and `semantic_corrections_v2.csv` cumulatively
+(in that order) for backward compatibility.
 
 ## 6. Annotation agreement (after rater CSVs exist)
 

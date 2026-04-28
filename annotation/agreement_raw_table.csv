@@ -14,10 +14,10 @@ ag_003,code_consistency,4,4,1
 ag_003,proof_utility,2,2,1
 ag_003,coverage_label,full,full,1
 ag_003,vacuity_label,non_vacuous,non_vacuous,1
-ag_004,semantic_faithfulness,4,4,1
-ag_004,code_consistency,4,4,1
-ag_004,proof_utility,2,2,1
-ag_004,coverage_label,full,full,1
+ag_004,semantic_faithfulness,1,1,1
+ag_004,code_consistency,2,2,1
+ag_004,proof_utility,1,1,1
+ag_004,coverage_label,failed,failed,1
 ag_004,vacuity_label,non_vacuous,non_vacuous,1
 ag_005,semantic_faithfulness,4,4,1
 ag_005,code_consistency,4,4,1
@@ -54,10 +54,10 @@ ag_011,code_consistency,4,4,1
 ag_011,proof_utility,2,2,1
 ag_011,coverage_label,full,full,1
 ag_011,vacuity_label,non_vacuous,non_vacuous,1
-ag_012,semantic_faithfulness,4,4,1
-ag_012,code_consistency,4,4,1
-ag_012,proof_utility,2,3,0
-ag_012,coverage_label,full,full,1
+ag_012,semantic_faithfulness,1,1,1
+ag_012,code_consistency,2,2,1
+ag_012,proof_utility,1,2,0
+ag_012,coverage_label,failed,failed,1
 ag_012,vacuity_label,non_vacuous,non_vacuous,1
 ag_013,semantic_faithfulness,4,4,1
 ag_013,code_consistency,4,4,1
@@ -567,7 +567,7 @@ ag_113,vacuity_label,non_vacuous,non_vacuous,1
 ag_114,semantic_faithfulness,3,3,1
 ag_114,code_consistency,4,4,1
 ag_114,proof_utility,2,2,1
-ag_114,coverage_label,full,full,1
+ag_114,coverage_label,partial,partial,1
 ag_114,vacuity_label,non_vacuous,non_vacuous,1
 ag_115,semantic_faithfulness,4,4,1
 ag_115,code_consistency,4,4,1
@@ -587,7 +587,7 @@ ag_117,vacuity_label,non_vacuous,non_vacuous,1
 ag_118,semantic_faithfulness,3,4,0
 ag_118,code_consistency,4,4,1
 ag_118,proof_utility,2,2,1
-ag_118,coverage_label,full,full,1
+ag_118,coverage_label,partial,partial,1
 ag_118,vacuity_label,non_vacuous,non_vacuous,1
 ag_119,semantic_faithfulness,3,3,1
 ag_119,code_consistency,4,4,1
@@ -607,7 +607,7 @@ ag_121,vacuity_label,non_vacuous,non_vacuous,1
 ag_122,semantic_faithfulness,3,3,1
 ag_122,code_consistency,4,4,1
 ag_122,proof_utility,2,2,1
-ag_122,coverage_label,full,full,1
+ag_122,coverage_label,partial,partial,1
 ag_122,vacuity_label,non_vacuous,non_vacuous,1
 ag_123,semantic_faithfulness,4,4,1
 ag_123,code_consistency,4,4,1
@@ -627,7 +627,7 @@ ag_125,vacuity_label,non_vacuous,non_vacuous,1
 ag_126,semantic_faithfulness,3,3,1
 ag_126,code_consistency,4,4,1
 ag_126,proof_utility,2,2,1
-ag_126,coverage_label,full,full,1
+ag_126,coverage_label,partial,partial,1
 ag_126,vacuity_label,non_vacuous,non_vacuous,1
 ag_127,semantic_faithfulness,3,3,1
 ag_127,code_consistency,4,4,1

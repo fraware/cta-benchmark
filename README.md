@@ -268,7 +268,8 @@ evidence inventories `results/paper_table_annotation_evidence.csv` +
 `results/paper_model_metadata_registry.csv`, paper-primary model registry
 `results/paper_primary_model_registry.csv`, external annotation review
 queues under `annotation/external_review/` (including semantic correction overlay
-`semantic_corrections_v2.csv`, with fallback support for `semantic_corrections_v1.csv`),
+`semantic_corrections_v3.csv`; if v3 is absent, the materializer applies
+`semantic_corrections_v1.csv` + `semantic_corrections_v2.csv` cumulatively),
 appendix copies under
 `results/appendix_mapped_evidence/`, agreement audit CSVs under `annotation/`)
 are regenerated from Python scripts; see [`REPRODUCE.md`](REPRODUCE.md),
