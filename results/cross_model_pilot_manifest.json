@@ -1,0 +1,33 @@
+{
+  "n_instances": 12,
+  "families": [
+    "arrays_binary_search",
+    "arrays_max_subarray",
+    "dp_knapsack_01",
+    "dp_longest_common_subsequence",
+    "graph_bfs_shortest_path",
+    "graph_dijkstra",
+    "greedy_coin_change_canonical",
+    "greedy_interval_scheduling",
+    "sorting_insertion_sort",
+    "sorting_merge_sort",
+    "trees_bst_insert",
+    "trees_lowest_common_ancestor"
+  ],
+  "models": [
+    "code_only_v1",
+    "full_method_v1"
+  ],
+  "systems": [
+    "code_only",
+    "full_method"
+  ],
+  "selection_rule": "first_parseable_json_object",
+  "prompt_template_hashes": {
+    "default": "sha256_proxy_not_available"
+  },
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_output_tokens": 2048,
+  "raw_outputs_included": true
+}

@@ -483,7 +483,7 @@ checks for known failure modes:
 - `docs/evaluation_contract.md` — metric definitions, acceptance criteria
 - `docs/release_process.md` — how to freeze / bump versions
 - `docs/PAPER_READINESS.md` — paper-track release gates and run protocol
-- `docs/direct_adjudication_wave_checklist.md` — Option-2 128-pair batch checklist
+- `docs/direct_adjudication_wave_checklist.md` — direct-adjudication maintenance checklist
 - `docs/paper/outline.md` — paper structure and reproducibility checklist
 - `docs/authoring_examples.md` — gold obligation patterns and review-packet bar
 - `docs/obligation_audit_v0.1.md` — archived v0.1 obligation audit (with v0.2 pointers)

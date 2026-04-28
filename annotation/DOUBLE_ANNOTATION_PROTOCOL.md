@@ -1,15 +1,19 @@
 # Double annotation protocol (v0.3+)
 
 This protocol satisfies paper requirements for **independent first passes**,
-**adjudication**, and **agreement reporting** on human judgments.
+**adjudication**, and **agreement reporting** on human judgments, with
+strict-headline evidence tied to the v3 strict-overlap set.
 
 ## Sampling
 
-- Draw **at least 25–30%** of eval-split packets (or adjudicated rows) into
-  the double-annotation pool using a **deterministic seed** recorded in the
-  adjudication log.
-- Stratify by `family` so graph / DP / trees are not under-represented when
-  those families dominate the benchmark design.
+- Strict headline target: annotate **all strict rows** from
+  `annotation/external_review/strict_review_queue.jsonl` and maintain
+  deterministic anonymized packet keys in
+  `annotation/human_pass_v3/human_strict_packet_ids.csv`.
+- Expected strict overlap counters:
+  - `n_rows = 274`
+  - `n_unique_instance_ids = 84`
+  - `n_mapped_from_canonical = 0`
 
 ## Blinding
 
@@ -30,28 +34,28 @@ This protocol satisfies paper requirements for **independent first passes**,
 
 ## Agreement outputs
 
-After both passes exist (or after the repo materializer has written
-`annotation/rater_a.csv` and `annotation/rater_b.csv` from adjudicated packets),
-run the reproducible wrapper:
+After both passes exist for strict-overlap (`annotation/rater_a_strict_all.csv`
+and `annotation/human_pass_v3/rater_b_human_strict_all.csv`), run:
 
 ```powershell
-python scripts/reproduce_agreement_report.py
+python scripts/compute_human_strict_agreement.py `
+  --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv `
+  --rater-a annotation/rater_a_strict_all.csv `
+  --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv `
+  --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json `
+  --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md `
+  --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv
 ```
 
-Equivalent direct invocation (human second pass):
+This writes strict-overlap agreement/disagreement artifacts under
+`annotation/human_pass_v3/` and should be followed by:
 
 ```powershell
-python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b_human.csv
+python scripts/compute_results.py --paper
+python scripts/export_benchmark_paper_summary.py
+python scripts/implement_evidence_hardening.py
+python scripts/ci_reviewer_readiness.py
 ```
-
-Fallback (synthetic second pass):
-
-```powershell
-python scripts/compute_agreement_stats.py --first annotation/rater_a.csv --second annotation/rater_b.csv
-```
-
-This writes `annotation/agreement_report.json` (weighted κ, bootstrap CI) and
-`annotation/agreement_raw_table.csv`, and refreshes `annotation/agreement_report.md`.
 
 **Audit trail (reviewer-facing):** `annotation/agreement_packet_ids.csv` lists the
 exact packet population (including anonymized keys joined to raters);
@@ -59,15 +63,11 @@ exact packet population (including anonymized keys joined to raters);
 written by `python scripts/materialize_v03_adjudication_artifacts.py` when using
 the pipeline-derived pack.
 
-**v0.3 pipeline note:** the materialized audit list is the **full eval grid**
-(four systems × eval instances). Those instances usually load canonical
-`*_001`/`*_002` packets, so `annotation_origin` in `agreement_packet_ids.csv` is
-often entirely `mapped_from_canonical`. That is distinct from headline **eval
-metrics**, which (under `compute_results.py --paper`) pool **strict**
-independent rows from `results/raw_metrics_strict.json`. See
-`results/paper_table_agreement_evidence.csv`,
-`results/paper_table_annotation_evidence.csv`, and
-[`docs/paper/system_scope.md`](../docs/paper/system_scope.md).
+**v0.3 pipeline note:** `annotation/agreement_packet_ids.csv` remains the legacy
+full-audit population view, while strict headline claims use the independently
+double-annotated strict overlap represented by
+`results/paper_table_agreement_evidence.csv` row
+`agreement_subset == strict_all_human_overlap`.
 
 ## Rubric anchor
 

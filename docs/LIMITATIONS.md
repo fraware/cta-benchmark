@@ -50,9 +50,10 @@
 
 ## Evidence-Hardening Update (2026-04-28)
 
-- Independent human-pass agreement artifacts now live under
-  `annotation/human_pass_v2/` and are summarized in
-  `results/paper_table_human_agreement.csv`.
+- Independent strict-overlap agreement artifacts now live under
+  `annotation/human_pass_v3/` (plus `annotation/rater_a_strict_all.csv`) and are
+  summarized in `results/paper_table_agreement_evidence.csv` via
+  `strict_all_human_overlap`.
 - Selector sensitivity and context-budget confounds are now explicitly exported
   in `results/selection_robustness.csv` and
   `results/prompt_token_accounting.csv`.

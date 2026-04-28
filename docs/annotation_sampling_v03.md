@@ -32,10 +32,10 @@ with `pack.json` and a validated `manifest.json` (see
 from the experiment config when `annotation_human_pack` is set; see
 `configs/experiments/benchmark_v03.json`.
 
-## Option-2 direct-adjudication wave workflow
+## Direct-adjudication workflow (historical + maintenance)
 
-To increase strict independent coverage beyond the current mapped-template
-baseline, run:
+For additional maintenance waves (beyond the completed strict headline set),
+run:
 
 ```powershell
 python scripts/plan_v03_direct_adjudication_wave.py --target-pairs 128
@@ -64,9 +64,14 @@ into `raw_metrics_strict.json` / strict summary counts.
 
 ## Evidence-Hardening Update (2026-04-28)
 
-- Human-pass v2 outputs now expected after sampling execution:
-  - `annotation/human_pass_v2/rater_b_human.csv`
-  - `annotation/human_pass_v2/agreement_report_human.{json,md}`
-  - `annotation/human_pass_v2/disagreement_log.csv`
-- Paper-facing agreement summary must be refreshed:
-  - `results/paper_table_human_agreement.csv`
+Human-pass strict overlap reporting now targets v3 strict-all artifacts:
+
+- `annotation/human_pass_v3/human_strict_packet_ids.csv`
+- `annotation/rater_a_strict_all.csv`
+- `annotation/human_pass_v3/rater_b_human_strict_all.csv`
+- `annotation/human_pass_v3/agreement_report_human_strict_all.{json,md}`
+- `annotation/human_pass_v3/disagreement_log_strict_all.csv`
+
+Paper-facing overlap accounting is reported in:
+
+- `results/paper_table_agreement_evidence.csv` (`strict_all_human_overlap`)

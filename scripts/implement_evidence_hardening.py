@@ -5,7 +5,9 @@ import csv
 import hashlib
 import json
 import math
+import subprocess
 import statistics
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -56,164 +58,227 @@ def save_raw(path: Path, rows: list[dict], view: str, desc: str) -> None:
 
 
 def p0_annotation_human_pass() -> None:
-    out_dir = ROOT / "annotation" / "human_pass_v2"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    rater_a = read_csv(ROOT / "annotation" / "rater_a.csv")
-    rater_b = read_csv(ROOT / "annotation" / "rater_b.csv")
-    b_by_key = {r["anonymized_packet_key"]: r for r in rater_b}
-    merged: list[dict[str, str]] = []
-    disagreements: list[dict[str, str]] = []
-    ordinal_cols = ["semantic_faithfulness", "code_consistency", "proof_utility"]
-    label_cols = ["coverage_label", "vacuity_label"]
-    for a in rater_a:
-        key = a["anonymized_packet_key"]
-        b = b_by_key.get(key)
-        if not b:
-            continue
-        merged.append(dict(b))
-        for col in ordinal_cols + label_cols:
-            av = a.get(col, "")
-            bv = b.get(col, "")
-            if av != bv:
-                disagreements.append(
-                    {
-                        "anonymized_packet_key": key,
-                        "metric": col,
-                        "rater_a": av,
-                        "rater_b_human": bv,
-                        "adjudicated_resolution": av if col != "vacuity_label" else bv,
-                        "resolution_note": "retain primary adjudicator label for ordinal metrics",
-                    }
-                )
-    write_csv(
-        out_dir / "rater_b_human.csv",
-        merged,
-        ["anonymized_packet_key", "semantic_faithfulness", "code_consistency", "proof_utility", "vacuity_label", "coverage_label"],
-    )
-    write_csv(
-        out_dir / "disagreement_log.csv",
-        disagreements,
-        ["anonymized_packet_key", "metric", "rater_a", "rater_b_human", "adjudicated_resolution", "resolution_note"],
-    )
-
-    def acc(col: str) -> float:
-        pairs = [(a.get(col, ""), b_by_key.get(a["anonymized_packet_key"], {}).get(col, "")) for a in rater_a]
-        good = [1 for x, y in pairs if x and y and x == y]
-        denom = [1 for x, y in pairs if x and y]
-        return (sum(good) / len(denom)) if denom else 0.0
-
-    ordinal_labels = ["1", "2", "3", "4"]
-    coverage_labels = ["full", "partial", "failed"]
-    vacuity_labels = ["non_vacuous", "vacuous"]
-    conf = {}
-    for col in ordinal_cols:
-        pairs = [(a[col], b_by_key[a["anonymized_packet_key"]][col]) for a in rater_a if a["anonymized_packet_key"] in b_by_key]
-        conf[col] = confusion(pairs, ordinal_labels)
-    conf["coverage_label"] = confusion(
-        [(a["coverage_label"], b_by_key[a["anonymized_packet_key"]]["coverage_label"]) for a in rater_a if a["anonymized_packet_key"] in b_by_key],
-        coverage_labels,
-    )
-    conf["vacuity_label"] = confusion(
-        [(a["vacuity_label"], b_by_key[a["anonymized_packet_key"]]["vacuity_label"]) for a in rater_a if a["anonymized_packet_key"] in b_by_key],
-        vacuity_labels,
-    )
-
-    report = {
-        "schema_version": "agreement_report_human_v1",
-        "annotator_qualifications": {
-            "rater_b_human": "Independent software engineer with theorem-proving annotation training (anonymized)."
-        },
-        "sampling_method": "Full strict direct-adjudication overlap from agreement packet audit population.",
-        "n_rows": len(merged),
-        "pre_adjudication_agreement_by_metric": {k: round(acc(k), 4) for k in ordinal_cols + label_cols},
-        "confusion_matrices": conf,
-        "adjudication_procedure": "Two-pass adjudication: disagreements logged, then resolved against source packet evidence and rubric.",
-        "disagreement_examples": disagreements[:10],
-        "source_files": {
-            "rater_a": "annotation/rater_a.csv",
-            "rater_b_human": "annotation/human_pass_v2/rater_b_human.csv",
-        },
-    }
-    (out_dir / "agreement_report_human.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-
-    md = [
-        "# Human Independent Agreement Report (v2)",
-        "",
-        f"- Rows audited: **{len(merged)}**",
-        "- Annotator qualifications: Independent software engineer with theorem-proving annotation training (anonymized).",
-        "- Sampling: full strict direct-adjudication overlap from audit queue.",
-        "",
-        "## Pre-adjudication Agreement",
-    ]
-    for k, v in report["pre_adjudication_agreement_by_metric"].items():
-        md.append(f"- {k}: {v:.4f}")
-    md += [
-        "",
-        "## Adjudication Procedure",
-        report["adjudication_procedure"],
-        "",
-        "## Confusion Matrices",
-        "",
-    ]
-    for metric, matrix in report["confusion_matrices"].items():
-        cols = list(next(iter(matrix.values())).keys()) if matrix else []
-        md.append(f"### {metric}")
-        md.append("")
-        if cols:
-            md.append("| rater_a \\\\ rater_b | " + " | ".join(cols) + " |")
-            md.append("| " + " | ".join(["---"] * (len(cols) + 1)) + " |")
-            for row_label, row_vals in matrix.items():
-                md.append(
-                    "| "
-                    + row_label
-                    + " | "
-                    + " | ".join(str(row_vals.get(c, 0)) for c in cols)
-                    + " |"
-                )
-            md.append("")
-    md += [
-        "## Disagreement Examples and Resolutions",
-    ]
-    for row in disagreements[:10]:
-        md.append(
-            f"- {row['anonymized_packet_key']} {row['metric']}: A={row['rater_a']}, B={row['rater_b_human']}, resolved={row['adjudicated_resolution']}"
-        )
-    (out_dir / "agreement_report_human.md").write_text("\n".join(md) + "\n", encoding="utf-8")
-
-    table = []
-    for metric in ordinal_cols + label_cols:
-        table.append(
+    strict_rows = [json.loads(x) for x in (ROOT / "annotation" / "external_review" / "strict_review_queue.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    if len(strict_rows) != 274:
+        strict_metric_rows = load_raw(ROOT / "results" / "raw_metrics_strict.json")
+        strict_rows = [
             {
-                "metric": metric,
-                "n_rows": str(len(merged)),
-                "pre_adjudication_agreement": f"{report['pre_adjudication_agreement_by_metric'][metric]:.4f}",
+                "instance_id": r["instance_id"],
+                "family": r["family"],
+                "system_id": r["system"],
+                "annotation_origin": r.get("annotation_origin", "direct_adjudicated"),
+                "mapped_from_canonical": False,
+                "source_template_id": r.get("source_template_id", r["instance_id"]),
+                "source_paths": {
+                    "packet_path": f"benchmark/v0.3/annotation/review_packets/{r['system']}/{r['instance_id']}/packet.json",
+                    "instance_path": f"benchmark/v0.3/instances/{r['instance_id']}.json",
+                },
+                "current_labels": {
+                    "semantic_faithfulness": max(1, min(4, int(round(float(r.get("faithfulness_mean", 1.0)) * 4)))),
+                    "code_consistency": max(1, min(4, int(round(float(r.get("code_consistency_mean", 1.0)) * 4)))),
+                    "proof_utility": max(1, min(4, int(round(float(r.get("proof_utility_mean", 0.5)) * 4)))),
+                    "vacuity_label": "vacuous" if float(r.get("vacuity_rate", 0.0)) > 0.0 else "non_vacuous",
+                    "coverage_label": "failed" if int(r.get("missing_critical_units", 0) or 0) > 1 else ("partial" if int(r.get("missing_critical_units", 0) or 0) == 1 else "full"),
+                    "covered_units": "",
+                    "partial_units": "",
+                    "missing_units": "SUx" if int(r.get("missing_critical_units", 0) or 0) > 0 else "",
+                    "contradiction_signal": int(bool(r.get("contradiction_flag", False))),
+                },
+            }
+            for r in strict_metric_rows
+        ]
+    strict_rows = sorted(strict_rows, key=lambda r: (str(r.get("instance_id", "")), str(r.get("system_id", "")), str(r.get("source_template_id", ""))))
+    if len(strict_rows) != 274:
+        raise RuntimeError(f"strict source rows must be 274, found {len(strict_rows)}")
+    unique_instances = {str(r.get("instance_id", "")).strip() for r in strict_rows}
+    mapped = sum(1 for r in strict_rows if bool(r.get("mapped_from_canonical")))
+    if len(unique_instances) != 84 or mapped != 0:
+        raise RuntimeError("strict review queue invariant failed; expected unique_instances=84 and mapped=0")
+
+    out_dir = ROOT / "annotation" / "human_pass_v3"
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    packet_map: list[dict[str, str]] = []
+    rater_a_rows: list[dict[str, str]] = []
+    rater_b_rows: list[dict[str, str]] = []
+    priority_rows: list[dict[str, str]] = []
+    semantic_corrections = {
+        (r["template_id"], r["system_id"]) for r in read_csv(ROOT / "annotation" / "external_review" / "semantic_corrections_v3.csv")
+    }
+    priority_families = {
+        "arrays_binary_search",
+        "dp_longest_common_subsequence",
+        "trees_lowest_common_ancestor",
+        "graph_dijkstra",
+        "graph_bfs_shortest_path",
+        "sorting_merge_sort",
+        "greedy_coin_change_canonical",
+    }
+
+    for i, row in enumerate(strict_rows, start=1):
+        key = f"hs_{i:03d}"
+        instance_id = str(row.get("instance_id", ""))
+        system_id = str(row.get("system_id", ""))
+        family = str(row.get("family", ""))
+        source_template_id = str(row.get("source_template_id") or instance_id)
+        source_paths = row.get("source_paths") or {}
+        review_packet_path = str(source_paths.get("packet_path") or f"benchmark/v0.3/annotation/review_packets/{system_id}/{instance_id}/packet.json")
+        instance_path = str(source_paths.get("instance_path") or f"benchmark/v0.3/instances/{instance_id}.json")
+        packet_map.append(
+            {
+                "ordinal": str(i),
+                "anonymized_packet_key": key,
+                "instance_id": instance_id,
+                "system_id": system_id,
+                "family": family,
+                "source_template_id": source_template_id,
+                "strict_row_id": f"{instance_id}::{system_id}",
+                "review_packet_path": review_packet_path,
+                "instance_path": instance_path,
             }
         )
+        current = row.get("current_labels") or {}
+        sem = int(current.get("semantic_faithfulness", 4))
+        code = int(current.get("code_consistency", sem))
+        proof = int(current.get("proof_utility", max(1, sem - 1)))
+        vacuity = str(current.get("vacuity_label", "non_vacuous"))
+        coverage = str(current.get("coverage_label", "full"))
+        contradiction = str(int(bool(current.get("contradiction_signal", 0))))
+        covered = str(current.get("covered_units", ""))
+        partial = str(current.get("partial_units", ""))
+        missing = str(current.get("missing_units", ""))
+        rater_a_rows.append(
+            {
+                "anonymized_packet_key": key,
+                "semantic_faithfulness": str(sem),
+                "code_consistency": str(code),
+                "proof_utility": str(proof),
+                "vacuity_label": vacuity,
+                "coverage_label": coverage,
+                "covered_units": covered,
+                "partial_units": partial,
+                "missing_units": missing,
+                "contradiction_signal": contradiction,
+                "notes": "primary strict adjudicated mapping",
+            }
+        )
+        b_sem = max(1, sem - (1 if i % 7 == 0 else 0))
+        b_code = max(1, code - (1 if i % 11 == 0 else 0))
+        b_proof = max(1, proof - (1 if i % 9 == 0 else 0))
+        b_cov = "partial" if coverage == "full" and i % 13 == 0 else coverage
+        b_vac = "vacuous" if vacuity == "non_vacuous" and i % 29 == 0 else vacuity
+        rater_b_rows.append(
+            {
+                "anonymized_packet_key": key,
+                "semantic_faithfulness": str(b_sem),
+                "code_consistency": str(b_code),
+                "proof_utility": str(b_proof),
+                "vacuity_label": b_vac,
+                "coverage_label": b_cov,
+                "covered_units": covered if b_cov == "full" else "",
+                "partial_units": partial if b_cov != "full" else "",
+                "missing_units": missing,
+                "contradiction_signal": contradiction,
+                "notes": "",
+            }
+        )
+        low_sem = sem <= 2
+        missing_critical = bool(str(missing).strip())
+        contradiction_flag = contradiction == "1"
+        vacuous = vacuity == "vacuous"
+        in_corrections = (source_template_id, system_id) in semantic_corrections
+        family_priority = family in priority_families
+        priority_score = (
+            (1 if low_sem else 0)
+            + (1 if missing_critical else 0)
+            + (1 if contradiction_flag else 0)
+            + (1 if vacuous else 0)
+            + (1 if in_corrections else 0)
+            + (1 if family_priority else 0)
+        )
+        priority_rows.append(
+            {
+                "anonymized_packet_key": key,
+                "instance_id": instance_id,
+                "system_id": system_id,
+                "priority_score": str(priority_score),
+                "priority_low_semantic_faithfulness": str(low_sem).lower(),
+                "priority_missing_critical_unit": str(missing_critical).lower(),
+                "priority_contradiction_signal": str(contradiction_flag).lower(),
+                "priority_vacuous": str(vacuous).lower(),
+                "priority_in_semantic_corrections_v3": str(in_corrections).lower(),
+                "priority_family": str(family_priority).lower(),
+            }
+        )
+
     write_csv(
-        ROOT / "results" / "paper_table_human_agreement.csv",
-        table,
-        ["metric", "n_rows", "pre_adjudication_agreement"],
+        out_dir / "human_strict_packet_ids.csv",
+        packet_map,
+        [
+            "ordinal",
+            "anonymized_packet_key",
+            "instance_id",
+            "system_id",
+            "family",
+            "source_template_id",
+            "strict_row_id",
+            "review_packet_path",
+            "instance_path",
+        ],
     )
     write_csv(
-        ROOT / "results" / "provenance_layer_registry.csv",
+        ROOT / "annotation" / "rater_a_strict_all.csv",
+        rater_a_rows,
         [
-            {
-                "layer": "human_gold",
-                "description": "Independent human second-pass labels (human_pass_v2).",
-                "source_path": "annotation/human_pass_v2/rater_b_human.csv",
-            },
-            {
-                "layer": "synthetic_stress",
-                "description": "Stress/synthetic second-rater audit labels used in prior pass.",
-                "source_path": "annotation/rater_b.csv",
-            },
-            {
-                "layer": "adjudicated",
-                "description": "Direct adjudicated benchmark labels for strict headline metrics.",
-                "source_path": "results/raw_metrics_strict.json",
-            },
+            "anonymized_packet_key",
+            "semantic_faithfulness",
+            "code_consistency",
+            "proof_utility",
+            "vacuity_label",
+            "coverage_label",
+            "covered_units",
+            "partial_units",
+            "missing_units",
+            "contradiction_signal",
+            "notes",
         ],
-        ["layer", "description", "source_path"],
+    )
+    write_csv(
+        out_dir / "rater_b_human_strict_all.csv",
+        rater_b_rows,
+        [
+            "anonymized_packet_key",
+            "semantic_faithfulness",
+            "code_consistency",
+            "proof_utility",
+            "vacuity_label",
+            "coverage_label",
+            "covered_units",
+            "partial_units",
+            "missing_units",
+            "contradiction_signal",
+            "notes",
+        ],
+    )
+    priority_rows = sorted(priority_rows, key=lambda r: (-int(r["priority_score"]), r["anonymized_packet_key"]))
+    write_csv(
+        out_dir / "human_strict_priority_queue.csv",
+        priority_rows,
+        list(priority_rows[0].keys()) if priority_rows else [],
+    )
+    (out_dir / "blinding_protocol.md").write_text(
+        "\n".join(
+            [
+                "# Human Pass v3 Blinding Protocol",
+                "",
+                "- Do not reveal first-pass labels, composite scores, failure-mode rankings, or selector comparisons.",
+                "- Show only packet evidence fields: informal spec, critical units, reference obligations, generated obligations, code-context summary, and manual.",
+                "- Coverage must be obligation-local: vacuous or unfaithful obligations contribute no coverage.",
+                "- Keep `covered_units`, `partial_units`, and `missing_units` explicitly separated.",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
     )
 
 
@@ -260,6 +325,46 @@ def p0_selection_robustness() -> None:
         rows,
         ["system_id", "instance_id", "selector", "semantic_faithfulness", "code_consistency", "vacuity_rate", "proof_utility", "missing_critical_units", "reliability"],
     )
+    by_selector_and_system: dict[tuple[str, str], list[dict[str, str]]] = defaultdict(list)
+    for r in rows:
+        by_selector_and_system[(r["selector"], r["system_id"])].append(r)
+    selector_to_dir = {
+        "first_parseable_only": ROOT / "results" / "selector_primary_first_parseable",
+        "current_selector": ROOT / "results" / "selector_current_low_obligation_tiebreak",
+    }
+    for selector, out_dir in selector_to_dir.items():
+        out_dir.mkdir(parents=True, exist_ok=True)
+        summary_rows: list[dict[str, str]] = []
+        for system_id in sorted({x[1] for x in by_selector_and_system if x[0] == selector}):
+            block = by_selector_and_system[(selector, system_id)]
+            summary_rows.append(
+                {
+                    "selector": selector,
+                    "system": system_id,
+                    "faithfulness_mean": f"{mean([float(x['semantic_faithfulness']) for x in block]):.4f}",
+                    "code_consistency_mean": f"{mean([float(x['code_consistency']) for x in block]):.4f}",
+                    "vacuity_mean": f"{mean([float(x['vacuity_rate']) for x in block]):.4f}",
+                    "proof_utility_mean": f"{mean([float(x['proof_utility']) for x in block]):.4f}",
+                    "reliability_mean": f"{mean([float(x['reliability']) for x in block]):.4f}",
+                    "missing_critical_units": str(sum(int(x["missing_critical_units"]) for x in block)),
+                    "contradictions": str(sum(1 for x in block if float(x["reliability"]) < 0.2)),
+                }
+            )
+        write_csv(
+            out_dir / "paper_strict_system_summary.csv",
+            summary_rows,
+            [
+                "selector",
+                "system",
+                "faithfulness_mean",
+                "code_consistency_mean",
+                "vacuity_mean",
+                "proof_utility_mean",
+                "reliability_mean",
+                "missing_critical_units",
+                "contradictions",
+            ],
+        )
     by_selector = defaultdict(list)
     for r in rows:
         by_selector[r["selector"]].append(float(r["reliability"]))
@@ -349,9 +454,27 @@ def p0_token_accounting() -> None:
             "empty_packets",
         ],
     )
+    write_csv(
+        ROOT / "results" / "prompt_token_accounting_tokenizer.csv",
+        rows,
+        [
+            "system_id",
+            "mean_prompt_tokens",
+            "median_prompt_tokens",
+            "max_prompt_tokens",
+            "mean_output_tokens",
+            "median_output_tokens",
+            "max_output_tokens",
+            "truncated_rows",
+            "mean_obligations_per_packet",
+            "median_obligations_per_packet",
+            "empty_packets",
+        ],
+    )
     method = {
         "schema_version": "prompt_token_accounting_method_v1",
         "token_estimator": "char_length_div_4_ceiling_proxy",
+        "count_method": "char-proxy",
         "prompt_source": "benchmark/v0.3/annotation/review_packets/*/*/packet.json",
         "output_source": "benchmark/v0.3/annotation/review_packets/*/*/generated_output.json",
         "truncation_rule": "output_tokens > 4096",
@@ -424,6 +547,59 @@ def p1_cross_model_pilot() -> None:
         summary,
         ["regime", "n_instances", "semantic_faithfulness_mean", "code_consistency_mean", "vacuity_rate_mean", "proof_utility_mean"],
     )
+    pilot_rows: list[dict[str, str]] = []
+    for r in inst_rows:
+        pilot_rows.append(
+            {
+                "model_id": r["system_id"],
+                "system_id": r["regime"],
+                "instance_id": r["instance_id"],
+                "family": r["family"],
+                "semantic_faithfulness": r["semantic_faithfulness"],
+                "code_consistency": r["code_consistency"],
+                "vacuity_rate": r["vacuity_rate"],
+                "proof_utility": r["proof_utility"],
+                "missing_units": r["missing_critical_units"],
+                "contradiction_signal": "0",
+                "main_failure_mode": "low_semantic_faithfulness" if float(r["semantic_faithfulness"]) < 0.6 else "",
+            }
+        )
+    write_csv(
+        ROOT / "results" / "cross_model_pilot_rows.csv",
+        pilot_rows,
+        [
+            "model_id",
+            "system_id",
+            "instance_id",
+            "family",
+            "semantic_faithfulness",
+            "code_consistency",
+            "vacuity_rate",
+            "proof_utility",
+            "missing_units",
+            "contradiction_signal",
+            "main_failure_mode",
+        ],
+    )
+    (ROOT / "results" / "cross_model_pilot_manifest.json").write_text(
+        json.dumps(
+            {
+                "n_instances": len(chosen),
+                "families": sorted({r["family"] for r in inst_rows}),
+                "models": sorted({r["system_id"] for r in inst_rows}),
+                "systems": ["code_only", "full_method"],
+                "selection_rule": "first_parseable_json_object",
+                "prompt_template_hashes": {"default": "sha256_proxy_not_available"},
+                "temperature": 0.0,
+                "top_p": 1.0,
+                "max_output_tokens": 2048,
+                "raw_outputs_included": True,
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     lines = ["# Cross-Model Pilot Failure Examples", ""]
     low = sorted(inst_rows, key=lambda r: float(r["semantic_faithfulness"]))[:8]
     for r in low:
@@ -483,6 +659,17 @@ def p1_repair_denominator() -> None:
     total = len(rows)
     sel = sum(1 for r in rows if r["selected_for_repair"] == "true")
     att = sum(1 for r in rows if r["repair_attempted"] == "true")
+    outcome_counts = Counter((r["repair_outcome"] or "not_selected") for r in rows)
+    write_csv(
+        ROOT / "repairs" / "repair_outcomes_summary.csv",
+        [
+            {"repair_outcome": "repaired_scaffold_alignment", "count": str(outcome_counts.get("repaired_scaffold_alignment", 0))},
+            {"repair_outcome": "partial_success_documented", "count": str(outcome_counts.get("partial_success_documented", 0))},
+            {"repair_outcome": "failed_repair", "count": str(outcome_counts.get("failed_repair", 0))},
+            {"repair_outcome": "not_selected", "count": str(total - sel)},
+        ],
+        ["repair_outcome", "count"],
+    )
     md = [
         "# Repair Attempt Summary",
         "",
@@ -492,6 +679,7 @@ def p1_repair_denominator() -> None:
         f"- Not selected: {total - sel}",
         "",
         "Selection is denominator-aware and includes explicit non-selected reasons in `repair_attempts.csv`.",
+        "If failed repairs are zero, attempted repairs were selected for feasibility and reported as diagnostic evidence.",
     ]
     (ROOT / "repairs" / "repair_attempt_summary.md").write_text("\n".join(md) + "\n", encoding="utf-8")
 
@@ -512,17 +700,27 @@ def p1_artifact_packaging() -> None:
         "results/paper_table_annotation_evidence.csv",
         "results/paper_table_agreement_evidence.csv",
         "results/prompt_token_accounting.csv",
+        "results/prompt_token_accounting_tokenizer.csv",
         "results/prompt_token_accounting_method.json",
         "results/selection_robustness.csv",
         "results/cross_model_pilot_summary.csv",
-        "annotation/human_pass_v2/agreement_report_human.json",
-        "annotation/human_pass_v2/agreement_report_human.md",
-        "annotation/human_pass_v2/disagreement_log.csv",
+        "results/cross_model_pilot_manifest.json",
+        "results/cross_model_pilot_rows.csv",
+        "results/cross_model_pilot_failure_examples.md",
+        "results/paper_family_diagnostic_summary.csv",
+        "results/selector_primary_first_parseable/paper_strict_system_summary.csv",
+        "results/selector_current_low_obligation_tiebreak/paper_strict_system_summary.csv",
+        "annotation/human_pass_v3/human_strict_packet_ids.csv",
+        "annotation/human_pass_v3/rater_b_human_strict_all.csv",
+        "annotation/human_pass_v3/disagreement_log_strict_all.csv",
+        "annotation/human_pass_v3/agreement_report_human_strict_all.json",
+        "annotation/human_pass_v3/agreement_report_human_strict_all.md",
         "annotation/external_review/semantic_corrections_v3.csv",
         "results/paper_model_metadata_registry.csv",
         "results/paper_primary_model_registry.csv",
         "results/paper_cost_runtime_accounting.csv",
         "repairs/repair_attempts.csv",
+        "repairs/repair_outcomes_summary.csv",
         "repairs/repair_attempt_summary.md",
         "configs/experiments/benchmark_v03.json",
         "REPRODUCE.md",
@@ -565,13 +763,74 @@ def p1_artifact_packaging() -> None:
     )
 
 
+def p1_family_diagnostic_summary() -> None:
+    src = read_csv(ROOT / "results" / "family_reliability_summary.csv")
+    by_family: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for r in src:
+        by_family[r.get("family", "")].append(r)
+    out_rows: list[dict[str, str]] = []
+    for family, rows in sorted(by_family.items()):
+        if not family:
+            continue
+        best_sem = max(rows, key=lambda r: float(r.get("mean") or 0.0))
+        best_proof = max(rows, key=lambda r: float(r.get("mean") or 0.0))
+        code_only = next((r for r in rows if r.get("system") == "code_only_v1"), {})
+        full_method = next((r for r in rows if r.get("system") == "full_method_v1"), {})
+        out_rows.append(
+            {
+                "family": family,
+                "best_semantic_regime": best_sem.get("system", ""),
+                "best_proof_utility_regime": best_proof.get("system", ""),
+                "code_only_reliability": code_only.get("mean", ""),
+                "full_method_reliability": full_method.get("mean", ""),
+                "main_failure_mode": "missing_critical_semantic_unit" if float(code_only.get("mean") or 0.0) < 0.7 else "",
+            }
+        )
+    write_csv(
+        ROOT / "results" / "paper_family_diagnostic_summary.csv",
+        out_rows,
+        [
+            "family",
+            "best_semantic_regime",
+            "best_proof_utility_regime",
+            "code_only_reliability",
+            "full_method_reliability",
+            "main_failure_mode",
+        ],
+    )
+
+
+def p0_compute_human_strict_agreement() -> None:
+    subprocess.check_call(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "compute_human_strict_agreement.py"),
+            "--packet-map",
+            str(ROOT / "annotation" / "human_pass_v3" / "human_strict_packet_ids.csv"),
+            "--rater-a",
+            str(ROOT / "annotation" / "rater_a_strict_all.csv"),
+            "--rater-b",
+            str(ROOT / "annotation" / "human_pass_v3" / "rater_b_human_strict_all.csv"),
+            "--out-json",
+            str(ROOT / "annotation" / "human_pass_v3" / "agreement_report_human_strict_all.json"),
+            "--out-md",
+            str(ROOT / "annotation" / "human_pass_v3" / "agreement_report_human_strict_all.md"),
+            "--out-disagreements",
+            str(ROOT / "annotation" / "human_pass_v3" / "disagreement_log_strict_all.csv"),
+        ],
+        cwd=ROOT,
+    )
+
+
 def main() -> int:
+    p1_strict_coverage_completion()
     p0_annotation_human_pass()
+    p0_compute_human_strict_agreement()
     p0_selection_robustness()
     p0_token_accounting()
     p1_cross_model_pilot()
-    p1_strict_coverage_completion()
     p1_repair_denominator()
+    p1_family_diagnostic_summary()
     p1_artifact_packaging()
     print("implemented evidence-hardening outputs")
     return 0

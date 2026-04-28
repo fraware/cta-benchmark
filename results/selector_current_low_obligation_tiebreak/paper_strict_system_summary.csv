@@ -1,0 +1,5 @@
+selector,system,faithfulness_mean,code_consistency_mean,vacuity_mean,proof_utility_mean,reliability_mean,missing_critical_units,contradictions
+current_selector,code_only_v1,0.8769,1.0000,0.0000,0.3967,0.7571,7,0
+current_selector,full_method_v1,0.7821,0.9336,0.0127,0.5428,0.7266,36,7
+current_selector,naive_concat_v1,0.7550,0.9763,0.0310,0.3473,0.6724,75,0
+current_selector,text_only_v1,0.7096,0.9778,0.0484,0.3421,0.6395,146,0

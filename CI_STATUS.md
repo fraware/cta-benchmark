@@ -51,6 +51,13 @@ compares `benchmark/v0.3/benchmark_paper_summary.json` to checked-in outputs:
   row `n_eval_rows` vs `expected_raw_metrics_strict_rows` (when evidence file and field exist)
 - `results/paper_table_agreement_evidence.csv`: `agreement_subset == strict_independent_only`
   row `n_packets` vs `agreement_audit_strict_independent_packet_count` (when field is set)
+- `results/paper_table_agreement_evidence.csv`: `agreement_subset == strict_all_human_overlap`
+  row is expected when `annotation/human_pass_v3/human_strict_packet_ids.csv` exists
+  (current strict-overlap target: 274 rows / 84 instances / 0 mapped)
+
+For manuscript claims, treat `strict_all_human_overlap` as the independently
+double-annotated strict-view overlap row; `strict_independent_only` remains a
+legacy audit-population compatibility row.
 - `results/paper_primary_model_registry.csv`: row count (4), headline-system membership,
   and `model_metadata_status ∈ {matched, historical_manifest_mismatch_explained}`
 - `annotation/external_review/strict_review_queue.jsonl` non-empty line count

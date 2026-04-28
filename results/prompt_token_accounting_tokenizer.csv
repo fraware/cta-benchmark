@@ -1,0 +1,5 @@
+system_id,mean_prompt_tokens,median_prompt_tokens,max_prompt_tokens,mean_output_tokens,median_output_tokens,max_output_tokens,truncated_rows,mean_obligations_per_packet,median_obligations_per_packet,empty_packets
+code_only_v1,1471.33,1510.50,1992,524.83,498.00,878,0,4.92,5.00,0
+full_method_v1,1613.42,1571.50,2248,705.96,636.50,1189,0,4.92,5.00,0
+naive_concat_v1,1969.12,2070.00,2567,1109.08,1182.50,1757,0,4.92,5.00,0
+text_only_v1,1810.14,1809.50,2227,962.68,888.00,1569,0,4.95,5.00,0

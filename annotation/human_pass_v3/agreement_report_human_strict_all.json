@@ -1,0 +1,394 @@
+{
+  "schema_version": "agreement_report_human_strict_all_v1",
+  "n_rows": 274,
+  "n_unique_instance_ids": 84,
+  "n_systems": 4,
+  "n_mapped_from_canonical": 0,
+  "n_direct_human": 274,
+  "n_direct_adjudicated": 274,
+  "ordinal_metrics": {
+    "semantic_faithfulness": {
+      "weighted_kappa": 0.6666666666666666,
+      "krippendorff_alpha": -0.6913580246913582,
+      "gwet_ac1": -0.6913580246913583,
+      "gwet_ac2": 0.581039755351682,
+      "percent_agreement": 0.18248175182481752
+    },
+    "code_consistency": {
+      "weighted_kappa": 0.6666666666666673,
+      "krippendorff_alpha": -0.03007518796992481,
+      "gwet_ac1": -0.030075187969926476,
+      "gwet_ac2": 0.6617283950617284,
+      "percent_agreement": 0.9416058394160584
+    },
+    "proof_utility": {
+      "weighted_kappa": 0.6666666666666667,
+      "krippendorff_alpha": -1.0,
+      "gwet_ac1": -1.0,
+      "gwet_ac2": 0.5555555555555557,
+      "percent_agreement": 0.0
+    }
+  },
+  "vacuity_agreement": {
+    "percent_agreement": 0.9671532846715328,
+    "kappa": 0.0,
+    "gwet_ac1": -0.01669758812616313
+  },
+  "coverage_agreement": {
+    "percent_agreement": 0.9233576642335767,
+    "kappa": 0.0,
+    "gwet_ac1": -0.03984819734345184
+  },
+  "confusion_matrices": {
+    "semantic_faithfulness": {
+      "1": {
+        "1": 50,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "2": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "3": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "4": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      }
+    },
+    "code_consistency": {
+      "1": {
+        "1": 258,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "2": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "3": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "4": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      }
+    },
+    "proof_utility": {
+      "1": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "2": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "3": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "4": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      }
+    }
+  },
+  "disagreement_counts": {
+    "by_metric": {
+      "proof_utility": 274,
+      "semantic_faithfulness": 224,
+      "code_consistency": 16,
+      "coverage_label": 21,
+      "vacuity_label": 9
+    },
+    "by_system": {
+      "code_only_v1": 108,
+      "full_method_v1": 116,
+      "naive_concat_v1": 157,
+      "text_only_v1": 163
+    },
+    "by_family": {
+      "arrays_binary_search": 44,
+      "arrays_max_subarray": 43,
+      "dp_knapsack_01": 57,
+      "dp_longest_common_subsequence": 52,
+      "graph_bfs_shortest_path": 36,
+      "graph_dijkstra": 47,
+      "greedy_coin_change_canonical": 57,
+      "greedy_interval_scheduling": 49,
+      "sorting_insertion_sort": 39,
+      "sorting_merge_sort": 29,
+      "trees_bst_insert": 44,
+      "trees_lowest_common_ancestor": 47
+    }
+  },
+  "disagreement_examples": [
+    {
+      "anonymized_packet_key": "hs_001",
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "code_only_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_002",
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "full_method_v1",
+      "metric": "semantic_faithfulness",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Generated obligations do not fully satisfy semantic unit requirements for semantic_faithfulness; adjudication keeps stricter rating.",
+      "source_evidence": "generated obligations; reference obligations; semantic unit rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_002",
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "full_method_v1",
+      "metric": "code_consistency",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_002",
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "full_method_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_003",
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "naive_concat_v1",
+      "metric": "semantic_faithfulness",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Generated obligations do not fully satisfy semantic unit requirements for semantic_faithfulness; adjudication keeps stricter rating.",
+      "source_evidence": "generated obligations; reference obligations; semantic unit rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_003",
+      "instance_id": "arrays_binary_search_001",
+      "system_id": "naive_concat_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_004",
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "code_only_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_005",
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "full_method_v1",
+      "metric": "semantic_faithfulness",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Generated obligations do not fully satisfy semantic unit requirements for semantic_faithfulness; adjudication keeps stricter rating.",
+      "source_evidence": "generated obligations; reference obligations; semantic unit rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_005",
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "full_method_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_006",
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "naive_concat_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_007",
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "text_only_v1",
+      "metric": "semantic_faithfulness",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Generated obligations do not fully satisfy semantic unit requirements for semantic_faithfulness; adjudication keeps stricter rating.",
+      "source_evidence": "generated obligations; reference obligations; semantic unit rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_007",
+      "instance_id": "arrays_binary_search_002",
+      "system_id": "text_only_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_008",
+      "instance_id": "arrays_binary_search_003",
+      "system_id": "code_only_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_009",
+      "instance_id": "arrays_binary_search_003",
+      "system_id": "full_method_v1",
+      "metric": "semantic_faithfulness",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Generated obligations do not fully satisfy semantic unit requirements for semantic_faithfulness; adjudication keeps stricter rating.",
+      "source_evidence": "generated obligations; reference obligations; semantic unit rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_009",
+      "instance_id": "arrays_binary_search_003",
+      "system_id": "full_method_v1",
+      "metric": "code_consistency",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_009",
+      "instance_id": "arrays_binary_search_003",
+      "system_id": "full_method_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_010",
+      "instance_id": "arrays_binary_search_003",
+      "system_id": "naive_concat_v1",
+      "metric": "semantic_faithfulness",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Generated obligations do not fully satisfy semantic unit requirements for semantic_faithfulness; adjudication keeps stricter rating.",
+      "source_evidence": "generated obligations; reference obligations; semantic unit rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_010",
+      "instance_id": "arrays_binary_search_003",
+      "system_id": "naive_concat_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_011",
+      "instance_id": "arrays_binary_search_003",
+      "system_id": "text_only_v1",
+      "metric": "semantic_faithfulness",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Generated obligations do not fully satisfy semantic unit requirements for semantic_faithfulness; adjudication keeps stricter rating.",
+      "source_evidence": "generated obligations; reference obligations; semantic unit rubric",
+      "adjudicator_id": "adjudicator_v3"
+    },
+    {
+      "anonymized_packet_key": "hs_011",
+      "instance_id": "arrays_binary_search_003",
+      "system_id": "text_only_v1",
+      "metric": "proof_utility",
+      "rater_a": "0",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "0",
+      "resolution_reason": "Ordinal mismatch resolved to rubric-grounded stricter interpretation.",
+      "source_evidence": "packet evidence and rubric",
+      "adjudicator_id": "adjudicator_v3"
+    }
+  ],
+  "annotator_qualification_summary": "Both raters completed CTA-Bench rubric training and blind packet calibration before strict-all pass."
+}

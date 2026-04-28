@@ -44,7 +44,33 @@ COMMANDS = [
     [sys.executable, "scripts/materialize_v03_adjudication_artifacts.py"],
     [sys.executable, "scripts/reproduce_agreement_report.py"],
     [sys.executable, "scripts/compute_results.py", "--paper"],
+    [sys.executable, "scripts/implement_evidence_hardening.py"],
+    [sys.executable, "scripts/export_external_annotation_review_bundle.py"],
+    [
+        sys.executable,
+        "scripts/compute_human_strict_agreement.py",
+        "--packet-map",
+        "annotation/human_pass_v3/human_strict_packet_ids.csv",
+        "--rater-a",
+        "annotation/rater_a_strict_all.csv",
+        "--rater-b",
+        "annotation/human_pass_v3/rater_b_human_strict_all.csv",
+        "--out-json",
+        "annotation/human_pass_v3/agreement_report_human_strict_all.json",
+        "--out-md",
+        "annotation/human_pass_v3/agreement_report_human_strict_all.md",
+        "--out-disagreements",
+        (
+            "annotation/human_pass_v3/"
+            "disagreement_log_strict_all.csv"
+        ),
+    ],
     [sys.executable, "scripts/export_benchmark_paper_summary.py"],
+    [sys.executable, "scripts/compute_results.py", "--paper"],
+    [sys.executable, "scripts/export_external_annotation_review_bundle.py"],
+    [sys.executable, "scripts/export_benchmark_paper_summary.py"],
+    [sys.executable, "scripts/implement_evidence_hardening.py"],
+    [sys.executable, "scripts/validate_release_artifact.py"],
     [sys.executable, "scripts/ci_reviewer_readiness.py"],
 ]
 

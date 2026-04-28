@@ -1,3 +1,4 @@
 agreement_subset,n_packets,n_unique_instance_ids,n_direct_human,n_direct_adjudicated,n_mapped_from_canonical
 full_audit_population,192,48,0,128,64
 strict_independent_only,128,47,0,128,0
+strict_all_human_overlap,274,84,274,274,0

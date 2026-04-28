@@ -39,9 +39,10 @@ silent relabeling of historical rows.
 
 Calibration completion should now be reflected in:
 
-- `annotation/human_pass_v2/agreement_report_human.json`
-- `annotation/human_pass_v2/agreement_report_human.md`
-- `results/paper_table_human_agreement.csv`
+- `annotation/human_pass_v3/agreement_report_human_strict_all.json`
+- `annotation/human_pass_v3/agreement_report_human_strict_all.md`
+- `results/paper_table_agreement_evidence.csv` (including
+  `strict_all_human_overlap`)
 
 These files are materialized through
 `python scripts/implement_evidence_hardening.py`.

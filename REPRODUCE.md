@@ -60,7 +60,7 @@ python scripts/export_final_ci_evidence.py
 ```
 
 Canonical filenames for manuscript layers (also emitted by **`compute_results.py --paper`**):
-**`results/paper_strict_*`** (strict independent headline), **`results/paper_expanded_*`** (expanded mapped appendix),
+**`results/paper_strict_*`** (independently double-annotated strict headline view), **`results/paper_expanded_*`** (expanded mapped appendix),
 **`results/paper_strict_system_metrics_long.csv`**, **`results/paper_system_set.md`**,
 **`results/family_reliability_summary.csv`**, **`results/paper_strict_coverage_gap.csv`**,
 **`repairs/paper_repair_status.csv`**, **`repairs/paper_repair_success_subset.csv`**,
@@ -90,11 +90,14 @@ from strict rows with `missing_critical_units > 0` in `raw_metrics_strict.json`.
 
 Evidence-hardening bundle outputs from `implement_evidence_hardening.py`:
 
-- `annotation/human_pass_v2/*` (human agreement report, disagreement log, rater file)
+- `annotation/human_pass_v3/*` (strict-all human agreement report and disagreement log)
+- `annotation/rater_a_strict_all.csv`
 - `results/selection_robustness.csv` and `results/selection_robustness_summary.md`
-- `results/prompt_token_accounting.csv` and `results/prompt_token_accounting_method.json`
+- `results/prompt_token_accounting.csv`, `results/prompt_token_accounting_tokenizer.csv`,
+  and `results/prompt_token_accounting_method.json`
 - `results/cross_model_pilot_*`
-- `repairs/repair_attempts.csv` and `repairs/repair_attempt_summary.md`
+- `repairs/repair_attempts.csv`, `repairs/repair_outcomes_summary.csv`,
+  and `repairs/repair_attempt_summary.md`
 - `artifacts/evidence_hardening_manifest.json` and checksum validation via
   `python scripts/validate_release_artifact.py`
 

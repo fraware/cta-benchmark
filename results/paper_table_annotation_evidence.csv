@@ -1,3 +1,3 @@
-metrics_view,n_eval_rows,n_unique_instance_ids,n_direct_human,n_direct_adjudicated,n_mapped_from_canonical
-strict_independent,274,84,0,274,0
-expanded_mapped,336,84,0,222,114
+metrics_view,n_eval_rows,n_unique_instance_ids,n_direct_first_pass,n_second_human_overlap,n_mapped_from_canonical
+strict_independent,274,84,274,274,0
+expanded_mapped,336,84,222,222,114

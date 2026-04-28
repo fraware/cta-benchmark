@@ -376,6 +376,6 @@ Authoring artifacts now feed additional paper-facing hardening exports:
 
 - selector robustness: `results/selection_robustness.csv`
 - token accounting: `results/prompt_token_accounting.csv`
-- strict human agreement: `annotation/human_pass_v2/agreement_report_human.json`
+- strict human agreement: `annotation/human_pass_v3/agreement_report_human_strict_all.json`
 
 Regenerate these with `python scripts/implement_evidence_hardening.py`.

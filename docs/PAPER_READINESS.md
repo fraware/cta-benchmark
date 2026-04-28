@@ -20,7 +20,7 @@ python scripts\validate_release_artifact.py
 
 Required outputs now include:
 
-- `annotation/human_pass_v2/*`
+- `annotation/human_pass_v3/*`
 - `results/selection_robustness.csv`
 - `results/prompt_token_accounting.csv`
 - `results/cross_model_pilot_*.csv`
@@ -209,12 +209,17 @@ Output: `artifacts/final_ci_run_YYYYMMDD.md`.
 python scripts\validate_benchmark.py --strict-grid-near-dup
 ```
 
-## 9. Option-2 strict coverage expansion (direct adjudication wave)
+## 9. Strict independent completion status
 
-Current strict-independent coverage after the Option-2 wave is
-**71 unique instances / 222 strict rows** (expanded remains 84 / 336 with
-114 mapped-from-canonical rows). If you want to increase strict coverage
-further, generate and execute another direct-adjudication wave:
+Current strict-headline coverage is
+**84 unique instances / 274 strict rows** with
+`n_mapped_from_canonical=0` in the strict view.
+Expanded remains 84 / 336 with 114 mapped-from-canonical rows.
+
+The primary submission posture is now the independently double-annotated strict
+view with full strict overlap (no remaining strict
+coverage gap required for headline evidence). Any further direct-adjudication
+wave should be treated as robustness expansion, not headline completion.
 
 ```powershell
 python scripts\plan_v03_direct_adjudication_wave.py --target-pairs 128
@@ -232,7 +237,16 @@ with completed `(instance_id, system_id)` rows and
 python scripts\strict_gap_13x4_worklist.py
 python scripts\materialize_v03_adjudication_artifacts.py
 python scripts\compute_results.py --paper
+python scripts\implement_evidence_hardening.py
+python scripts\compute_human_strict_agreement.py `
+  --packet-map annotation\human_pass_v3\human_strict_packet_ids.csv `
+  --rater-a annotation\rater_a_strict_all.csv `
+  --rater-b annotation\human_pass_v3\rater_b_human_strict_all.csv `
+  --out-json annotation\human_pass_v3\agreement_report_human_strict_all.json `
+  --out-md annotation\human_pass_v3\agreement_report_human_strict_all.md `
+  --out-disagreements annotation\human_pass_v3\disagreement_log_strict_all.csv
 python scripts\export_benchmark_paper_summary.py
+python scripts\validate_release_artifact.py
 python scripts\ci_reviewer_readiness.py
 ```
 

@@ -1,6 +1,7 @@
 {
   "schema_version": "prompt_token_accounting_method_v1",
   "token_estimator": "char_length_div_4_ceiling_proxy",
+  "count_method": "char-proxy",
   "prompt_source": "benchmark/v0.3/annotation/review_packets/*/*/packet.json",
   "output_source": "benchmark/v0.3/annotation/review_packets/*/*/generated_output.json",
   "truncation_rule": "output_tokens > 4096",

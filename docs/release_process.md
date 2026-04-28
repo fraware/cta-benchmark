@@ -16,7 +16,8 @@ python scripts\ci_reviewer_readiness.py
 
 This enforces:
 
-- human-pass v2 agreement exports (`annotation/human_pass_v2/*`);
+- human-pass v3 strict-all agreement exports (`annotation/human_pass_v3/*`
+  and `annotation/rater_a_strict_all.csv`);
 - selector/token/cross-model/repair transparency outputs under `results/` and
   `repairs/`;
 - artifact completeness plus checksum validation through

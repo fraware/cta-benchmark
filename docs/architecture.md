@@ -185,5 +185,5 @@ Evidence hardening is now implemented as a reproducible post-processing layer:
 - artifact validator: `scripts/validate_release_artifact.py`
 - CI gate integration: `scripts/ci_reviewer_readiness.py`
 
-Primary outputs are emitted under `annotation/human_pass_v2/`, `results/`,
+Primary outputs are emitted under `annotation/human_pass_v3/`, `results/`,
 `repairs/`, and `artifacts/evidence_hardening_manifest.json`.

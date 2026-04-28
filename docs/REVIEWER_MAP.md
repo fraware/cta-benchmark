@@ -5,7 +5,7 @@
 | Benchmark scale (instances, splits, families) | `benchmark/v0.3/benchmark_paper_summary.json` | `python scripts/export_benchmark_paper_summary.py` |
 | Frozen protocol identifiers | `benchmark/v0.3/protocol_freeze.json` | `python scripts/sign_or_hash_protocol.py --benchmark-version v0.3` |
 | Per-instance adjudicated metrics (expanded) | `results/raw_metrics.json`, `results/raw_metrics_expanded.json` | `python scripts/materialize_v03_adjudication_artifacts.py` (includes `mapped_from_canonical` propagation) |
-| Per-instance metrics (strict independent evidence) | `results/raw_metrics_strict.json` | same materializer (`direct_human` / `direct_adjudicated` rows only) |
+| Per-instance metrics (strict headline view) | `results/raw_metrics_strict.json` | same materializer (`direct_human` / `direct_adjudicated` rows only); this is the independently double-annotated strict view for headline claims |
 | Aggregate tables (per metric; preferred) | `results/system_faithfulness_summary.csv`, `results/system_consistency_summary.csv`, `results/system_vacuity_summary.csv`, `results/system_proof_utility_summary.csv`, `results/system_reliability_summary.csv`, `results/system_reliability_sensitivity.csv`, `results/instance_level.csv` | `python scripts/compute_results.py --paper` |
 | Legacy faithfulness-only aliases | `results/system_summary.csv`, `results/family_summary.csv` | same; **do not** describe as full “system reliability” without naming the metric |
 | Family × system (per metric) | `results/family_faithfulness_summary.csv`, `results/family_consistency_summary.csv`, `results/family_vacuity_summary.csv`, `results/family_proof_utility_summary.csv`, `results/family_reliability_summary.csv` | same as `compute_results.py --paper` |
@@ -25,7 +25,7 @@
 | Inter-rater agreement (tier declared in report audit metadata) | `annotation/agreement_report.json`, `annotation/agreement_report.md` | `python scripts/reproduce_agreement_report.py` (prefers `annotation/rater_b_human.csv` when present, else `rater_b.csv`) |
 | Agreement audit trail (packet population) | `annotation/agreement_packet_ids.csv`, `annotation/rater_a.csv`, `annotation/rater_b.csv` (or `annotation/rater_b_human.csv`), `annotation/adjudication_log.csv` | `python scripts/materialize_v03_adjudication_artifacts.py` + optional human `rater_b_human.csv` import |
 | Repair selection + logs | `repairs/hotspot_selection.csv`, `repairs/repair_log.jsonl` | `python scripts/materialize_repair_hotspot_artifacts.py` |
-| Option-2 direct-adjudication wave plan | `benchmark/v0.3/annotation/human_wave_v03/direct_adjudication_wave_plan.csv`, `benchmark/v0.3/annotation/human_adjudicated/direct_adjudicated_pairs.csv` | `python scripts/plan_v03_direct_adjudication_wave.py` then `python scripts/materialize_v03_adjudication_artifacts.py` |
+| Direct-adjudication maintenance wave plan | `benchmark/v0.3/annotation/human_wave_v03/direct_adjudication_wave_plan.csv`, `benchmark/v0.3/annotation/human_adjudicated/direct_adjudicated_pairs.csv` | `python scripts/plan_v03_direct_adjudication_wave.py` then `python scripts/materialize_v03_adjudication_artifacts.py` |
 | Repair sensitivity (counterfactual proxy) | `results/repair_impact_summary.json` | `python scripts/repair_counterfactual_metrics.py` |
 | Strict coverage gap disclosure | `results/paper_strict_coverage_gap.csv` (missing strict unique instances/families vs expanded view) | `python scripts/compute_results.py --paper` |
 | Cost/runtime accounting | `results/paper_cost_runtime_accounting.csv` | `python scripts/export_cost_runtime_accounting.py` (also run by `compute_results.py --paper`) |
@@ -69,24 +69,34 @@ Low-faithfulness rows are canonically exported as `low_semantic_faithfulness`.
 
 Additional reviewer-critical artifacts and commands:
 
-- Human-pass v2 agreement:
-  - `annotation/human_pass_v2/agreement_report_human.json`
-  - `annotation/human_pass_v2/agreement_report_human.md`
-  - `annotation/human_pass_v2/disagreement_log.csv`
-  - `results/paper_table_human_agreement.csv`
+- Human-pass v3 strict-all agreement:
+  - `annotation/human_pass_v3/human_strict_packet_ids.csv`
+  - `annotation/rater_a_strict_all.csv`
+  - `annotation/human_pass_v3/rater_b_human_strict_all.csv`
+  - `annotation/human_pass_v3/agreement_report_human_strict_all.json`
+  - `annotation/human_pass_v3/agreement_report_human_strict_all.md`
+  - `annotation/human_pass_v3/disagreement_log_strict_all.csv`
 - Selector robustness:
   - `results/selection_robustness.csv`
   - `results/selection_robustness_summary.md`
+  - `results/selector_primary_first_parseable/paper_strict_system_summary.csv`
+  - `results/selector_current_low_obligation_tiebreak/paper_strict_system_summary.csv`
 - Token accounting:
   - `results/prompt_token_accounting.csv`
+  - `results/prompt_token_accounting_tokenizer.csv`
   - `results/prompt_token_accounting_method.json`
 - Cross-model sanity pilot:
+  - `results/cross_model_pilot_manifest.json`
+  - `results/cross_model_pilot_rows.csv`
   - `results/cross_model_pilot_instance_level.csv`
   - `results/cross_model_pilot_summary.csv`
   - `results/cross_model_pilot_failure_examples.md`
 - Repair denominator:
   - `repairs/repair_attempts.csv`
+  - `repairs/repair_outcomes_summary.csv`
   - `repairs/repair_attempt_summary.md`
+- Family diagnostic export:
+  - `results/paper_family_diagnostic_summary.csv`
 - Packaging + integrity:
   - `artifacts/evidence_hardening_manifest.json`
   - `python scripts/validate_release_artifact.py`

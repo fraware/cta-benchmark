@@ -240,12 +240,16 @@ Calibration and anchor checks before touching eval data:
 
 ## Evidence-Hardening Update (2026-04-28)
 
-Human-validation reporting now requires the v2 outputs:
+Human-validation reporting now requires strict-all v3 outputs:
 
-- `annotation/human_pass_v2/rater_b_human.csv`
-- `annotation/human_pass_v2/agreement_report_human.json`
-- `annotation/human_pass_v2/agreement_report_human.md`
-- `annotation/human_pass_v2/disagreement_log.csv`
+- `annotation/human_pass_v3/human_strict_packet_ids.csv`
+- `annotation/rater_a_strict_all.csv`
+- `annotation/human_pass_v3/rater_b_human_strict_all.csv`
+- `annotation/human_pass_v3/agreement_report_human_strict_all.json`
+- `annotation/human_pass_v3/agreement_report_human_strict_all.md`
+- `annotation/human_pass_v3/disagreement_log_strict_all.csv`
 
-After annotation updates, run `python scripts/implement_evidence_hardening.py`
-to refresh all paper-facing evidence tables.
+After annotation updates, run:
+
+- `python scripts/implement_evidence_hardening.py`
+- `python scripts/compute_human_strict_agreement.py --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv --rater-a annotation/rater_a_strict_all.csv --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv`

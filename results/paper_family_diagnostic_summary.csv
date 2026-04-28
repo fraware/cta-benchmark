@@ -1,0 +1,13 @@
+family,best_semantic_regime,best_proof_utility_regime,code_only_reliability,full_method_reliability,main_failure_mode
+arrays_binary_search,code_only_v1,code_only_v1,0.7740,0.4075,
+arrays_max_subarray,code_only_v1,code_only_v1,0.7740,0.7353,
+dp_knapsack_01,code_only_v1,code_only_v1,0.8468,0.8468,
+dp_longest_common_subsequence,code_only_v1,code_only_v1,0.6966,0.1509,missing_critical_semantic_unit
+graph_bfs_shortest_path,full_method_v1,full_method_v1,0.7740,0.8334,
+graph_dijkstra,full_method_v1,full_method_v1,0.8847,0.8901,
+greedy_coin_change_canonical,full_method_v1,full_method_v1,0.6773,0.7528,missing_critical_semantic_unit
+greedy_interval_scheduling,full_method_v1,full_method_v1,0.6606,0.8204,missing_critical_semantic_unit
+sorting_insertion_sort,full_method_v1,full_method_v1,0.7095,0.8468,
+sorting_merge_sort,full_method_v1,full_method_v1,0.7740,0.9224,
+trees_bst_insert,full_method_v1,full_method_v1,0.7449,0.8998,
+trees_lowest_common_ancestor,full_method_v1,full_method_v1,0.7095,0.7212,

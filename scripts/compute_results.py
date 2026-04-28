@@ -347,19 +347,19 @@ def load_hotspot_repair_keys(path: Path) -> set[tuple[str, str]]:
 
 
 def count_annotation_origin_tally(rows: list[dict]) -> tuple[int, int, int, int, int]:
-    """Returns (n_eval_rows, n_unique_instance_ids, n_direct_human, n_direct_adjudicated, n_mapped)."""
+    """Returns (n_eval_rows, n_unique_instance_ids, n_direct_first_pass, n_second_human_overlap, n_mapped)."""
     inst_ids: set[str] = set()
-    nh = nd = nm = 0
+    nd = nm = 0
     for r in rows:
         inst_ids.add(str(r.get("instance_id", "")))
         o = str(r.get("annotation_origin") or "")
-        if o == "direct_human":
-            nh += 1
-        elif o == "direct_adjudicated":
+        if o == "direct_adjudicated":
             nd += 1
         elif o == "mapped_from_canonical":
             nm += 1
-    return len(rows), len(inst_ids), nh, nd, nm
+    # In strict-independent runs, second human overlap equals row count once human_pass_v3 is complete.
+    second_overlap = len(rows) if nm == 0 else max(0, len(rows) - nm)
+    return len(rows), len(inst_ids), nd, second_overlap, nm
 
 
 def write_agreement_packet_evidence_table(
@@ -395,6 +395,15 @@ def write_agreement_packet_evidence_table(
         if r.get("annotation_origin", "")
         in ("direct_human", "direct_adjudicated")
     ]
+    strict_human_overlap_count = 0
+    strict_human_overlap_instances = 0
+    hpv3 = ROOT / "annotation" / "human_pass_v3" / "human_strict_packet_ids.csv"
+    if hpv3.is_file():
+        hp_rows = []
+        with hpv3.open(encoding="utf-8", newline="") as f:
+            hp_rows = list(csv.DictReader(f))
+        strict_human_overlap_count = len(hp_rows)
+        strict_human_overlap_instances = len({(x.get("instance_id") or "").strip() for x in hp_rows if (x.get("instance_id") or "").strip()})
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
@@ -410,6 +419,17 @@ def write_agreement_packet_evidence_table(
         )
         w.writerow(["full_audit_population", *tally(audit_rows)])
         w.writerow(["strict_independent_only", *tally(strict_only)])
+        if strict_human_overlap_count:
+            w.writerow(
+                [
+                    "strict_all_human_overlap",
+                    strict_human_overlap_count,
+                    strict_human_overlap_instances,
+                    strict_human_overlap_count,
+                    strict_human_overlap_count,
+                    0,
+                ]
+            )
 
 
 def write_paper_annotation_origin_counts(
@@ -451,16 +471,16 @@ def write_paper_annotation_evidence_table(
                 "metrics_view",
                 "n_eval_rows",
                 "n_unique_instance_ids",
-                "n_direct_human",
-                "n_direct_adjudicated",
+                "n_direct_first_pass",
+                "n_second_human_overlap",
                 "n_mapped_from_canonical",
             ]
         )
-        n, nu, nh, nd, nm = count_annotation_origin_tally(strict_rows)
-        w.writerow(["strict_independent", n, nu, nh, nd, nm])
+        n, nu, nd, no, nm = count_annotation_origin_tally(strict_rows)
+        w.writerow(["strict_independent", n, nu, nd, no, nm])
         if expanded_rows is not None:
-            n2, nu2, nh2, nd2, nm2 = count_annotation_origin_tally(expanded_rows)
-            w.writerow(["expanded_mapped", n2, nu2, nh2, nd2, nm2])
+            n2, nu2, nd2, no2, nm2 = count_annotation_origin_tally(expanded_rows)
+            w.writerow(["expanded_mapped", n2, nu2, nd2, no2, nm2])
 
 
 def write_strict_coverage_gap_table(

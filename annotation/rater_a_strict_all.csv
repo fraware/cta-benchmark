@@ -1,0 +1,275 @@
+anonymized_packet_key,semantic_faithfulness,code_consistency,proof_utility,vacuity_label,coverage_label,covered_units,partial_units,missing_units,contradiction_signal,notes
+hs_001,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_002,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_003,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_004,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_005,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_006,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_007,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_008,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_009,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_010,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_011,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_012,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_013,0,0,0,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_014,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_015,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_016,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_017,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_018,0,0,0,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_019,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_020,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_021,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_022,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_023,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_024,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_025,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_026,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_027,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_028,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_029,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_030,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_031,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_032,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_033,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_034,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_035,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_036,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_037,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_038,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_039,0,1,0,non_vacuous,full,['SU2'],,"['SU1', 'SU3']",0,primary strict adjudicated mapping
+hs_040,1,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_041,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_042,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_043,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_044,0,1,0,non_vacuous,full,['SU2'],,"['SU1', 'SU3']",0,primary strict adjudicated mapping
+hs_045,1,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_046,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_047,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_048,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_049,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_050,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_051,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_052,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_053,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_054,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_055,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_056,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_057,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_058,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_059,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_060,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_061,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_062,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_063,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_064,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_065,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_066,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_067,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_068,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_069,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_070,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_071,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_072,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_073,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_074,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_075,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_076,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_077,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_078,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_079,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_080,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_081,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_082,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_083,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_084,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_085,0,1,0,non_vacuous,full,"['SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_086,0,0,0,non_vacuous,full,[],,"['SU2', 'SU3', 'SU4']",0,primary strict adjudicated mapping
+hs_087,0,1,0,non_vacuous,full,"['SU2', 'SU4']",,['SU3'],0,primary strict adjudicated mapping
+hs_088,0,1,0,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,primary strict adjudicated mapping
+hs_089,0,1,0,non_vacuous,full,['SU4'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_090,0,1,0,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,primary strict adjudicated mapping
+hs_091,0,1,0,non_vacuous,full,"['SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_092,0,1,0,non_vacuous,full,"['SU2', 'SU4']",,['SU3'],0,primary strict adjudicated mapping
+hs_093,0,1,0,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,primary strict adjudicated mapping
+hs_094,0,1,0,non_vacuous,full,['SU4'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_095,0,1,0,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,primary strict adjudicated mapping
+hs_096,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_097,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_098,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_099,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_100,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_101,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_102,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_103,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_104,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_105,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_106,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_107,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_108,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
+hs_109,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
+hs_110,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
+hs_111,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,primary strict adjudicated mapping
+hs_112,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
+hs_113,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
+hs_114,0,1,0,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2', 'SU5']",0,primary strict adjudicated mapping
+hs_115,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,primary strict adjudicated mapping
+hs_116,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,primary strict adjudicated mapping
+hs_117,0,1,0,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2', 'SU5']",0,primary strict adjudicated mapping
+hs_118,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,primary strict adjudicated mapping
+hs_119,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_120,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_121,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_122,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_123,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_124,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_125,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_126,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_127,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_128,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_129,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_130,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_131,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_132,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_133,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_134,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_135,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_136,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_137,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_138,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_139,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_140,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_141,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
+hs_142,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_143,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_144,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_145,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_146,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_147,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_148,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_149,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_150,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_151,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_152,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_153,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_154,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_155,0,0,0,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,primary strict adjudicated mapping
+hs_156,0,0,0,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,primary strict adjudicated mapping
+hs_157,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_158,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_159,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_160,0,1,0,non_vacuous,full,['SU1'],,"['SU3', 'SU4']",0,primary strict adjudicated mapping
+hs_161,0,0,0,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,primary strict adjudicated mapping
+hs_162,0,0,0,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,primary strict adjudicated mapping
+hs_163,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_164,0,1,0,non_vacuous,full,['SU1'],,"['SU3', 'SU4']",0,primary strict adjudicated mapping
+hs_165,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_166,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_167,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_168,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_169,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_170,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_171,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_172,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_173,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_174,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_175,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_176,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_177,0,1,0,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,primary strict adjudicated mapping
+hs_178,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_179,0,1,0,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,primary strict adjudicated mapping
+hs_180,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_181,0,1,0,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,primary strict adjudicated mapping
+hs_182,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_183,0,1,0,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,primary strict adjudicated mapping
+hs_184,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_185,0,1,0,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,primary strict adjudicated mapping
+hs_186,0,1,0,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,primary strict adjudicated mapping
+hs_187,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_188,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_189,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_190,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_191,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_192,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_193,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_194,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_195,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_196,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_197,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_198,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_199,0,1,0,non_vacuous,full,"['SU1', 'SU2']",,[],0,primary strict adjudicated mapping
+hs_200,0,1,0,non_vacuous,full,"['SU1', 'SU2']",,[],0,primary strict adjudicated mapping
+hs_201,0,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
+hs_202,1,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
+hs_203,0,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
+hs_204,1,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
+hs_205,0,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
+hs_206,1,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
+hs_207,0,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
+hs_208,1,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
+hs_209,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_210,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_211,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_212,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_213,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_214,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_215,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_216,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_217,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_218,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_219,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_220,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_221,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_222,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_223,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_224,1,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_225,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_226,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_227,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_228,1,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_229,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_230,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_231,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_232,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_233,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_234,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_235,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_236,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_237,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_238,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_239,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_240,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_241,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_242,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_243,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_244,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_245,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_246,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_247,0,1,0,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,primary strict adjudicated mapping
+hs_248,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_249,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
+hs_250,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_251,0,1,0,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,primary strict adjudicated mapping
+hs_252,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_253,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_254,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_255,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_256,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_257,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_258,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_259,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_260,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_261,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_262,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_263,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_264,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
+hs_265,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
+hs_266,0,1,0,non_vacuous,full,['SU4'],,"['SU1', 'SU2', 'SU3']",0,primary strict adjudicated mapping
+hs_267,0,1,0,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_268,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4']",0,primary strict adjudicated mapping
+hs_269,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,['SU2'],0,primary strict adjudicated mapping
+hs_270,0,1,0,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3', 'SU4']",0,primary strict adjudicated mapping
+hs_271,0,1,0,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2']",0,primary strict adjudicated mapping
+hs_272,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4']",0,primary strict adjudicated mapping
+hs_273,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,['SU2'],0,primary strict adjudicated mapping
+hs_274,0,1,0,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3', 'SU4']",0,primary strict adjudicated mapping

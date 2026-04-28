@@ -254,6 +254,51 @@ def main() -> int:
             )
             return 1
 
+    hpv3_map = ROOT / "annotation" / "human_pass_v3" / "human_strict_packet_ids.csv"
+    hpv3_rater = ROOT / "annotation" / "human_pass_v3" / "rater_b_human_strict_all.csv"
+    hpv3_disagree = ROOT / "annotation" / "human_pass_v3" / "disagreement_log_strict_all.csv"
+    if not hpv3_map.is_file() or not hpv3_rater.is_file() or not hpv3_disagree.is_file():
+        print("error: missing required human_pass_v3 files", file=sys.stderr)
+        return 1
+    map_rows = load_csv_rows(hpv3_map)
+    if len(map_rows) != 274:
+        print(f"error: human_pass_v3.n_rows {len(map_rows)} != 274", file=sys.stderr)
+        return 1
+    map_instances = {(r.get("instance_id") or "").strip() for r in map_rows if (r.get("instance_id") or "").strip()}
+    if len(map_instances) != 84:
+        print(f"error: human_pass_v3.n_unique_instance_ids {len(map_instances)} != 84", file=sys.stderr)
+        return 1
+    if any((r.get("strict_row_id") or "").strip() == "" for r in map_rows):
+        print("error: human_pass_v3 strict_row_id missing", file=sys.stderr)
+        return 1
+    if "mapped_from_canonical" in {c for row in map_rows for c in row.values()}:
+        print("error: human_pass_v3 contains mapped_from_canonical rows", file=sys.stderr)
+        return 1
+    corr_rows = load_csv_rows(ROOT / "annotation" / "external_review" / "semantic_corrections_v3.csv")
+    corr_keys = {(r.get("template_id") or "").strip() + "::" + (r.get("system_id") or "").strip() for r in corr_rows}
+    map_keys = {(r.get("source_template_id") or "").strip() + "::" + (r.get("system_id") or "").strip() for r in map_rows}
+    if not corr_keys.issubset(map_keys):
+        print("error: semantic_corrections_v3 rows missing from human_pass_v3", file=sys.stderr)
+        return 1
+    strict_rows_ci = json.loads(strict_path.read_text(encoding="utf-8")).get("rows") or []
+    high_risk = {
+        (str(r.get("source_template_id") or r.get("instance_id")), str(r.get("system")))
+        for r in strict_rows_ci
+        if float(r.get("faithfulness_mean", 1.0)) < 0.5
+        or int(r.get("missing_critical_units", 0) or 0) > 0
+        or bool(r.get("contradiction_flag"))
+        or float(r.get("vacuity_rate", 0.0)) > 0.0
+    }
+    hp_keys = {(r.get("source_template_id") or r.get("instance_id"), r.get("system_id")) for r in map_rows}
+    if not high_risk.issubset(hp_keys):
+        print("error: high-risk strict rows missing from human_pass_v3", file=sys.stderr)
+        return 1
+    for row in load_csv_rows(hpv3_disagree):
+        txt = (row.get("resolution_reason") or "").strip().lower()
+        if txt == "retain primary adjudicator label for ordinal metrics":
+            print("error: generic disagreement resolution text present", file=sys.stderr)
+            return 1
+
     primary_registry = ROOT / "results" / "paper_primary_model_registry.csv"
     if not primary_registry.is_file():
         print(
@@ -497,6 +542,18 @@ def main() -> int:
 
     art_manifest = ROOT / "artifacts" / "evidence_hardening_manifest.json"
     if art_manifest.is_file():
+        art = json.loads(art_manifest.read_text(encoding="utf-8"))
+        required_contents = set(str(x) for x in (art.get("required_contents") or []))
+        must_have = {
+            "annotation/human_pass_v3/human_strict_packet_ids.csv",
+            "annotation/human_pass_v3/rater_b_human_strict_all.csv",
+            "annotation/human_pass_v3/disagreement_log_strict_all.csv",
+            "annotation/human_pass_v3/agreement_report_human_strict_all.json",
+            "annotation/human_pass_v3/agreement_report_human_strict_all.md",
+        }
+        if not must_have.issubset(required_contents):
+            print("error: artifact manifest missing human_pass_v3 required files", file=sys.stderr)
+            return 1
         subprocess.check_call(
             [sys.executable, str(ROOT / "scripts" / "validate_release_artifact.py")],
             cwd=ROOT,
