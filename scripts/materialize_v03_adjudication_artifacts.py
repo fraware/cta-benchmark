@@ -66,6 +66,34 @@ def load_semantic_corrections(path: Path) -> list[dict[str, str]]:
     return rows
 
 
+def apply_semantic_correction_coverage(
+    corrections: list[dict[str, str]],
+    template_id: str,
+    system_id: str,
+    covered: set[str],
+    crit: set[str],
+) -> None:
+    """
+    Shrink ``covered`` using ``new_coverage`` from semantic_corrections_v1.csv.
+
+    Tokens are audit-defined (not inferred): they remove critical units still
+    present only because ``quality_summary.critical_units_covered_by_direct_theorems``
+    over-asserted coverage relative to obligation-level review.
+    """
+    for row in corrections:
+        if row.get("system_id") != system_id:
+            continue
+        if row.get("instance_id") != template_id:
+            continue
+        nc = (row.get("new_coverage") or "").strip()
+        if nc == "partial_SU2":
+            if "SU2" in crit:
+                covered.discard("SU2")
+        elif nc == "SU1_only_or_none":
+            if "SU3" in crit:
+                covered.discard("SU3")
+
+
 def apply_semantic_corrections(
     ann_obs: list[dict],
     template_id: str,
@@ -337,6 +365,7 @@ def build_record(
             for su in o["linked_semantic_units"]:
                 if su in crit:
                     covered.add(su)
+    apply_semantic_correction_coverage(corrections, template_id, system_id, covered, crit)
     missed = sorted(crit - covered)
 
     n_ob = max(1, len(ann_obs))

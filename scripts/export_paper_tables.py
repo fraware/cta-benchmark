@@ -214,8 +214,35 @@ def write_failure_mode_export(
                     continue
                 for tok in reason.split(";"):
                     mode = tok.strip()
+                    if (
+                        evidence_view == "strict_independent"
+                        and mode == "missing_critical_semantic_unit"
+                    ):
+                        continue
                     if mode:
                         counts_fam[(sid, fam, mode)] += 1
+
+    # Strict independent: missing-critical row counts come from ``raw_metrics_strict``
+    # (pack-derived ``missing_critical_units``), not hotspot proxy tokens.
+    if evidence_view == "strict_independent":
+        strip = [k for k in counts_fam if k[2] == "missing_critical_semantic_unit"]
+        for k in strip:
+            del counts_fam[k]
+        rm_path = ROOT / "results" / "raw_metrics_strict.json"
+        if rm_path.is_file():
+            payload = json.loads(rm_path.read_text(encoding="utf-8"))
+            for row in payload.get("rows") or []:
+                origin = (row.get("annotation_origin") or "").strip()
+                if origin not in {"direct_human", "direct_adjudicated"}:
+                    continue
+                if int(row.get("missing_critical_units", 0) or 0) <= 0:
+                    continue
+                sid = (row.get("system") or "").strip()
+                iid = (row.get("instance_id") or "").strip()
+                if not sid or not iid:
+                    continue
+                fam = "_".join(iid.split("_")[:-1]) if "_" in iid else "global"
+                counts_fam[(sid, fam, "missing_critical_semantic_unit")] += 1
 
     # Build denominator stats from raw-metrics rows in the matching evidence view.
     raw_name = (

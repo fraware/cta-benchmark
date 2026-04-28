@@ -257,15 +257,15 @@
     "proof_utility": 0.7796433657095491
   },
   "coverage_percent_agreement": 0.9635416666666666,
-  "coverage_cohens_kappa_unweighted": 0.9221411192214111,
+  "coverage_cohens_kappa_unweighted": 0.9233489220942168,
   "coverage_kappa_bootstrap_ci95": [
-    0.860768672951414,
-    0.9698650204038924
+    0.8631341333016515,
+    0.9703031552897504
   ],
-  "coverage_gwet_ac1": 0.922098246630923,
+  "coverage_gwet_ac1": 0.9233073696824445,
   "coverage_prevalence_pooled": {
-    "full": 0.6640625,
-    "partial": 0.2994791666666667,
+    "full": 0.6536458333333334,
+    "partial": 0.3098958333333333,
     "failed": 0.036458333333333336
   },
   "vacuity_label": {

@@ -12,7 +12,7 @@ proof_utility,full_method_v1,0.5547,0.4880,0.6136,44
 proof_utility,naive_concat_v1,0.3395,0.3027,0.3795,63
 proof_utility,text_only_v1,0.3361,0.3009,0.3752,68
 reliability,code_only_v1,0.7592,0.7379,0.7791,47
-reliability,full_method_v1,0.7903,0.7492,0.8249,44
+reliability,full_method_v1,0.7880,0.7443,0.8240,44
 reliability,naive_concat_v1,0.6663,0.6370,0.6940,63
 reliability,text_only_v1,0.6371,0.6064,0.6679,68
 vacuity,code_only_v1,0.0000,0.0000,0.0000,47

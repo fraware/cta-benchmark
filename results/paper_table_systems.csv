@@ -1,5 +1,5 @@
 system,faithfulness_mean,faithfulness_ci95_low,faithfulness_ci95_high,code_consistency_mean,code_consistency_ci95_low,code_consistency_ci95_high,vacuity_mean,vacuity_ci95_low,vacuity_ci95_high,proof_utility_mean,proof_utility_ci95_low,proof_utility_ci95_high,reliability_mean,reliability_ci95_low,reliability_ci95_high
 code_only_v1,0.8769,0.8472,0.9050,1.0000,1.0000,1.0000,0.0000,0.0000,0.0000,0.3971,0.3461,0.4511,0.7592,0.7379,0.7791
-full_method_v1,0.8519,0.8145,0.8866,0.9830,0.9602,1.0000,0.0000,0.0000,0.0000,0.5547,0.4880,0.6136,0.7903,0.7492,0.8249
+full_method_v1,0.8519,0.8145,0.8866,0.9830,0.9602,1.0000,0.0000,0.0000,0.0000,0.5547,0.4880,0.6136,0.7880,0.7443,0.8240
 naive_concat_v1,0.7450,0.7076,0.7851,0.9786,0.9500,1.0000,0.0302,0.0182,0.0430,0.3395,0.3027,0.3795,0.6663,0.6370,0.6940
 text_only_v1,0.7069,0.6642,0.7498,0.9801,0.9537,1.0000,0.0464,0.0272,0.0687,0.3361,0.3009,0.3752,0.6371,0.6064,0.6679

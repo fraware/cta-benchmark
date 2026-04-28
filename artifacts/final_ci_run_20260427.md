@@ -1,6 +1,6 @@
 # Final CI Parity Evidence
 
-- Timestamp (UTC): `2026-04-28T05:08:43.825814+00:00`
+- Timestamp (UTC): `2026-04-28T05:14:31.223478+00:00`
 - Repo root: `C:/Users/mateo/cta-benchmark`
 
 ## `cargo fmt --all -- --check`
@@ -16,7 +16,7 @@
 - Status: **PASS**
 
 ```text
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.61s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.04s
 ```
 
 ## `cargo test --workspace --all-targets`
@@ -24,7 +24,7 @@
 - Status: **PASS**
 
 ```text
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.61s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.01s
      Running unittests src\lib.rs (target\debug\deps\cta_annotations-0e5ed6bd505c4937.exe)
 
 running 3 tests
@@ -32,7 +32,7 @@ test tests::prefer_adjudicator_policy_returns_adjudicator ... ok
 test tests::prefer_adjudicator_errors_without_adjudicator_when_multi ... ok
 test tests::majority_merges_two_annotators ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
      Running unittests src\lib.rs (target\debug\deps\cta_behavior-f8216144135323b9.exe)
 
@@ -58,12 +58,12 @@ running 10 tests
 test splits::tests::split_name_round_trip ... ok
 test splits::tests::missing_splits_dir_is_not_an_error ... ok
 test authoring_lint::tests::regex_matches_bare_existential ... ok
+test splits::tests::load_splits_rejects_name_mismatch ... ok
+test splits::tests::load_splits_rejects_version_mismatch ... ok
+test authoring_lint::tests::regex_matches_unconditional_universal ... ok
 test release_checks::tests::missing_manifest_is_error ... ok
 test release_checks::tests::empty_eval_is_error ... ok
 test release_checks::tests::unknown_instance_in_split_is_error ... ok
-test splits::tests::load_splits_rejects_version_mismatch ... ok
-test splits::tests::load_splits_rejects_name_mismatch ... ok
-test authoring_lint::tests::regex_matches_unconditional_universal ... ok
 test splits::tests::load_splits_reads_only_canonical_stems ... ok
 
 test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
@@ -79,8 +79,8 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
      Running unittests src\main.rs (target\debug\deps\cta-7daedd25afb0a0b6.exe)
 
 running 2 tests
-test cmd::annotate::tests::count_admit_or_sorry_counts_benchmark_theorem_placeholders ... ok
 test cmd::annotate::tests::extract_trusted_symbols_finds_axioms_and_opaques ... ok
+test cmd::annotate::tests::count_admit_or_sorry_counts_benchmark_theorem_placeholders ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
@@ -90,16 +90,16 @@ running 15 tests
 test enums::tests::domain_all_matches_variants ... ok
 test enums::tests::domain_serializes_snake_case ... ok
 test enums::tests::obligation_kind_roundtrips ... ok
+test versions::tests::benchmark_version_ok ... ok
+test ids::tests::system_id_accepts_canonical ... ok
 test ids::tests::semantic_unit_id_accepts_canonical ... ok
 test ids::tests::system_id_rejects_bad ... ok
 test ids::tests::instance_id_accepts_canonical ... ok
-test ids::tests::system_id_accepts_canonical ... ok
+test ids::tests::obligation_id_accepts_canonical ... ok
 test ids::tests::instance_id_roundtrips_through_serde ... ok
+test ids::tests::instance_id_rejects_bad ... ok
 test ids::tests::instance_id_serde_rejects_invalid ... ok
 test ids::tests::obligation_id_rejects_bad ... ok
-test ids::tests::instance_id_rejects_bad ... ok
-test ids::tests::obligation_id_accepts_canonical ... ok
-test versions::tests::benchmark_version_ok ... ok
 test versions::tests::schema_version_ok ... ok
 test ids::tests::run_id_accepts_canonical ... ok
 
@@ -108,26 +108,26 @@ test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fin
      Running unittests src\lib.rs (target\debug\deps\cta_generate-8369cc796a4bb1e4.exe)
 
 running 24 tests
+test normalize::tests::empty_obligations_list_errors ... ok
 test normalize::tests::confidence_is_clamped ... ok
-test normalize::tests::demotes_stability_to_auxiliary ... ok
 test normalize::tests::drops_prop_trivial_and_placeholder_gloss ... ok
+test normalize::tests::drops_vacuous_true_obligations ... ok
+test normalize::tests::demotes_stability_to_auxiliary ... ok
+test normalize::tests::unknown_kind_maps_to_unknown ... ok
+test normalize::tests::missing_lean_statement_errors ... ok
+test normalize::tests::parses_bare_array ... ok
+test normalize::tests::parses_object_form ... ok
 test normalize::tests::empty_response_errors ... ok
 test normalize::tests::drops_implication_to_true_placeholders ... ok
-test normalize::tests::missing_lean_statement_errors ... ok
-test normalize::tests::empty_obligations_list_errors ... ok
-test normalize::tests::drops_vacuous_true_obligations ... ok
-test normalize::tests::parses_object_form ... ok
-test normalize::tests::unknown_kind_maps_to_unknown ... ok
 test normalize::tests::scrapes_json_embedded_in_prose ... ok
-test normalize::tests::parses_bare_array ... ok
-test prompts::tests::render_substitutes_simple ... ok
-test prompts::tests::render_leaves_unknown_placeholders ... ok
 test prompts::tests::render_strict_flags_missing ... ok
+test prompts::tests::render_leaves_unknown_placeholders ... ok
 test prompts::tests::kind_round_trip ... ok
-test providers::tests::anthropic_response_parser_extracts_blocks_and_usage ... ok
 test providers::tests::live_providers_refuse_without_credentials ... ok
-test providers::tests::openai_response_parser_extracts_content_model_and_usage ... ok
+test prompts::tests::render_substitutes_simple ... ok
+test providers::tests::anthropic_response_parser_extracts_blocks_and_usage ... ok
 test providers::tests::openai_request_body_shape ... ok
+test providers::tests::openai_response_parser_extracts_content_model_and_usage ... ok
 test providers::tests::stub_provider_returns_parseable_bundle ... ok
 test pipeline::tests::build_context_code_only_errors_when_reference_rs_missing_or_empty ... ok
 test pipeline::tests::generate_errors_on_unresolved_template_placeholders ... ok
@@ -185,36 +185,36 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 running 6 tests
 test never_panics_on_arbitrary_string ... ok
 test canonical_object_form_always_parses ... ok
-test ok_implies_well_formed_obligations ... ok
 test err_implies_typed_status ... ok
 test prose_around_canonical_json_is_scraped ... ok
+test ok_implies_well_formed_obligations ... ok
 test never_panics_on_arbitrary_bytes ... ok
 
-test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
 
      Running tests\pipeline_smoke.rs (target\debug\deps\pipeline_smoke-d34a6c9b335093f0.exe)
 
 running 1 test
 test stub_generation_produces_schema_valid_bundles_for_all_pilot_instances ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
 
      Running tests\prompt_snapshots.rs (target\debug\deps\prompt_snapshots-9110bbf451c304c9.exe)
 
 running 4 tests
-test snapshot_code_only_v1 ... ok
 test snapshot_full_method_v1 ... ok
+test snapshot_code_only_v1 ... ok
 test snapshot_text_only_v1 ... ok
 test snapshot_naive_concat_v1 ... ok
 
-test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
 
      Running tests\review_packet_lean_lint.rs (target\debug\deps\review_packet_lean_lint-19142595ca38e8b7.exe)
 
 running 1 test
 test review_packets_benchmark_facing_lean_lints ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
 
      Running tests\text_only_packet_regression.rs (target\debug\deps\text_only_packet_regression-991c845d7e332090.exe)
 
@@ -222,7 +222,7 @@ running 2 tests
 test text_only_graph_dijkstra_001_generated_output_tracks_code_only_lineage ... ok
 test regression_target_packets_are_benchmark_aligned ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
      Running unittests src\lib.rs (target\debug\deps\cta_lean-afbefb9269dbce09.exe)
 
@@ -240,17 +240,17 @@ test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
      Running unittests src\lib.rs (target\debug\deps\cta_metrics-528de194976aad7c.exe)
 
 running 12 tests
-test tests::elaboration_rate_matches ... ok
-test tests::metrics_version_is_v2 ... ok
 test tests::empty_input_returns_zeros ... ok
-test tests::vacuity_and_consistency_exclude_not_applicable ... ok
 test tests::rust_consistency_all_not_applicable_yields_zero ... ok
-test tests::tally_counts_labels_correctly ... ok
-test tests::secondary_contradiction_on_critical_units ... ok
+test tests::metrics_version_is_v2 ... ok
+test tests::elaboration_rate_matches ... ok
+test tests::vacuity_and_consistency_exclude_not_applicable ... ok
 test tests::weighted_faithfulness_mixes_labels ... ok
 test agreement::tests::raw_agreement_on_opposite_coverage_is_zero ... ok
 test agreement::tests::raw_agreement_on_identical_coverage_is_one ... ok
 test agreement::tests::identical_annotators_give_kappa_one ... ok
+test tests::tally_counts_labels_correctly ... ok
+test tests::secondary_contradiction_on_critical_units ... ok
 test agreement::tests::disjoint_categories_give_negative_kappa ... ok
 
 test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
@@ -260,7 +260,7 @@ test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fin
 running 1 test
 test end_to_end_pipeline_produces_schema_valid_bundle ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
 
      Running tests\multi_annotator_pipeline.rs (target\debug\deps\multi_annotator_pipeline-1b5daae2baa7c74a.exe)
 
@@ -269,7 +269,7 @@ test majority_policy_synthesises_from_non_adjudicator_annotators ... ok
 test prefer_adjudicator_policy_selects_adjudicator_record ... ok
 test agreement_metrics_flow_through_results_bundle ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
 
      Running unittests src\lib.rs (target\debug\deps\cta_reports-570d8db9c6dab25c.exe)
 
@@ -277,22 +277,22 @@ running 9 tests
 test aggregate::tests::mean_of_two_runs_is_midpoint ... ok
 test aggregate::tests::bootstrap_ci_is_deterministic_with_fixed_seed ... ok
 test aggregate::tests::paired_deltas_are_symmetric ... ok
-test aggregate::tests::paired_deltas_csv_shape ... ok
 test tests::csv_row_round_trips_header_column_count ... ok
-test tests::instance_csv_has_header_and_row ... ok
-test tests::latex_row_contains_system ... ok
+test aggregate::tests::paired_deltas_csv_shape ... ok
 test tests::markdown_contains_system_and_table ... ok
+test tests::latex_row_contains_system ... ok
 test tests::render_all_emits_four_blobs ... ok
+test tests::instance_csv_has_header_and_row ... ok
 
 test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
      Running tests\snapshots.rs (target\debug\deps\snapshots-1b2daf3c29e50a33.exe)
 
 running 5 tests
-test snapshot_instance_results_csv ... ok
 test snapshot_render_all_preserves_blob_ordering ... ok
-test snapshot_primary_metrics_csv ... ok
 test snapshot_results_latex ... ok
+test snapshot_primary_metrics_csv ... ok
+test snapshot_instance_results_csv ... ok
 test snapshot_results_markdown ... ok
 
 test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
@@ -303,8 +303,8 @@ running 6 tests
 test tests::classify_return_kind_basic ... ok
 test tests::collection_tag_extraction_from_types ... ok
 test tests::missing_entry_fn_is_error ... ok
-test tests::helper_calls_captured ... ok
 test tests::detects_direct_recursion ... ok
+test tests::helper_calls_captured ... ok
 test tests::extracts_binary_search_shape ... ok
 
 test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
@@ -315,7 +315,7 @@ running 2 tests
 test all_pilots_extract_cleanly ... ok
 test summary_serialization_roundtrips ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
 
      Running unittests src\lib.rs (target\debug\deps\cta_schema-a0c36b5e6f46e3c7.exe)
 
@@ -323,7 +323,7 @@ running 2 tests
 test tests::rejects_missing_root ... ok
 test tests::loads_all_canonical_schemas ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
 ```
 
 ## `cargo test --workspace --doc`
@@ -331,7 +331,7 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 - Status: **PASS**
 
 ```text
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.37s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.60s
    Doc-tests cta_annotations
 
 running 0 tests
@@ -349,21 +349,21 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 running 1 test
 test crates\cta_benchmark\src\lib.rs - (line 13) ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.15s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.77s
 
    Doc-tests cta_core
 
 running 1 test
 test crates\cta_core\src\ids.rs - ids (line 8) ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
 
    Doc-tests cta_generate
 
 running 1 test
 test crates\cta_generate\src\lib.rs - hash_prompt (line 168) ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.37s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.07s
 
    Doc-tests cta_lean
 
@@ -394,7 +394,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 running 1 test
 test crates\cta_schema\src\lib.rs - (line 13) ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.38s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.62s
 ```
 
 ## `cargo run -p cta_cli -- validate schemas`
@@ -402,7 +402,7 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 - Status: **PASS**
 
 ```text
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.37s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s
      Running `target\debug\cta.exe validate schemas`
 loaded 14 canonical schemas from C:\Users\mateo\cta-benchmark\schemas
   - Instance (instance.schema.json)
@@ -426,7 +426,7 @@ loaded 14 canonical schemas from C:\Users\mateo\cta-benchmark\schemas
 - Status: **PASS**
 
 ```text
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.36s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.40s
      Running `target\debug\cta.exe validate benchmark --version v0.3 --release`
 release status: split=pass annotation_coverage=pass signoff=pass manifest=pass
 release summary: wrote C:\Users\mateo\cta-benchmark\benchmark\v0.3\manifests\release_summary.json
@@ -438,7 +438,7 @@ ok: validated 84 instance(s) under C:\Users\mateo\cta-benchmark\benchmark\v0.3
 - Status: **PASS**
 
 ```text
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.37s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.52s
      Running `target\debug\cta.exe benchmark lint --version v0.3 --release`
 
 summary: 0 error(s), 0 warning(s) across 84 instance(s)

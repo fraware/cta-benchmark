@@ -2,7 +2,7 @@ anonymized_packet_key,semantic_faithfulness,code_consistency,proof_utility,vacui
 ag_001,4,4,2,non_vacuous,full
 ag_002,4,4,2,non_vacuous,full
 ag_003,4,4,2,non_vacuous,full
-ag_004,2,3,1,non_vacuous,full
+ag_004,2,3,1,non_vacuous,partial
 ag_005,4,4,2,non_vacuous,full
 ag_006,4,4,2,non_vacuous,full
 ag_007,4,4,2,non_vacuous,full
@@ -10,7 +10,7 @@ ag_008,4,4,1,non_vacuous,full
 ag_009,4,4,2,non_vacuous,full
 ag_010,3,4,2,non_vacuous,full
 ag_011,4,4,2,non_vacuous,full
-ag_012,2,3,2,non_vacuous,full
+ag_012,2,3,2,non_vacuous,partial
 ag_013,4,4,1,non_vacuous,full
 ag_014,4,4,2,non_vacuous,full
 ag_015,4,4,2,non_vacuous,full

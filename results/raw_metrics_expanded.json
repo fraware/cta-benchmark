@@ -54,7 +54,7 @@
       "vacuity_rate": 0.0,
       "proof_utility_mean": 0.2441,
       "contradiction_flag": true,
-      "missing_critical_units": 0,
+      "missing_critical_units": 2,
       "failure_mode_label": "",
       "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_001"
@@ -166,7 +166,7 @@
       "vacuity_rate": 0.0,
       "proof_utility_mean": 0.2441,
       "contradiction_flag": true,
-      "missing_critical_units": 0,
+      "missing_critical_units": 2,
       "failure_mode_label": "",
       "annotation_origin": "mapped_from_canonical",
       "source_template_id": "arrays_binary_search_001"
@@ -222,7 +222,7 @@
       "vacuity_rate": 0.0,
       "proof_utility_mean": 0.2441,
       "contradiction_flag": true,
-      "missing_critical_units": 0,
+      "missing_critical_units": 2,
       "failure_mode_label": "",
       "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_001"
@@ -334,7 +334,7 @@
       "vacuity_rate": 0.0,
       "proof_utility_mean": 0.2441,
       "contradiction_flag": true,
-      "missing_critical_units": 0,
+      "missing_critical_units": 2,
       "failure_mode_label": "",
       "annotation_origin": "direct_adjudicated",
       "source_template_id": "arrays_binary_search_001"

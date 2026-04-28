@@ -311,11 +311,12 @@
       },
       "critical_unit_coverage": {
         "covered": [
-          "SU1",
+          "SU1"
+        ],
+        "missed": [
           "SU2",
           "SU3"
-        ],
-        "missed": []
+        ]
       },
       "generated_obligations": [
         {
@@ -937,11 +938,12 @@
       },
       "critical_unit_coverage": {
         "covered": [
-          "SU1",
+          "SU1"
+        ],
+        "missed": [
           "SU2",
           "SU3"
-        ],
-        "missed": []
+        ]
       },
       "generated_obligations": [
         {

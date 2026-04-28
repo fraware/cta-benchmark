@@ -30,9 +30,9 @@ Krippendorff's α (interval metric, squared distance on 1..4; two raters, pooled
 ## Coverage labels (full / partial / failed)
 
 - Percent agreement: **0.9635**
-- Cohen's κ (unweighted nominal, full|partial|failed): **0.9221** (bootstrap 95% CI: [0.8608, 0.9699])
-- Gwet's AC1 (nominal coverage labels): **0.9221**
-- Pooled label prevalence (both raters): `{'full': 0.6640625, 'partial': 0.2994791666666667, 'failed': 0.036458333333333336}`
+- Cohen's κ (unweighted nominal, full|partial|failed): **0.9233** (bootstrap 95% CI: [0.8631, 0.9703])
+- Gwet's AC1 (nominal coverage labels): **0.9233**
+- Pooled label prevalence (both raters): `{'full': 0.6536458333333334, 'partial': 0.3098958333333333, 'failed': 0.036458333333333336}`
 
 ## Vacuity labels
 
