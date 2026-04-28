@@ -101,6 +101,18 @@ Evidence-hardening bundle outputs from `implement_evidence_hardening.py`:
 - `artifacts/evidence_hardening_manifest.json` and checksum validation via
   `python scripts/validate_release_artifact.py`
 
+Strict-overlap agreement export command:
+
+```powershell
+python scripts/compute_human_strict_agreement.py `
+  --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv `
+  --rater-a annotation/rater_a_strict_all.csv `
+  --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv `
+  --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json `
+  --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md `
+  --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv
+```
+
 CI / quick checkout (demo fabric if `raw_metrics.json` is absent; stderr warning):
 
 ```powershell

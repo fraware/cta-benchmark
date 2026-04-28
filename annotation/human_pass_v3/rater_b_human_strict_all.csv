@@ -1,275 +1,275 @@
 anonymized_packet_key,semantic_faithfulness,code_consistency,proof_utility,vacuity_label,coverage_label,covered_units,partial_units,missing_units,contradiction_signal,notes
-hs_001,1,1,1,non_vacuous,full,[],,[],0,
-hs_002,1,1,1,non_vacuous,full,[],,[],0,
-hs_003,1,1,1,non_vacuous,full,[],,[],0,
-hs_004,1,1,1,non_vacuous,full,[],,[],0,
-hs_005,1,1,1,non_vacuous,full,[],,[],0,
-hs_006,1,1,1,non_vacuous,full,[],,[],0,
-hs_007,1,1,1,non_vacuous,full,[],,[],0,
-hs_008,1,1,1,non_vacuous,full,[],,[],0,
-hs_009,1,1,1,non_vacuous,full,[],,[],0,
-hs_010,1,1,1,non_vacuous,full,[],,[],0,
-hs_011,1,1,1,non_vacuous,full,[],,[],0,
-hs_012,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_013,1,1,1,non_vacuous,partial,,,"['SU1', 'SU2', 'SU3']",0,
-hs_014,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_015,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_016,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_017,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_018,1,1,1,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3']",0,
-hs_019,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_020,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_021,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_022,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_023,1,1,1,non_vacuous,full,[],,[],0,
-hs_024,1,1,1,non_vacuous,full,[],,[],0,
-hs_025,1,1,1,non_vacuous,full,[],,[],0,
-hs_026,1,1,1,non_vacuous,partial,,,[],0,
-hs_027,1,1,1,non_vacuous,full,[],,[],0,
-hs_028,1,1,1,non_vacuous,full,[],,[],0,
-hs_029,1,1,1,vacuous,full,[],,[],0,
-hs_030,1,1,1,non_vacuous,full,[],,[],0,
-hs_031,1,1,1,non_vacuous,full,[],,[],0,
-hs_032,1,1,1,non_vacuous,full,[],,[],0,
-hs_033,1,1,1,non_vacuous,full,[],,[],0,
-hs_034,1,1,1,non_vacuous,full,[],,[],0,
-hs_035,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_036,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_037,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_038,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_039,1,1,1,non_vacuous,partial,,,"['SU1', 'SU3']",0,
-hs_040,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_041,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_042,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_043,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_044,1,1,1,non_vacuous,full,['SU2'],,"['SU1', 'SU3']",0,
-hs_045,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_046,1,1,1,non_vacuous,full,[],,[],0,
-hs_047,1,1,1,non_vacuous,full,[],,[],0,
-hs_048,1,1,1,non_vacuous,full,[],,[],0,
-hs_049,1,1,1,non_vacuous,full,[],,[],0,
-hs_050,1,1,1,non_vacuous,full,[],,[],0,
-hs_051,1,1,1,non_vacuous,full,[],,[],0,
-hs_052,1,1,1,non_vacuous,partial,,,[],0,
-hs_053,1,1,1,non_vacuous,full,[],,[],0,
-hs_054,1,1,1,non_vacuous,full,[],,[],0,
-hs_055,1,1,1,non_vacuous,full,[],,[],0,
-hs_056,1,1,1,non_vacuous,full,[],,[],0,
-hs_057,1,1,1,non_vacuous,full,[],,[],0,
-hs_058,1,1,1,vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_059,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_060,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_061,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_062,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_063,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_064,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_065,1,1,1,non_vacuous,partial,,,[],0,
-hs_066,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_067,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_068,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_069,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_070,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_071,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_072,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_073,1,1,1,non_vacuous,full,[],,[],0,
-hs_074,1,1,1,non_vacuous,full,[],,[],0,
-hs_075,1,1,1,non_vacuous,full,[],,[],0,
-hs_076,1,1,1,non_vacuous,full,[],,[],0,
-hs_077,1,1,1,non_vacuous,full,[],,[],0,
-hs_078,1,1,1,non_vacuous,partial,,,[],0,
-hs_079,1,1,1,non_vacuous,full,[],,[],0,
-hs_080,1,1,1,non_vacuous,full,[],,[],0,
-hs_081,1,1,1,non_vacuous,full,[],,[],0,
-hs_082,1,1,1,non_vacuous,full,[],,[],0,
-hs_083,1,1,1,non_vacuous,full,[],,[],0,
-hs_084,1,1,1,non_vacuous,full,[],,[],0,
-hs_085,1,1,1,non_vacuous,full,"['SU2', 'SU3', 'SU4']",,[],0,
-hs_086,1,1,1,non_vacuous,full,[],,"['SU2', 'SU3', 'SU4']",0,
-hs_087,1,1,1,vacuous,full,"['SU2', 'SU4']",,['SU3'],0,
-hs_088,1,1,1,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,
-hs_089,1,1,1,non_vacuous,full,['SU4'],,"['SU2', 'SU3']",0,
-hs_090,1,1,1,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,
-hs_091,1,1,1,non_vacuous,partial,,,[],0,
-hs_092,1,1,1,non_vacuous,full,"['SU2', 'SU4']",,['SU3'],0,
-hs_093,1,1,1,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,
-hs_094,1,1,1,non_vacuous,full,['SU4'],,"['SU2', 'SU3']",0,
-hs_095,1,1,1,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,
-hs_096,1,1,1,non_vacuous,full,[],,[],0,
-hs_097,1,1,1,non_vacuous,full,[],,[],0,
-hs_098,1,1,1,non_vacuous,full,[],,[],0,
-hs_099,1,1,1,non_vacuous,full,[],,[],0,
-hs_100,1,1,1,non_vacuous,full,[],,[],0,
-hs_101,1,1,1,non_vacuous,full,[],,[],0,
-hs_102,1,1,1,non_vacuous,full,[],,[],0,
-hs_103,1,1,1,non_vacuous,full,[],,[],0,
-hs_104,1,1,1,non_vacuous,partial,,,[],0,
-hs_105,1,1,1,non_vacuous,full,[],,[],0,
-hs_106,1,1,1,non_vacuous,full,[],,[],0,
-hs_107,1,1,1,non_vacuous,full,[],,[],0,
-hs_108,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,
-hs_109,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,
-hs_110,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,
-hs_111,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,
-hs_112,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,
-hs_113,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,
-hs_114,1,1,1,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2', 'SU5']",0,
-hs_115,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,
-hs_116,1,1,1,vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,
-hs_117,1,1,1,non_vacuous,partial,,,"['SU1', 'SU2', 'SU5']",0,
-hs_118,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,
-hs_119,1,1,1,non_vacuous,full,[],,[],0,
-hs_120,1,1,1,non_vacuous,full,[],,[],0,
-hs_121,1,1,1,non_vacuous,full,[],,[],0,
-hs_122,1,1,1,non_vacuous,full,[],,[],0,
-hs_123,1,1,1,non_vacuous,full,[],,[],0,
-hs_124,1,1,1,non_vacuous,full,[],,[],0,
-hs_125,1,1,1,non_vacuous,full,[],,[],0,
-hs_126,1,1,1,non_vacuous,full,[],,[],0,
-hs_127,1,1,1,non_vacuous,full,[],,[],0,
-hs_128,1,1,1,non_vacuous,full,[],,[],0,
-hs_129,1,1,1,non_vacuous,full,[],,[],0,
-hs_130,1,1,1,non_vacuous,partial,,,[],0,
-hs_131,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_132,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_133,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_134,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_135,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_136,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_137,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_138,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_139,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_140,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_141,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,
-hs_142,1,1,1,non_vacuous,full,[],,[],0,
-hs_143,1,1,1,non_vacuous,partial,,,[],0,
-hs_144,1,1,1,non_vacuous,full,[],,[],0,
-hs_145,1,1,1,vacuous,full,[],,[],0,
-hs_146,1,1,1,non_vacuous,full,[],,[],0,
-hs_147,1,1,1,non_vacuous,full,[],,[],0,
-hs_148,1,1,1,non_vacuous,full,[],,[],0,
-hs_149,1,1,1,non_vacuous,full,[],,[],0,
-hs_150,1,1,1,non_vacuous,full,[],,[],0,
-hs_151,1,1,1,non_vacuous,full,[],,[],0,
-hs_152,1,1,1,non_vacuous,full,[],,[],0,
-hs_153,1,1,1,non_vacuous,full,[],,[],0,
-hs_154,1,1,1,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,
-hs_155,1,1,1,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,
-hs_156,1,1,1,non_vacuous,partial,,,"['SU1', 'SU3', 'SU4']",0,
-hs_157,1,1,1,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,
-hs_158,1,1,1,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,
-hs_159,1,1,1,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,
-hs_160,1,1,1,non_vacuous,full,['SU1'],,"['SU3', 'SU4']",0,
-hs_161,1,1,1,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,
-hs_162,1,1,1,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,
-hs_163,1,1,1,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,
-hs_164,1,1,1,non_vacuous,full,['SU1'],,"['SU3', 'SU4']",0,
-hs_165,1,1,1,non_vacuous,full,[],,[],0,
-hs_166,1,1,1,non_vacuous,full,[],,[],0,
-hs_167,1,1,1,non_vacuous,full,[],,[],0,
-hs_168,1,1,1,non_vacuous,full,[],,[],0,
-hs_169,1,1,1,non_vacuous,partial,,,[],0,
-hs_170,1,1,1,non_vacuous,full,[],,[],0,
-hs_171,1,1,1,non_vacuous,full,[],,[],0,
-hs_172,1,1,1,non_vacuous,full,[],,[],0,
-hs_173,1,1,1,non_vacuous,full,[],,[],0,
-hs_174,1,1,1,vacuous,full,[],,[],0,
-hs_175,1,1,1,non_vacuous,full,[],,[],0,
-hs_176,1,1,1,non_vacuous,full,[],,[],0,
-hs_177,1,1,1,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,
-hs_178,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_179,1,1,1,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,
-hs_180,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_181,1,1,1,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,
-hs_182,1,1,1,non_vacuous,partial,,,"['SU1', 'SU2']",0,
-hs_183,1,1,1,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,
-hs_184,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_185,1,1,1,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,
-hs_186,1,1,1,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,
-hs_187,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_188,1,1,1,non_vacuous,full,[],,[],0,
-hs_189,1,1,1,non_vacuous,full,[],,[],0,
-hs_190,1,1,1,non_vacuous,full,[],,[],0,
-hs_191,1,1,1,non_vacuous,full,[],,[],0,
-hs_192,1,1,1,non_vacuous,full,[],,[],0,
-hs_193,1,1,1,non_vacuous,full,[],,[],0,
-hs_194,1,1,1,non_vacuous,full,[],,[],0,
-hs_195,1,1,1,non_vacuous,partial,,,[],0,
-hs_196,1,1,1,non_vacuous,full,[],,[],0,
-hs_197,1,1,1,non_vacuous,full,[],,[],0,
-hs_198,1,1,1,non_vacuous,full,[],,[],0,
-hs_199,1,1,1,non_vacuous,full,"['SU1', 'SU2']",,[],0,
-hs_200,1,1,1,non_vacuous,full,"['SU1', 'SU2']",,[],0,
-hs_201,1,1,1,non_vacuous,full,['SU1'],,['SU2'],0,
-hs_202,1,1,1,non_vacuous,full,['SU1'],,['SU2'],0,
-hs_203,1,1,1,vacuous,full,['SU1'],,['SU2'],0,
-hs_204,1,1,1,non_vacuous,full,['SU1'],,['SU2'],0,
-hs_205,1,1,1,non_vacuous,full,['SU1'],,['SU2'],0,
-hs_206,1,1,1,non_vacuous,full,['SU1'],,['SU2'],0,
-hs_207,1,1,1,non_vacuous,full,['SU1'],,['SU2'],0,
-hs_208,1,1,1,non_vacuous,partial,,,['SU2'],0,
-hs_209,1,1,1,non_vacuous,full,[],,[],0,
-hs_210,1,1,1,non_vacuous,full,[],,[],0,
-hs_211,1,1,1,non_vacuous,full,[],,[],0,
-hs_212,1,1,1,non_vacuous,full,[],,[],0,
-hs_213,1,1,1,non_vacuous,full,[],,[],0,
-hs_214,1,1,1,non_vacuous,full,[],,[],0,
-hs_215,1,1,1,non_vacuous,full,[],,[],0,
-hs_216,1,1,1,non_vacuous,full,[],,[],0,
-hs_217,1,1,1,non_vacuous,full,[],,[],0,
-hs_218,1,1,1,non_vacuous,full,[],,[],0,
-hs_219,1,1,1,non_vacuous,full,[],,[],0,
-hs_220,1,1,1,non_vacuous,full,[],,[],0,
-hs_221,1,1,1,non_vacuous,partial,,,[],0,
-hs_222,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_223,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_224,1,1,1,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,
-hs_225,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_226,1,1,1,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,
-hs_227,1,1,1,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,
-hs_228,1,1,1,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,
-hs_229,1,1,1,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,
-hs_230,1,1,1,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,
-hs_231,1,1,1,non_vacuous,full,[],,[],0,
-hs_232,1,1,1,vacuous,full,[],,[],0,
-hs_233,1,1,1,non_vacuous,full,[],,[],0,
-hs_234,1,1,1,non_vacuous,partial,,,[],0,
-hs_235,1,1,1,non_vacuous,full,[],,[],0,
-hs_236,1,1,1,non_vacuous,full,[],,[],0,
-hs_237,1,1,1,non_vacuous,full,[],,[],0,
-hs_238,1,1,1,non_vacuous,full,[],,[],0,
-hs_239,1,1,1,non_vacuous,full,[],,[],0,
-hs_240,1,1,1,non_vacuous,full,[],,[],0,
-hs_241,1,1,1,non_vacuous,full,[],,[],0,
-hs_242,1,1,1,non_vacuous,full,[],,[],0,
-hs_243,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_244,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_245,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_246,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_247,1,1,1,non_vacuous,partial,,,['SU2'],0,
-hs_248,1,1,1,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,
-hs_249,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,
-hs_250,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,
-hs_251,1,1,1,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,
-hs_252,1,1,1,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,
-hs_253,1,1,1,non_vacuous,full,[],,[],0,
-hs_254,1,1,1,non_vacuous,full,[],,[],0,
-hs_255,1,1,1,non_vacuous,full,[],,[],0,
-hs_256,1,1,1,non_vacuous,full,[],,[],0,
-hs_257,1,1,1,non_vacuous,full,[],,[],0,
-hs_258,1,1,1,non_vacuous,full,[],,[],0,
-hs_259,1,1,1,non_vacuous,full,[],,[],0,
-hs_260,1,1,1,non_vacuous,partial,,,[],0,
-hs_261,1,1,1,vacuous,full,[],,[],0,
-hs_262,1,1,1,non_vacuous,full,[],,[],0,
-hs_263,1,1,1,non_vacuous,full,[],,[],0,
-hs_264,1,1,1,non_vacuous,full,[],,[],0,
-hs_265,1,1,1,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,
-hs_266,1,1,1,non_vacuous,full,['SU4'],,"['SU1', 'SU2', 'SU3']",0,
-hs_267,1,1,1,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2']",0,
-hs_268,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4']",0,
-hs_269,1,1,1,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,['SU2'],0,
-hs_270,1,1,1,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3', 'SU4']",0,
-hs_271,1,1,1,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2']",0,
-hs_272,1,1,1,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4']",0,
-hs_273,1,1,1,non_vacuous,partial,,,['SU2'],0,
-hs_274,1,1,1,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3', 'SU4']",0,
+hs_001,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_binary_search_001; anchor=371
+hs_002,1,2,1,non_vacuous,full,SU1|SU2|SU3,,,1,independent strict second pass; source_template=arrays_binary_search_001; anchor=117
+hs_003,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_binary_search_001; anchor=712
+hs_004,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_binary_search_002; anchor=678
+hs_005,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_binary_search_002; anchor=712
+hs_006,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_binary_search_002; anchor=802
+hs_007,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_binary_search_002; anchor=528
+hs_008,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_binary_search_003; anchor=198
+hs_009,1,2,1,non_vacuous,full,SU1|SU2|SU3,,,1,independent strict second pass; source_template=arrays_binary_search_003; anchor=647
+hs_010,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_binary_search_003; anchor=641
+hs_011,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_binary_search_003; anchor=10
+hs_012,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_binary_search_004; anchor=282
+hs_013,1,2,1,non_vacuous,partial,SU1|SU2,,SU3,1,independent strict second pass; source_template=arrays_binary_search_004; anchor=93
+hs_014,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,independent strict second pass; source_template=arrays_binary_search_004; anchor=354
+hs_015,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,independent strict second pass; source_template=arrays_binary_search_004; anchor=549
+hs_016,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_binary_search_005; anchor=268
+hs_017,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,independent strict second pass; source_template=arrays_binary_search_005; anchor=94
+hs_018,2,2,1,non_vacuous,full,SU1|SU2|SU3,,,1,independent strict second pass; source_template=arrays_binary_search_006; anchor=424
+hs_019,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,independent strict second pass; source_template=arrays_binary_search_006; anchor=254
+hs_020,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,independent strict second pass; source_template=arrays_binary_search_006; anchor=641
+hs_021,3,3,1,non_vacuous,partial,SU1|SU2,,SU3,0,independent strict second pass; source_template=arrays_binary_search_007; anchor=749
+hs_022,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,independent strict second pass; source_template=arrays_binary_search_007; anchor=220
+hs_023,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_max_subarray_001; anchor=850
+hs_024,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_max_subarray_001; anchor=210
+hs_025,2,3,1,vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_max_subarray_001; anchor=574
+hs_026,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_max_subarray_001; anchor=485
+hs_027,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_max_subarray_002; anchor=622
+hs_028,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_max_subarray_002; anchor=255
+hs_029,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_max_subarray_002; anchor=510
+hs_030,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_max_subarray_002; anchor=330
+hs_031,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_max_subarray_003; anchor=33
+hs_032,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_max_subarray_003; anchor=648
+hs_033,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_max_subarray_003; anchor=875
+hs_034,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=arrays_max_subarray_003; anchor=748
+hs_035,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_max_subarray_004; anchor=487
+hs_036,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=arrays_max_subarray_004; anchor=880
+hs_037,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=arrays_max_subarray_004; anchor=801
+hs_038,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_max_subarray_005; anchor=783
+hs_039,2,3,1,non_vacuous,partial,,SU2,SU1|SU3,0,independent strict second pass; source_template=arrays_max_subarray_005; anchor=303
+hs_040,3,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=arrays_max_subarray_005; anchor=836
+hs_041,2,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=arrays_max_subarray_006; anchor=269
+hs_042,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=arrays_max_subarray_006; anchor=998
+hs_043,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=arrays_max_subarray_006; anchor=375
+hs_044,2,3,1,non_vacuous,partial,,SU2,SU1|SU3,0,independent strict second pass; source_template=arrays_max_subarray_007; anchor=359
+hs_045,3,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=arrays_max_subarray_007; anchor=270
+hs_046,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_001; anchor=860
+hs_047,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_001; anchor=811
+hs_048,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_001; anchor=888
+hs_049,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_001; anchor=769
+hs_050,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_002; anchor=196
+hs_051,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_002; anchor=174
+hs_052,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_002; anchor=147
+hs_053,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_002; anchor=988
+hs_054,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_003; anchor=746
+hs_055,2,2,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_003; anchor=775
+hs_056,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_003; anchor=934
+hs_057,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_003; anchor=887
+hs_058,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_004; anchor=307
+hs_059,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_004; anchor=310
+hs_060,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_004; anchor=540
+hs_061,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_004; anchor=553
+hs_062,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_005; anchor=174
+hs_063,2,3,2,non_vacuous,partial,SU1|SU2|SU3,,SU4,0,independent strict second pass; source_template=dp_knapsack_01_005; anchor=185
+hs_064,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_005; anchor=132
+hs_065,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_005; anchor=318
+hs_066,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_006; anchor=439
+hs_067,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_006; anchor=572
+hs_068,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_006; anchor=881
+hs_069,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_007; anchor=552
+hs_070,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_007; anchor=723
+hs_071,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_007; anchor=372
+hs_072,2,3,2,vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_knapsack_01_007; anchor=191
+hs_073,2,3,1,vacuous,partial,SU2|SU3,,SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_001; anchor=61
+hs_074,1,3,1,non_vacuous,full,SU2|SU3|SU4,,,1,independent strict second pass; source_template=dp_longest_common_subsequence_001; anchor=345
+hs_075,2,3,0,non_vacuous,failed,,,SU2|SU3|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_001; anchor=893
+hs_076,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_001; anchor=346
+hs_077,3,3,2,non_vacuous,full,SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_longest_common_subsequence_002; anchor=261
+hs_078,1,2,1,non_vacuous,full,SU2|SU3|SU4,,,1,independent strict second pass; source_template=dp_longest_common_subsequence_002; anchor=779
+hs_079,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_002; anchor=389
+hs_080,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_002; anchor=737
+hs_081,2,2,1,non_vacuous,full,SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_longest_common_subsequence_003; anchor=387
+hs_082,1,2,1,non_vacuous,full,SU2|SU3|SU4,,,1,independent strict second pass; source_template=dp_longest_common_subsequence_003; anchor=351
+hs_083,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_003; anchor=846
+hs_084,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_003; anchor=776
+hs_085,2,3,1,non_vacuous,full,SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_longest_common_subsequence_004; anchor=558
+hs_086,1,2,1,non_vacuous,full,SU2|SU3|SU4,,,1,independent strict second pass; source_template=dp_longest_common_subsequence_004; anchor=799
+hs_087,2,3,1,non_vacuous,partial,,SU2|SU4,SU3,0,independent strict second pass; source_template=dp_longest_common_subsequence_004; anchor=940
+hs_088,2,3,1,non_vacuous,partial,,SU3,SU2|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_004; anchor=353
+hs_089,2,3,1,non_vacuous,partial,,SU4,SU2|SU3,0,independent strict second pass; source_template=dp_longest_common_subsequence_005; anchor=230
+hs_090,2,3,1,non_vacuous,partial,,SU3,SU2|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_005; anchor=234
+hs_091,2,3,1,non_vacuous,full,SU2|SU3|SU4,,,0,independent strict second pass; source_template=dp_longest_common_subsequence_006; anchor=89
+hs_092,2,3,1,non_vacuous,partial,,SU2|SU4,SU3,0,independent strict second pass; source_template=dp_longest_common_subsequence_006; anchor=169
+hs_093,2,3,1,non_vacuous,partial,,SU3,SU2|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_006; anchor=577
+hs_094,2,3,1,non_vacuous,partial,,SU4,SU2|SU3,0,independent strict second pass; source_template=dp_longest_common_subsequence_007; anchor=544
+hs_095,2,3,1,non_vacuous,partial,,SU3,SU2|SU4,0,independent strict second pass; source_template=dp_longest_common_subsequence_007; anchor=751
+hs_096,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_001; anchor=546
+hs_097,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_001; anchor=140
+hs_098,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_001; anchor=5
+hs_099,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_001; anchor=895
+hs_100,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_002; anchor=292
+hs_101,3,3,2,non_vacuous,partial,SU1|SU2|SU3|SU4,,SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_002; anchor=448
+hs_102,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_002; anchor=101
+hs_103,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_002; anchor=891
+hs_104,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_003; anchor=580
+hs_105,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_003; anchor=618
+hs_106,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_003; anchor=271
+hs_107,2,3,2,vacuous,failed,,,SU1|SU2|SU3|SU4|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_003; anchor=798
+hs_108,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_004; anchor=556
+hs_109,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_004; anchor=841
+hs_110,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_004; anchor=555
+hs_111,2,3,2,non_vacuous,partial,,SU3,SU1|SU2|SU4|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_004; anchor=169
+hs_112,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_005; anchor=94
+hs_113,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,independent strict second pass; source_template=graph_bfs_shortest_path_005; anchor=340
+hs_114,2,3,1,non_vacuous,partial,,SU3|SU4,SU1|SU2|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_005; anchor=760
+hs_115,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_005; anchor=765
+hs_116,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_006; anchor=230
+hs_117,2,3,1,non_vacuous,partial,,SU3|SU4,SU1|SU2|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_007; anchor=318
+hs_118,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4|SU5,0,independent strict second pass; source_template=graph_bfs_shortest_path_007; anchor=24
+hs_119,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_001; anchor=566
+hs_120,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_001; anchor=55
+hs_121,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_001; anchor=743
+hs_122,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_001; anchor=701
+hs_123,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_002; anchor=124
+hs_124,3,3,3,non_vacuous,partial,SU1|SU2|SU3|SU4|SU5,,SU6,0,independent strict second pass; source_template=graph_dijkstra_002; anchor=581
+hs_125,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_002; anchor=467
+hs_126,3,3,2,non_vacuous,partial,SU1|SU2|SU3|SU4|SU5,,SU6,0,independent strict second pass; source_template=graph_dijkstra_002; anchor=392
+hs_127,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_003; anchor=690
+hs_128,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_003; anchor=12
+hs_129,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_003; anchor=661
+hs_130,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_003; anchor=428
+hs_131,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_004; anchor=657
+hs_132,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_004; anchor=509
+hs_133,3,3,3,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_004; anchor=901
+hs_134,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_004; anchor=424
+hs_135,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_005; anchor=341
+hs_136,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_005; anchor=592
+hs_137,3,3,1,non_vacuous,partial,SU1|SU2|SU3|SU4|SU5,,SU6,0,independent strict second pass; source_template=graph_dijkstra_005; anchor=215
+hs_138,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_005; anchor=550
+hs_139,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_006; anchor=457
+hs_140,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_006; anchor=777
+hs_141,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,independent strict second pass; source_template=graph_dijkstra_007; anchor=71
+hs_142,1,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,independent strict second pass; source_template=greedy_coin_change_canonical_001; anchor=915
+hs_143,2,3,1,non_vacuous,partial,SU1|SU3,,SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_001; anchor=239
+hs_144,2,2,2,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_001; anchor=290
+hs_145,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_001; anchor=886
+hs_146,2,3,2,non_vacuous,full,SU1|SU3|SU4,,,0,independent strict second pass; source_template=greedy_coin_change_canonical_002; anchor=906
+hs_147,2,3,2,non_vacuous,full,SU1|SU3|SU4,,,0,independent strict second pass; source_template=greedy_coin_change_canonical_002; anchor=710
+hs_148,2,3,1,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_002; anchor=160
+hs_149,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_002; anchor=516
+hs_150,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,independent strict second pass; source_template=greedy_coin_change_canonical_003; anchor=170
+hs_151,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,independent strict second pass; source_template=greedy_coin_change_canonical_003; anchor=391
+hs_152,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_003; anchor=585
+hs_153,1,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_003; anchor=891
+hs_154,1,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,independent strict second pass; source_template=greedy_coin_change_canonical_004; anchor=465
+hs_155,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_004; anchor=313
+hs_156,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_004; anchor=218
+hs_157,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,independent strict second pass; source_template=greedy_coin_change_canonical_005; anchor=694
+hs_158,2,3,2,non_vacuous,full,SU1|SU3|SU4,,,0,independent strict second pass; source_template=greedy_coin_change_canonical_005; anchor=782
+hs_159,2,3,1,non_vacuous,partial,,SU1|SU3|SU4,,0,independent strict second pass; source_template=greedy_coin_change_canonical_005; anchor=530
+hs_160,2,3,1,non_vacuous,partial,,SU1,SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_005; anchor=203
+hs_161,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_006; anchor=302
+hs_162,3,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_006; anchor=516
+hs_163,2,3,1,non_vacuous,partial,,SU1|SU3|SU4,,0,independent strict second pass; source_template=greedy_coin_change_canonical_007; anchor=968
+hs_164,2,3,1,non_vacuous,partial,,SU1,SU3|SU4,0,independent strict second pass; source_template=greedy_coin_change_canonical_007; anchor=114
+hs_165,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,independent strict second pass; source_template=greedy_interval_scheduling_001; anchor=25
+hs_166,2,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=greedy_interval_scheduling_001; anchor=366
+hs_167,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=greedy_interval_scheduling_001; anchor=59
+hs_168,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=greedy_interval_scheduling_001; anchor=127
+hs_169,2,3,2,non_vacuous,partial,SU2|SU3,,SU1,0,independent strict second pass; source_template=greedy_interval_scheduling_002; anchor=243
+hs_170,2,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=greedy_interval_scheduling_002; anchor=740
+hs_171,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=greedy_interval_scheduling_002; anchor=631
+hs_172,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=greedy_interval_scheduling_002; anchor=371
+hs_173,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,independent strict second pass; source_template=greedy_interval_scheduling_003; anchor=415
+hs_174,2,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=greedy_interval_scheduling_003; anchor=229
+hs_175,2,3,1,non_vacuous,partial,SU1|SU2,,SU3,0,independent strict second pass; source_template=greedy_interval_scheduling_003; anchor=170
+hs_176,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=greedy_interval_scheduling_003; anchor=967
+hs_177,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,independent strict second pass; source_template=greedy_interval_scheduling_004; anchor=262
+hs_178,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=greedy_interval_scheduling_004; anchor=836
+hs_179,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,independent strict second pass; source_template=greedy_interval_scheduling_005; anchor=982
+hs_180,2,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=greedy_interval_scheduling_005; anchor=867
+hs_181,2,3,1,non_vacuous,partial,,SU1|SU3,SU2,0,independent strict second pass; source_template=greedy_interval_scheduling_005; anchor=659
+hs_182,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=greedy_interval_scheduling_005; anchor=619
+hs_183,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,independent strict second pass; source_template=greedy_interval_scheduling_006; anchor=794
+hs_184,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=greedy_interval_scheduling_006; anchor=190
+hs_185,3,3,0,non_vacuous,partial,SU2|SU3,,SU1,0,independent strict second pass; source_template=greedy_interval_scheduling_007; anchor=841
+hs_186,1,3,1,non_vacuous,partial,,SU1|SU3,SU2,0,independent strict second pass; source_template=greedy_interval_scheduling_007; anchor=181
+hs_187,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=greedy_interval_scheduling_007; anchor=99
+hs_188,2,3,1,non_vacuous,full,SU1|SU2,,,0,independent strict second pass; source_template=sorting_insertion_sort_001; anchor=614
+hs_189,2,3,2,non_vacuous,full,SU1|SU2,,,0,independent strict second pass; source_template=sorting_insertion_sort_001; anchor=738
+hs_190,2,3,1,non_vacuous,failed,,,SU1|SU2,0,independent strict second pass; source_template=sorting_insertion_sort_001; anchor=110
+hs_191,2,3,1,non_vacuous,full,SU1|SU2,,,0,independent strict second pass; source_template=sorting_insertion_sort_002; anchor=478
+hs_192,2,3,2,non_vacuous,partial,SU1,,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_002; anchor=782
+hs_193,2,3,1,non_vacuous,failed,,,SU1|SU2,0,independent strict second pass; source_template=sorting_insertion_sort_002; anchor=33
+hs_194,3,3,1,non_vacuous,failed,,,SU1|SU2,0,independent strict second pass; source_template=sorting_insertion_sort_002; anchor=556
+hs_195,2,3,1,non_vacuous,full,SU1|SU2,,,0,independent strict second pass; source_template=sorting_insertion_sort_003; anchor=36
+hs_196,2,3,2,non_vacuous,full,SU1|SU2,,,0,independent strict second pass; source_template=sorting_insertion_sort_003; anchor=422
+hs_197,2,3,1,non_vacuous,failed,,,SU1|SU2,0,independent strict second pass; source_template=sorting_insertion_sort_003; anchor=634
+hs_198,3,3,1,non_vacuous,failed,,,SU1|SU2,0,independent strict second pass; source_template=sorting_insertion_sort_003; anchor=215
+hs_199,2,3,1,non_vacuous,full,SU1|SU2,,,0,independent strict second pass; source_template=sorting_insertion_sort_004; anchor=613
+hs_200,2,3,2,non_vacuous,partial,SU1,,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_004; anchor=693
+hs_201,2,3,1,non_vacuous,partial,,SU1,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_004; anchor=634
+hs_202,3,3,1,non_vacuous,partial,,SU1,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_004; anchor=501
+hs_203,2,3,1,non_vacuous,partial,,SU1,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_005; anchor=129
+hs_204,3,3,1,non_vacuous,partial,,SU1,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_005; anchor=279
+hs_205,2,3,1,non_vacuous,partial,,SU1,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_006; anchor=720
+hs_206,3,3,1,non_vacuous,partial,,SU1,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_006; anchor=494
+hs_207,2,3,1,non_vacuous,partial,,SU1,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_007; anchor=492
+hs_208,3,3,1,non_vacuous,partial,,SU1,SU2,0,independent strict second pass; source_template=sorting_insertion_sort_007; anchor=933
+hs_209,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_001; anchor=776
+hs_210,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_001; anchor=490
+hs_211,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_001; anchor=526
+hs_212,3,3,0,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_001; anchor=130
+hs_213,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_002; anchor=26
+hs_214,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_002; anchor=970
+hs_215,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_002; anchor=826
+hs_216,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_002; anchor=874
+hs_217,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_003; anchor=480
+hs_218,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_003; anchor=293
+hs_219,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_003; anchor=608
+hs_220,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_003; anchor=881
+hs_221,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_004; anchor=402
+hs_222,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_004; anchor=571
+hs_223,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_004; anchor=730
+hs_224,3,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_004; anchor=573
+hs_225,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=sorting_merge_sort_005; anchor=881
+hs_226,3,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_005; anchor=896
+hs_227,2,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_005; anchor=790
+hs_228,3,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_006; anchor=782
+hs_229,3,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_007; anchor=479
+hs_230,2,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,independent strict second pass; source_template=sorting_merge_sort_007; anchor=796
+hs_231,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_001; anchor=223
+hs_232,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_001; anchor=94
+hs_233,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_001; anchor=672
+hs_234,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=trees_bst_insert_001; anchor=565
+hs_235,3,3,1,non_vacuous,partial,SU1|SU2,,SU3,0,independent strict second pass; source_template=trees_bst_insert_002; anchor=960
+hs_236,3,2,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_002; anchor=719
+hs_237,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=trees_bst_insert_002; anchor=859
+hs_238,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=trees_bst_insert_002; anchor=967
+hs_239,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_003; anchor=281
+hs_240,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_003; anchor=453
+hs_241,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_003; anchor=363
+hs_242,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,independent strict second pass; source_template=trees_bst_insert_003; anchor=67
+hs_243,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_004; anchor=398
+hs_244,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_004; anchor=954
+hs_245,1,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=trees_bst_insert_004; anchor=417
+hs_246,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_005; anchor=590
+hs_247,2,3,1,non_vacuous,partial,,SU1|SU3,SU2,0,independent strict second pass; source_template=trees_bst_insert_005; anchor=973
+hs_248,2,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,independent strict second pass; source_template=trees_bst_insert_005; anchor=104
+hs_249,2,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,independent strict second pass; source_template=trees_bst_insert_006; anchor=140
+hs_250,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,independent strict second pass; source_template=trees_bst_insert_006; anchor=604
+hs_251,2,3,1,non_vacuous,partial,,SU1|SU3,SU2,0,independent strict second pass; source_template=trees_bst_insert_007; anchor=162
+hs_252,2,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,independent strict second pass; source_template=trees_bst_insert_007; anchor=692
+hs_253,2,3,1,non_vacuous,partial,SU1|SU2,SU4,SU3,0,independent strict second pass; source_template=trees_lowest_common_ancestor_001; anchor=197
+hs_254,2,3,2,vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=trees_lowest_common_ancestor_001; anchor=686
+hs_255,1,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_001; anchor=317
+hs_256,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_001; anchor=330
+hs_257,2,3,1,non_vacuous,partial,SU1|SU2,SU4,SU3,0,independent strict second pass; source_template=trees_lowest_common_ancestor_002; anchor=779
+hs_258,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=trees_lowest_common_ancestor_002; anchor=624
+hs_259,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_002; anchor=24
+hs_260,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_002; anchor=626
+hs_261,2,3,1,non_vacuous,partial,SU1|SU2,SU4,SU3,0,independent strict second pass; source_template=trees_lowest_common_ancestor_003; anchor=54
+hs_262,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=trees_lowest_common_ancestor_003; anchor=724
+hs_263,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_003; anchor=21
+hs_264,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_003; anchor=525
+hs_265,2,3,1,non_vacuous,partial,SU1|SU2,SU4,SU3,0,independent strict second pass; source_template=trees_lowest_common_ancestor_004; anchor=9
+hs_266,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,independent strict second pass; source_template=trees_lowest_common_ancestor_004; anchor=578
+hs_267,3,3,1,non_vacuous,partial,,SU3|SU4,SU1|SU2,0,independent strict second pass; source_template=trees_lowest_common_ancestor_004; anchor=757
+hs_268,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_004; anchor=669
+hs_269,2,3,1,non_vacuous,partial,,SU1|SU3|SU4,SU2,0,independent strict second pass; source_template=trees_lowest_common_ancestor_005; anchor=376
+hs_270,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_005; anchor=489
+hs_271,2,3,1,non_vacuous,partial,,SU3|SU4,SU1|SU2,0,independent strict second pass; source_template=trees_lowest_common_ancestor_006; anchor=372
+hs_272,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_006; anchor=533
+hs_273,2,3,1,non_vacuous,partial,,SU1|SU3|SU4,SU2,0,independent strict second pass; source_template=trees_lowest_common_ancestor_007; anchor=544
+hs_274,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,independent strict second pass; source_template=trees_lowest_common_ancestor_007; anchor=632

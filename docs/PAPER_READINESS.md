@@ -64,6 +64,8 @@ python scripts\reproduce_agreement_report.py
 python scripts\compute_results.py --paper
 python scripts\repair_counterfactual_metrics.py
 python scripts\export_benchmark_paper_summary.py
+python scripts\implement_evidence_hardening.py
+python scripts\validate_release_artifact.py
 python scripts\ci_reviewer_readiness.py
 python scripts\export_final_ci_evidence.py
 ```
@@ -90,6 +92,8 @@ python3 scripts/reproduce_agreement_report.py
 python3 scripts/compute_results.py --paper
 python3 scripts/repair_counterfactual_metrics.py
 python3 scripts/export_benchmark_paper_summary.py
+python3 scripts/implement_evidence_hardening.py
+python3 scripts/validate_release_artifact.py
 python3 scripts/ci_reviewer_readiness.py
 python3 scripts/export_final_ci_evidence.py
 ```
@@ -161,30 +165,24 @@ If `semantic_corrections_v3.csv` is absent, the materializer loads
 `semantic_corrections_v1.csv` and `semantic_corrections_v2.csv` cumulatively
 (in that order) for backward compatibility.
 
-## 6. Annotation agreement (after rater CSVs exist)
+## 6. Annotation agreement (strict-overlap v3)
 
 ```powershell
-python scripts\reproduce_agreement_report.py
+python scripts\compute_human_strict_agreement.py `
+  --packet-map annotation\human_pass_v3\human_strict_packet_ids.csv `
+  --rater-a annotation\rater_a_strict_all.csv `
+  --rater-b annotation\human_pass_v3\rater_b_human_strict_all.csv `
+  --out-json annotation\human_pass_v3\agreement_report_human_strict_all.json `
+  --out-md annotation\human_pass_v3\agreement_report_human_strict_all.md `
+  --out-disagreements annotation\human_pass_v3\disagreement_log_strict_all.csv
 ```
 
-Equivalent direct invocation:
+The strict-overlap report is validity-gated by CI for:
 
-```powershell
-python scripts\compute_agreement_stats.py `
-  --first annotation\rater_a.csv `
-  --second annotation\rater_b.csv
-```
-
-If a real second human pass exists, use:
-
-```powershell
-python scripts\compute_agreement_stats.py `
-  --first annotation\rater_a.csv `
-  --second annotation\rater_b_human.csv
-```
-
-Example inputs: `annotation/rater_a.example.csv` and
-`annotation/rater_b.example.csv`. Audit population: `annotation/agreement_packet_ids.csv`.
+- canonical ordinal scale `{0,1,2,3}` in both raters,
+- confusion matrix totals of exactly `274` for each ordinal metric,
+- coverage/missing coherence,
+- and non-generic adjudication rationales.
 
 ## 7. Anonymous artifact zip (optional upload bundle)
 

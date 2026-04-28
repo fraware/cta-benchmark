@@ -5,17 +5,16 @@
 - Default adjudication artifacts are **pipeline-derived** from curated review
   packets, not independent crowdsourced gold. Wording in the paper must match
   the tier named in `docs/PROVENANCE.md`.
-- Inter-rater agreement defaults to a **deterministic synthetic rater B**
-  layer unless `annotation/rater_b_human.csv` is provided and used to
-  regenerate `annotation/agreement_report*.{json,md}`. Treat synthetic-mode
-  agreement as an audit/stress-test artifact, not independent two-human
-  reliability. The agreement
-  packet population is still **pipeline-keyed** to eval `(instance, system)`
-  rows; cite `annotation/agreement_packet_ids.csv` and distinguish headline
-  **strict** metrics rows from agreement table construction in the text.
-  `results/paper_table_agreement_evidence.csv` quantifies how many agreement
-  packets fall under each `annotation_origin` (the strict packet subset may be
-  empty while the headline eval table remains strict-backed).
+- There are two agreement layers in-repo: legacy full-audit agreement
+  (`annotation/agreement_report*.{json,md}`; may involve synthetic rater-B) and
+  strict-overlap v3 human agreement
+  (`annotation/human_pass_v3/agreement_report_human_strict_all.{json,md}`).
+  Manuscript claims about independent human agreement must cite the strict-overlap
+  v3 layer, not legacy synthetic compatibility outputs.
+- Agreement packet construction remains **pipeline-keyed** to eval
+  `(instance, system)` rows. Cite `results/paper_table_agreement_evidence.csv`
+  and explicitly distinguish `strict_all_human_overlap` from legacy
+  `strict_independent_only`.
 
 ## Metrics
 

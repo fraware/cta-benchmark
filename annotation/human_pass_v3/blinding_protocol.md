@@ -4,3 +4,4 @@
 - Show only packet evidence fields: informal spec, critical units, reference obligations, generated obligations, code-context summary, and manual.
 - Coverage must be obligation-local: vacuous or unfaithful obligations contribute no coverage.
 - Keep `covered_units`, `partial_units`, and `missing_units` explicitly separated.
+- Canonical ordinal scale for strict-overlap raters is fixed to {0,1,2,3}.

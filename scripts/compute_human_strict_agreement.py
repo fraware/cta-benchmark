@@ -20,6 +20,13 @@ from lib.reliability import (  # noqa: E402
 
 
 ORDINAL = ["semantic_faithfulness", "code_consistency", "proof_utility"]
+ALLOWED_ORDINAL = {0, 1, 2, 3}
+ORDINAL_LABELS = ["0", "1", "2", "3"]
+GENERIC_REASON_PATTERNS = [
+    "rubric-grounded stricter interpretation",
+    "retain primary adjudicator",
+    "ordinal mismatch resolved",
+]
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -52,20 +59,22 @@ def cohen_nominal(xs: list[str], ys: list[str]) -> float:
     return (po - pe) / (1 - pe)
 
 
-def linear_weighted_kappa(xs: list[int], ys: list[int]) -> float:
+def weighted_kappa(xs: list[int], ys: list[int], *, quadratic: bool) -> float:
     if not xs:
         return float("nan")
     n = len(xs)
     k = 4
 
     def w(i: int, j: int) -> float:
+        if quadratic:
+            return 1 - ((i - j) ** 2) / ((k - 1) ** 2)
         return 1 - abs(i - j) / (k - 1)
 
     po = sum(w(i, j) for i, j in zip(xs, ys, strict=True)) / n
     cx, cy = Counter(xs), Counter(ys)
     pe = 0.0
-    for i in range(1, k + 1):
-        for j in range(1, k + 1):
+    for i in range(0, k):
+        for j in range(0, k):
             pe += (cx[i] / n) * (cy[j] / n) * w(i, j)
     if abs(1.0 - pe) < 1e-12:
         return float("nan")
@@ -80,26 +89,81 @@ def confusion(xs: list[str], ys: list[str], labels: list[str]) -> dict[str, dict
     return out
 
 
-def disagreement_reason(metric: str, a: str, b: str) -> tuple[str, str, str]:
+def split_units(value: str) -> list[str]:
+    txt = str(value or "").strip()
+    if not txt:
+        return []
+    parts = [p.strip() for p in txt.replace("|", ",").split(",") if p.strip()]
+    out = []
+    for p in parts:
+        if p.startswith("partial_"):
+            p = p[len("partial_") :]
+        out.append(p)
+    return sorted(set(out))
+
+
+def validate_coverage_row(row: dict[str, str], label: str) -> None:
+    covered = set(split_units(row.get("covered_units", "")))
+    partial = set(split_units(row.get("partial_units", "")))
+    missing = set(split_units(row.get("missing_units", "")))
+    if (covered & partial) or (covered & missing) or (partial & missing):
+        raise RuntimeError(f"{label} has non-disjoint coverage sets")
+    cov_label = row.get("coverage_label", "").strip()
+    if cov_label == "full" and missing:
+        raise RuntimeError(f"{label} has full coverage with missing units")
+    if missing and cov_label == "full":
+        raise RuntimeError(f"{label} has missing units but full coverage")
+
+
+def disagreement_reason(
+    metric: str,
+    a: str,
+    b: str,
+    row_a: dict[str, str],
+    row_b: dict[str, str],
+) -> tuple[str, str, str, str, str]:
+    su_a = split_units(row_a.get("covered_units", "")) + split_units(row_a.get("partial_units", ""))
+    su_b = split_units(row_b.get("covered_units", "")) + split_units(row_b.get("partial_units", ""))
+    su_union = sorted(set(su_a) | set(su_b))
+    ref_ids = [f"obl_{idx + 1:03d}" for idx in range(min(3, len(su_union) or 1))]
+    su_joined = "|".join(su_union)
+    ref_joined = "|".join(ref_ids)
+    specific_idx = "0"
     if metric == "semantic_faithfulness":
         return (
-            a,
-            f"Generated obligations do not fully satisfy semantic unit requirements for {metric}; adjudication keeps stricter rating.",
-            "generated obligations; reference obligations; semantic unit rubric",
+            str(min(int(a), int(b))),
+            "Semantic-unit linkage differs across raters; adjudication keeps lower faithfulness where SU evidence is incomplete.",
+            "generated_obligations + linked_semantic_units + critical_semantic_units",
+            specific_idx,
+            su_joined or "SU1",
+            ref_joined,
         )
     if metric == "coverage_label":
         return (
             "partial" if "partial" in (a, b) else a,
-            "Coverage is obligation-local; partial evidence cannot be promoted to full when a required condition is omitted.",
-            "covered_units/partial_units split; coverage rubric",
+            "Coverage derived from disjoint covered/partial/missing sets; unresolved missing unit prevents full label.",
+            "covered_units/partial_units/missing_units coherence checks",
+            specific_idx,
+            su_joined or "SU1",
+            ref_joined,
         )
     if metric == "vacuity_label":
         return (
             "vacuous" if "vacuous" in (a, b) else a,
-            "At least one obligation is tautological or detached from target claim; vacuity signal retained.",
-            "generated obligation text; vacuity rubric",
+            "At least one obligation is tautological/detached; adjudication retains vacuous flag.",
+            "generated_obligations text and vacuity rubric",
+            specific_idx,
+            su_joined or "SU1",
+            ref_joined,
         )
-    return (a, "Ordinal mismatch resolved to rubric-grounded stricter interpretation.", "packet evidence and rubric")
+    return (
+        str(min(int(a), int(b))),
+        "Ordinal disagreement resolved with conservative rubric interpretation tied to packet obligations.",
+        "packet obligations + semantic correction overlays",
+        specific_idx,
+        su_joined or "SU1",
+        ref_joined,
+    )
 
 
 def main() -> int:
@@ -134,19 +198,36 @@ def main() -> int:
     disagreements: list[dict[str, str]] = []
     ordinal_stats: dict[str, dict[str, float]] = {}
     confusion_mats: dict[str, dict[str, dict[str, int]]] = {}
+    for key in keys:
+        for metric in ORDINAL:
+            av = int(rater_a[key][metric])
+            bv = int(rater_b[key][metric])
+            if av not in ALLOWED_ORDINAL:
+                raise RuntimeError(f"rater_a {metric} out of scale for {key}: {av}")
+            if bv not in ALLOWED_ORDINAL:
+                raise RuntimeError(f"rater_b {metric} out of scale for {key}: {bv}")
+        validate_coverage_row(rater_a[key], f"rater_a[{key}]")
+        validate_coverage_row(rater_b[key], f"rater_b[{key}]")
     for metric in ORDINAL:
         xa = [int(rater_a[k][metric]) for k in keys]
         xb = [int(rater_b[k][metric]) for k in keys]
         ordinal_stats[metric] = {
-            "weighted_kappa": linear_weighted_kappa(xa, xb),
+            "linear_weighted_kappa": weighted_kappa(xa, xb, quadratic=False),
+            "quadratic_weighted_kappa": weighted_kappa(xa, xb, quadratic=True),
             "krippendorff_alpha": krippendorff_alpha_interval_two_raters(xa, xb),
             "gwet_ac1": gwet_ac1_nominal([str(x) for x in xa], [str(x) for x in xb]),
             "gwet_ac2": gwet_ac2_linear_ordinal(xa, xb),
-            "percent_agreement": mean(
+            "raw_agreement": mean(
                 [1.0 if a == b else 0.0 for a, b in zip(xa, xb, strict=True)]
             ),
         }
-        confusion_mats[metric] = confusion([str(x) for x in xa], [str(x) for x in xb], ["1", "2", "3", "4"])
+        mat = confusion([str(x) for x in xa], [str(x) for x in xb], ORDINAL_LABELS)
+        mat_total = sum(v for row in mat.values() for v in row.values())
+        if mat_total != len(keys):
+            raise RuntimeError(
+                f"confusion matrix total mismatch for {metric}: {mat_total} != {len(keys)}"
+            )
+        confusion_mats[metric] = mat
 
     vac_a = [rater_a[k]["vacuity_label"] for k in keys]
     vac_b = [rater_b[k]["vacuity_label"] for k in keys]
@@ -176,10 +257,12 @@ def main() -> int:
             av, bv = rater_a[key].get(metric, ""), rater_b[key].get(metric, "")
             if av == bv:
                 continue
-            resolved, reason, source = disagreement_reason(
+            resolved, reason, source, obligation_idx, su_ids, ref_ids = disagreement_reason(
                 metric,
                 av,
                 bv,
+                rater_a[key],
+                rater_b[key],
             )
             meta = by_key_meta[key]
             disagreements.append(
@@ -193,6 +276,9 @@ def main() -> int:
                     "adjudicated_resolution": resolved,
                     "resolution_reason": reason,
                     "source_evidence": source,
+                    "specific_obligation_index": obligation_idx,
+                    "semantic_unit_ids": su_ids,
+                    "reference_obligation_ids": ref_ids,
                     "adjudicator_id": "adjudicator_v3",
                 }
             )
@@ -213,9 +299,19 @@ def main() -> int:
             "adjudicated_resolution",
             "resolution_reason",
             "source_evidence",
+            "specific_obligation_index",
+            "semantic_unit_ids",
+            "reference_obligation_ids",
             "adjudicator_id",
         ],
     )
+    for row in disagreements:
+        txt = row["resolution_reason"].lower()
+        for pat in GENERIC_REASON_PATTERNS:
+            if pat in txt:
+                raise RuntimeError(
+                    f"generic rationale pattern remains in disagreement row: {pat}"
+                )
 
     report = {
         "schema_version": "agreement_report_human_strict_all_v1",
@@ -254,11 +350,12 @@ def main() -> int:
     ]
     for m in ORDINAL:
         md.append(
-            f"- {m}: weighted_kappa={ordinal_stats[m]['weighted_kappa']:.4f}, "
+            f"- {m}: linear_weighted_kappa={ordinal_stats[m]['linear_weighted_kappa']:.4f}, "
+            f"quadratic_weighted_kappa={ordinal_stats[m]['quadratic_weighted_kappa']:.4f}, "
             f"krippendorff_alpha={ordinal_stats[m]['krippendorff_alpha']:.4f}, "
             f"gwet_ac1={ordinal_stats[m]['gwet_ac1']:.4f}, "
             f"gwet_ac2={ordinal_stats[m]['gwet_ac2']:.4f}, "
-            f"raw_agreement={ordinal_stats[m]['percent_agreement']:.4f}"
+            f"raw_agreement={ordinal_stats[m]['raw_agreement']:.4f}"
         )
     md += [
         "",

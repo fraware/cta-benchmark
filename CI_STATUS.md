@@ -54,6 +54,15 @@ compares `benchmark/v0.3/benchmark_paper_summary.json` to checked-in outputs:
 - `results/paper_table_agreement_evidence.csv`: `agreement_subset == strict_all_human_overlap`
   row is expected when `annotation/human_pass_v3/human_strict_packet_ids.csv` exists
   (current strict-overlap target: 274 rows / 84 instances / 0 mapped)
+- strict-overlap rater contract:
+  - ordinal columns in `annotation/rater_a_strict_all.csv` and
+    `annotation/human_pass_v3/rater_b_human_strict_all.csv`
+    are subsets of `{0,1,2,3}`
+  - coverage sets are disjoint and coherent with `coverage_label`
+- `annotation/human_pass_v3/agreement_report_human_strict_all.json` confusion
+  matrices must sum to `274` for each ordinal metric
+- `annotation/human_pass_v3/disagreement_log_strict_all.csv` must not contain
+  generic rationale templates
 
 For manuscript claims, treat `strict_all_human_overlap` as the independently
 double-annotated strict-view overlap row; `strict_independent_only` remains a

@@ -1,275 +1,275 @@
 anonymized_packet_key,semantic_faithfulness,code_consistency,proof_utility,vacuity_label,coverage_label,covered_units,partial_units,missing_units,contradiction_signal,notes
-hs_001,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_002,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_003,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_004,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_005,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_006,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_007,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_008,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_009,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_010,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_011,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_012,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_013,0,0,0,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_014,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_015,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_016,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_017,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_018,0,0,0,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_019,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_020,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_021,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_022,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_023,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_024,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_025,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_026,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_027,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_028,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_029,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_030,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_031,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_032,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_033,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_034,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_035,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_036,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_037,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_038,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_039,0,1,0,non_vacuous,full,['SU2'],,"['SU1', 'SU3']",0,primary strict adjudicated mapping
-hs_040,1,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_041,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_042,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_043,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_044,0,1,0,non_vacuous,full,['SU2'],,"['SU1', 'SU3']",0,primary strict adjudicated mapping
-hs_045,1,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_046,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_047,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_048,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_049,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_050,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_051,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_052,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_053,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_054,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_055,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_056,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_057,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_058,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_059,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_060,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_061,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_062,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_063,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_064,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_065,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_066,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_067,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_068,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_069,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_070,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_071,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_072,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_073,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_074,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_075,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_076,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_077,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_078,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_079,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_080,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_081,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_082,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_083,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_084,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_085,0,1,0,non_vacuous,full,"['SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_086,0,0,0,non_vacuous,full,[],,"['SU2', 'SU3', 'SU4']",0,primary strict adjudicated mapping
-hs_087,0,1,0,non_vacuous,full,"['SU2', 'SU4']",,['SU3'],0,primary strict adjudicated mapping
-hs_088,0,1,0,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,primary strict adjudicated mapping
-hs_089,0,1,0,non_vacuous,full,['SU4'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_090,0,1,0,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,primary strict adjudicated mapping
-hs_091,0,1,0,non_vacuous,full,"['SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_092,0,1,0,non_vacuous,full,"['SU2', 'SU4']",,['SU3'],0,primary strict adjudicated mapping
-hs_093,0,1,0,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,primary strict adjudicated mapping
-hs_094,0,1,0,non_vacuous,full,['SU4'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_095,0,1,0,non_vacuous,full,['SU3'],,"['SU2', 'SU4']",0,primary strict adjudicated mapping
-hs_096,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_097,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_098,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_099,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_100,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_101,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_102,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_103,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_104,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_105,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_106,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_107,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_108,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
-hs_109,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
-hs_110,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
-hs_111,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,primary strict adjudicated mapping
-hs_112,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
-hs_113,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5']",,[],0,primary strict adjudicated mapping
-hs_114,0,1,0,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2', 'SU5']",0,primary strict adjudicated mapping
-hs_115,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,primary strict adjudicated mapping
-hs_116,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,primary strict adjudicated mapping
-hs_117,0,1,0,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2', 'SU5']",0,primary strict adjudicated mapping
-hs_118,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4', 'SU5']",0,primary strict adjudicated mapping
-hs_119,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_120,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_121,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_122,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_123,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_124,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_125,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_126,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_127,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_128,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_129,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_130,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_131,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_132,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_133,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_134,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_135,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_136,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_137,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_138,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_139,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_140,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_141,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4', 'SU5', 'SU6']",,[],0,primary strict adjudicated mapping
-hs_142,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_143,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_144,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_145,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_146,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_147,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_148,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_149,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_150,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_151,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_152,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_153,0,0,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_154,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_155,0,0,0,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,primary strict adjudicated mapping
-hs_156,0,0,0,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,primary strict adjudicated mapping
-hs_157,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_158,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_159,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_160,0,1,0,non_vacuous,full,['SU1'],,"['SU3', 'SU4']",0,primary strict adjudicated mapping
-hs_161,0,0,0,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,primary strict adjudicated mapping
-hs_162,0,0,0,non_vacuous,full,[],,"['SU1', 'SU3', 'SU4']",0,primary strict adjudicated mapping
-hs_163,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_164,0,1,0,non_vacuous,full,['SU1'],,"['SU3', 'SU4']",0,primary strict adjudicated mapping
-hs_165,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_166,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_167,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_168,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_169,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_170,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_171,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_172,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_173,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_174,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_175,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_176,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_177,0,1,0,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,primary strict adjudicated mapping
-hs_178,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_179,0,1,0,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,primary strict adjudicated mapping
-hs_180,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_181,0,1,0,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,primary strict adjudicated mapping
-hs_182,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_183,0,1,0,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,primary strict adjudicated mapping
-hs_184,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_185,0,1,0,non_vacuous,full,"['SU2', 'SU3']",,['SU1'],0,primary strict adjudicated mapping
-hs_186,0,1,0,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,primary strict adjudicated mapping
-hs_187,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_188,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_189,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_190,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_191,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_192,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_193,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_194,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_195,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_196,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_197,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_198,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_199,0,1,0,non_vacuous,full,"['SU1', 'SU2']",,[],0,primary strict adjudicated mapping
-hs_200,0,1,0,non_vacuous,full,"['SU1', 'SU2']",,[],0,primary strict adjudicated mapping
-hs_201,0,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
-hs_202,1,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
-hs_203,0,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
-hs_204,1,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
-hs_205,0,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
-hs_206,1,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
-hs_207,0,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
-hs_208,1,1,0,non_vacuous,full,['SU1'],,['SU2'],0,primary strict adjudicated mapping
-hs_209,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_210,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_211,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_212,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_213,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_214,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_215,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_216,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_217,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_218,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_219,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_220,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_221,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_222,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_223,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_224,1,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_225,1,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_226,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_227,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_228,1,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_229,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_230,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_231,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_232,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_233,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_234,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_235,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_236,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_237,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_238,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_239,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_240,1,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_241,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_242,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_243,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_244,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_245,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_246,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_247,0,1,0,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,primary strict adjudicated mapping
-hs_248,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_249,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3']",,[],0,primary strict adjudicated mapping
-hs_250,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_251,0,1,0,non_vacuous,full,"['SU1', 'SU3']",,['SU2'],0,primary strict adjudicated mapping
-hs_252,0,1,0,non_vacuous,full,['SU1'],,"['SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_253,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_254,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_255,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_256,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_257,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_258,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_259,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_260,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_261,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_262,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_263,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_264,0,1,0,non_vacuous,full,[],,[],0,primary strict adjudicated mapping
-hs_265,0,1,0,non_vacuous,full,"['SU1', 'SU2', 'SU3', 'SU4']",,[],0,primary strict adjudicated mapping
-hs_266,0,1,0,non_vacuous,full,['SU4'],,"['SU1', 'SU2', 'SU3']",0,primary strict adjudicated mapping
-hs_267,0,1,0,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_268,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4']",0,primary strict adjudicated mapping
-hs_269,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,['SU2'],0,primary strict adjudicated mapping
-hs_270,0,1,0,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3', 'SU4']",0,primary strict adjudicated mapping
-hs_271,0,1,0,non_vacuous,full,"['SU3', 'SU4']",,"['SU1', 'SU2']",0,primary strict adjudicated mapping
-hs_272,0,1,0,non_vacuous,full,['SU3'],,"['SU1', 'SU2', 'SU4']",0,primary strict adjudicated mapping
-hs_273,0,1,0,non_vacuous,full,"['SU1', 'SU3', 'SU4']",,['SU2'],0,primary strict adjudicated mapping
-hs_274,0,1,0,non_vacuous,full,[],,"['SU1', 'SU2', 'SU3', 'SU4']",0,primary strict adjudicated mapping
+hs_001,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_002,1,2,1,non_vacuous,full,SU1|SU2|SU3,,,1,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_003,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_004,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_005,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_006,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_007,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_008,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_009,1,2,1,non_vacuous,full,SU1|SU2|SU3,,,1,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_010,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_011,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_012,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_013,1,2,1,non_vacuous,full,SU1|SU2|SU3,,,1,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_014,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_015,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_016,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_017,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_018,1,2,1,non_vacuous,full,SU1|SU2|SU3,,,1,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_019,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_020,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_021,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_022,3,3,1,non_vacuous,partial,,SU1|SU2|SU3,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_023,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_024,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_025,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_026,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_027,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_028,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_029,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_030,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_031,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_032,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_033,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_034,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_035,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_036,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_037,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_038,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_039,2,3,1,non_vacuous,partial,,SU2,SU1|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_040,3,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_041,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_042,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_043,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_044,2,3,1,non_vacuous,partial,,SU2,SU1|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_045,3,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_046,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_047,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_048,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_049,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_050,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_051,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_052,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_053,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_054,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_055,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_056,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_057,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_058,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_059,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_060,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_061,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_062,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_063,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_064,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_065,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_066,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_067,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_068,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_069,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_070,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_071,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_072,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_073,2,3,1,non_vacuous,full,SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_074,1,2,1,non_vacuous,full,SU2|SU3|SU4,,,1,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_075,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_076,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_077,3,3,1,non_vacuous,full,SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_078,1,2,1,non_vacuous,full,SU2|SU3|SU4,,,1,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_079,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_080,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_081,2,3,1,non_vacuous,full,SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_082,1,2,1,non_vacuous,full,SU2|SU3|SU4,,,1,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_083,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_084,2,3,1,non_vacuous,failed,,,SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_085,2,3,1,non_vacuous,full,SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_086,1,2,1,non_vacuous,full,SU2|SU3|SU4,,,1,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_087,2,3,1,non_vacuous,partial,,SU2|SU4,SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_088,2,3,1,non_vacuous,partial,,SU3,SU2|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_089,2,3,1,non_vacuous,partial,,SU4,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_090,2,3,1,non_vacuous,partial,,SU3,SU2|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_091,2,3,1,non_vacuous,full,SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_092,2,3,1,non_vacuous,partial,,SU2|SU4,SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_093,2,3,1,non_vacuous,partial,,SU3,SU2|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_094,2,3,1,non_vacuous,partial,,SU4,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_095,2,3,1,non_vacuous,partial,,SU3,SU2|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_096,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_097,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_098,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_099,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_100,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_101,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_102,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_103,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_104,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_105,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_106,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_107,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_108,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_109,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_110,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_111,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_112,3,3,1,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_113,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_114,2,3,1,non_vacuous,partial,,SU3|SU4,SU1|SU2|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_115,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_116,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_117,2,3,1,non_vacuous,partial,,SU3|SU4,SU1|SU2|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_118,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4|SU5,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_119,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_120,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_121,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_122,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_123,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_124,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_125,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_126,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_127,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_128,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_129,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_130,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_131,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_132,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_133,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_134,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_135,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_136,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_137,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_138,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_139,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_140,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_141,3,3,2,non_vacuous,full,SU1|SU2|SU3|SU4|SU5|SU6,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_142,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_143,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_144,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_145,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_146,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_147,2,3,2,non_vacuous,full,SU1|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_148,2,3,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_149,2,3,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_150,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_151,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_152,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_153,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_154,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_155,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_156,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_157,2,3,1,non_vacuous,full,SU1|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_158,2,3,2,non_vacuous,full,SU1|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_159,2,3,1,non_vacuous,partial,,SU1|SU3|SU4,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_160,2,3,1,non_vacuous,partial,,SU1,SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_161,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_162,2,2,1,non_vacuous,failed,,,SU1|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_163,2,3,1,non_vacuous,partial,,SU1|SU3|SU4,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_164,2,3,1,non_vacuous,partial,,SU1,SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_165,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_166,2,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_167,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_168,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_169,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_170,2,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_171,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_172,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_173,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_174,2,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_175,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_176,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_177,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_178,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_179,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_180,2,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_181,2,3,1,non_vacuous,partial,,SU1|SU3,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_182,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_183,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_184,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_185,2,3,1,non_vacuous,partial,SU2|SU3,,SU1,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_186,2,3,1,non_vacuous,partial,,SU1|SU3,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_187,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_188,2,3,1,non_vacuous,full,SU1|SU2,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_189,2,3,2,non_vacuous,full,SU1|SU2,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_190,2,3,1,non_vacuous,failed,,,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_191,2,3,1,non_vacuous,full,SU1|SU2,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_192,2,3,2,non_vacuous,full,SU1|SU2,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_193,2,3,1,non_vacuous,failed,,,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_194,3,3,1,non_vacuous,failed,,,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_195,2,3,1,non_vacuous,full,SU1|SU2,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_196,2,3,2,non_vacuous,full,SU1|SU2,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_197,2,3,1,non_vacuous,failed,,,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_198,3,3,1,non_vacuous,failed,,,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_199,2,3,1,non_vacuous,full,SU1|SU2,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_200,2,3,2,non_vacuous,full,SU1|SU2,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_201,2,3,1,non_vacuous,partial,,SU1,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_202,3,3,1,non_vacuous,partial,,SU1,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_203,2,3,1,non_vacuous,partial,,SU1,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_204,3,3,1,non_vacuous,partial,,SU1,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_205,2,3,1,non_vacuous,partial,,SU1,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_206,3,3,1,non_vacuous,partial,,SU1,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_207,2,3,1,non_vacuous,partial,,SU1,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_208,3,3,1,non_vacuous,partial,,SU1,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_209,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_210,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_211,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_212,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_213,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_214,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_215,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_216,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_217,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_218,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_219,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_220,3,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_221,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_222,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_223,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_224,3,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_225,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_226,3,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_227,2,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_228,3,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_229,3,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_230,2,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_231,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_232,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_233,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_234,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_235,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_236,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_237,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_238,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_239,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_240,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_241,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_242,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_243,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_244,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_245,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_246,3,3,2,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_247,2,3,1,non_vacuous,partial,,SU1|SU3,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_248,2,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_249,3,3,1,non_vacuous,full,SU1|SU2|SU3,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_250,2,3,1,non_vacuous,partial,,SU3,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_251,2,3,1,non_vacuous,partial,,SU1|SU3,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_252,2,3,1,non_vacuous,partial,,SU1,SU2|SU3,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_253,2,3,1,non_vacuous,partial,SU1|SU2|SU3,SU4,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_254,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_255,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_256,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_257,2,3,1,non_vacuous,partial,SU1|SU2|SU3,SU4,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_258,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_259,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_260,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_261,2,3,1,non_vacuous,partial,SU1|SU2|SU3,SU4,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_262,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_263,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_264,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_265,2,3,1,non_vacuous,partial,SU1|SU2|SU3,SU4,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_266,2,3,2,non_vacuous,full,SU1|SU2|SU3|SU4,,,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_267,2,3,1,non_vacuous,partial,,SU3|SU4,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_268,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_269,2,3,1,non_vacuous,partial,,SU1|SU3|SU4,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_270,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_271,2,3,1,non_vacuous,partial,,SU3|SU4,SU1|SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_272,2,3,1,non_vacuous,partial,,SU3,SU1|SU2|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_273,2,3,1,non_vacuous,partial,,SU1|SU3|SU4,SU2,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence
+hs_274,2,3,1,non_vacuous,failed,,,SU1|SU2|SU3|SU4,0,strict v3 primary adjudication rebuilt from strict queue + packet evidence

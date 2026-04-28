@@ -11,6 +11,17 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+ALLOWED_ORDINAL = {"0", "1", "2", "3"}
+ORDINAL_COLUMNS = [
+    "semantic_faithfulness",
+    "code_consistency",
+    "proof_utility",
+]
+GENERIC_RATIONALE_PATTERNS = [
+    "retain primary adjudicator",
+    "rubric-grounded stricter interpretation",
+    "ordinal mismatch resolved",
+]
 
 
 def cargo_validate(schema: str, path: Path) -> None:
@@ -53,7 +64,9 @@ def require_csv_columns(path: Path, required: list[str]) -> bool:
     missing = [c for c in required if c not in cols]
     if missing:
         print(
-            f"error: {path.relative_to(ROOT).as_posix()} missing required columns: {missing}",
+            "error: "
+            f"{path.relative_to(ROOT).as_posix()} "
+            f"missing required columns: {missing}",
             file=sys.stderr,
         )
         return False
@@ -63,6 +76,45 @@ def require_csv_columns(path: Path, required: list[str]) -> bool:
 def count_nonempty_jsonl_lines(path: Path) -> int:
     with path.open(encoding="utf-8") as f:
         return sum(1 for line in f if line.strip())
+
+
+def split_units(value: str) -> set[str]:
+    txt = str(value or "").strip()
+    if not txt:
+        return set()
+    items = [x.strip() for x in txt.replace("|", ",").split(",") if x.strip()]
+    out = set()
+    for item in items:
+        if item.startswith("partial_"):
+            item = item[len("partial_"):]
+        out.add(item)
+    return out
+
+
+def assert_rater_contract(rows: list[dict[str, str]], name: str) -> None:
+    for idx, row in enumerate(rows, start=1):
+        for col in ORDINAL_COLUMNS:
+            val = (row.get(col) or "").strip()
+            if val not in ALLOWED_ORDINAL:
+                raise RuntimeError(
+                    f"{name} row {idx} out-of-scale {col}: {val!r}"
+                )
+        cov = (row.get("coverage_label") or "").strip()
+        covered = split_units(row.get("covered_units", ""))
+        partial = split_units(row.get("partial_units", ""))
+        missing = split_units(row.get("missing_units", ""))
+        if (covered & partial) or (covered & missing) or (partial & missing):
+            raise RuntimeError(
+                f"{name} row {idx} has overlapping coverage sets"
+            )
+        if cov == "full" and missing:
+            raise RuntimeError(
+                f"{name} row {idx} full coverage with missing units"
+            )
+        if missing and cov == "full":
+            raise RuntimeError(
+                f"{name} row {idx} missing units but full coverage"
+            )
 
 
 def main() -> int:
@@ -293,11 +345,71 @@ def main() -> int:
     if not high_risk.issubset(hp_keys):
         print("error: high-risk strict rows missing from human_pass_v3", file=sys.stderr)
         return 1
+    rater_a_path = ROOT / "annotation" / "rater_a_strict_all.csv"
+    rater_b_path = ROOT / "annotation" / "human_pass_v3" / "rater_b_human_strict_all.csv"
+    if not rater_a_path.is_file() or not rater_b_path.is_file():
+        print("error: strict-overlap rater files missing", file=sys.stderr)
+        return 1
+    try:
+        assert_rater_contract(load_csv_rows(rater_a_path), "rater_a_strict_all.csv")
+        assert_rater_contract(load_csv_rows(rater_b_path), "rater_b_human_strict_all.csv")
+    except RuntimeError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
     for row in load_csv_rows(hpv3_disagree):
         txt = (row.get("resolution_reason") or "").strip().lower()
-        if txt == "retain primary adjudicator label for ordinal metrics":
-            print("error: generic disagreement resolution text present", file=sys.stderr)
+        for pat in GENERIC_RATIONALE_PATTERNS:
+            if pat in txt:
+                print("error: generic disagreement resolution text present", file=sys.stderr)
+                return 1
+    ag_report = ROOT / "annotation" / "human_pass_v3" / "agreement_report_human_strict_all.json"
+    if not ag_report.is_file():
+        print("error: missing strict-overlap agreement report", file=sys.stderr)
+        return 1
+    rep = json.loads(ag_report.read_text(encoding="utf-8"))
+    if int(rep.get("n_rows", -1)) != 274:
+        print("error: strict-overlap report n_rows != 274", file=sys.stderr)
+        return 1
+    mats = rep.get("confusion_matrices") or {}
+    for metric in ORDINAL_COLUMNS:
+        mat = mats.get(metric) or {}
+        total = 0
+        for rowvals in mat.values():
+            total += sum(int(v) for v in rowvals.values())
+        if total != 274:
+            print(
+                f"error: confusion matrix total for {metric} is {total}, expected 274",
+                file=sys.stderr,
+            )
             return 1
+    strict_overlap_row_found = False
+    with ag_evi_path.open(encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            if (row.get("agreement_subset") or "").strip() != "strict_all_human_overlap":
+                continue
+            strict_overlap_row_found = True
+            if int((row.get("n_packets") or "0").strip()) != 274:
+                print("error: strict_all_human_overlap n_packets != 274", file=sys.stderr)
+                return 1
+            if int((row.get("n_unique_instance_ids") or "0").strip()) != 84:
+                print(
+                    "error: strict_all_human_overlap n_unique_instance_ids != 84",
+                    file=sys.stderr,
+                )
+                return 1
+            if int((row.get("n_direct_human") or "0").strip()) != 274:
+                print("error: strict_all_human_overlap n_direct_human != 274", file=sys.stderr)
+                return 1
+            if int((row.get("n_mapped_from_canonical") or "1").strip()) != 0:
+                print(
+                    "error: strict_all_human_overlap n_mapped_from_canonical != 0",
+                    file=sys.stderr,
+                )
+                return 1
+            break
+    if not strict_overlap_row_found:
+        print("error: paper_table_agreement_evidence missing strict_all_human_overlap", file=sys.stderr)
+        return 1
 
     primary_registry = ROOT / "results" / "paper_primary_model_registry.csv"
     if not primary_registry.is_file():

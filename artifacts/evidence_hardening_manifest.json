@@ -86,7 +86,7 @@
   ],
   "missing": [],
   "sha256": {
-    "benchmark/v0.3/manifests/release_summary.json": "1ae6f2efb1c9cee3af8c6a11b1a07d28b28b815251cec17a62f8ce6ffe17e096",
+    "benchmark/v0.3/manifests/release_summary.json": "1dc3cfba804969d82def82fc813e56bc25ca5c29007927ae0a43b83f5000cb09",
     "benchmark/manifest.jsonl": "c0590890e602fb55012728ae0544df139485989dafbccf421b668e1a4ac6d463",
     "benchmark/v0.3/benchmark_paper_summary.json": "fb39f596acd4617abefedafa1fd0e786810e8831666cd59c457f6b5aa8bf1857",
     "benchmark/v0.3/protocol_freeze.json": "19e58bd64751189591c3cb17471c7eb1e924442b21a22829bbbf44b59013967e",
@@ -110,10 +110,10 @@
     "results/selector_primary_first_parseable/paper_strict_system_summary.csv": "5cfc1459153a0488cb5787a4a8724a767021d26db1bdd2e0c8b86c90e41bff2b",
     "results/selector_current_low_obligation_tiebreak/paper_strict_system_summary.csv": "9881f5e60a67e5c98eccd309e27e23ca74c26f344a8702e8b66113249977d870",
     "annotation/human_pass_v3/human_strict_packet_ids.csv": "7f0ee7e63f8fed463d6a1e11781f504b09ff3bb9864d01c31daf63a75d49a506",
-    "annotation/human_pass_v3/rater_b_human_strict_all.csv": "f116ac93c6d1658480a424f07b06dfcdc003e1c9970ad31e619efe1ab4f99185",
-    "annotation/human_pass_v3/disagreement_log_strict_all.csv": "88a29ec730d4ae1499a3e59cdff8d578ec45f40705d07a0735a3574578fcda5c",
-    "annotation/human_pass_v3/agreement_report_human_strict_all.json": "123e95bdeb0fe416265f9ce17623e1df308510b168b8961c992fb5997b6abb3a",
-    "annotation/human_pass_v3/agreement_report_human_strict_all.md": "979047b5cdbd25f424fa070168d90331a5366d94bcf04cd4f72d9e22cfa7f84f",
+    "annotation/human_pass_v3/rater_b_human_strict_all.csv": "f6257772be4ae3b694884f0991fd3d4b70083891f5e2a68e9a93639750803b71",
+    "annotation/human_pass_v3/disagreement_log_strict_all.csv": "0dc88ec098d98cf952d5a57b0810438deb27fd066efd54a2ae91fb9b4a5cf04c",
+    "annotation/human_pass_v3/agreement_report_human_strict_all.json": "b336eac242f775042a9f37f0221d4eac8f3a6da067e0fd88f3779c5019b461af",
+    "annotation/human_pass_v3/agreement_report_human_strict_all.md": "cbc55fb325ad9e370586dc753dcbb06289ecf9d43b6f9dba03c8838a58b8af8f",
     "annotation/external_review/semantic_corrections_v3.csv": "afeef40240f9cf4c8e3f16b870dbff2c3e1259cd3506773182413bde56f05f2c",
     "results/paper_model_metadata_registry.csv": "4694f83ab9406b262e5cfbee98fc615f11b6d6d45fcdbc29e24a45d98500dc91",
     "results/paper_primary_model_registry.csv": "246fd7d72478cd786a9ef00f23db2cd04697f860d78998965645f14a262d18ca",
@@ -122,9 +122,9 @@
     "repairs/repair_outcomes_summary.csv": "7ccda9e773d4acb098b1afe00d6fee852a436a535f55f5901cc6017d5ddcb296",
     "repairs/repair_attempt_summary.md": "de66c95df924868581afcadc5390604b49a52f10e2b0ef6a26e661fe6236a9be",
     "configs/experiments/benchmark_v03.json": "9b245e5d4845b2270df238676c14d5d1053fa76f3690d64ad6633c59d1cdc7a4",
-    "REPRODUCE.md": "b348c36f6c0a5b2f15e22d8efe95b0d18cd4e7c0a502643055363edad0cf7efe",
-    "README.md": "00a08eefab24a4325403bc3e032723dbc65e96c65ba7be8ba2e418038946d042",
-    "docs/PROVENANCE.md": "228e1cdedd1872529cca85fb6bc9eb7a54d34caf528abd48e64f27b9f2bca343",
+    "REPRODUCE.md": "2550181f9add54695b93fdb222184ceb3cbffa5a4e87e362bce1e39bd5b12a34",
+    "README.md": "ceba21d3afc2bc5b6d6f25ee999cda78d3cc3a42ec1c1c32de29496914f10b0c",
+    "docs/PROVENANCE.md": "7929445c38f291544544df433260ead9c99658b2b37e1709e4f6373a26708cfe",
     "LICENSE": "8532193c2df574da197dd64d98b40699ed5a50b46b82385c8255942c7fbde9f1"
   }
 }

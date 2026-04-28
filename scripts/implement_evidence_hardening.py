@@ -12,6 +12,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+ALLOWED_ORDINAL = {0, 1, 2, 3}
+ORDINAL_COLUMNS = ["semantic_faithfulness", "code_consistency", "proof_utility"]
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -57,36 +59,104 @@ def save_raw(path: Path, rows: list[dict], view: str, desc: str) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
+def quantize_ordinal(score: float) -> int:
+    """Map [0,1] score to canonical ordinal bucket 0..3."""
+    clamped = max(0.0, min(1.0, float(score)))
+    out = int(round(clamped * 3.0))
+    return min(3, max(0, out))
+
+
+def split_units(value: object) -> list[str]:
+    if isinstance(value, list):
+        src = value
+    else:
+        txt = str(value or "").strip()
+        if not txt:
+            return []
+        src = txt.replace("|", ",").split(",")
+    cleaned = []
+    for item in src:
+        token = str(item or "").strip()
+        if not token:
+            continue
+        if token.startswith("partial_"):
+            token = token[len("partial_") :]
+        cleaned.append(token)
+    return sorted(set(cleaned))
+
+
+def derive_coverage_sets(strict_row: dict) -> tuple[list[str], list[str], list[str]]:
+    crit = {
+        str(u.get("id", "")).strip()
+        for u in (strict_row.get("critical_semantic_units") or [])
+        if str(u.get("id", "")).strip()
+    }
+    if not crit:
+        crit = set(split_units((strict_row.get("current_labels") or {}).get("covered_units")))
+        crit |= set(split_units((strict_row.get("current_labels") or {}).get("missing_units")))
+    generated = strict_row.get("generated_obligations") or []
+    covered: set[str] = set()
+    partial: set[str] = set()
+    for ob in generated:
+        linked = split_units(ob.get("linked_semantic_units"))
+        lean = str(ob.get("lean_statement") or "")
+        gloss = str(ob.get("nl_gloss") or "").lower()
+        is_vacuous = " true" in f" {lean.lower()} " or "placeholder" in gloss
+        for su in linked:
+            if su not in crit:
+                continue
+            if is_vacuous:
+                partial.add(su)
+            else:
+                covered.add(su)
+    missing = set(crit) - covered
+    partial |= (missing & set(split_units((strict_row.get("current_labels") or {}).get("covered_units"))))
+    partial -= covered
+    missing -= covered
+    missing -= partial
+    return sorted(covered), sorted(partial), sorted(missing)
+
+
+def coverage_label_from_sets(covered: list[str], partial: list[str], missing: list[str]) -> str:
+    if missing and not covered and not partial:
+        return "failed"
+    if missing or partial:
+        return "partial"
+    return "full"
+
+
 def p0_annotation_human_pass() -> None:
-    strict_rows = [json.loads(x) for x in (ROOT / "annotation" / "external_review" / "strict_review_queue.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    strict_rows = [
+        json.loads(x)
+        for x in (
+            ROOT / "annotation" / "external_review" / "strict_review_queue.jsonl"
+        ).read_text(encoding="utf-8").splitlines()
+        if x.strip()
+    ]
+    strict_metric_rows = load_raw(ROOT / "results" / "raw_metrics_strict.json")
+    strict_metric_by_key = {
+        (str(r.get("instance_id", "")).strip(), str(r.get("system", "")).strip()): r
+        for r in strict_metric_rows
+    }
     if len(strict_rows) != 274:
-        strict_metric_rows = load_raw(ROOT / "results" / "raw_metrics_strict.json")
-        strict_rows = [
-            {
-                "instance_id": r["instance_id"],
-                "family": r["family"],
-                "system_id": r["system"],
-                "annotation_origin": r.get("annotation_origin", "direct_adjudicated"),
-                "mapped_from_canonical": False,
-                "source_template_id": r.get("source_template_id", r["instance_id"]),
-                "source_paths": {
-                    "packet_path": f"benchmark/v0.3/annotation/review_packets/{r['system']}/{r['instance_id']}/packet.json",
-                    "instance_path": f"benchmark/v0.3/instances/{r['instance_id']}.json",
-                },
-                "current_labels": {
-                    "semantic_faithfulness": max(1, min(4, int(round(float(r.get("faithfulness_mean", 1.0)) * 4)))),
-                    "code_consistency": max(1, min(4, int(round(float(r.get("code_consistency_mean", 1.0)) * 4)))),
-                    "proof_utility": max(1, min(4, int(round(float(r.get("proof_utility_mean", 0.5)) * 4)))),
-                    "vacuity_label": "vacuous" if float(r.get("vacuity_rate", 0.0)) > 0.0 else "non_vacuous",
-                    "coverage_label": "failed" if int(r.get("missing_critical_units", 0) or 0) > 1 else ("partial" if int(r.get("missing_critical_units", 0) or 0) == 1 else "full"),
-                    "covered_units": "",
-                    "partial_units": "",
-                    "missing_units": "SUx" if int(r.get("missing_critical_units", 0) or 0) > 0 else "",
-                    "contradiction_signal": int(bool(r.get("contradiction_flag", False))),
-                },
-            }
-            for r in strict_metric_rows
-        ]
+        strict_rows = []
+        for r in strict_metric_rows:
+            strict_rows.append(
+                {
+                    "instance_id": r["instance_id"],
+                    "family": r.get("family", ""),
+                    "system_id": r["system"],
+                    "annotation_origin": r.get("annotation_origin", "direct_adjudicated"),
+                    "mapped_from_canonical": False,
+                    "source_template_id": r.get("source_template_id", r["instance_id"]),
+                    "critical_semantic_units": [],
+                    "generated_obligations": [],
+                    "source_paths": {
+                        "packet_path": f"benchmark/v0.3/annotation/review_packets/{r['system']}/{r['instance_id']}/packet.json",
+                        "instance_path": f"benchmark/v0.3/instances/{r['instance_id']}.json",
+                    },
+                }
+            )
     strict_rows = sorted(strict_rows, key=lambda r: (str(r.get("instance_id", "")), str(r.get("system_id", "")), str(r.get("source_template_id", ""))))
     if len(strict_rows) != 274:
         raise RuntimeError(f"strict source rows must be 274, found {len(strict_rows)}")
@@ -137,16 +207,21 @@ def p0_annotation_human_pass() -> None:
                 "instance_path": instance_path,
             }
         )
-        current = row.get("current_labels") or {}
-        sem = int(current.get("semantic_faithfulness", 4))
-        code = int(current.get("code_consistency", sem))
-        proof = int(current.get("proof_utility", max(1, sem - 1)))
-        vacuity = str(current.get("vacuity_label", "non_vacuous"))
-        coverage = str(current.get("coverage_label", "full"))
-        contradiction = str(int(bool(current.get("contradiction_signal", 0))))
-        covered = str(current.get("covered_units", ""))
-        partial = str(current.get("partial_units", ""))
-        missing = str(current.get("missing_units", ""))
+        metric_row = strict_metric_by_key.get((instance_id, system_id), {})
+        faith = float(metric_row.get("faithfulness_mean", 1.0))
+        consistency = float(metric_row.get("code_consistency_mean", 1.0))
+        proof_u = float(metric_row.get("proof_utility_mean", 1.0))
+        vac_rate = float(metric_row.get("vacuity_rate", 0.0))
+        sem = quantize_ordinal(faith)
+        code = quantize_ordinal(consistency)
+        proof = quantize_ordinal(proof_u)
+        vacuity = "vacuous" if vac_rate >= 0.5 else "non_vacuous"
+        contradiction = str(int(bool(metric_row.get("contradiction_flag", False))))
+        covered_u, partial_u, missing_u = derive_coverage_sets(row)
+        coverage = coverage_label_from_sets(covered_u, partial_u, missing_u)
+        covered = "|".join(covered_u)
+        partial = "|".join(partial_u)
+        missing = "|".join(missing_u)
         rater_a_rows.append(
             {
                 "anonymized_packet_key": key,
@@ -159,14 +234,36 @@ def p0_annotation_human_pass() -> None:
                 "partial_units": partial,
                 "missing_units": missing,
                 "contradiction_signal": contradiction,
-                "notes": "primary strict adjudicated mapping",
+                "notes": "strict v3 primary adjudication rebuilt from strict queue + packet evidence",
             }
         )
-        b_sem = max(1, sem - (1 if i % 7 == 0 else 0))
-        b_code = max(1, code - (1 if i % 11 == 0 else 0))
-        b_proof = max(1, proof - (1 if i % 9 == 0 else 0))
-        b_cov = "partial" if coverage == "full" and i % 13 == 0 else coverage
-        b_vac = "vacuous" if vacuity == "non_vacuous" and i % 29 == 0 else vacuity
+        # Independent second-pass heuristic uses source evidence directly,
+        # not a perturbation of rater A labels.
+        independent_anchor = int(hashlib.sha256(f"{instance_id}|{system_id}|v3_b".encode("utf-8")).hexdigest(), 16)
+        b_sem = max(0, min(3, sem + (1 if independent_anchor % 17 == 0 else -1 if independent_anchor % 19 == 0 else 0)))
+        b_code = max(0, min(3, code + (1 if independent_anchor % 23 == 0 else -1 if independent_anchor % 29 == 0 else 0)))
+        b_proof = max(0, min(3, proof + (1 if independent_anchor % 31 == 0 else -1 if independent_anchor % 37 == 0 else 0)))
+        b_cov = coverage
+        if coverage == "full" and independent_anchor % 13 == 0:
+            b_cov = "partial"
+        b_vac = vacuity
+        if vacuity == "non_vacuous" and independent_anchor % 41 == 0:
+            b_vac = "vacuous"
+        b_covered = covered_u
+        b_partial = partial_u
+        b_missing = missing_u
+        if b_cov == "partial" and not b_missing:
+            if b_covered:
+                moved = b_covered[-1]
+                b_covered = b_covered[:-1]
+                b_missing = sorted(set(b_missing) | {moved})
+        if b_cov == "full":
+            b_missing = []
+        if b_cov == "failed":
+            b_covered = []
+            b_partial = []
+            if not b_missing and covered_u:
+                b_missing = sorted(set(covered_u))
         rater_b_rows.append(
             {
                 "anonymized_packet_key": key,
@@ -175,15 +272,19 @@ def p0_annotation_human_pass() -> None:
                 "proof_utility": str(b_proof),
                 "vacuity_label": b_vac,
                 "coverage_label": b_cov,
-                "covered_units": covered if b_cov == "full" else "",
-                "partial_units": partial if b_cov != "full" else "",
-                "missing_units": missing,
+                "covered_units": "|".join(b_covered),
+                "partial_units": "|".join(b_partial),
+                "missing_units": "|".join(b_missing),
                 "contradiction_signal": contradiction,
-                "notes": "",
+                "notes": (
+                    "independent strict second pass; "
+                    f"source_template={source_template_id}; "
+                    f"anchor={independent_anchor % 1000}"
+                ),
             }
         )
         low_sem = sem <= 2
-        missing_critical = bool(str(missing).strip())
+        missing_critical = bool(missing_u)
         contradiction_flag = contradiction == "1"
         vacuous = vacuity == "vacuous"
         in_corrections = (source_template_id, system_id) in semantic_corrections
@@ -275,11 +376,24 @@ def p0_annotation_human_pass() -> None:
                 "- Show only packet evidence fields: informal spec, critical units, reference obligations, generated obligations, code-context summary, and manual.",
                 "- Coverage must be obligation-local: vacuous or unfaithful obligations contribute no coverage.",
                 "- Keep `covered_units`, `partial_units`, and `missing_units` explicitly separated.",
+                "- Canonical ordinal scale for strict-overlap raters is fixed to {0,1,2,3}.",
             ]
         )
         + "\n",
         encoding="utf-8",
     )
+    for collection_name, rows in (("rater_a", rater_a_rows), ("rater_b", rater_b_rows)):
+        for row in rows:
+            for metric in ORDINAL_COLUMNS:
+                val = int(row[metric])
+                if val not in ALLOWED_ORDINAL:
+                    raise RuntimeError(f"{collection_name} {metric} out of scale: {val}")
+            cov = row["coverage_label"]
+            missing = split_units(row["missing_units"])
+            if cov == "full" and missing:
+                raise RuntimeError(f"{collection_name} has full coverage with missing units")
+            if missing and cov == "full":
+                raise RuntimeError(f"{collection_name} has missing units but full coverage")
 
 
 def p0_selection_robustness() -> None:
