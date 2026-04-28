@@ -9,6 +9,24 @@ macOS, use the **Bash** block where noted.
 - Python: 3.11+.
 - Lean: `lake --version` in `lean/` (Mathlib pin in `lean/lakefile.lean`).
 
+## Evidence-Hardening Update (2026-04-28)
+
+Add these commands to the paper-readiness pass:
+
+```powershell
+python scripts\implement_evidence_hardening.py
+python scripts\validate_release_artifact.py
+```
+
+Required outputs now include:
+
+- `annotation/human_pass_v2/*`
+- `results/selection_robustness.csv`
+- `results/prompt_token_accounting.csv`
+- `results/cross_model_pilot_*.csv`
+- `repairs/repair_attempts.csv`
+- `artifacts/evidence_hardening_manifest.json`
+
 ## 2. v0.3 benchmark gate (schemas, manifest, splits, experiments, pack)
 
 Gold audit: `benchmark/v0.3/audit/gold_signoff.json` defaults to

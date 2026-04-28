@@ -237,3 +237,15 @@ Calibration and anchor checks before touching eval data:
 - Never adjust a label to match a colleague's. Disagreement is signal.
 - Never skip the vacuity check; vacuous obligations are the single most
   common failure mode and missing them ruins the metric.
+
+## Evidence-Hardening Update (2026-04-28)
+
+Human-validation reporting now requires the v2 outputs:
+
+- `annotation/human_pass_v2/rater_b_human.csv`
+- `annotation/human_pass_v2/agreement_report_human.json`
+- `annotation/human_pass_v2/agreement_report_human.md`
+- `annotation/human_pass_v2/disagreement_log.csv`
+
+After annotation updates, run `python scripts/implement_evidence_hardening.py`
+to refresh all paper-facing evidence tables.

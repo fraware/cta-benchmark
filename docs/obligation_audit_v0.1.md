@@ -162,3 +162,13 @@ precondition.
   instances; the benchmark manifest is regenerated accordingly.
 - Every critical semantic unit remains linked to at least one
   obligation. Supporting termination SUs are intentionally unlinked.
+
+## Evidence-Hardening Update (2026-04-28)
+
+Obligation-audit outputs now feed explicit hardening tables:
+
+- selector sensitivity (`results/selection_robustness.csv`)
+- token/packet burden (`results/prompt_token_accounting.csv`)
+- cross-model failure examples (`results/cross_model_pilot_failure_examples.md`)
+
+Regenerate with `python scripts/implement_evidence_hardening.py`.

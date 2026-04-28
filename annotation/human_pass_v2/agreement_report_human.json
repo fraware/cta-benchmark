@@ -1,0 +1,209 @@
+{
+  "schema_version": "agreement_report_human_v1",
+  "annotator_qualifications": {
+    "rater_b_human": "Independent software engineer with theorem-proving annotation training (anonymized)."
+  },
+  "sampling_method": "Full strict direct-adjudication overlap from agreement packet audit population.",
+  "n_rows": 192,
+  "pre_adjudication_agreement_by_metric": {
+    "semantic_faithfulness": 0.9583,
+    "code_consistency": 0.9635,
+    "proof_utility": 0.8594,
+    "coverage_label": 0.9635,
+    "vacuity_label": 0.9583
+  },
+  "confusion_matrices": {
+    "semantic_faithfulness": {
+      "1": {
+        "1": 4,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "2": {
+        "1": 0,
+        "2": 8,
+        "3": 0,
+        "4": 0
+      },
+      "3": {
+        "1": 0,
+        "2": 1,
+        "3": 56,
+        "4": 3
+      },
+      "4": {
+        "1": 0,
+        "2": 0,
+        "3": 4,
+        "4": 116
+      }
+    },
+    "code_consistency": {
+      "1": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "2": {
+        "1": 0,
+        "2": 4,
+        "3": 0,
+        "4": 0
+      },
+      "3": {
+        "1": 0,
+        "2": 1,
+        "3": 5,
+        "4": 0
+      },
+      "4": {
+        "1": 0,
+        "2": 0,
+        "3": 6,
+        "4": 176
+      }
+    },
+    "proof_utility": {
+      "1": {
+        "1": 8,
+        "2": 4,
+        "3": 0,
+        "4": 0
+      },
+      "2": {
+        "1": 11,
+        "2": 104,
+        "3": 9,
+        "4": 0
+      },
+      "3": {
+        "1": 0,
+        "2": 1,
+        "3": 45,
+        "4": 2
+      },
+      "4": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 8
+      }
+    },
+    "coverage_label": {
+      "full": {
+        "full": 112,
+        "partial": 4,
+        "failed": 0
+      },
+      "partial": {
+        "full": 0,
+        "partial": 62,
+        "failed": 2
+      },
+      "failed": {
+        "full": 0,
+        "partial": 1,
+        "failed": 11
+      }
+    },
+    "vacuity_label": {
+      "non_vacuous": {
+        "non_vacuous": 184,
+        "vacuous": 8
+      },
+      "vacuous": {
+        "non_vacuous": 0,
+        "vacuous": 0
+      }
+    }
+  },
+  "adjudication_procedure": "Two-pass adjudication: disagreements logged, then resolved against source packet evidence and rubric.",
+  "disagreement_examples": [
+    {
+      "anonymized_packet_key": "ag_008",
+      "metric": "proof_utility",
+      "rater_a": "2",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "2",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    },
+    {
+      "anonymized_packet_key": "ag_010",
+      "metric": "semantic_faithfulness",
+      "rater_a": "4",
+      "rater_b_human": "3",
+      "adjudicated_resolution": "4",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    },
+    {
+      "anonymized_packet_key": "ag_012",
+      "metric": "proof_utility",
+      "rater_a": "1",
+      "rater_b_human": "2",
+      "adjudicated_resolution": "1",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    },
+    {
+      "anonymized_packet_key": "ag_013",
+      "metric": "proof_utility",
+      "rater_a": "2",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "2",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    },
+    {
+      "anonymized_packet_key": "ag_024",
+      "metric": "coverage_label",
+      "rater_a": "full",
+      "rater_b_human": "partial",
+      "adjudicated_resolution": "full",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    },
+    {
+      "anonymized_packet_key": "ag_027",
+      "metric": "proof_utility",
+      "rater_a": "2",
+      "rater_b_human": "3",
+      "adjudicated_resolution": "2",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    },
+    {
+      "anonymized_packet_key": "ag_032",
+      "metric": "proof_utility",
+      "rater_a": "2",
+      "rater_b_human": "1",
+      "adjudicated_resolution": "2",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    },
+    {
+      "anonymized_packet_key": "ag_043",
+      "metric": "proof_utility",
+      "rater_a": "3",
+      "rater_b_human": "4",
+      "adjudicated_resolution": "3",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    },
+    {
+      "anonymized_packet_key": "ag_049",
+      "metric": "proof_utility",
+      "rater_a": "2",
+      "rater_b_human": "3",
+      "adjudicated_resolution": "2",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    },
+    {
+      "anonymized_packet_key": "ag_051",
+      "metric": "code_consistency",
+      "rater_a": "4",
+      "rater_b_human": "3",
+      "adjudicated_resolution": "4",
+      "resolution_note": "retain primary adjudicator label for ordinal metrics"
+    }
+  ],
+  "source_files": {
+    "rater_a": "annotation/rater_a.csv",
+    "rater_b_human": "annotation/human_pass_v2/rater_b_human.csv"
+  }
+}

@@ -43,6 +43,23 @@ def load_csv_rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(f))
 
 
+def require_csv_columns(path: Path, required: list[str]) -> bool:
+    if not path.is_file():
+        rel = path.relative_to(ROOT).as_posix()
+        print(f"error: missing required csv {rel}", file=sys.stderr)
+        return False
+    with path.open(encoding="utf-8", newline="") as f:
+        cols = list(csv.DictReader(f).fieldnames or [])
+    missing = [c for c in required if c not in cols]
+    if missing:
+        print(
+            f"error: {path.relative_to(ROOT).as_posix()} missing required columns: {missing}",
+            file=sys.stderr,
+        )
+        return False
+    return True
+
+
 def count_nonempty_jsonl_lines(path: Path) -> int:
     with path.open(encoding="utf-8") as f:
         return sum(1 for line in f if line.strip())
@@ -80,6 +97,32 @@ def main() -> int:
         strict_body = json.loads(strict_path.read_text(encoding="utf-8"))
         strict_rows = strict_body.get("rows") or []
         strict_cnt = len(strict_rows)
+        strict_unique = len(
+            {
+                str(r.get("instance_id", "")).strip()
+                for r in strict_rows
+                if str(r.get("instance_id", "")).strip()
+            }
+        )
+        strict_mapped = sum(
+            1
+            for r in strict_rows
+            if str(r.get("annotation_origin") or "").strip()
+            == "mapped_from_canonical"
+        )
+        if strict_unique != 84:
+            print(
+                f"error: strict_unique_instances {strict_unique} != 84",
+                file=sys.stderr,
+            )
+            return 1
+        if strict_mapped != 0:
+            print(
+                "error: strict headline rows include mapped_from_canonical "
+                f"({strict_mapped})",
+                file=sys.stderr,
+            )
+            return 1
         exp_strict = summary.get("expected_raw_metrics_strict_rows")
         if exp_strict is not None and int(exp_strict) != strict_cnt:
             print(
@@ -269,6 +312,84 @@ def main() -> int:
     if ont.is_file():
         cargo_validate("failure_mode_ontology", ont)
 
+    schema_checks = [
+        (
+            ROOT / "results" / "selection_robustness.csv",
+            [
+                "system_id",
+                "instance_id",
+                "selector",
+                "semantic_faithfulness",
+                "code_consistency",
+                "vacuity_rate",
+                "proof_utility",
+                "missing_critical_units",
+                "reliability",
+            ],
+        ),
+        (
+            ROOT / "results" / "prompt_token_accounting.csv",
+            [
+                "system_id",
+                "mean_prompt_tokens",
+                "median_prompt_tokens",
+                "max_prompt_tokens",
+                "mean_output_tokens",
+                "median_output_tokens",
+                "max_output_tokens",
+                "truncated_rows",
+                "mean_obligations_per_packet",
+                "median_obligations_per_packet",
+                "empty_packets",
+            ],
+        ),
+        (
+            ROOT / "results" / "cross_model_pilot_instance_level.csv",
+            [
+                "instance_id",
+                "family",
+                "regime",
+                "model_tier",
+                "system_id",
+                "semantic_faithfulness",
+                "code_consistency",
+                "vacuity_rate",
+                "proof_utility",
+                "missing_critical_units",
+            ],
+        ),
+        (
+            ROOT / "repairs" / "repair_attempts.csv",
+            [
+                "candidate_failure_id",
+                "selected_for_repair",
+                "selection_reason",
+                "repair_attempted",
+                "repair_outcome",
+                "human_minutes",
+                "reference_obligations_used",
+                "notes",
+            ],
+        ),
+    ]
+    for path, cols in schema_checks:
+        if not require_csv_columns(path, cols):
+            return 1
+
+    valid_layers = {"human_gold", "synthetic_stress", "adjudicated"}
+    prov = ROOT / "results" / "provenance_layer_registry.csv"
+    if prov.is_file():
+        rows = load_csv_rows(prov)
+        for row in rows:
+            layer = (row.get("layer") or "").strip()
+            if layer not in valid_layers:
+                print(
+                    "error: invalid provenance layer "
+                    f"{layer!r} in results/provenance_layer_registry.csv",
+                    file=sys.stderr,
+                )
+                return 1
+
     deny = re.compile(
         r"\b(TODO|placeholder|skeleton|fill\s+after)\b",
         re.IGNORECASE,
@@ -355,7 +476,8 @@ def main() -> int:
         if n_map_j != mapped_exp:
             print(
                 "error: annotation/external_review/mapped_review_queue.jsonl "
-                f"non-empty lines {n_map_j} != expanded mapped rows {mapped_exp}",
+                f"non-empty lines {n_map_j} != expanded mapped "
+                f"rows {mapped_exp}",
                 file=sys.stderr,
             )
             return 1
@@ -372,6 +494,13 @@ def main() -> int:
                 file=sys.stderr,
             )
             return 1
+
+    art_manifest = ROOT / "artifacts" / "evidence_hardening_manifest.json"
+    if art_manifest.is_file():
+        subprocess.check_call(
+            [sys.executable, str(ROOT / "scripts" / "validate_release_artifact.py")],
+            cwd=ROOT,
+        )
 
     print("ci_reviewer_readiness: ok")
     return 0

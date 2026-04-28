@@ -64,3 +64,29 @@ Low-faithfulness rows are canonically exported as `low_semantic_faithfulness`.
 - `docs/evaluation_contract.md` — metric definitions.
 - `docs/annotator_calibration_v03.md` — human-wave calibration anchors.
 - `docs/direct_adjudication_wave_checklist.md` — 128-pair wave execution + acceptance gates.
+
+## Evidence-Hardening Update (2026-04-28)
+
+Additional reviewer-critical artifacts and commands:
+
+- Human-pass v2 agreement:
+  - `annotation/human_pass_v2/agreement_report_human.json`
+  - `annotation/human_pass_v2/agreement_report_human.md`
+  - `annotation/human_pass_v2/disagreement_log.csv`
+  - `results/paper_table_human_agreement.csv`
+- Selector robustness:
+  - `results/selection_robustness.csv`
+  - `results/selection_robustness_summary.md`
+- Token accounting:
+  - `results/prompt_token_accounting.csv`
+  - `results/prompt_token_accounting_method.json`
+- Cross-model sanity pilot:
+  - `results/cross_model_pilot_instance_level.csv`
+  - `results/cross_model_pilot_summary.csv`
+  - `results/cross_model_pilot_failure_examples.md`
+- Repair denominator:
+  - `repairs/repair_attempts.csv`
+  - `repairs/repair_attempt_summary.md`
+- Packaging + integrity:
+  - `artifacts/evidence_hardening_manifest.json`
+  - `python scripts/validate_release_artifact.py`

@@ -40,3 +40,13 @@ A repair attempt is **successful** when `repair_log.jsonl` records
 `outcome_summary` consistent with elaboration hygiene (see selection script) and
 the corresponding row in `hotspot_selection.csv` shows `outcome` not equal to
 `not_selected` for selected rows.
+
+## Evidence-Hardening Update (2026-04-28)
+
+Repair denominator transparency is now required in paper-ready outputs:
+
+- `repairs/repair_attempts.csv`
+- `repairs/repair_attempt_summary.md`
+
+with per-candidate fields covering selection decisions, attempts, outcomes,
+time cost, and reference-obligation usage.

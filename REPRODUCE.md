@@ -53,6 +53,8 @@ python scripts/reproduce_agreement_report.py
 python scripts/compute_results.py --paper
 python scripts/repair_counterfactual_metrics.py
 python scripts/export_benchmark_paper_summary.py
+python scripts/implement_evidence_hardening.py
+python scripts/validate_release_artifact.py
 python scripts/ci_reviewer_readiness.py
 python scripts/export_final_ci_evidence.py
 ```
@@ -85,6 +87,16 @@ ad-hoc analysis outside that pipeline, use **`raw_metrics_expanded.json`** (or
 `raw_metrics.json`) when family-grid propagation is intended.
 In `paper_strict_failure_modes.csv`, `missing_critical_semantic_unit` counts come
 from strict rows with `missing_critical_units > 0` in `raw_metrics_strict.json`.
+
+Evidence-hardening bundle outputs from `implement_evidence_hardening.py`:
+
+- `annotation/human_pass_v2/*` (human agreement report, disagreement log, rater file)
+- `results/selection_robustness.csv` and `results/selection_robustness_summary.md`
+- `results/prompt_token_accounting.csv` and `results/prompt_token_accounting_method.json`
+- `results/cross_model_pilot_*`
+- `repairs/repair_attempts.csv` and `repairs/repair_attempt_summary.md`
+- `artifacts/evidence_hardening_manifest.json` and checksum validation via
+  `python scripts/validate_release_artifact.py`
 
 CI / quick checkout (demo fabric if `raw_metrics.json` is absent; stderr warning):
 

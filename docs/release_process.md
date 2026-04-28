@@ -3,6 +3,25 @@
 This document describes how to freeze a benchmark version, add a new
 version, and regenerate paper reports.
 
+## Evidence-Hardening Update (2026-04-28)
+
+For the current paper track, include these release-stage commands after the
+paper metrics pass:
+
+```powershell
+python scripts\implement_evidence_hardening.py
+python scripts\validate_release_artifact.py
+python scripts\ci_reviewer_readiness.py
+```
+
+This enforces:
+
+- human-pass v2 agreement exports (`annotation/human_pass_v2/*`);
+- selector/token/cross-model/repair transparency outputs under `results/` and
+  `repairs/`;
+- artifact completeness plus checksum validation through
+  `artifacts/evidence_hardening_manifest.json`.
+
 ## Freezing `v0.1`
 
 1. Confirm every instance under `benchmark/v0.1/instances/**` passes:

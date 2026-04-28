@@ -18,10 +18,10 @@
   ],
   "systems_profiled_count": 4,
   "expected_instance_level_rows_expanded_grid": 336,
-  "expected_instance_level_rows_headline_strict_sparse": 222,
-  "expected_instance_level_rows": 222,
+  "expected_instance_level_rows_headline_strict_sparse": 274,
+  "expected_instance_level_rows": 274,
   "expected_raw_metrics_rows": 336,
-  "expected_raw_metrics_strict_rows": 222,
+  "expected_raw_metrics_strict_rows": 274,
   "family_counts": {
     "arrays_binary_search": 7,
     "arrays_max_subarray": 7,

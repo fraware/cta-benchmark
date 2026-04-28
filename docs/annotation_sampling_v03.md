@@ -61,3 +61,12 @@ python scripts/export_benchmark_paper_summary.py
 `materialize_v03_adjudication_artifacts.py` now accepts
 `--direct-origin-overrides` (defaulting to that CSV) and promotes listed pairs
 into `raw_metrics_strict.json` / strict summary counts.
+
+## Evidence-Hardening Update (2026-04-28)
+
+- Human-pass v2 outputs now expected after sampling execution:
+  - `annotation/human_pass_v2/rater_b_human.csv`
+  - `annotation/human_pass_v2/agreement_report_human.{json,md}`
+  - `annotation/human_pass_v2/disagreement_log.csv`
+- Paper-facing agreement summary must be refreshed:
+  - `results/paper_table_human_agreement.csv`

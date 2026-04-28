@@ -167,3 +167,13 @@ Deprecation policy: frozen `benchmark/v0.N/` directories remain immutable except
 for documented hygiene repairs; consumers should pin `benchmark_version` in
 experiment configs. When `v0.4` exists, `v0.3` remains addressable for
 reproduction of earlier papers without silent content drift.
+
+## Evidence-Hardening Update (2026-04-28)
+
+The benchmark release surface now includes paper-hardening outputs:
+
+- provenance layer registry: `results/provenance_layer_registry.csv`
+- strict-gap closure invariant checks in CI (`strict_unique_instances = 84`,
+  no strict mapped headline rows)
+- artifact package manifest + checksums:
+  `artifacts/evidence_hardening_manifest.json`

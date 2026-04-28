@@ -11,6 +11,16 @@ This document is the **single authoritative map** from repository artifacts to c
 | **synthetic_inter_rater** | Second rater (or jitter layer) generated for agreement statistics or stress-testing; not a human pass. |
 | **automated_hygiene** | Binary or structural checks (schema validation, elaboration flags, counterexample harness)—supporting quality, not semantic gold. |
 
+## Paper-facing provenance layers
+
+For paper tables and reviewer communication, use these explicit layer tags:
+
+- `human_gold`: independent human validation layer (for example, `annotation/human_pass_v2/`).
+- `synthetic_stress`: synthetic/stress second-rater agreement layer.
+- `adjudicated`: direct adjudicated strict benchmark layer used in headline metrics.
+
+Machine-readable registry: `results/provenance_layer_registry.csv`.
+
 ## Artifact table
 
 | Artifact path | Supports claim | Epistemic tier | Limitations | Regeneration |
@@ -59,3 +69,10 @@ Set experiment field `annotation_human_pack` in [`configs/experiments/benchmark_
 - [`docs/repair_protocol_v03.md`](repair_protocol_v03.md) — repair inclusion and counterfactual reporting.
 - [`docs/failure_mode_ontology.md`](failure_mode_ontology.md) — failure labels.
 - [`docs/annotator_calibration_v03.md`](annotator_calibration_v03.md) — human-wave calibration anchors.
+
+## Evidence-Hardening Update (2026-04-28)
+
+Packaging and integrity are now validated against
+`artifacts/evidence_hardening_manifest.json` via
+`python scripts/validate_release_artifact.py`. CI invokes this validator through
+`python scripts/ci_reviewer_readiness.py` when the manifest is present.

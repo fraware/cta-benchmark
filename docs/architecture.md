@@ -176,3 +176,14 @@ and every computed results bundle is logged with
 - No web app before the benchmark/eval loop is stable.
 - No large-scale dataset scraping.
 - No distributed training infrastructure.
+
+## Evidence-Hardening Update (2026-04-28)
+
+Evidence hardening is now implemented as a reproducible post-processing layer:
+
+- generator: `scripts/implement_evidence_hardening.py`
+- artifact validator: `scripts/validate_release_artifact.py`
+- CI gate integration: `scripts/ci_reviewer_readiness.py`
+
+Primary outputs are emitted under `annotation/human_pass_v2/`, `results/`,
+`repairs/`, and `artifacts/evidence_hardening_manifest.json`.

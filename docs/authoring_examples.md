@@ -369,3 +369,13 @@ and confirm that the authoring lint passes with `--strict-authoring`:
 Running `cargo run -p cta_cli --quiet -- benchmark lint --version v0.1
 --strict-authoring` locally should produce zero issues before opening
 a PR.
+
+## Evidence-Hardening Update (2026-04-28)
+
+Authoring artifacts now feed additional paper-facing hardening exports:
+
+- selector robustness: `results/selection_robustness.csv`
+- token accounting: `results/prompt_token_accounting.csv`
+- strict human agreement: `annotation/human_pass_v2/agreement_report_human.json`
+
+Regenerate these with `python scripts/implement_evidence_hardening.py`.

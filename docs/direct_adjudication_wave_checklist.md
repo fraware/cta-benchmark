@@ -141,3 +141,13 @@ and strict `mapped_from_canonical` eval rows = 0 in
 - Never mix two batches in one commit.
 - Never edit previous batch rows silently; use explicit corrective commit if needed.
 
+## Evidence-Hardening Update (2026-04-28)
+
+- Strict-gap closure artifacts are now expected to terminate at
+  `strict_unique_instances = 84` with zero strict mapped rows in headline
+  metrics.
+- After wave completion, run:
+  - `python scripts/implement_evidence_hardening.py`
+  - `python scripts/compute_results.py --paper`
+  - `python scripts/ci_reviewer_readiness.py`
+

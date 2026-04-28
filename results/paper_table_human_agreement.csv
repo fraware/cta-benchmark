@@ -1,0 +1,6 @@
+metric,n_rows,pre_adjudication_agreement
+semantic_faithfulness,192,0.9583
+code_consistency,192,0.9635
+proof_utility,192,0.8594
+coverage_label,192,0.9635
+vacuity_label,192,0.9583

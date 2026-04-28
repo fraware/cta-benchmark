@@ -1,0 +1,4 @@
+layer,description,source_path
+human_gold,Independent human second-pass labels (human_pass_v2).,annotation/human_pass_v2/rater_b_human.csv
+synthetic_stress,Stress/synthetic second-rater audit labels used in prior pass.,annotation/rater_b.csv
+adjudicated,Direct adjudicated benchmark labels for strict headline metrics.,results/raw_metrics_strict.json

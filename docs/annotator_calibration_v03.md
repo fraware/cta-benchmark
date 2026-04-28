@@ -34,3 +34,14 @@ anchor packets:
 If a second wave runs, re-score the same anchor subset and compare weighted
 agreement to wave 1. A large drop triggers manual review of instructions, not
 silent relabeling of historical rows.
+
+## Evidence-Hardening Update (2026-04-28)
+
+Calibration completion should now be reflected in:
+
+- `annotation/human_pass_v2/agreement_report_human.json`
+- `annotation/human_pass_v2/agreement_report_human.md`
+- `results/paper_table_human_agreement.csv`
+
+These files are materialized through
+`python scripts/implement_evidence_hardening.py`.

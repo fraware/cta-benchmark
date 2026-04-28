@@ -22,3 +22,13 @@ reporting threshold, `scripts/compute_results.py` derives a low-faithfulness
 mode in `failure_mode_counts.csv`; paper-facing exports canonicalize this to
 `low_semantic_faithfulness` so labels are not duplicated.
 Those rows are **derived**, not additional ontology slugs.
+
+## Evidence-Hardening Update (2026-04-28)
+
+- Selection robustness now reports sensitivity outputs that include
+  `missing_critical_units` and reliability under multiple selectors:
+  `results/selection_robustness.csv`.
+- Cross-model pilot exports are component-metric-only and do not introduce
+  new ontology slugs: `results/cross_model_pilot_*.csv`.
+- Artifact packaging validation now checks presence/integrity of
+  failure-mode-facing tables via `python scripts/validate_release_artifact.py`.

@@ -1,0 +1,3 @@
+regime,n_instances,semantic_faithfulness_mean,code_consistency_mean,vacuity_rate_mean,proof_utility_mean
+code_only,12,0.8805,1.0000,0.0000,0.3689
+full_method,12,0.7677,0.9167,0.0167,0.5287

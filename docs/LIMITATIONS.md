@@ -47,3 +47,14 @@
 
 - `build/paper_build.json` records command hashes for a full rebuild. Provider
   keys for non-stub runs remain outside the repository.
+
+## Evidence-Hardening Update (2026-04-28)
+
+- Independent human-pass agreement artifacts now live under
+  `annotation/human_pass_v2/` and are summarized in
+  `results/paper_table_human_agreement.csv`.
+- Selector sensitivity and context-budget confounds are now explicitly exported
+  in `results/selection_robustness.csv` and
+  `results/prompt_token_accounting.csv`.
+- Cross-model sanity and repair-denominator transparency are now documented in
+  `results/cross_model_pilot_*` and `repairs/repair_attempts.csv`.
