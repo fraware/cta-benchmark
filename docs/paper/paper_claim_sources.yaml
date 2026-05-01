@@ -1,0 +1,22 @@
+# Headline numerics for CTA-Bench v0.3 — checked against generated artifacts by
+#   python scripts/check_paper_claim_sources.py
+#
+# expanded_* keys are appendix-only; the checker rejects mapped-from-canonical in strict layers.
+
+strict_eval_rows: 274
+strict_unique_instances: 84
+strict_mapped_from_canonical: 0
+strict_direct_first_pass: 274
+
+expanded_eval_rows: 336
+expanded_unique_instances: 84
+expanded_direct_first_pass: 222
+expanded_mapped_from_canonical: 114
+
+benchmark_instances: 84
+algorithm_families: 12
+critical_semantic_units_total: 294
+
+human_agreement_strict_rows: 274
+human_agreement_unique_instances: 84
+human_agreement_mapped_from_canonical: 0

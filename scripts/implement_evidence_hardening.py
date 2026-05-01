@@ -707,6 +707,39 @@ def p1_cross_model_pilot() -> None:
         summary,
         ["regime", "n_instances", "semantic_faithfulness_mean", "code_consistency_mean", "vacuity_rate_mean", "proof_utility_mean"],
     )
+    appendix_rows = []
+    for row in summary:
+        regime = row["regime"]
+        sid = open_model if regime == "code_only" else prop_model
+        appendix_rows.append(
+            {
+                "model_or_provider": sid,
+                "regime": regime + "_v1",
+                "n_instances": row["n_instances"],
+                "semantic_faithfulness": row["semantic_faithfulness_mean"],
+                "code_consistency": row["code_consistency_mean"],
+                "vacuity": row["vacuity_rate_mean"],
+                "proof_utility": row["proof_utility_mean"],
+                "notes": (
+                    "Diagnostic 12-instance slice (one family each), metrics derived from strict "
+                    "headline rows; primary-stack conditioning only—not a cross-vendor ranking."
+                ),
+            }
+        )
+    write_csv(
+        ROOT / "results" / "cross_model_pilot_appendix_table.csv",
+        appendix_rows,
+        [
+            "model_or_provider",
+            "regime",
+            "n_instances",
+            "semantic_faithfulness",
+            "code_consistency",
+            "vacuity",
+            "proof_utility",
+            "notes",
+        ],
+    )
     pilot_rows: list[dict[str, str]] = []
     for r in inst_rows:
         pilot_rows.append(
@@ -864,6 +897,7 @@ def p1_artifact_packaging() -> None:
         "results/prompt_token_accounting_method.json",
         "results/selection_robustness.csv",
         "results/cross_model_pilot_summary.csv",
+        "results/cross_model_pilot_appendix_table.csv",
         "results/cross_model_pilot_manifest.json",
         "results/cross_model_pilot_rows.csv",
         "results/cross_model_pilot_failure_examples.md",

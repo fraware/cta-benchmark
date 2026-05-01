@@ -72,6 +72,7 @@ COMMANDS = [
     [sys.executable, "scripts/implement_evidence_hardening.py"],
     [sys.executable, "scripts/validate_release_artifact.py"],
     [sys.executable, "scripts/ci_reviewer_readiness.py"],
+    [sys.executable, "scripts/check_paper_claim_sources.py"],
 ]
 
 

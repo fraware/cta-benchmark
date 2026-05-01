@@ -23,7 +23,7 @@ Required outputs now include:
 - `annotation/human_pass_v3/*`
 - `results/selection_robustness.csv`
 - `results/prompt_token_accounting.csv`
-- `results/cross_model_pilot_*.csv`
+- `results/cross_model_pilot_*.csv` (includes `results/cross_model_pilot_appendix_table.csv`)
 - `repairs/repair_attempts.csv`
 - `artifacts/evidence_hardening_manifest.json`
 
@@ -67,6 +67,7 @@ python scripts\export_benchmark_paper_summary.py
 python scripts\implement_evidence_hardening.py
 python scripts\validate_release_artifact.py
 python scripts\ci_reviewer_readiness.py
+python scripts\check_paper_claim_sources.py
 python scripts\export_final_ci_evidence.py
 ```
 
@@ -95,6 +96,7 @@ python3 scripts/export_benchmark_paper_summary.py
 python3 scripts/implement_evidence_hardening.py
 python3 scripts/validate_release_artifact.py
 python3 scripts/ci_reviewer_readiness.py
+python3 scripts/check_paper_claim_sources.py
 python3 scripts/export_final_ci_evidence.py
 ```
 

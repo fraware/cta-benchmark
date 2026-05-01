@@ -5,6 +5,42 @@ orchestration and evaluation stack, a Lean 4 target/checking layer for
 generated obligations, and a reproducible experiment pipeline that outputs
 paper-ready tables, figures, and adjudication artifacts.
 
+## Reviewer quick path
+
+This artifact supports the NeurIPS 2026 E&D submission framing:
+**“CTA-Bench: Measuring Semantic Faithfulness in Lean Correctness-Obligation Generation.”**
+
+Headline numerical claims use the **strict direct-adjudication** layer only:
+
+- **84** benchmark instances  
+- **12** algorithm families  
+- **274** strict direct rows  
+- **0** `mapped-from-canonical` rows in headline metrics  
+- The **336**-row expanded mapped grid is **appendix / robustness** evidence only  
+
+**Minimal path to regenerate headline tables** (after a full v0.3 gate per `docs/PAPER_READINESS.md`):
+
+```bash
+python scripts/materialize_v03_adjudication_artifacts.py
+python scripts/compute_results.py --paper
+python scripts/export_benchmark_paper_summary.py
+python scripts/ci_reviewer_readiness.py
+```
+
+**Lean proof-facing subset:** `cd lean && lake build`
+
+**Claim-source gate:** `python scripts/check_paper_claim_sources.py` (strict vs expanded).
+
+### What this artifact does not claim
+
+- Full Rust program verification  
+- General theorem proving  
+- End-to-end proof-agent success  
+- Model leaderboard superiority  
+- Full semantic correctness from Lean elaboration alone  
+
+**Prose vs artifact IDs:** We refer to the `code_only_v1` regime as **code-grounded** (problem summary plus Rust-derived context); the system id stays `code_only_v1` for historical compatibility.
+
 ## Mission
 
 This repository produces four things, and nothing else should be allowed to

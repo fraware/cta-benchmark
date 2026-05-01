@@ -1,0 +1,3 @@
+model_or_provider,regime,n_instances,semantic_faithfulness,code_consistency,vacuity,proof_utility,notes
+code_only_v1,code_only_v1,12,0.8805,1.0000,0.0000,0.3689,"Diagnostic 12-instance slice (one family each), metrics derived from strict headline rows; primary-stack conditioning only—not a cross-vendor ranking."
+full_method_v1,full_method_v1,12,0.7677,0.9167,0.0167,0.5287,"Diagnostic 12-instance slice (one family each), metrics derived from strict headline rows; primary-stack conditioning only—not a cross-vendor ranking."

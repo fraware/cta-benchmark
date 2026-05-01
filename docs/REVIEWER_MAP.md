@@ -1,5 +1,7 @@
 # Reviewer map (artifacts ↔ paper)
 
+**Start here:** headline claims must cite **`results/raw_metrics_strict.json`** and **`results/paper_strict_*`** only. Expanded mapped outputs (`results/paper_expanded_*`, `results/raw_metrics_expanded.json`) are **appendix**. Claim discipline is enforced by `python scripts/check_paper_claim_sources.py` against `docs/paper/paper_claim_sources.yaml`. Frozen wording tiers live in `docs/paper/CLAIM_LOCK_NEURIPS2026.md`. Narrative case pools: `docs/paper/failure_case_studies.md`.
+
 | Paper topic | Primary artifacts | Regenerate |
 |-------------|-------------------|------------|
 | Benchmark scale (instances, splits, families) | `benchmark/v0.3/benchmark_paper_summary.json` | `python scripts/export_benchmark_paper_summary.py` |
@@ -90,6 +92,7 @@ Additional reviewer-critical artifacts and commands:
   - `results/cross_model_pilot_rows.csv`
   - `results/cross_model_pilot_instance_level.csv`
   - `results/cross_model_pilot_summary.csv`
+  - `results/cross_model_pilot_appendix_table.csv` (appendix-facing columns + disclosure note)
   - `results/cross_model_pilot_failure_examples.md`
 - Repair denominator:
   - `repairs/repair_attempts.csv`

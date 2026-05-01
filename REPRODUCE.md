@@ -5,6 +5,20 @@ Commands assume repository root as working directory.
 For a **single ordered checklist** (including CI parity), see
 [`docs/PAPER_READINESS.md`](docs/PAPER_READINESS.md).
 
+## Reviewer minimal path (headline tables)
+
+After toolchain setup, these steps rebuild the **strict** publication layer (full gate still recommended — see `docs/PAPER_READINESS.md` §2):
+
+```powershell
+python scripts/materialize_v03_adjudication_artifacts.py
+python scripts/compute_results.py --paper
+python scripts/export_benchmark_paper_summary.py
+python scripts/ci_reviewer_readiness.py
+python scripts/check_paper_claim_sources.py
+```
+
+Lean library: `cd lean; lake build`
+
 ## Toolchain
 
 - Rust stable (edition 2021) with `cargo`.
