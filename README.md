@@ -41,6 +41,8 @@ ordered gate: `docs/PAPER_READINESS.md` §2 or `scripts/run_paper_readiness_gate
 
 **Claim-source gate:** `python scripts/check_paper_claim_sources.py` (strict vs expanded).
 
+**Pre-upload checks (no table regeneration):** `.\scripts\verify_submission_readiness.ps1` or `bash scripts/verify_submission_readiness.sh` (see `artifacts/submission_validation_matrix.md`). Use `-FullPaperGate` / `--full-paper-gate` for the full ordered pipeline.
+
 ### Venue supplement (four-command snippet)
 
 Some submission forms reproduce this minimal tail **without** strict-gap completion:

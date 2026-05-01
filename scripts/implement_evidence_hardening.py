@@ -1186,6 +1186,24 @@ def p0_compute_human_strict_agreement() -> None:
 
 
 def main() -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Evidence-hardening pipeline for publication artifacts.")
+    ap.add_argument(
+        "--manifest-only",
+        action="store_true",
+        help=(
+            "Only rewrite artifacts/evidence_hardening_manifest.json checksums (and release_validation.md). "
+            "Use after `cargo validate benchmark --version v0.3 --release` when "
+            "validate_release_artifact.py reports a release_summary.json mismatch."
+        ),
+    )
+    args = ap.parse_args()
+    if args.manifest_only:
+        p1_artifact_packaging()
+        print("refreshed artifacts/evidence_hardening_manifest.json (--manifest-only)")
+        return 0
+
     p1_strict_coverage_completion()
     p0_annotation_human_pass()
     p0_compute_human_strict_agreement()

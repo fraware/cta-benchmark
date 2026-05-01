@@ -54,6 +54,12 @@ def main() -> int:
             "error: checksum mismatches:\n" + "\n".join(mismatches),
             file=sys.stderr,
         )
+        print(
+            "hint: `cargo validate benchmark --release` rewrites "
+            "benchmark/v0.3/manifests/release_summary.json; refresh checksums with:\n"
+            "  python scripts/implement_evidence_hardening.py --manifest-only",
+            file=sys.stderr,
+        )
         return 1
 
     if body.get("missing"):

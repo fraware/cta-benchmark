@@ -94,7 +94,7 @@
   ],
   "missing": [],
   "sha256": {
-    "benchmark/v0.3/manifests/release_summary.json": "cc052581cd8824aa98858ed0c05fe1e3e1bdc6ed76aae71db5276b2e4e55f678",
+    "benchmark/v0.3/manifests/release_summary.json": "a49d60e6a6168568f3242180a0199c5c5dadfae36b45563d16f3055d1f7c3199",
     "benchmark/manifest.jsonl": "c0590890e602fb55012728ae0544df139485989dafbccf421b668e1a4ac6d463",
     "benchmark/v0.3/benchmark_paper_summary.json": "fb39f596acd4617abefedafa1fd0e786810e8831666cd59c457f6b5aa8bf1857",
     "benchmark/v0.3/protocol_freeze.json": "19e58bd64751189591c3cb17471c7eb1e924442b21a22829bbbf44b59013967e",
@@ -134,8 +134,8 @@
     "repairs/repair_outcomes_summary.csv": "7ccda9e773d4acb098b1afe00d6fee852a436a535f55f5901cc6017d5ddcb296",
     "repairs/repair_attempt_summary.md": "de66c95df924868581afcadc5390604b49a52f10e2b0ef6a26e661fe6236a9be",
     "configs/experiments/benchmark_v03.json": "9b245e5d4845b2270df238676c14d5d1053fa76f3690d64ad6633c59d1cdc7a4",
-    "REPRODUCE.md": "c20eec91daa9b29415789c7b97094f6f9713396a4f951fc27e100043524511d8",
-    "README.md": "be8b99ac2350715e9fd8088e405d218a6acd979067ccffa7702289ff9d2a38de",
+    "REPRODUCE.md": "6f4e87e814755e72bacbfe819ecf00097df7dd5604c4ed328135ddf0bd9a07e9",
+    "README.md": "f39c8f3d48e67c1c351d81efc9ee4a648b6393929d8355ea012cbc92ca6c45b0",
     "docs/PROVENANCE.md": "f893359be33f20cd015756052542922b44cfc4c764729c3ef44736a8ac27589f",
     "LICENSE": "8532193c2df574da197dd64d98b40699ed5a50b46b82385c8255942c7fbde9f1"
   }

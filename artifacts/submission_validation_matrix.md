@@ -2,6 +2,15 @@
 
 Final gate checklist before uploading code/data materials with the paper. Commands assume repository root unless noted.
 
+**One-shot quick tier** (Rust + v0.3 CLI + `implement_evidence_hardening.py --manifest-only` + Lean + Python validators; does not regenerate adjudication tables):
+
+- PowerShell: `.\scripts\verify_submission_readiness.ps1`
+- Bash: `bash scripts/verify_submission_readiness.sh`
+
+**Full paper pipeline** (materializers + evidence hardening + agreement + claim sources + optional final CI log):
+
+- `.\scripts\run_paper_readiness_gate.ps1` or `bash scripts/run_paper_readiness_gate.sh`
+
 | Gate | Command | Must pass? | Expected output / evidence |
 |------|---------|------------|----------------------------|
 | Rust build | `cargo build --workspace` | yes | Successful build log |

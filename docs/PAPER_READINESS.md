@@ -13,6 +13,14 @@ python scripts\check_paper_claim_sources.py --scan-tex --tex-path path\to\paper\
 
 Repeat `--tex-path` for multiple roots. Omit `--tex-path` to auto-pick `paper/`, `tex/`, `manuscript/`, or `docs/paper/tex/` when they exist. Add `--strict-tex-headline-nums` to warn if integers **336**, **114**, or **222** appear outside appendix-named files (expanded-grid statistics—heuristic; may false-positive).
 
+## Submission verification (quick vs full)
+
+- **Quick** (Rust, v0.3 validate/lint, **`python scripts/implement_evidence_hardening.py --manifest-only`** to resync `artifacts/evidence_hardening_manifest.json` after `validate benchmark` updates `release_summary.json`, then Lean, `validate_release_artifact`, `ci_reviewer_readiness`, `check_paper_claim_sources`—does not run full materializers):
+  - PowerShell: `.\scripts\verify_submission_readiness.ps1`
+  - Bash: `bash scripts/verify_submission_readiness.sh`
+- **Full paper gate** (entire §2 chain): `.\scripts\run_paper_readiness_gate.ps1` or `bash scripts/run_paper_readiness_gate.sh` (equivalently `verify_submission_readiness.*` with `-FullPaperGate` / `--full-paper-gate`).
+- Checklist mirror: `artifacts/submission_validation_matrix.md`.
+
 ## 1. Toolchains
 
 - Rust: `cargo --version` (workspace uses edition 2021; CI pins 1.88.0).

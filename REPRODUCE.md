@@ -110,6 +110,9 @@ ad-hoc analysis outside that pipeline, use **`raw_metrics_expanded.json`** (or
 In `paper_strict_failure_modes.csv`, `missing_critical_semantic_unit` counts come
 from strict rows with `missing_critical_units > 0` in `raw_metrics_strict.json`.
 
+If `validate_release_artifact.py` fails on `release_summary.json` checksums after running `cargo validate benchmark --release`, refresh only the manifest with  
+`python scripts/implement_evidence_hardening.py --manifest-only`.
+
 Evidence-hardening bundle outputs from `implement_evidence_hardening.py`:
 
 - `annotation/human_pass_v3/*` (strict-all human agreement report and disagreement log)

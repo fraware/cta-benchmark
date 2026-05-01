@@ -9,6 +9,10 @@ Workflows under `.github/workflows/`:
 | `nightly-evals.yml` | Scheduled heavier evaluations |
 | `supply-chain.yml` | Dependency/supply-chain hygiene |
 
+Fast local gate without regenerating Python tables: `scripts/verify_submission_readiness.ps1`
+(or `bash scripts/verify_submission_readiness.sh`). Full pipeline:
+`scripts/run_paper_readiness_gate.ps1`.
+
 Local parity check before submission (mirror `.github/workflows/ci.yml`,
 `benchmark-lint.yml`, `supply-chain.yml`, and `docs/PAPER_READINESS.md`):
 
