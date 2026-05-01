@@ -994,6 +994,19 @@ def p1_family_diagnostic_summary() -> None:
     )
 
 
+def p0_refresh_paper_tables_after_strict_patch() -> None:
+    """Strict coverage completion can add rows to raw_metrics_strict.json; refresh
+    publication CSVs and benchmark_paper_summary before manifest hashing."""
+    subprocess.check_call(
+        [sys.executable, str(ROOT / "scripts" / "compute_results.py"), "--paper"],
+        cwd=ROOT,
+    )
+    subprocess.check_call(
+        [sys.executable, str(ROOT / "scripts" / "export_benchmark_paper_summary.py")],
+        cwd=ROOT,
+    )
+
+
 def p0_compute_human_strict_agreement() -> None:
     subprocess.check_call(
         [
@@ -1025,6 +1038,7 @@ def main() -> int:
     p1_cross_model_pilot()
     p1_repair_denominator()
     p1_family_diagnostic_summary()
+    p0_refresh_paper_tables_after_strict_patch()
     p1_artifact_packaging()
     print("implemented evidence-hardening outputs")
     return 0

@@ -1,6 +1,6 @@
 # Claim lock — NeurIPS 2026 (E&D)
 
-This file freezes **wording posture** and **evidence tiering** for the NeurIPS 2026 Evaluations & Datasets submission. Code and tables must not contradict it.
+This file freezes **wording posture** and **evidence tiering** for the NeurIPS 2026 Evaluations & Datasets submission. Code and tables must not contradict it. Companion one-pager: [`EVIDENCE_NOTE_NEURIPS2026.md`](EVIDENCE_NOTE_NEURIPS2026.md).
 
 **Primary scientific posture:** CTA-Bench is a **benchmark and evaluation protocol** for measuring **semantic faithfulness** in **Lean-facing correctness-obligation generation** from text plus code. It is **not** full Rust verification, full theorem proving, or an end-to-end proof-agent leaderboard.
 

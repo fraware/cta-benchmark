@@ -18,6 +18,14 @@
 
 ## Metrics
 
+- **Composite reliability** (weighted multi-metric score in
+  `results/system_reliability_summary.csv` and strict paper exports) is a
+  **compact secondary diagnostic** for multi-axis failure. It is **not** the
+  construct being validated. **Primary** manuscript claims should rest on
+  semantic faithfulness, critical-unit coverage, code consistency, vacuity,
+  proof utility, and failure-mode analysis **separately**; sensitivity to
+  composite weights belongs in the appendix. Do not describe “wins” using only
+  the composite.
 - Primary scalars in `results/raw_metrics.json` (expanded view) are **point
   estimates** per instance and system; some rows arise from
   `mapped_from_canonical` propagation. Conservative claims should cite

@@ -11,8 +11,10 @@ After toolchain setup, these steps rebuild the **strict** publication layer (ful
 
 ```powershell
 python scripts/materialize_v03_adjudication_artifacts.py
-python scripts/compute_results.py --paper
-python scripts/export_benchmark_paper_summary.py
+python scripts/materialize_repair_hotspot_artifacts.py
+python scripts/reproduce_agreement_report.py
+python scripts/implement_evidence_hardening.py
+python scripts/repair_counterfactual_metrics.py
 python scripts/ci_reviewer_readiness.py
 python scripts/check_paper_claim_sources.py
 ```
@@ -64,14 +66,18 @@ including `annotation_origin`):
 python scripts/materialize_v03_adjudication_artifacts.py
 python scripts/materialize_repair_hotspot_artifacts.py
 python scripts/reproduce_agreement_report.py
-python scripts/compute_results.py --paper
-python scripts/repair_counterfactual_metrics.py
-python scripts/export_benchmark_paper_summary.py
 python scripts/implement_evidence_hardening.py
+python scripts/repair_counterfactual_metrics.py
 python scripts/validate_release_artifact.py
 python scripts/ci_reviewer_readiness.py
 python scripts/export_final_ci_evidence.py
 ```
+
+`implement_evidence_hardening.py` ends by running **`compute_results.py --paper`**
+and **`export_benchmark_paper_summary.py`** so strict-row edits stay consistent
+with `results/paper_table_annotation_evidence.csv` and
+`benchmark/v0.3/benchmark_paper_summary.json` before the evidence manifest is
+written.
 
 Canonical filenames for manuscript layers (also emitted by **`compute_results.py --paper`**):
 **`results/paper_strict_*`** (independently double-annotated strict headline view), **`results/paper_expanded_*`** (expanded mapped appendix),

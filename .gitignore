@@ -42,6 +42,8 @@ Thumbs.db
 /dist
 /out
 /artifacts/*.zip
+/artifacts/_anon_scan/
+/artifacts/cta-benchmark-anonymous/
 
 # `cta validate benchmark --release` writes a timestamped summary; keep v0.2
 # tracked when curated, but ignore v0.1 local runs unless explicitly added.

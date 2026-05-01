@@ -9,6 +9,19 @@ macOS, use the **Bash** block where noted.
 - Python: 3.11+.
 - Lean: `lake --version` in `lean/` (Mathlib pin in `lean/lakefile.lean`).
 
+## Anonymous artifact (blind review)
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\scripts\build_anonymous_artifact.ps1
+```
+
+Produces `artifacts/cta-benchmark-anonymous.zip`. Expand to a scratch directory and
+run `.\scripts\scan_submission_anonymity.ps1 -ScanRoot <path>`. The build copies
+sources without `.git`, skips `lean/.lake/` and Rust `target/` trees for size,
+then applies `scripts/redact_anonymous_artifact_tree.py` for case-insensitive
+identifier redaction before zipping.
+
 ## Evidence-Hardening Update (2026-04-28)
 
 Add these commands to the paper-readiness pass:
@@ -61,15 +74,19 @@ python scripts\dump_prompts_appendix.py
 python scripts\materialize_v03_adjudication_artifacts.py
 python scripts\materialize_repair_hotspot_artifacts.py
 python scripts\reproduce_agreement_report.py
-python scripts\compute_results.py --paper
-python scripts\repair_counterfactual_metrics.py
-python scripts\export_benchmark_paper_summary.py
 python scripts\implement_evidence_hardening.py
+python scripts\repair_counterfactual_metrics.py
 python scripts\validate_release_artifact.py
 python scripts\ci_reviewer_readiness.py
 python scripts\check_paper_claim_sources.py
 python scripts\export_final_ci_evidence.py
 ```
+
+`implement_evidence_hardening.py` applies strict-gap completion to
+`results/raw_metrics_strict.json`, then runs `compute_results.py --paper` and
+`export_benchmark_paper_summary.py` **before** writing
+`artifacts/evidence_hardening_manifest.json`, so headline evidence CSVs stay
+aligned with the final strict row count.
 
 **Bash (same steps):**
 
@@ -90,10 +107,8 @@ python3 scripts/dump_prompts_appendix.py
 python3 scripts/materialize_v03_adjudication_artifacts.py
 python3 scripts/materialize_repair_hotspot_artifacts.py
 python3 scripts/reproduce_agreement_report.py
-python3 scripts/compute_results.py --paper
-python3 scripts/repair_counterfactual_metrics.py
-python3 scripts/export_benchmark_paper_summary.py
 python3 scripts/implement_evidence_hardening.py
+python3 scripts/repair_counterfactual_metrics.py
 python3 scripts/validate_release_artifact.py
 python3 scripts/ci_reviewer_readiness.py
 python3 scripts/check_paper_claim_sources.py

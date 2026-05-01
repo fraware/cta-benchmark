@@ -18,13 +18,16 @@ Headline numerical claims use the **strict direct-adjudication** layer only:
 - **0** `mapped-from-canonical` rows in headline metrics  
 - The **336**-row expanded mapped grid is **appendix / robustness** evidence only  
 
-**Minimal path to regenerate headline tables** (after a full v0.3 gate per `docs/PAPER_READINESS.md`):
+**Minimal path to regenerate headline tables** (same tail as `docs/PAPER_READINESS.md` §2 after `dump_prompts_appendix.py`; include repair + agreement steps when not already current):
 
 ```bash
 python scripts/materialize_v03_adjudication_artifacts.py
-python scripts/compute_results.py --paper
-python scripts/export_benchmark_paper_summary.py
+python scripts/materialize_repair_hotspot_artifacts.py
+python scripts/reproduce_agreement_report.py
+python scripts/implement_evidence_hardening.py
+python scripts/repair_counterfactual_metrics.py
 python scripts/ci_reviewer_readiness.py
+python scripts/check_paper_claim_sources.py
 ```
 
 **Lean proof-facing subset:** `cd lean && lake build`
