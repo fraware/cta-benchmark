@@ -73,3 +73,4 @@ Do **not** say (without qualification):
 ## Manuscript number discipline
 
 - All **headline** numerics must be traceable to **`results/raw_metrics_strict.json`**, **`results/paper_strict_*`**, and the **strict** rows of **`results/paper_table_annotation_evidence.csv`** / **`results/paper_table_agreement_evidence.csv`**, as enforced by `python scripts/check_paper_claim_sources.py` and `docs/paper/paper_claim_sources.yaml`.
+- LaTeX table construction checklist (main Tables 1–6, composite-as-secondary, appendix-only paths): [`MANUSCRIPT_TABLE_SOURCES_NEURIPS2026.md`](MANUSCRIPT_TABLE_SOURCES_NEURIPS2026.md).

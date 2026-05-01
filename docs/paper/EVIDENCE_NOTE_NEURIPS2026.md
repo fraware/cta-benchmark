@@ -21,6 +21,8 @@ Authoritative counts: `results/paper_table_annotation_evidence.csv` and `results
 - `results/paper_table_agreement_evidence.csv`
 - `results/paper_annotation_origin_counts.csv`
 
+Manuscript LaTeX construction (Tables 1–6, composite posture): [`MANUSCRIPT_TABLE_SOURCES_NEURIPS2026.md`](MANUSCRIPT_TABLE_SOURCES_NEURIPS2026.md).
+
 ## Appendix-only (never headline without labeling)
 
 - `results/paper_expanded_system_summary.csv`

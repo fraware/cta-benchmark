@@ -22,6 +22,16 @@ sources without `.git`, skips `lean/.lake/` and Rust `target/` trees for size,
 then applies `scripts/redact_anonymous_artifact_tree.py` for case-insensitive
 identifier redaction before zipping.
 
+On Linux/macOS, after expanding the zip you can also run the venue-style grep
+bundle:
+
+```bash
+bash scripts/grep_anonymity_checkout.sh /path/to/extracted/root
+```
+
+Use this as a **supplement** to `scan_submission_anonymity.ps1` (different pattern
+sets overlap but are not identical).
+
 ## Evidence-Hardening Update (2026-04-28)
 
 Add these commands to the paper-readiness pass:
