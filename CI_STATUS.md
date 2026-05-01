@@ -4,7 +4,7 @@ Workflows under `.github/workflows/`:
 
 | Workflow | Purpose |
 |----------|---------|
-| `ci.yml` | Primary Rust workspace checks; includes `validate benchmark --version v0.3 --release` and `benchmark lint v0.3 --release` on every run |
+| `ci.yml` | Primary Rust workspace checks; includes `validate benchmark --version v0.3 --release` and `benchmark lint v0.3 --release` on every run; runs `implement_evidence_hardening.py --manifest-only` before reviewer readiness so `validate_release_artifact` matches `release_summary.json` after validate |
 | `benchmark-lint.yml` | Benchmark schema and lint gates |
 | `nightly-evals.yml` | Scheduled heavier evaluations |
 | `supply-chain.yml` | Dependency/supply-chain hygiene |

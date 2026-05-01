@@ -120,6 +120,11 @@ jobs:
             fi
           done
 
+      # validate benchmark --release rewrites release_summary.json; refresh checksums so
+      # validate_release_artifact.py (inside ci_reviewer_readiness) agrees with disk.
+      - name: sync evidence manifest checksums
+        run: python3 scripts/implement_evidence_hardening.py --manifest-only
+
       - name: paper reviewer readiness (row counts, schemas, denylist)
         run: python3 scripts/ci_reviewer_readiness.py
 

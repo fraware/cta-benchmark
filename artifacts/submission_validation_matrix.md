@@ -7,6 +7,8 @@ Final gate checklist before uploading code/data materials with the paper. Comman
 - PowerShell: `.\scripts\verify_submission_readiness.ps1`
 - Bash: `bash scripts/verify_submission_readiness.sh`
 
+**GitHub `ci.yml`** runs `python3 scripts/implement_evidence_hardening.py --manifest-only` after the stub experiments block and before `ci_reviewer_readiness.py`, keeping `validate_release_artifact` consistent with `release_summary.json` produced by `cargo validate benchmark --release`.
+
 **Full paper pipeline** (materializers + evidence hardening + agreement + claim sources + optional final CI log):
 
 - `.\scripts\run_paper_readiness_gate.ps1` or `bash scripts/run_paper_readiness_gate.sh`
