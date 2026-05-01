@@ -16,18 +16,32 @@
   ],
   "models": [
     "code_only_v1",
-    "full_method_v1"
+    "full_method_v1",
+    "naive_concat_v1",
+    "text_only_v1"
   ],
-  "systems": [
+  "primary_regimes": [
     "code_only",
     "full_method"
   ],
-  "selection_rule": "first_parseable_json_object",
+  "additional_conditioning_system_ids": [
+    "naive_concat_v1",
+    "text_only_v1"
+  ],
+  "external_appendix_rows": 0,
+  "systems": [
+    "code_only",
+    "full_method",
+    "naive_concat",
+    "text_only"
+  ],
+  "selection_rule": "one_instance_per_family_sorted_instance_id",
   "prompt_template_hashes": {
     "default": "sha256_proxy_not_available"
   },
   "temperature": 0.0,
   "top_p": 1.0,
   "max_output_tokens": 2048,
-  "raw_outputs_included": true
+  "raw_outputs_included": true,
+  "disclosure": "Extended pilot combines primary code_only_v1/full_method_v1 with extra strict-derived conditioning baselines (see configs/cross_model_pilot.json). Optional rows may be appended from results/cross_model_pilot_external_appendix.json for out-of-repo public-model pilots."
 }

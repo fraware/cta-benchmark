@@ -3,6 +3,16 @@
 Run from the **repository root**. On Windows use **PowerShell**. On Linux or
 macOS, use the **Bash** block where noted.
 
+## LaTeX / manuscript guard (optional)
+
+After CSV gates pass, optionally scan your paper sources for expanded-only file references in **non-appendix** `.tex` files:
+
+```powershell
+python scripts\check_paper_claim_sources.py --scan-tex --tex-path path\to\paper\tex
+```
+
+Repeat `--tex-path` for multiple roots. Omit `--tex-path` to auto-pick `paper/`, `tex/`, `manuscript/`, or `docs/paper/tex/` when they exist. Add `--strict-tex-headline-nums` to warn if integers **336**, **114**, or **222** appear outside appendix-named files (expanded-grid statistics—heuristic; may false-positive).
+
 ## 1. Toolchains
 
 - Rust: `cargo --version` (workspace uses edition 2021; CI pins 1.88.0).

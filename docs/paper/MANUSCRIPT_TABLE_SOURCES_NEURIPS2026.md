@@ -103,4 +103,8 @@ Expanded / mapped robustness: `results/paper_expanded_system_summary.csv`,
 `results/appendix_mapped_evidence/`.
 
 Cross-model diagnostic slice: `results/cross_model_pilot_appendix_table.csv`,
-`results/cross_model_pilot_*` (non-leaderboard wording only).
+`results/cross_model_pilot_*`, `configs/cross_model_pilot.json`, optional
+`results/cross_model_pilot_external_appendix.json` (non-leaderboard wording only).
+
+LaTeX guard: `python scripts/check_paper_claim_sources.py --scan-tex --tex-path …`
+(see `docs/PAPER_READINESS.md`).

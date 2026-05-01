@@ -1,0 +1,5 @@
+{
+  "schema_version": "cross_model_pilot_external_appendix_v1",
+  "disclosure": "Optional externally supplied summary rows (e.g. additional public models under code_only_v1 and full_method_v1 on the same 12-instance slice). Leave rows empty if you have no out-of-repo pilot. Each row is appendix-only, non-leaderboard evidence.",
+  "rows": []
+}

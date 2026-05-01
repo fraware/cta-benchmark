@@ -646,14 +646,25 @@ def p0_token_accounting() -> None:
     )
 
 
-def p1_cross_model_pilot() -> None:
-    strict = load_raw(ROOT / "results" / "raw_metrics_strict.json")
-    by_instance = defaultdict(dict)
-    for r in strict:
-        by_instance[r["instance_id"]][r["system"]] = r
-    families_seen = set()
-    chosen = []
-    for iid in sorted(by_instance):
+def load_cross_model_pilot_config() -> dict:
+    path = ROOT / "configs" / "cross_model_pilot.json"
+    if not path.is_file():
+        return {
+            "schema_version": "cross_model_pilot_config_v1",
+            "primary_regimes": [
+                {"regime": "code_only", "system_id": "code_only_v1", "model_tier": "open_public"},
+                {"regime": "full_method", "system_id": "full_method_v1", "model_tier": "proprietary_stronger"},
+            ],
+            "additional_conditioning_systems": [],
+            "external_appendix_json": "results/cross_model_pilot_external_appendix.json",
+        }
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def cross_model_pilot_chosen_instances(by_instance: dict) -> list[str]:
+    families_seen: set[str] = set()
+    chosen: list[str] = []
+    for iid in sorted(by_instance.keys()):
         fam = "_".join(iid.split("_")[:-1])
         if fam in families_seen:
             continue
@@ -661,40 +672,133 @@ def p1_cross_model_pilot() -> None:
         chosen.append(iid)
         if len(chosen) == 12:
             break
-    open_model = "code_only_v1"
-    prop_model = "full_method_v1"
-    inst_rows = []
-    for iid in chosen:
-        for regime in ("code_only", "full_method"):
-            sid = open_model if regime == "code_only" else prop_model
+    return chosen
+
+
+def _pilot_inst_row(
+    iid: str,
+    row: dict,
+    regime: str,
+    model_tier: str,
+    sid: str,
+) -> dict[str, str]:
+    return {
+        "instance_id": iid,
+        "family": row["family"],
+        "regime": regime,
+        "model_tier": model_tier,
+        "system_id": sid,
+        "semantic_faithfulness": f"{float(row['faithfulness_mean']):.4f}",
+        "code_consistency": f"{float(row['code_consistency_mean']):.4f}",
+        "vacuity_rate": f"{float(row['vacuity_rate']):.4f}",
+        "proof_utility": f"{float(row['proof_utility_mean']):.4f}",
+        "missing_critical_units": str(int(row["missing_critical_units"])),
+    }
+
+
+def _appendix_regime_display(regime: str) -> str:
+    return regime if regime.endswith("_v1") else regime + "_v1"
+
+
+def _load_external_appendix_rows(cfg: dict) -> list[dict[str, str]]:
+    rel = (cfg.get("external_appendix_json") or "").strip()
+    if not rel:
+        return []
+    path = ROOT / rel
+    if not path.is_file():
+        return []
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    rows = payload.get("rows") or []
+    required = [
+        "model_or_provider",
+        "regime",
+        "n_instances",
+        "semantic_faithfulness",
+        "code_consistency",
+        "vacuity",
+        "proof_utility",
+        "notes",
+    ]
+    out: list[dict[str, str]] = []
+    for i, raw in enumerate(rows):
+        miss = [k for k in required if k not in raw]
+        if miss:
+            raise ValueError(f"{path}: external appendix row {i} missing keys {miss}")
+        out.append({k: str(raw[k]).strip() for k in required})
+    return out
+
+
+def p1_cross_model_pilot() -> None:
+    cfg = load_cross_model_pilot_config()
+    strict = load_raw(ROOT / "results" / "raw_metrics_strict.json")
+    by_instance: defaultdict[str, dict[str, dict]] = defaultdict(dict)
+    for r in strict:
+        by_instance[r["instance_id"]][r["system"]] = r
+    chosen = cross_model_pilot_chosen_instances(by_instance)
+
+    inst_rows: list[dict[str, str]] = []
+    for pr in cfg.get("primary_regimes") or []:
+        regime = pr["regime"]
+        sid = pr["system_id"]
+        tier = pr.get("model_tier") or "primary"
+        for iid in chosen:
             row = by_instance.get(iid, {}).get(sid)
             if not row:
                 continue
-            inst_rows.append(
-                {
-                    "instance_id": iid,
-                    "family": row["family"],
-                    "regime": regime,
-                    "model_tier": "open_public" if sid == open_model else "proprietary_stronger",
-                    "system_id": sid,
-                    "semantic_faithfulness": f"{float(row['faithfulness_mean']):.4f}",
-                    "code_consistency": f"{float(row['code_consistency_mean']):.4f}",
-                    "vacuity_rate": f"{float(row['vacuity_rate']):.4f}",
-                    "proof_utility": f"{float(row['proof_utility_mean']):.4f}",
-                    "missing_critical_units": str(int(row["missing_critical_units"])),
-                }
-            )
+            inst_rows.append(_pilot_inst_row(iid, row, regime, tier, sid))
+
+    for add in cfg.get("additional_conditioning_systems") or []:
+        regime = add["regime"]
+        sid = add["system_id"]
+        tier = add.get("model_tier") or "additional_open_conditioning"
+        for iid in chosen:
+            row = by_instance.get(iid, {}).get(sid)
+            if not row:
+                continue
+            inst_rows.append(_pilot_inst_row(iid, row, regime, tier, sid))
+
+    external_appendix = _load_external_appendix_rows(cfg)
+
     write_csv(
         ROOT / "results" / "cross_model_pilot_instance_level.csv",
         inst_rows,
-        ["instance_id", "family", "regime", "model_tier", "system_id", "semantic_faithfulness", "code_consistency", "vacuity_rate", "proof_utility", "missing_critical_units"],
+        [
+            "instance_id",
+            "family",
+            "regime",
+            "model_tier",
+            "system_id",
+            "semantic_faithfulness",
+            "code_consistency",
+            "vacuity_rate",
+            "proof_utility",
+            "missing_critical_units",
+        ],
     )
-    summary = []
-    for regime in ("code_only", "full_method"):
-        part = [r for r in inst_rows if r["regime"] == regime]
+
+    summary_keys = [
+        "group_key",
+        "regime",
+        "system_id",
+        "n_instances",
+        "semantic_faithfulness_mean",
+        "code_consistency_mean",
+        "vacuity_rate_mean",
+        "proof_utility_mean",
+    ]
+    summary: list[dict[str, str]] = []
+    primary_regimes = [str(pr["regime"]) for pr in (cfg.get("primary_regimes") or [])]
+    for pr in cfg.get("primary_regimes") or []:
+        regime = pr["regime"]
+        sid = pr["system_id"]
+        part = [r for r in inst_rows if r["regime"] == regime and r["system_id"] == sid]
+        if not part:
+            continue
         summary.append(
             {
+                "group_key": f"primary:{regime}",
                 "regime": regime,
+                "system_id": sid,
                 "n_instances": str(len(part)),
                 "semantic_faithfulness_mean": f"{mean([float(r['semantic_faithfulness']) for r in part]):.4f}",
                 "code_consistency_mean": f"{mean([float(r['code_consistency']) for r in part]):.4f}",
@@ -702,30 +806,69 @@ def p1_cross_model_pilot() -> None:
                 "proof_utility_mean": f"{mean([float(r['proof_utility']) for r in part]):.4f}",
             }
         )
+    for add in cfg.get("additional_conditioning_systems") or []:
+        regime = add["regime"]
+        sid = add["system_id"]
+        part = [r for r in inst_rows if r["regime"] == regime and r["system_id"] == sid]
+        if not part:
+            continue
+        summary.append(
+            {
+                "group_key": f"additional:{sid}",
+                "regime": regime,
+                "system_id": sid,
+                "n_instances": str(len(part)),
+                "semantic_faithfulness_mean": f"{mean([float(r['semantic_faithfulness']) for r in part]):.4f}",
+                "code_consistency_mean": f"{mean([float(r['code_consistency']) for r in part]):.4f}",
+                "vacuity_rate_mean": f"{mean([float(r['vacuity_rate']) for r in part]):.4f}",
+                "proof_utility_mean": f"{mean([float(r['proof_utility']) for r in part]):.4f}",
+            }
+        )
+
     write_csv(
         ROOT / "results" / "cross_model_pilot_summary.csv",
         summary,
-        ["regime", "n_instances", "semantic_faithfulness_mean", "code_consistency_mean", "vacuity_rate_mean", "proof_utility_mean"],
+        summary_keys,
     )
-    appendix_rows = []
+
+    appendix_rows: list[dict[str, str]] = []
     for row in summary:
-        regime = row["regime"]
-        sid = open_model if regime == "code_only" else prop_model
+        sid = row["system_id"]
+        regime_disp = _appendix_regime_display(row["regime"])
+        if row["group_key"].startswith("primary:"):
+            notes = (
+                "Diagnostic 12-instance slice (one family each), metrics from strict headline rows; "
+                "primary-stack code_only_v1 vs full_method_v1—not a cross-vendor leaderboard."
+            )
+        elif sid == "naive_concat_v1":
+            notes = (
+                "Additional open conditioning baseline on the same pilot slice; strict headline metrics; "
+                "same experimental stack as the main grid—not an alternate foundation-model vendor."
+            )
+        elif sid == "text_only_v1":
+            notes = (
+                "Additional open conditioning baseline; strict metrics averaged over instances where "
+                "text_only_v1 exists in the strict layer (10/12 pilot IDs; absent on arrays_binary_search_001 "
+                "and sorting_insertion_sort_001). Appendix diagnostic only."
+            )
+        else:
+            notes = "Additional conditioning baseline; strict headline metrics; appendix diagnostic only."
         appendix_rows.append(
             {
                 "model_or_provider": sid,
-                "regime": regime + "_v1",
+                "regime": regime_disp,
                 "n_instances": row["n_instances"],
                 "semantic_faithfulness": row["semantic_faithfulness_mean"],
                 "code_consistency": row["code_consistency_mean"],
                 "vacuity": row["vacuity_rate_mean"],
                 "proof_utility": row["proof_utility_mean"],
-                "notes": (
-                    "Diagnostic 12-instance slice (one family each), metrics derived from strict "
-                    "headline rows; primary-stack conditioning only—not a cross-vendor ranking."
-                ),
+                "notes": notes,
             }
         )
+
+    for ext in external_appendix:
+        appendix_rows.append(ext)
+
     write_csv(
         ROOT / "results" / "cross_model_pilot_appendix_table.csv",
         appendix_rows,
@@ -740,6 +883,7 @@ def p1_cross_model_pilot() -> None:
             "notes",
         ],
     )
+
     pilot_rows: list[dict[str, str]] = []
     for r in inst_rows:
         pilot_rows.append(
@@ -774,25 +918,34 @@ def p1_cross_model_pilot() -> None:
             "main_failure_mode",
         ],
     )
+
+    ext_ct = len(external_appendix)
+    add_ids = [str(a["system_id"]) for a in (cfg.get("additional_conditioning_systems") or [])]
+    manifest = {
+        "n_instances": len(chosen),
+        "families": sorted({r["family"] for r in inst_rows}),
+        "models": sorted({r["system_id"] for r in inst_rows}),
+        "primary_regimes": primary_regimes,
+        "additional_conditioning_system_ids": add_ids,
+        "external_appendix_rows": ext_ct,
+        "systems": sorted({r["regime"] for r in inst_rows}),
+        "selection_rule": "one_instance_per_family_sorted_instance_id",
+        "prompt_template_hashes": {"default": "sha256_proxy_not_available"},
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_output_tokens": 2048,
+        "raw_outputs_included": True,
+        "disclosure": (
+            "Extended pilot combines primary code_only_v1/full_method_v1 with extra strict-derived "
+            "conditioning baselines (see configs/cross_model_pilot.json). Optional rows may be appended "
+            "from results/cross_model_pilot_external_appendix.json for out-of-repo public-model pilots."
+        ),
+    }
     (ROOT / "results" / "cross_model_pilot_manifest.json").write_text(
-        json.dumps(
-            {
-                "n_instances": len(chosen),
-                "families": sorted({r["family"] for r in inst_rows}),
-                "models": sorted({r["system_id"] for r in inst_rows}),
-                "systems": ["code_only", "full_method"],
-                "selection_rule": "first_parseable_json_object",
-                "prompt_template_hashes": {"default": "sha256_proxy_not_available"},
-                "temperature": 0.0,
-                "top_p": 1.0,
-                "max_output_tokens": 2048,
-                "raw_outputs_included": True,
-            },
-            indent=2,
-        )
-        + "\n",
+        json.dumps(manifest, indent=2) + "\n",
         encoding="utf-8",
     )
+
     lines = ["# Cross-Model Pilot Failure Examples", ""]
     low = sorted(inst_rows, key=lambda r: float(r["semantic_faithfulness"]))[:8]
     for r in low:
@@ -900,7 +1053,10 @@ def p1_artifact_packaging() -> None:
         "results/cross_model_pilot_appendix_table.csv",
         "results/cross_model_pilot_manifest.json",
         "results/cross_model_pilot_rows.csv",
+        "results/cross_model_pilot_instance_level.csv",
         "results/cross_model_pilot_failure_examples.md",
+        "configs/cross_model_pilot.json",
+        "results/cross_model_pilot_external_appendix.json",
         "results/paper_family_diagnostic_summary.csv",
         "results/selector_primary_first_parseable/paper_strict_system_summary.csv",
         "results/selector_current_low_obligation_tiebreak/paper_strict_system_summary.csv",

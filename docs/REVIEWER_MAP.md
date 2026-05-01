@@ -92,7 +92,7 @@ Additional reviewer-critical artifacts and commands:
   - `results/cross_model_pilot_rows.csv`
   - `results/cross_model_pilot_instance_level.csv`
   - `results/cross_model_pilot_summary.csv`
-  - `results/cross_model_pilot_appendix_table.csv` (appendix-facing columns + disclosure note)
+  - `results/cross_model_pilot_appendix_table.csv` (appendix-facing columns + disclosure note; extended via `configs/cross_model_pilot.json` + optional `results/cross_model_pilot_external_appendix.json`)
   - `results/cross_model_pilot_failure_examples.md`
 - Repair denominator:
   - `repairs/repair_attempts.csv`

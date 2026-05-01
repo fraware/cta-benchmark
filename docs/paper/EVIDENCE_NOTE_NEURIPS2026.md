@@ -44,7 +44,9 @@ Headline human-agreement claims cite **`annotation/human_pass_v3/agreement_repor
 
 `results/cross_model_pilot_*` and `results/cross_model_pilot_appendix_table.csv` support **diagnostic** wording only, for example: “A small cross-model sanity pilot shows the same qualitative split between semantic grounding and proof-facing structure.” Do **not** claim a robust cross-model ranking. The checked-in slice is derived from strict headline metrics on a **12-instance, one-per-family** selection.
 
-**Optional expansion (Priority 2):** To add Qwen / DeepSeek / other public stacks, run the same two regimes (`code_only_v1`, `full_method_v1`) on the same 12-instance slice (or a documented alternative slice), write rows under `results/cross_model_pilot_rows.csv`, refresh summaries via `python scripts/implement_evidence_hardening.py`, and keep language appendix-only with explicit non-leaderboard framing (`docs/paper/CLAIM_LOCK_NEURIPS2026.md` Tier B).
+The appendix table includes **primary** `code_only_v1` / `full_method_v1` slice rows plus **additional open conditioning baselines** (`naive_concat_v1`, `text_only_v1`) on the **same instances** where those systems exist in `results/raw_metrics_strict.json` (`text_only_v1` is absent on two pilot IDs; means use **10** instances—see row notes). Configuration: `configs/cross_model_pilot.json`.
+
+**Optional external vendors:** Append summary rows (same CSV columns) via `results/cross_model_pilot_external_appendix.json` (`rows` array); rerun `python scripts/implement_evidence_hardening.py`. Keep appendix-only, non-leaderboard language (`docs/paper/CLAIM_LOCK_NEURIPS2026.md` Tier B).
 
 ## Composite reliability
 

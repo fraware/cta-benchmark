@@ -1,3 +1,5 @@
 model_or_provider,regime,n_instances,semantic_faithfulness,code_consistency,vacuity,proof_utility,notes
-code_only_v1,code_only_v1,12,0.8805,1.0000,0.0000,0.3689,"Diagnostic 12-instance slice (one family each), metrics derived from strict headline rows; primary-stack conditioning only—not a cross-vendor ranking."
-full_method_v1,full_method_v1,12,0.7677,0.9167,0.0167,0.5287,"Diagnostic 12-instance slice (one family each), metrics derived from strict headline rows; primary-stack conditioning only—not a cross-vendor ranking."
+code_only_v1,code_only_v1,12,0.8805,1.0000,0.0000,0.3689,"Diagnostic 12-instance slice (one family each), metrics from strict headline rows; primary-stack code_only_v1 vs full_method_v1—not a cross-vendor leaderboard."
+full_method_v1,full_method_v1,12,0.7677,0.9167,0.0167,0.5287,"Diagnostic 12-instance slice (one family each), metrics from strict headline rows; primary-stack code_only_v1 vs full_method_v1—not a cross-vendor leaderboard."
+naive_concat_v1,naive_concat_v1,12,0.8010,0.9625,0.0377,0.3578,Additional open conditioning baseline on the same pilot slice; strict headline metrics; same experimental stack as the main grid—not an alternate foundation-model vendor.
+text_only_v1,text_only_v1,10,0.6714,0.9550,0.0484,0.3536,Additional open conditioning baseline; strict metrics averaged over instances where text_only_v1 exists in the strict layer (10/12 pilot IDs; absent on arrays_binary_search_001 and sorting_insertion_sort_001). Appendix diagnostic only.

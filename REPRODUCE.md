@@ -117,7 +117,7 @@ Evidence-hardening bundle outputs from `implement_evidence_hardening.py`:
 - `results/selection_robustness.csv` and `results/selection_robustness_summary.md`
 - `results/prompt_token_accounting.csv`, `results/prompt_token_accounting_tokenizer.csv`,
   and `results/prompt_token_accounting_method.json`
-- `results/cross_model_pilot_*`
+- `results/cross_model_pilot_*` (see `configs/cross_model_pilot.json`; optional vendor summaries in `results/cross_model_pilot_external_appendix.json`)
 - `repairs/repair_attempts.csv`, `repairs/repair_outcomes_summary.csv`,
   and `repairs/repair_attempt_summary.md`
 - `artifacts/evidence_hardening_manifest.json` and checksum validation via

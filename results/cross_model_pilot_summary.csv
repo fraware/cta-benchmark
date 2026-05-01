@@ -1,3 +1,5 @@
-regime,n_instances,semantic_faithfulness_mean,code_consistency_mean,vacuity_rate_mean,proof_utility_mean
-code_only,12,0.8805,1.0000,0.0000,0.3689
-full_method,12,0.7677,0.9167,0.0167,0.5287
+group_key,regime,system_id,n_instances,semantic_faithfulness_mean,code_consistency_mean,vacuity_rate_mean,proof_utility_mean
+primary:code_only,code_only,code_only_v1,12,0.8805,1.0000,0.0000,0.3689
+primary:full_method,full_method,full_method_v1,12,0.7677,0.9167,0.0167,0.5287
+additional:naive_concat_v1,naive_concat,naive_concat_v1,12,0.8010,0.9625,0.0377,0.3578
+additional:text_only_v1,text_only,text_only_v1,10,0.6714,0.9550,0.0484,0.3536

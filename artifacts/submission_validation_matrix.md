@@ -20,6 +20,7 @@ Final gate checklist before uploading code/data materials with the paper. Comman
 | Release validator | `python scripts/validate_release_artifact.py` | yes | Validation pass |
 | Reviewer readiness | `python scripts/ci_reviewer_readiness.py` | yes | Pass |
 | Claim-source discipline | `python scripts/check_paper_claim_sources.py` | yes | Strict vs expanded assertions |
+| LaTeX expanded guard | `python scripts/check_paper_claim_sources.py --scan-tex --tex-path …` | optional | Errors on `raw_metrics_expanded` / `paper_expanded_` outside appendix-named `.tex` |
 | Final CI evidence log | `python scripts/export_final_ci_evidence.py` | recommended | `artifacts/final_ci_run_YYYYMMDD.md` |
 | Anonymous zip | `.\scripts\build_anonymous_artifact.ps1` (Windows) | yes for blind packaging | `artifacts/cta-benchmark-anonymous.zip` (excludes `lean/.lake/` and Rust `target/`; runs `redact_anonymous_artifact_tree.py` then drops that helper from the bundle) |
 | Anonymity scan | `.\scripts\scan_submission_anonymity.ps1 -ScanRoot artifacts\_anon_scan` (expand zip first); optional `.\scripts\scan_submission_anonymity.ps1 -RepoRoot .` for in-repo checklist paths; on Unix after unzip also `bash scripts/grep_anonymity_checkout.sh /path/to/extracted` | yes | Zero **author / home-repo** leaks (default patterns); add `-AggressivePatterns` only after provider templates are redacted if you also need substring checks for secret phrases |

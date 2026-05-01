@@ -11,14 +11,17 @@ Validates:
   - results/table1_*.csv for instance and critical-unit totals
   - docs/paper/paper_claim_sources.yaml (author-maintained headline integers)
 
-Optional: scan LaTeX sources for obvious expanded-only path references in
-non-appendix files (heuristic; off by default).
+Optional: scan LaTeX sources for expanded-only artifact references in non-appendix
+files (off by default). Use `--tex-path` one or more times (dirs or `.tex` files);
+if omitted with `--scan-tex`, searches `paper/`, `tex/`, `manuscript/`,
+`docs/paper/tex/` under the repo root when present.
 """
 from __future__ import annotations
 
 import argparse
 import csv
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -56,6 +59,18 @@ APPENDIX_ONLY_FILES = [
 
 # Mandatory directory for appendix-only manuscript tables (robustness layer).
 APPENDIX_MAPPED_DIR = ROOT / "results" / "appendix_mapped_evidence"
+
+TEX_SKIP_DIR_PARTS = frozenset(
+    {"build", ".git", "node_modules", ".venv", "venv", "__pycache__", "dist", "out"}
+)
+
+EXPANDED_TEX_MARKERS = (
+    "raw_metrics_expanded",
+    "paper_expanded_",
+    "results/paper_expanded",
+)
+
+HEADLINE_EXPANDED_INTEGERS = (336, 114, 222)
 
 
 def load_flat_yaml_ints(path: Path) -> dict[str, int]:
@@ -109,6 +124,83 @@ def err(msg: str) -> None:
     print(f"check_paper_claim_sources: ERROR: {msg}", file=sys.stderr)
 
 
+def warn(msg: str) -> None:
+    print(f"check_paper_claim_sources: WARN: {msg}", file=sys.stderr)
+
+
+def discover_tex_roots(repo: Path) -> list[Path]:
+    candidates = [
+        repo / "paper",
+        repo / "tex",
+        repo / "manuscript",
+        repo / "docs" / "paper" / "tex",
+    ]
+    return [p for p in candidates if p.is_dir()]
+
+
+def collect_tex_files(path: Path) -> list[Path]:
+    path = path.resolve()
+    if path.is_file():
+        return [path] if path.suffix.lower() == ".tex" else []
+    return sorted(path.rglob("*.tex"))
+
+
+def is_appendix_tex(path: Path) -> bool:
+    parts_lower = [x.lower() for x in path.parts]
+    if any(x in ("appendix", "supplement", "supplementary") for x in parts_lower):
+        return True
+    stem = path.stem.lower()
+    return "appendix" in stem or "supplement" in stem
+
+
+def scan_tex_manuscript(
+    tex_roots: list[Path],
+    repo: Path,
+    *,
+    strict_headline_nums: bool,
+) -> tuple[int, int]:
+    """Returns (error_count, warn_count)."""
+    seen: set[Path] = set()
+    files: list[Path] = []
+    for root in tex_roots:
+        for f in collect_tex_files(root):
+            rf = f.resolve()
+            if rf in seen:
+                continue
+            if any(p in f.parts for p in TEX_SKIP_DIR_PARTS):
+                continue
+            seen.add(rf)
+            files.append(f)
+
+    errors = 0
+    warns = 0
+    for tf in files:
+        try:
+            rel = tf.relative_to(repo.resolve())
+        except ValueError:
+            rel = tf
+        txt = tf.read_text(encoding="utf-8", errors="replace")
+        appendix = is_appendix_tex(tf)
+        if not appendix:
+            for marker in EXPANDED_TEX_MARKERS:
+                if marker in txt:
+                    err(
+                        f"LaTeX {rel}: references expanded-only artifact marker {marker!r}. "
+                        "Move to appendix/supplement TeX, cite strict sources "
+                        "(raw_metrics_strict.json, paper_strict_*), or remove."
+                    )
+                    errors += 1
+            if strict_headline_nums:
+                for n in HEADLINE_EXPANDED_INTEGERS:
+                    if re.search(rf"(?<![0-9]){n}(?![0-9])", txt):
+                        warn(
+                            f"{rel}: contains integer {n} (expanded-grid statistic in headline yaml); "
+                            "confirm this file is appendix-only or add narrative tying to robustness."
+                        )
+                        warns += 1
+    return errors, warns
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument(
@@ -119,7 +211,20 @@ def main() -> int:
     ap.add_argument(
         "--scan-tex",
         action="store_true",
-        help="Warn if .tex files reference raw_metrics_expanded (heuristic).",
+        help="Scan .tex for expanded-only artifact markers outside appendix paths.",
+    )
+    ap.add_argument(
+        "--tex-path",
+        type=Path,
+        action="append",
+        default=None,
+        metavar="PATH",
+        help="Directory or .tex file to scan (repeatable). Used with --scan-tex.",
+    )
+    ap.add_argument(
+        "--strict-tex-headline-nums",
+        action="store_true",
+        help="With --scan-tex, warn when expanded-grid integers (336,114,222) appear outside appendix TeX.",
     )
     args = ap.parse_args()
 
@@ -267,15 +372,23 @@ def main() -> int:
             problems += 1
 
     if args.scan_tex:
-        tex_files = list(ROOT.glob("**/*.tex"))
-        # Skip common vendor paths if ever added
-        tex_files = [p for p in tex_files if "build" not in p.parts]
-        for tf in tex_files:
-            txt = tf.read_text(encoding="utf-8", errors="replace")
-            if "raw_metrics_expanded" in txt or "paper_expanded_" in txt:
+        tex_roots = list(args.tex_path or [])
+        if not tex_roots:
+            tex_roots = discover_tex_roots(ROOT)
+        if not tex_roots:
+            warn(
+                "--scan-tex: no directories found (use --tex-path DIR pointing at your LaTeX tree)."
+            )
+        else:
+            tex_errors, tex_warns = scan_tex_manuscript(
+                tex_roots,
+                ROOT,
+                strict_headline_nums=args.strict_tex_headline_nums,
+            )
+            problems += tex_errors
+            if tex_warns:
                 print(
-                    f"check_paper_claim_sources: WARN: {tf.relative_to(ROOT)} references expanded metrics; "
-                    "ensure only appendix.",
+                    f"check_paper_claim_sources: {tex_warns} manuscript TeX warning(s); see stderr.",
                     file=sys.stderr,
                 )
 

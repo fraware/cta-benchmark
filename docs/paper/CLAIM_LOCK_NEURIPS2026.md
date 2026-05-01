@@ -42,7 +42,7 @@ Allowed in methods, artifact description, appendix, limitations.
 The composite is **not** the construct being validated. It is a **compact secondary diagnostic** for multi-axis failure. **Primary** claims use semantic faithfulness, coverage, code consistency, vacuity, proof utility, and failure-mode analysis **separately**. Any sensitivity analysis for composite weights belongs in the **appendix**.
 
 **Cross-model sanity pilot (`results/cross_model_*`):**  
-The repo ships a **small, strict-metrics-derived slice** (twelve instances, one per family) under `results/cross_model_pilot_*` to show how the **same two conditioning regimes** behave on that slice. It is **diagnostic**, **not** a multi-provider leaderboard. Extending it with additional public models is optional hardening, **not** required for Tier A strict claims.
+The repo ships a **small, strict-metrics-derived slice** (twelve instances, one per family) under `results/cross_model_pilot_*`. The appendix table leads with **`code_only_v1` vs `full_method_v1`** on that slice, and may include **additional conditioning baselines** from the same strict grid (`naive_concat_v1`, `text_only_v1`) plus optional **`cross_model_pilot_external_appendix.json`** rows supplied outside the primary regeneration loop. All pilot tables are **diagnostic**, **not** a multi-provider leaderboard. Tier A claims do **not** depend on pilot extensions.
 
 ---
 

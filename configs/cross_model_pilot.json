@@ -1,0 +1,29 @@
+{
+  "schema_version": "cross_model_pilot_config_v1",
+  "description": "Pilot slice = first strict row per algorithm family (12 instances). Primary rows are code_only_v1 vs full_method_v1. Additional rows reuse strict headline metrics for other open conditioning ids on the same instances (not separate foundation-model vendors). Optional external summary rows: results/cross_model_pilot_external_appendix.json.",
+  "primary_regimes": [
+    {
+      "regime": "code_only",
+      "system_id": "code_only_v1",
+      "model_tier": "open_public"
+    },
+    {
+      "regime": "full_method",
+      "system_id": "full_method_v1",
+      "model_tier": "proprietary_stronger"
+    }
+  ],
+  "additional_conditioning_systems": [
+    {
+      "regime": "naive_concat",
+      "system_id": "naive_concat_v1",
+      "model_tier": "additional_open_conditioning"
+    },
+    {
+      "regime": "text_only",
+      "system_id": "text_only_v1",
+      "model_tier": "additional_open_conditioning"
+    }
+  ],
+  "external_appendix_json": "results/cross_model_pilot_external_appendix.json"
+}
