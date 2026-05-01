@@ -41,6 +41,23 @@ ordered gate: `docs/PAPER_READINESS.md` §2 or `scripts/run_paper_readiness_gate
 
 **Claim-source gate:** `python scripts/check_paper_claim_sources.py` (strict vs expanded).
 
+### Venue supplement (four-command snippet)
+
+Some submission forms reproduce this minimal tail **without** strict-gap completion:
+
+```bash
+python scripts/materialize_v03_adjudication_artifacts.py
+python scripts/compute_results.py --paper
+python scripts/export_benchmark_paper_summary.py
+python scripts/ci_reviewer_readiness.py
+```
+
+That sequence is **not** headline-safe unless `implement_evidence_hardening.py` has
+already been run earlier in the session: strict-gap edits change
+`results/raw_metrics_strict.json` after adjudication materialization. Prefer the
+**minimal path** above or `scripts/run_paper_readiness_gate.ps1` /
+`scripts/run_paper_readiness_gate.sh`.
+
 ### What this artifact does not claim
 
 - Full Rust program verification  

@@ -30,7 +30,7 @@ Authoritative counts: `results/paper_table_annotation_evidence.csv` and `results
 
 ## Engineering gate
 
-Run `python scripts/check_paper_claim_sources.py` after `python scripts/ci_reviewer_readiness.py`. Claim tiers and forbidden phrasing: `docs/paper/CLAIM_LOCK_NEURIPS2026.md`.
+Run `python scripts/check_paper_claim_sources.py` after `python scripts/ci_reviewer_readiness.py` (and after `python scripts/compute_human_strict_agreement.py …` if you are refreshing agreement artifacts outside `implement_evidence_hardening.py`). The checker asserts headline CSVs/JSON, **`results/appendix_mapped_evidence/`** presence, strict human-agreement file paths, and `docs/paper/paper_claim_sources.yaml`. Claim tiers: `docs/paper/CLAIM_LOCK_NEURIPS2026.md`.
 
 ## Human agreement (strict overlap)
 

@@ -30,6 +30,13 @@ run implement_evidence_hardening python3 scripts/implement_evidence_hardening.py
 run repair_counterfactual_metrics python3 scripts/repair_counterfactual_metrics.py
 run validate_release_artifact python3 scripts/validate_release_artifact.py
 run ci_reviewer_readiness python3 scripts/ci_reviewer_readiness.py
+run compute_human_strict_agreement python3 scripts/compute_human_strict_agreement.py \
+  --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv \
+  --rater-a annotation/rater_a_strict_all.csv \
+  --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv \
+  --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json \
+  --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md \
+  --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv
 run check_paper_claim_sources python3 scripts/check_paper_claim_sources.py
 
 if [[ "${SKIP_EXPORT_FINAL:-}" != "1" ]]; then

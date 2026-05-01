@@ -3,8 +3,10 @@
 
 Validates:
   - results/raw_metrics_strict.json (row coverage, no mapped_from_canonical)
+  - strict human-agreement artifact paths (packet map, raters, agreement outs)
   - results/paper_table_annotation_evidence.csv
   - results/paper_annotation_origin_counts.csv (if present)
+  - results/appendix_mapped_evidence/ (directory + >= one CSV)
   - annotation/human_pass_v3/agreement_report_human_strict_all.json
   - results/table1_*.csv for instance and critical-unit totals
   - docs/paper/paper_claim_sources.yaml (author-maintained headline integers)
@@ -36,12 +38,24 @@ MANDATORY_HEADLINE_FILES = [
     "results/paper_annotation_origin_counts.csv",
 ]
 
+STRICT_HUMAN_AGREEMENT_FILES = [
+    "annotation/human_pass_v3/human_strict_packet_ids.csv",
+    "annotation/rater_a_strict_all.csv",
+    "annotation/human_pass_v3/rater_b_human_strict_all.csv",
+    "annotation/human_pass_v3/agreement_report_human_strict_all.json",
+    "annotation/human_pass_v3/agreement_report_human_strict_all.md",
+    "annotation/human_pass_v3/disagreement_log_strict_all.csv",
+]
+
 APPENDIX_ONLY_FILES = [
     "results/raw_metrics_expanded.json",
     "results/paper_expanded_system_summary.csv",
     "results/paper_expanded_family_summary.csv",
     "results/paper_expanded_failure_modes.csv",
 ]
+
+# Mandatory directory for appendix-only manuscript tables (robustness layer).
+APPENDIX_MAPPED_DIR = ROOT / "results" / "appendix_mapped_evidence"
 
 
 def load_flat_yaml_ints(path: Path) -> dict[str, int]:
@@ -116,6 +130,29 @@ def main() -> int:
         if not p.is_file():
             err(f"missing mandatory headline file: {rel}")
             problems += 1
+    if problems:
+        return 1
+
+    for rel in STRICT_HUMAN_AGREEMENT_FILES:
+        p = ROOT / rel
+        if not p.is_file():
+            err(f"missing strict human-agreement artifact: {rel}")
+            problems += 1
+    if problems:
+        return 1
+
+    if not APPENDIX_MAPPED_DIR.is_dir():
+        err(
+            "missing mandatory appendix directory: "
+            f"{APPENDIX_MAPPED_DIR.relative_to(ROOT)}"
+        )
+        problems += 1
+    elif not any(APPENDIX_MAPPED_DIR.glob("*.csv")):
+        err(
+            "results/appendix_mapped_evidence must contain at least one .csv "
+            "(appendix manuscript exports)"
+        )
+        problems += 1
     if problems:
         return 1
 

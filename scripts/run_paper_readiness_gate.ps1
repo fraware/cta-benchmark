@@ -52,6 +52,14 @@ python scripts\validate_release_artifact.py
 Assert-Step "validate_release_artifact"
 python scripts\ci_reviewer_readiness.py
 Assert-Step "ci_reviewer_readiness"
+python scripts\compute_human_strict_agreement.py `
+  --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv `
+  --rater-a annotation/rater_a_strict_all.csv `
+  --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv `
+  --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json `
+  --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md `
+  --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv
+Assert-Step "compute_human_strict_agreement"
 python scripts\check_paper_claim_sources.py
 Assert-Step "check_paper_claim_sources"
 

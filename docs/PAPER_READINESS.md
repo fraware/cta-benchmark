@@ -78,6 +78,13 @@ python scripts\implement_evidence_hardening.py
 python scripts\repair_counterfactual_metrics.py
 python scripts\validate_release_artifact.py
 python scripts\ci_reviewer_readiness.py
+python scripts\compute_human_strict_agreement.py `
+  --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv `
+  --rater-a annotation/rater_a_strict_all.csv `
+  --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv `
+  --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json `
+  --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md `
+  --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv
 python scripts\check_paper_claim_sources.py
 python scripts\export_final_ci_evidence.py
 ```
@@ -99,6 +106,21 @@ hardening are **unsafe** for headline claims.
 
 **One-shot gate:** `.\scripts\run_paper_readiness_gate.ps1` (Windows) or
 `SKIP_EXPORT_FINAL=1 bash scripts/run_paper_readiness_gate.sh` for a shorter pass on Unix.
+
+### Archived supplement ordering (do **not** run)
+
+NeurIPS packaging templates sometimes listed this Python tail **before** strict-gap
+completion was centralized inside `implement_evidence_hardening.py`:
+
+```bash
+# SUPERSEDED — leaves headline evidence counts stale vs raw_metrics_strict.json
+python3 scripts/compute_results.py --paper
+python3 scripts/repair_counterfactual_metrics.py
+python3 scripts/export_benchmark_paper_summary.py
+python3 scripts/implement_evidence_hardening.py
+```
+
+Use the PowerShell/Bash blocks above or `scripts/run_paper_readiness_gate.*` instead.
 
 **Bash (same steps):**
 
@@ -123,6 +145,13 @@ python3 scripts/implement_evidence_hardening.py
 python3 scripts/repair_counterfactual_metrics.py
 python3 scripts/validate_release_artifact.py
 python3 scripts/ci_reviewer_readiness.py
+python3 scripts/compute_human_strict_agreement.py \
+  --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv \
+  --rater-a annotation/rater_a_strict_all.csv \
+  --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv \
+  --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json \
+  --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md \
+  --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv
 python3 scripts/check_paper_claim_sources.py
 python3 scripts/export_final_ci_evidence.py
 ```

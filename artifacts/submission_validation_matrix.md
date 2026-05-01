@@ -40,3 +40,25 @@ Regenerate via `python scripts/compute_results.py --paper` (and upstream materia
 | 6 — Repair / proof-facing | `repairs/paper_repair_status.csv`, `repairs/paper_repair_success_subset.csv`, `repairs/paper_proof_facing_subset.csv`, `repairs/repair_attempts.csv` (also `repairs/paper_repair_proof_subset.csv` where used) |
 
 Strict headline metrics: **`results/raw_metrics_strict.json`** and **`results/paper_strict_*`** only.
+
+## NeurIPS plan §13 minimal gate table (venue checklist)
+
+Mirror of the submission matrix requested in the NeurIPS engineering plan; the
+repository adds Rust fmt/clippy, benchmark manifest, claim-source discipline, and
+full ordered gate rows above.
+
+| Gate | Command | Must pass? | Output |
+|------|---------|------------|--------|
+| Rust build | `cargo build --workspace` | yes | build log |
+| Rust tests | `cargo test --workspace --all-targets` | yes | test log |
+| Rust docs | `cargo test --workspace --doc` | yes | test log |
+| Benchmark release | `cargo run -p cta_cli -- validate benchmark --version v0.3 --release` | yes | validation log |
+| Benchmark lint | `cargo run -p cta_cli -- benchmark lint --version v0.3 --release` | yes | lint log |
+| Lean build | `cd lean && lake build` | yes | Lean log |
+| Results | `python scripts/compute_results.py --paper` | yes | `results/paper_*` (also run automatically at end of `implement_evidence_hardening.py`) |
+| Human agreement | `python scripts/compute_human_strict_agreement.py --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv --rater-a annotation/rater_a_strict_all.csv --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv` | yes | agreement JSON/MD + disagreement CSV |
+| Evidence hardening | `python scripts/implement_evidence_hardening.py` | yes | manifest + auxiliary exports |
+| Release validator | `python scripts/validate_release_artifact.py` | yes | validation pass |
+| Reviewer readiness | `python scripts/ci_reviewer_readiness.py` | yes | pass |
+| Anonymous zip | `scripts/build_anonymous_artifact.ps1` | yes (blind) | zip |
+| Anonymity scan | `scripts/scan_submission_anonymity.ps1` | yes | zero author leaks (see extended matrix rows for modes) |
