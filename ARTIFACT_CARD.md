@@ -5,7 +5,7 @@
 - **Paper framing:** benchmark + protocol for **semantic faithfulness** of **Lean-facing obligations** (not full Rust verification or general autoformalization).
 - **Headline metrics:** strict layer — **84** instances, **12** families, **274** direct rows, **0** mapped-from-canonical rows (`results/raw_metrics_strict.json`, `results/paper_strict_*`).
 - **Appendix:** expanded **336**-row mapped grid (`results/paper_expanded_*`) — robustness only.
-- **Regenerate tables:** see `REPRODUCE.md` and `docs/PAPER_READINESS.md`; claim discipline check: `python scripts/check_paper_claim_sources.py`.
+- **Regenerate tables:** `docs/PAPER_READINESS.md` §2; one-shot `scripts/run_paper_readiness_gate.ps1` (Windows) or `scripts/run_paper_readiness_gate.sh` (Unix); claim discipline: `python scripts/check_paper_claim_sources.py`.
 - **Submission checklist:** `artifacts/submission_validation_matrix.md`.
 
 | Field | Value |

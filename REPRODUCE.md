@@ -3,7 +3,9 @@
 Commands assume repository root as working directory.
 
 For a **single ordered checklist** (including CI parity), see
-[`docs/PAPER_READINESS.md`](docs/PAPER_READINESS.md).
+[`docs/PAPER_READINESS.md`](docs/PAPER_READINESS.md). One-shot runners:
+[`scripts/run_paper_readiness_gate.ps1`](scripts/run_paper_readiness_gate.ps1) (Windows),
+[`scripts/run_paper_readiness_gate.sh`](scripts/run_paper_readiness_gate.sh) (Unix).
 
 ## Reviewer minimal path (headline tables)
 

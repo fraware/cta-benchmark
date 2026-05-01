@@ -10,15 +10,15 @@ Final gate checklist before uploading code/data materials with the paper. Comman
 | Rust tests | `cargo test --workspace --all-targets` | yes | All tests pass |
 | Rust docs | `cargo test --workspace --doc` | yes | Doctest pass |
 | Benchmark manifest | `cargo run -p cta_cli -- benchmark manifest --version v0.3` | yes | Manifest emitted |
-| Benchmark release validate | `cargo run -p cta_cli -- validate benchmark --version v0.3 --release` | yes | Validation pass |
-| Benchmark lint | `cargo run -p cta_cli -- benchmark lint --version v0.3 --release` | yes | Lint pass |
-| Lean build | `cd lean && lake build` | yes | Mathlib-linked build succeeds |
-| Full paper pipeline | Exact ordered steps in `docs/PAPER_READINESS.md` (§2) | yes | Regenerated `results/paper_*`, annotations, repairs exports |
-| Results paper mode | `python scripts/compute_results.py --paper` | yes | `results/paper_strict_*`, evidence CSVs |
-| Human strict agreement | `python scripts/compute_human_strict_agreement.py --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv --rater-a annotation/rater_a_strict_all.csv --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv` | yes | JSON + MD + disagreement CSV |
+| Benchmark release validate | `cargo run -p cta_cli -- validate benchmark --version v0.3 --release` | yes | Validation log |
+| Benchmark lint | `cargo run -p cta_cli -- benchmark lint --version v0.3 --release` | yes | Lint log |
+| Lean build | `cd lean && lake build` | yes | Lean log |
+| Full ordered gate | `scripts/run_paper_readiness_gate.ps1` or `bash scripts/run_paper_readiness_gate.sh` | yes | Runs `docs/PAPER_READINESS.md` §2 end-to-end |
+| Results (paper mode) | `python scripts/compute_results.py --paper` | yes | `results/paper_strict_*` and evidence CSVs; **also executed inside** `implement_evidence_hardening.py` after strict-gap completion |
+| Human agreement | `python scripts/compute_human_strict_agreement.py --packet-map annotation/human_pass_v3/human_strict_packet_ids.csv --rater-a annotation/rater_a_strict_all.csv --rater-b annotation/human_pass_v3/rater_b_human_strict_all.csv --out-json annotation/human_pass_v3/agreement_report_human_strict_all.json --out-md annotation/human_pass_v3/agreement_report_human_strict_all.md --out-disagreements annotation/human_pass_v3/disagreement_log_strict_all.csv` | yes | Agreement JSON + MD + disagreement CSV (also invoked from evidence hardening / CI) |
 | Evidence hardening | `python scripts/implement_evidence_hardening.py` | yes | `artifacts/evidence_hardening_manifest.json` + auxiliary results |
-| Release validator | `python scripts/validate_release_artifact.py` | yes | Validator pass |
-| Reviewer readiness | `python scripts/ci_reviewer_readiness.py` | yes | CI-parity checks |
+| Release validator | `python scripts/validate_release_artifact.py` | yes | Validation pass |
+| Reviewer readiness | `python scripts/ci_reviewer_readiness.py` | yes | Pass |
 | Claim-source discipline | `python scripts/check_paper_claim_sources.py` | yes | Strict vs expanded assertions |
 | Final CI evidence log | `python scripts/export_final_ci_evidence.py` | recommended | `artifacts/final_ci_run_YYYYMMDD.md` |
 | Anonymous zip | `.\scripts\build_anonymous_artifact.ps1` (Windows) | yes for blind packaging | `artifacts/cta-benchmark-anonymous.zip` (excludes `lean/.lake/` and Rust `target/`; runs `redact_anonymous_artifact_tree.py` then drops that helper from the bundle) |

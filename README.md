@@ -30,6 +30,13 @@ python scripts/ci_reviewer_readiness.py
 python scripts/check_paper_claim_sources.py
 ```
 
+Some older notes list only `materialize_v03_adjudication_artifacts.py` then
+`compute_results.py --paper` then `export_benchmark_paper_summary.py`. That skips
+strict-gap completion inside `implement_evidence_hardening.py` and can desync
+headline evidence counts; **do not** use it as the sole regeneration path. Full
+ordered gate: `docs/PAPER_READINESS.md` §2 or `scripts/run_paper_readiness_gate.ps1`
+/ `scripts/run_paper_readiness_gate.sh`.
+
 **Lean proof-facing subset:** `cd lean && lake build`
 
 **Claim-source gate:** `python scripts/check_paper_claim_sources.py` (strict vs expanded).

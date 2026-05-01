@@ -88,6 +88,18 @@ python scripts\export_final_ci_evidence.py
 `artifacts/evidence_hardening_manifest.json`, so headline evidence CSVs stay
 aligned with the final strict row count.
 
+### Strict-gap pipeline invariant
+
+Do **not** run `compute_results.py --paper` or `export_benchmark_paper_summary.py`
+**before** `implement_evidence_hardening.py` as your only refresh pass: strict-gap
+completion mutates `results/raw_metrics_strict.json`, and running tables first
+leaves `results/paper_table_annotation_evidence.csv` out of sync (strict row
+counts vs evidence CSV). Historical four-command shortcuts that omit evidence
+hardening are **unsafe** for headline claims.
+
+**One-shot gate:** `.\scripts\run_paper_readiness_gate.ps1` (Windows) or
+`SKIP_EXPORT_FINAL=1 bash scripts/run_paper_readiness_gate.sh` for a shorter pass on Unix.
+
 **Bash (same steps):**
 
 ```bash
