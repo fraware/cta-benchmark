@@ -94,7 +94,7 @@
   ],
   "missing": [],
   "sha256": {
-    "benchmark/v0.3/manifests/release_summary.json": "cb811fb497ddb8c383c8dd9fce121868b5b0dc4ca45b8c75bc790c1292576169",
+    "benchmark/v0.3/manifests/release_summary.json": "cc052581cd8824aa98858ed0c05fe1e3e1bdc6ed76aae71db5276b2e4e55f678",
     "benchmark/manifest.jsonl": "c0590890e602fb55012728ae0544df139485989dafbccf421b668e1a4ac6d463",
     "benchmark/v0.3/benchmark_paper_summary.json": "fb39f596acd4617abefedafa1fd0e786810e8831666cd59c457f6b5aa8bf1857",
     "benchmark/v0.3/protocol_freeze.json": "19e58bd64751189591c3cb17471c7eb1e924442b21a22829bbbf44b59013967e",

@@ -5,8 +5,16 @@ $ErrorActionPreference = "Stop"
 $Root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $Dest = Join-Path $Root "artifacts\cta-benchmark-anonymous"
 $Zip = Join-Path $Root "artifacts\cta-benchmark-anonymous.zip"
+$Log = Join-Path $Root "artifacts\build_anonymous_artifact.log"
+
+function Write-BuildLog([string]$Message) {
+    $line = "[{0:u}] {1}" -f (Get-Date).ToUniversalTime(), $Message
+    Add-Content -Path $Log -Encoding utf8 -Value $line
+}
 
 New-Item -ItemType Directory -Force -Path (Split-Path $Dest) | Out-Null
+Set-Content -Path $Log -Encoding utf8 -Value ""
+Write-BuildLog "build_anonymous_artifact.ps1 start root=$Root"
 if (Test-Path $Dest) { Remove-Item $Dest -Recurse -Force }
 New-Item -ItemType Directory -Force -Path $Dest | Out-Null
 
@@ -25,8 +33,11 @@ function Copy-Tree {
         $rcArgs += $ExcludeDirNames
     }
     & robocopy @rcArgs | Out-Null
-    if ($LASTEXITCODE -ge 8) {
-        throw "robocopy failed for $Rel (exit $LASTEXITCODE)"
+    $rc = $LASTEXITCODE
+    Write-BuildLog "robocopy $Rel exit=$rc"
+    if ($rc -ge 8) {
+        Write-BuildLog "robocopy FAILURE for $Rel"
+        throw "robocopy failed for $Rel (exit $rc)"
     }
 }
 
@@ -62,10 +73,14 @@ if (-not $pyCmd) { $pyCmd = Get-Command python3 -ErrorAction SilentlyContinue }
 if (-not $pyCmd) { throw "python not found on PATH (needed for redact_anonymous_artifact_tree.py)" }
 $pyExe = $pyCmd.Path
 if (-not $pyExe) { $pyExe = $pyCmd.Source }
+Write-BuildLog "running redact_anonymous_artifact_tree.py"
 & $pyExe (Join-Path $Root "scripts\redact_anonymous_artifact_tree.py") $Dest
 $redactSelf = Join-Path $Dest "scripts\redact_anonymous_artifact_tree.py"
 if (Test-Path $redactSelf) { Remove-Item $redactSelf -Force }
 
 if (Test-Path $Zip) { Remove-Item $Zip -Force }
+Write-BuildLog "Compress-Archive -> $Zip"
 Compress-Archive -Path (Join-Path $Dest "*") -DestinationPath $Zip -Force
-Write-Host "wrote $Zip"
+$len = (Get-Item $Zip).Length
+Write-BuildLog "done zip bytes=$len"
+Write-Host "wrote $Zip ($len bytes); log: $Log"

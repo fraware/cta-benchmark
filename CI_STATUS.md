@@ -4,7 +4,7 @@ Workflows under `.github/workflows/`:
 
 | Workflow | Purpose |
 |----------|---------|
-| `ci.yml` | Primary Rust workspace checks |
+| `ci.yml` | Primary Rust workspace checks; includes `validate benchmark --version v0.3 --release` and `benchmark lint v0.3 --release` on every run |
 | `benchmark-lint.yml` | Benchmark schema and lint gates |
 | `nightly-evals.yml` | Scheduled heavier evaluations |
 | `supply-chain.yml` | Dependency/supply-chain hygiene |

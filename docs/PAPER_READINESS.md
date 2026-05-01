@@ -26,7 +26,8 @@ Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\build_anonymous_artifact.ps1
 ```
 
-Produces `artifacts/cta-benchmark-anonymous.zip`. Expand to a scratch directory and
+Produces `artifacts/cta-benchmark-anonymous.zip`. Each run also writes a UTC log at
+`artifacts/build_anonymous_artifact.log` (gitignored) listing robocopy exits and zip size—use it when diagnosing failures. Expand to a scratch directory and
 run `.\scripts\scan_submission_anonymity.ps1 -ScanRoot <path>`. The build copies
 sources without `.git`, skips `lean/.lake/` and Rust `target/` trees for size,
 then applies `scripts/redact_anonymous_artifact_tree.py` for case-insensitive
