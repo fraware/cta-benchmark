@@ -20,9 +20,9 @@
 
 **Latest `main` commit SHA (Git on the Hub dataset repo), after mirror in this session:**
 
-`18541607abfa76b963f3283d03a6683d3138695e`
+`0922551cb20e4f6f0cc51cfb2d6368c68dd72f18`
 
-Each `make hf-upload` / `make hf-upload-croissant` advances `main`; the SHA above is `HfApi().repo_info('fraware/cta-bench', repo_type='dataset').sha` immediately after the final mirror cycle that published this report under `artifact/reports/` and `croissant.json` on `main`.
+Each `make hf-upload` / `make hf-upload-croissant` advances `main`. The SHA above is `HfApi().repo_info('fraware/cta-bench', repo_type='dataset').sha` immediately after the last mirror cycle that ran after syncing this file to the Hub (`artifact/reports/croissant_validation_2026.md` and `croissant.json` on `main`).
 
 **Byte identity (local vs Hub):** `huggingface_hub.hf_hub_download(..., filename="croissant.json", revision="main")` matches **`hf_release/croissant.json` byte-for-byte** (SHA256 above).
 
