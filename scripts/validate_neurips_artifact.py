@@ -33,6 +33,9 @@ REQUIRED = [
     "data/common_cell_system_summary.csv",
 ]
 
+# Literal keys that must exist on the merged JSON-LD. `distribution` and `recordSet` are
+# produced by the Hub Croissant API only after machine-readable files exist on the repo;
+# they are checked separately for non-empty content (unless --allow-minimal-croissant).
 CROISSANT_HF_CORE_KEYS = [
     "@context",
     "@type",
@@ -40,8 +43,6 @@ CROISSANT_HF_CORE_KEYS = [
     "url",
     "license",
     "conformsTo",
-    "distribution",
-    "recordSet",
 ]
 
 CROISSANT_RAI_PROV_KEYS = [
@@ -122,15 +123,10 @@ def main() -> int:
     absent_core = [k for k in CROISSANT_HF_CORE_KEYS if k not in croissant]
     if absent_core and not allow_minimal:
         raise SystemExit(
-            "Croissant missing Hugging Face core fields: "
+            "Croissant missing core JSON-LD fields after merge: "
             f"{absent_core}. "
-            "The Hub Croissant API usually returns full metadata only after the dataset "
-            "contains machine-readable files the viewer can convert (for example the `data/` "
-            "JSONL/CSV layer) and `croissant_core.json` was re-downloaded from "
-            "`https://huggingface.co/api/datasets/fraware/cta-bench/croissant`. "
-            "Re-run `python scripts/upload_hf_dataset.py`, then curl-download core Croissant, then "
-            "`python scripts/add_rai_to_croissant.py`. "
-            "For local-only smoke tests: pass --allow-minimal-croissant."
+            "Re-run `python scripts/download_hf_croissant.py` and `python scripts/add_rai_to_croissant.py` "
+            "from a clean `hf_release/croissant_core.json`."
         )
 
     absent_rai = [k for k in CROISSANT_RAI_PROV_KEYS if k not in croissant]
@@ -142,14 +138,22 @@ def main() -> int:
         dist = croissant.get("distribution")
         if not rs or (isinstance(rs, list) and len(rs) == 0):
             raise SystemExit(
-                "Croissant `recordSet` is empty or absent after merge. "
-                "NeurIPS requires a complete Croissant file; upload full `hf_release/data/` to Hugging Face "
-                "and re-fetch core Croissant from the Hub API."
+                "Croissant `recordSet` is empty or absent after merge. The Hub Croissant endpoint "
+                "fills `distribution` / `recordSet` only after `hf_release/` (especially `data/*`) "
+                "has been uploaded at least once.\n"
+                "  Order: `hf auth login` or `HF_TOKEN` → `python scripts/upload_hf_dataset.py` → "
+                "`python scripts/download_hf_croissant.py` → `python scripts/add_rai_to_croissant.py` → "
+                "`python scripts/validate_neurips_artifact.py`.\n"
+                "  Pre-upload checks on tables and files only: "
+                "`python scripts/validate_neurips_artifact.py --allow-minimal-croissant` "
+                "(or `make hf-validate-local`)."
             )
         if not dist or (isinstance(dist, list) and len(dist) == 0):
             raise SystemExit(
-                "Croissant `distribution` is empty or absent after merge. "
-                "Upload the dataset files and re-fetch Croissant from the Hub API."
+                "Croissant `distribution` is empty or absent after merge. Upload `hf_release/` to "
+                "https://huggingface.co/datasets/fraware/cta-bench, then re-download core Croissant and "
+                "merge RAI again (same commands as above).\n"
+                "  Pre-upload: `make hf-validate-local` or pass --allow-minimal-croissant."
             )
 
     readme = (HF / "README.md").read_text(encoding="utf-8")

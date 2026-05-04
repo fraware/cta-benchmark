@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+REPO_ID = "fraware/cta-bench"
 CORE = ROOT / "hf_release" / "croissant_core.json"
 OUT = ROOT / "hf_release" / "croissant.json"
 PATCH_OUT = ROOT / "hf_release" / "croissant_rai_patch.json"
@@ -56,6 +57,11 @@ def main() -> int:
     core = json.loads(CORE.read_text(encoding="utf-8"))
 
     ctx = _normalize_context(core)
+
+    if not core.get("url"):
+        core["url"] = f"https://huggingface.co/datasets/{REPO_ID}"
+    if not core.get("name"):
+        core["name"] = REPO_ID
 
     if core.get("@type") in (None, "Dataset", "dataset"):
         core["@type"] = "Dataset"

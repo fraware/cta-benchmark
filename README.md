@@ -72,7 +72,7 @@ python scripts/check_paper_claim_sources.py
 
 **NeurIPS 2026 E&D (Hugging Face):** public dataset card at
 [`fraware/cta-bench`](https://huggingface.co/datasets/fraware/cta-bench). Build and upload
-from a frozen branch with `pip install -r requirements-hf.txt`, `huggingface-cli login`, then
+from a frozen branch with `pip install -r requirements-hf.txt`, `hf auth login` (or `HF_TOKEN`), then
 `make hf-release` (see [`docs/reproducibility.md`](docs/reproducibility.md) for the ordered steps).
 
 ---

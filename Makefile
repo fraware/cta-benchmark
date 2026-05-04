@@ -1,4 +1,4 @@
-.PHONY: hf-package hf-upload hf-croissant hf-validate hf-scan-secrets hf-release
+.PHONY: hf-package hf-upload hf-croissant hf-validate hf-validate-local hf-scan-secrets hf-release
 
 hf-package:
 	python scripts/package_hf_dataset.py
@@ -15,5 +15,8 @@ hf-scan-secrets:
 
 hf-validate:
 	python scripts/validate_neurips_artifact.py
+
+hf-validate-local:
+	python scripts/validate_neurips_artifact.py --allow-minimal-croissant
 
 hf-release: hf-package hf-upload hf-croissant hf-validate

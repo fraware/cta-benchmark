@@ -16,10 +16,29 @@ URL = f"https://huggingface.co/api/datasets/{REPO_ID}/croissant"
 def main() -> int:
     response = requests.get(URL, timeout=120)
     response.raise_for_status()
+    payload = response.json()
+    if isinstance(payload, dict) and payload.get("error"):
+        raise SystemExit(
+            "Hugging Face Croissant API returned an error payload. "
+            "Confirm the dataset repo exists and is public, then retry.\n"
+            f"  URL: {URL}\n  error: {payload.get('error')}"
+        )
     out = ROOT / "hf_release" / "croissant_core.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(response.json(), indent=2, ensure_ascii=False), encoding="utf-8")
+    out.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Wrote {out}")
+    dist = payload.get("distribution") if isinstance(payload, dict) else None
+    rs = payload.get("recordSet") if isinstance(payload, dict) else None
+    if not dist or (isinstance(dist, list) and len(dist) == 0):
+        print(
+            "note: Hub Croissant has no `distribution` yet. After the first successful "
+            "upload of `hf_release/` (including `data/`), re-run this script so "
+            "`distribution` / `recordSet` populate for strict validation."
+        )
+    if not rs or (isinstance(rs, list) and len(rs) == 0):
+        print(
+            "note: Hub Croissant has no `recordSet` yet; upload then re-download."
+        )
     return 0
 
 
