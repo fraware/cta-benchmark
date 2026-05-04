@@ -12,20 +12,20 @@ rules that keep the repository on-mission.
                  |
                  v
 +----------+   +--+------------+   +-----------+
-| schemas/ |-->| cta_schema    |   | configs/  |
+| schemas/ |-->|  cta_schema   |   | configs/  |
 +----------+   +-------+-------+   +-----+-----+
                        |                 |
                        v                 v
                 +-------------+    +-------------+
-                | cta_core    |<---| cta_cli     |
+                | cta_core    |<---|   cta_cli   |
                 +------+------+    +------+------+
                        ^                  |
                        |                  v
-   +-------------------+------------------+-------------+
-   | cta_benchmark  cta_rust_extract  cta_generate      |
+   +-------------------+------------------+--------------+
+   | cta_benchmark  cta_rust_extract  cta_generate       |
    |   cta_lean       cta_behavior     cta_annotations   |
    |            cta_metrics        cta_reports           |
-   +------------+---------------+-----------+-----------+
+   +------------+---------------+-----------+------------+
                                 |           |
                                 v           v
                            lean/ project   runs/

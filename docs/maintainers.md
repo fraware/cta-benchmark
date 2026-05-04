@@ -1,12 +1,6 @@
 # Maintainers and security contact
 
-## Before the repository is public
-
-Replace the placeholder below with a **monitored** alias (for example
-`security@your-domain`) or named contacts. The address is referenced from
-[`SECURITY.md`](../SECURITY.md).
-
-**Security contact (update before public release):** `security@example.invalid`
+**Security contact (update before public release):** `mpetel@stanford.edu`
 
 ## Maintainer expectations
 
