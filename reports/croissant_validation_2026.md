@@ -20,7 +20,7 @@
 
 **Latest `main` commit SHA (Git on the Hub dataset repo), after mirror in this session:**
 
-`8e00ee4f7f124194e13de7d0c4babc94cd51adc1`
+`18541607abfa76b963f3283d03a6683d3138695e`
 
 Each `make hf-upload` / `make hf-upload-croissant` advances `main`; the SHA above is `HfApi().repo_info('fraware/cta-bench', repo_type='dataset').sha` immediately after the final mirror cycle that published this report under `artifact/reports/` and `croissant.json` on `main`.
 
