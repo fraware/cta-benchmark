@@ -31,11 +31,16 @@ Thumbs.db
 !/runs/.gitkeep
 /reports/*
 !/reports/.gitkeep
+!/reports/croissant_validation_2026.md
+!/reports/croissant_validation_2026.png
 
 # Secrets
 .env
 .env.*
 !.env.example
+
+# Hugging Face NeurIPS export (large; regenerate with `python scripts/package_hf_dataset.py`)
+/hf_release/
 
 # Build artifacts
 /build

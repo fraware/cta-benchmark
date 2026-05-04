@@ -1,0 +1,38 @@
+[
+  {
+    "system_id": "text_only_v1",
+    "display_name": "Text+SU",
+    "historical_name_warning": "Identifier retained for artifact compatibility; receives informal statement only in the primary prompt template.",
+    "visible_inputs": ["informal_statement"],
+    "hidden_inputs": ["reference_obligations", "lean_scaffold", "rust_context"],
+    "selection_rule": "first_parseable_low_obligation_tiebreak",
+    "temperature": 0
+  },
+  {
+    "system_id": "code_only_v1",
+    "display_name": "Rust+SU",
+    "historical_name_warning": "Identifier retained for artifact compatibility; receives Rust context and semantic units.",
+    "visible_inputs": ["problem_summary", "semantic_units", "rust_context"],
+    "hidden_inputs": ["reference_obligations", "lean_scaffold"],
+    "selection_rule": "first_parseable_low_obligation_tiebreak",
+    "temperature": 0
+  },
+  {
+    "system_id": "naive_concat_v1",
+    "display_name": "Naive concat",
+    "historical_name_warning": "Identifier retained for artifact compatibility; concatenates informal statement, semantic units, and Rust reference in one prompt.",
+    "visible_inputs": ["problem_summary", "semantic_units", "rust_context"],
+    "hidden_inputs": ["reference_obligations", "lean_scaffold"],
+    "selection_rule": "first_parseable_low_obligation_tiebreak",
+    "temperature": 0
+  },
+  {
+    "system_id": "full_method_v1",
+    "display_name": "Full method",
+    "historical_name_warning": "Identifier retained for artifact compatibility; receives Rust summary, semantic units, and Lean scaffold in addition to the problem summary.",
+    "visible_inputs": ["problem_summary", "semantic_units", "rust_context", "lean_scaffold"],
+    "hidden_inputs": ["reference_obligations"],
+    "selection_rule": "first_parseable_low_obligation_tiebreak",
+    "temperature": 0
+  }
+]
