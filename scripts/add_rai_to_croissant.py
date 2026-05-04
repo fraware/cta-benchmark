@@ -194,35 +194,14 @@ def _csv_record_set(rel: str, rs_name: str, column: str) -> dict:
     }
 
 
-def _whole_file_text_record_set(rel: str, rs_name: str) -> dict:
-    """One logical record per file (full UTF-8 payload as text)."""
-    fid = _file_object_id(rel)
-    return {
-        "@type": "cr:RecordSet",
-        "@id": f"rs_{fid}",
-        "name": rs_name,
-        "description": f"Whole-file text view of `{rel}` (UTF-8).",
-        "field": [
-            {
-                "@type": "cr:Field",
-                "@id": f"{fid}/content",
-                "name": "content",
-                "dataType": "sc:Text",
-                "source": {
-                    "fileObject": {"@id": fid},
-                    "extract": {"fileProperty": "content"},
-                },
-            }
-        ],
-    }
-
-
 def _augment_sparse_hub_croissant(core: dict) -> None:
     """Hub Croissant often omits `recordSet` for raw JSONL/CSV repos (only a `repo` FileObject).
 
     NeurIPS validation requires non-empty `distribution` and `recordSet`. When the Hub
     leaves `recordSet` empty, attach resolve/main FileObjects for published paths and
     minimal RecordSets so local validation matches the on-disk `hf_release/` layout.
+    `data/human_agreement.json` stays in `distribution` only (no RecordSet): whole-file
+    `fileProperty: content` extraction breaks optional record-generation in the official checker.
     """
     if not _record_sets_empty(core):
         return
@@ -263,8 +242,6 @@ def _augment_sparse_hub_croissant(core: dict) -> None:
             "system",
         )
     )
-
-    record_sets.append(_whole_file_text_record_set("data/human_agreement.json", "human_agreement"))
 
     core["recordSet"] = record_sets
 
