@@ -1,0 +1,28 @@
+Third-party software and data dependencies
+==========================================
+
+This repository is licensed under the MIT License (see `LICENSE`). Runtime and
+build dependencies are not vendored wholesale in-tree; their licenses apply
+when you fetch or build them.
+
+Rust crates
+------------
+Dependency licenses are constrained by `deny.toml` and recorded in `Cargo.lock`.
+Run `cargo deny check` before release to confirm the current graph matches policy.
+
+Lean 4 and Lake packages
+-------------------------
+The Lean project under `lean/` resolves packages listed in `lean/lake-manifest.json`
+(for example Mathlib4, Batteries, aesop, and other leanprover-community packages).
+Those upstream projects are primarily distributed under the Apache License 2.0
+(or as stated in their respective repositories). Building the Lean layer
+downloads those dependencies under their terms; this NOTICE does not replace
+their license texts.
+
+Model-generated text in benchmark artifacts
+--------------------------------------------
+Some committed JSON contains text produced via third-party language-model APIs.
+Redistribution of that content in a public repository may be subject to provider
+terms of service in addition to this project's MIT license. Track provider ToS
+review in your release checklist (for example `SECURITY.md` and `CONTRIBUTING.md`
+for redistribution expectations before publishing).

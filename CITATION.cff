@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "CTA-Bench (cta-benchmark)"
+message: "If you use this benchmark or its tooling, please cite it using these metadata (and the NeurIPS 2026 paper when available)."
+type: software
+authors:
+  - family-names: Petel
+    given-names: Mateo
+    email: mpetel@stanford.edu
+    affiliation: "Stanford University"
+repository-code: "https://github.com/fraware/cta-benchmark"
+license: MIT
+version: 0.1.0
+date-released: 2026-05-04
+keywords:
+  - benchmark
+  - Lean4
+  - program-synthesis
+  - correctness-obligations
+  - classical-algorithms
+abstract: >
+  Versioned benchmark of classical algorithm tasks with Rust-first orchestration,
+  Lean 4 obligation checking, and reproducible evaluation artifacts for semantic
+  faithfulness research.
