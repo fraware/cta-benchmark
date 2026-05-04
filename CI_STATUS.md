@@ -14,7 +14,7 @@ Fast local gate without regenerating Python tables: `scripts/verify_submission_r
 `scripts/run_paper_readiness_gate.ps1`.
 
 Local parity check before submission (mirror `.github/workflows/ci.yml`,
-`benchmark-lint.yml`, `supply-chain.yml`, and `docs/PAPER_READINESS.md`):
+`benchmark-lint.yml`, `supply-chain.yml`, and `REPRODUCE.md`):
 
 ```powershell
 cargo fmt --all -- --check
@@ -31,7 +31,7 @@ python scripts/export_benchmark_paper_summary.py
 python scripts/ci_reviewer_readiness.py
 ```
 
-Paper tables and adjudication artifacts: see `docs/PAPER_READINESS.md` (Python
+Paper tables and adjudication artifacts: see `REPRODUCE.md` and `docs/reviewer_map.md` (Python
 materializers and `compute_results.py --paper`). Canonical manuscript layer
 files are `results/paper_strict_*` (headline strict evidence) and
 `results/paper_expanded_*` (appendix expanded evidence), with evidence mass in

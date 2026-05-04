@@ -6,6 +6,11 @@ stricter than a typical Rust library: every change is subject to the
 same determinism and versioning guarantees that the benchmark itself
 promises its consumers.
 
+This project follows the [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md). By
+participating, you agree to uphold it. Unless stated otherwise in a
+signed agreement, contributions are accepted under the same **MIT**
+license as the repository (see root `LICENSE`).
+
 ## Ground rules
 
 1. **Benchmark artifacts are immutable per tagged version.** Do not

@@ -43,7 +43,7 @@
     "configs/experiments/benchmark_v03.json",
     "REPRODUCE.md",
     "README.md",
-    "docs/PROVENANCE.md",
+    "docs/reviewer_map.md",
     "LICENSE"
   ],
   "present": [
@@ -89,12 +89,12 @@
     "configs/experiments/benchmark_v03.json",
     "REPRODUCE.md",
     "README.md",
-    "docs/PROVENANCE.md",
+    "docs/reviewer_map.md",
     "LICENSE"
   ],
   "missing": [],
   "sha256": {
-    "benchmark/v0.3/manifests/release_summary.json": "a49d60e6a6168568f3242180a0199c5c5dadfae36b45563d16f3055d1f7c3199",
+    "benchmark/v0.3/manifests/release_summary.json": "89bbba4e3567bd187cbb538aaf14f46254745db2fe34ed1f0cda3b08186d817f",
     "benchmark/manifest.jsonl": "c0590890e602fb55012728ae0544df139485989dafbccf421b668e1a4ac6d463",
     "benchmark/v0.3/benchmark_paper_summary.json": "fb39f596acd4617abefedafa1fd0e786810e8831666cd59c457f6b5aa8bf1857",
     "benchmark/v0.3/protocol_freeze.json": "19e58bd64751189591c3cb17471c7eb1e924442b21a22829bbbf44b59013967e",
@@ -133,10 +133,10 @@
     "repairs/repair_attempts.csv": "5b44d0841fc6c7f321710a58f811c95644aee5fdcc95eab2a0fc75e94ca420a1",
     "repairs/repair_outcomes_summary.csv": "7ccda9e773d4acb098b1afe00d6fee852a436a535f55f5901cc6017d5ddcb296",
     "repairs/repair_attempt_summary.md": "de66c95df924868581afcadc5390604b49a52f10e2b0ef6a26e661fe6236a9be",
-    "configs/experiments/benchmark_v03.json": "9b245e5d4845b2270df238676c14d5d1053fa76f3690d64ad6633c59d1cdc7a4",
-    "REPRODUCE.md": "6f4e87e814755e72bacbfe819ecf00097df7dd5604c4ed328135ddf0bd9a07e9",
-    "README.md": "f39c8f3d48e67c1c351d81efc9ee4a648b6393929d8355ea012cbc92ca6c45b0",
-    "docs/PROVENANCE.md": "f893359be33f20cd015756052542922b44cfc4c764729c3ef44736a8ac27589f",
+    "configs/experiments/benchmark_v03.json": "caad4e439634ee7266818835b643e7d4960c2d2dad8ffe19c1e44a76f3d1c871",
+    "REPRODUCE.md": "ee1624b1369d77c72a55b8ea58e501db431db44e92c232c84afcd8c63a566cce",
+    "README.md": "0a614525c281277ead116898840c6b24738414ae2543fd8e03da5e6e61b22b15",
+    "docs/reviewer_map.md": "ba18c567a9592595c90d581aa938afa7b8e2af88574d6f699f6b4d44baa2016a",
     "LICENSE": "8532193c2df574da197dd64d98b40699ed5a50b46b82385c8255942c7fbde9f1"
   }
 }

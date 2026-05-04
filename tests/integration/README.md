@@ -28,7 +28,7 @@ End-to-end CLI orchestration is additionally exercised by
 2. `cta validate benchmark --version v0.1 --release` (on every push)
 3. `cta validate benchmark --version v0.2 --release` (paper track; fails with
    `GOLD_AUDIT_SIGNOFF_INVALID` until `benchmark/v0.2/audit/gold_signoff.json`
-   carries two reviewer names and `approved: true` per `docs/release_process.md`)
+   carries two reviewer names and `approved: true` per `CONTRIBUTING.md`)
 4. `cta experiment --config configs/experiments/pilot_v1.json --dry-run`
 5. `cta experiment --config configs/experiments/pilot_v1.json`
 6. `cta validate file --schema {run_manifest, results_bundle} --path <...>`
@@ -36,7 +36,7 @@ End-to-end CLI orchestration is additionally exercised by
 
 `.github/workflows/benchmark-lint.yml` (on `benchmark/**` changes) additionally
 runs `validate benchmark --version v0.3 --release` and `benchmark lint` for v0.3;
-see `docs/PAPER_READINESS.md`.
+see `REPRODUCE.md`.
 
 Current baseline expectation for this gate: `m2_ready_packets = 94 / 94` and
 `global_proof_worklist.count = 0`.
@@ -46,7 +46,7 @@ Current baseline expectation for this gate: `m2_ready_packets = 94 / 94` and
 `/tmp/…` so CI validates the committed `packet.json` set without rewriting
 `benchmark/v0.2/annotation/review_packets/verification_summary.signed.json`
 on every run (local releases still regenerate that path after refresh; see
-`docs/release_process.md`).
+`CONTRIBUTING.md`).
 
 No integration test reaches the network; every provider call goes
 through `StubProvider`, and `OpenAiProvider` / `AnthropicProvider` are

@@ -2,14 +2,14 @@
 
 Commands assume repository root as working directory.
 
-For a **single ordered checklist** (including CI parity), see
-[`docs/PAPER_READINESS.md`](docs/PAPER_READINESS.md). One-shot runners:
+For a **single ordered checklist** (including CI parity), follow this file and
+`scripts/run_paper_readiness_gate.*`. One-shot runners:
 [`scripts/run_paper_readiness_gate.ps1`](scripts/run_paper_readiness_gate.ps1) (Windows),
 [`scripts/run_paper_readiness_gate.sh`](scripts/run_paper_readiness_gate.sh) (Unix).
 
 ## Reviewer minimal path (headline tables)
 
-After toolchain setup, these steps rebuild the **strict** publication layer (full gate still recommended — see `docs/PAPER_READINESS.md` §2):
+After toolchain setup, these steps rebuild the **strict** publication layer (full gate still recommended — run `scripts/run_paper_readiness_gate.ps1` or `scripts/run_paper_readiness_gate.sh`):
 
 ```powershell
 python scripts/materialize_v03_adjudication_artifacts.py
