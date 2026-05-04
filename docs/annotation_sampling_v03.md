@@ -3,7 +3,7 @@
 This document defines the **intended** stratification for a human double-annotation
 wave on v0.3 **eval** packets. Until real CSVs land under
 `benchmark/v0.3/annotation/human_wave_v03/`, all paper metrics remain
-`pipeline_derived` per `docs/PROVENANCE.md`.
+`pipeline_derived` per `docs/reviewer_map.md` (annotation tiers and pack roles).
 
 ## Factors
 

@@ -1,6 +1,6 @@
 # Claim lock — NeurIPS 2026 (E&D)
 
-This file freezes **wording posture** and **evidence tiering** for the NeurIPS 2026 Evaluations & Datasets submission. Code and tables must not contradict it. Companion one-pager: [`EVIDENCE_NOTE_NEURIPS2026.md`](EVIDENCE_NOTE_NEURIPS2026.md).
+This file freezes **wording posture** and **evidence tiering** for the NeurIPS 2026 Evaluations & Datasets submission. Code and tables must not contradict it. Companion one-pager: [`evidence_note_neurips_2026.md`](evidence_note_neurips_2026.md).
 
 **Primary scientific posture:** CTA-Bench is a **benchmark and evaluation protocol** for measuring **semantic faithfulness** in **Lean-facing correctness-obligation generation** from text plus code. It is **not** full Rust verification, full theorem proving, or an end-to-end proof-agent leaderboard.
 
@@ -36,7 +36,7 @@ Allowed in methods, artifact description, appendix, limitations.
 - **Expanded** outputs are **not** headline evidence.
 - **Repair** examples are **diagnostic**, not universal repair rates or guarantees.
 - The **proof-facing** subset demonstrates **elaboration / proof-engineering maturity** for selected packets, **not** full implementation verification.
-- **`docs/REVIEWER_MAP.md`** separates strict headline metrics from expanded mapped metrics and maps topics to regen commands.
+- **`docs/reviewer_map.md`** separates strict headline metrics from expanded mapped metrics and maps topics to regen commands.
 
 **Composite reliability score:**  
 The composite is **not** the construct being validated. It is a **compact secondary diagnostic** for multi-axis failure. **Primary** claims use semantic faithfulness, coverage, code consistency, vacuity, proof utility, and failure-mode analysis **separately**. Any sensitivity analysis for composite weights belongs in the **appendix**.
@@ -73,4 +73,4 @@ Do **not** say (without qualification):
 ## Manuscript number discipline
 
 - All **headline** numerics must be traceable to **`results/raw_metrics_strict.json`**, **`results/paper_strict_*`**, and the **strict** rows of **`results/paper_table_annotation_evidence.csv`** / **`results/paper_table_agreement_evidence.csv`**, as enforced by `python scripts/check_paper_claim_sources.py` and `docs/paper/paper_claim_sources.yaml`.
-- LaTeX table construction checklist (main Tables 1–6, composite-as-secondary, appendix-only paths): [`MANUSCRIPT_TABLE_SOURCES_NEURIPS2026.md`](MANUSCRIPT_TABLE_SOURCES_NEURIPS2026.md).
+- LaTeX table construction checklist (main Tables 1–6, composite-as-secondary, appendix-only paths): [`manuscript_table_sources_neurips_2026.md`](manuscript_table_sources_neurips_2026.md).

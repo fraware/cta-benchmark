@@ -48,8 +48,8 @@ Obligation Generation from Rust Reference Code".
 7. Analysis — failure taxonomy and qualitative cases.
 8. Limitations — what our benchmark does not measure.
 
-Reviewer-facing indexes: `docs/REVIEWER_MAP.md`, `docs/LIMITATIONS.md`, and
-`docs/PROVENANCE.md` map each section to committed artifacts and regeneration
+Reviewer-facing indexes: `docs/reviewer_map.md`, `docs/architecture.md`, and
+`docs/evaluation_contract.md` map each section to committed artifacts and regeneration
 commands.
 
 ## Reproducibility statement

@@ -1,6 +1,6 @@
 # Reviewer map (artifacts ↔ paper)
 
-**Start here:** headline claims must cite **`results/raw_metrics_strict.json`** and **`results/paper_strict_*`** only. Expanded mapped outputs (`results/paper_expanded_*`, `results/raw_metrics_expanded.json`) are **appendix**. One-page table: `docs/paper/EVIDENCE_NOTE_NEURIPS2026.md`. CSV-to-LaTeX checklist for manuscript Tables 1–6: `docs/paper/MANUSCRIPT_TABLE_SOURCES_NEURIPS2026.md`. End-to-end regeneration without ordering mistakes: `scripts/run_paper_readiness_gate.ps1` or `scripts/run_paper_readiness_gate.sh`. Claim discipline is enforced by `python scripts/check_paper_claim_sources.py` against `docs/paper/paper_claim_sources.yaml`. Frozen wording tiers live in `docs/paper/CLAIM_LOCK_NEURIPS2026.md`. Narrative case pools: `docs/paper/failure_case_studies.md`.
+**Start here:** headline claims must cite **`results/raw_metrics_strict.json`** and **`results/paper_strict_*`** only. Expanded mapped outputs (`results/paper_expanded_*`, `results/raw_metrics_expanded.json`) are **appendix**. One-page table: `docs/paper/evidence_note_neurips_2026.md`. CSV-to-LaTeX checklist for manuscript Tables 1–6: `docs/paper/manuscript_table_sources_neurips_2026.md`. End-to-end regeneration without ordering mistakes: `scripts/run_paper_readiness_gate.ps1` or `scripts/run_paper_readiness_gate.sh`. Claim discipline is enforced by `python scripts/check_paper_claim_sources.py` against `docs/paper/paper_claim_sources.yaml`. Frozen wording tiers live in `docs/paper/claim_lock_neurips_2026.md`. Narrative case pools: `docs/paper/failure_case_studies.md`.
 
 | Paper topic | Primary artifacts | Regenerate |
 |-------------|-------------------|------------|
@@ -61,11 +61,10 @@ Low-faithfulness rows are canonically exported as `low_semantic_faithfulness`.
 
 ## Definitions and limitations
 
-- `docs/PROVENANCE.md` — epistemic tiers.
-- `docs/LIMITATIONS.md` — threats to validity.
-- `docs/evaluation_contract.md` — metric definitions.
+- `docs/evaluation_contract.md` — metric definitions and reporting rules.
+- `docs/architecture.md` — scope, non-goals, and hard mission rules.
 - `docs/annotator_calibration_v03.md` — human-wave calibration anchors.
-- `docs/direct_adjudication_wave_checklist.md` — 128-pair wave execution + acceptance gates.
+- `docs/adjudication_wave_checklist.md` — 128-pair wave execution + acceptance gates.
 
 ## Evidence-Hardening Update (2026-04-28)
 

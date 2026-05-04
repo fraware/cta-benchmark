@@ -177,7 +177,7 @@ values.
 for queueing and checklists only. It is not a substitute for a valid
 `packet.json` plus `annotate verify-review-packets` and, when you change packet
 shape or prompts, the `cta_generate` tests documented in `README.md` and
-`docs/release_process.md` (`code_only_packet_regression`,
+`CONTRIBUTING.md` (`code_only_packet_regression`,
 `family_packet_regression` (including cross-system Dijkstra shape checks on
 `graph_dijkstra_{001,002}` for `code_only_v1`, `naive_concat_v1`, and
 `full_method_v1`, plus `graph_dijkstra_{001,002}` under `text_only_v1`),

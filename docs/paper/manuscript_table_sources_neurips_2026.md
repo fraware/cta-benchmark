@@ -1,8 +1,8 @@
 # Manuscript table sources (NeurIPS 2026) — CSV-to-LaTeX checklist
 
 Use this when building the **main** and **appendix** tables in the camera-ready
-paper. Regenerate all CSVs with the canonical pipeline (`docs/PAPER_READINESS.md`
-§2 or `scripts/run_paper_readiness_gate.*`) before copying numbers into LaTeX.
+paper. Regenerate all CSVs with the canonical pipeline (`scripts/run_paper_readiness_gate.*`
+or the same ordered steps in `REPRODUCE.md`) before copying numbers into LaTeX.
 
 **Global rules**
 
@@ -13,13 +13,13 @@ paper. Regenerate all CSVs with the canonical pipeline (`docs/PAPER_READINESS.md
   main-text story without an explicit **appendix / robustness** label.
 - **Mapped-from-canonical (114 rows in expanded view):** never described as
   independent duplicate-adjudication evidence. See
-  `docs/paper/CLAIM_LOCK_NEURIPS2026.md` and
-  `docs/paper/EVIDENCE_NOTE_NEURIPS2026.md`.
+  `docs/paper/claim_lock_neurips_2026.md` and
+  `docs/paper/evidence_note_neurips_2026.md`.
 - **Composite reliability:** **secondary diagnostic** only. Lead with component
   metrics (faithfulness, consistency, vacuity, proof utility, missing critical
   units / coverage); sensitivity lives in appendix (`results/system_reliability_sensitivity.csv`, strict paper exports).
 - **Naming:** in prose use **code-grounded** for regime `code_only_v1` (see
-  `docs/paper/CLAIM_LOCK_NEURIPS2026.md`).
+  `docs/paper/claim_lock_neurips_2026.md`).
 - **Verifier:** `python scripts/check_paper_claim_sources.py` and
   `docs/paper/paper_claim_sources.yaml`.
 
@@ -107,4 +107,4 @@ Cross-model diagnostic slice: `results/cross_model_pilot_appendix_table.csv`,
 `results/cross_model_pilot_external_appendix.json` (non-leaderboard wording only).
 
 LaTeX guard: `python scripts/check_paper_claim_sources.py --scan-tex --tex-path …`
-(see `docs/PAPER_READINESS.md`).
+(see `REPRODUCE.md` and `scripts/run_paper_readiness_gate.*`).

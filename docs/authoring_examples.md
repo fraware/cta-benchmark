@@ -87,8 +87,8 @@ Why acceptable:
 This is weaker than the SU: a function that returned
 `Some 0` for every input would satisfy this statement on any non-empty
 array. `AUTHORING_OBLIGATION_NO_SEMANTIC_UNITS` would not fire — the
-obligation is still linked to `SU2` — but the audit checklist in
-`docs/obligation_audit_v0.1.md` explicitly rejects such weakenings.
+obligation is still linked to `SU2` — but the external-review obligation audit
+workflow (see `docs/annotation_manual.md`) explicitly rejects such weakenings.
 
 **Bad variant B** (equality only):
 
