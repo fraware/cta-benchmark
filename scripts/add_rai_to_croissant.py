@@ -22,6 +22,32 @@ PATCH_OUT = ROOT / "hf_release" / "croissant_rai_patch.json"
 
 RESOLVE_BASE = f"https://huggingface.co/datasets/{REPO_ID}/resolve/main/"
 
+# mlcroissant expand_jsonld requires @type to be a list containing this exact IRI
+# (see mlcroissant._src.core.json_ld._is_dataset_node).
+_SCHEMA_DATASET = "https://schema.org/Dataset"
+
+
+def _ensure_mlcroissant_dataset_type(core: dict) -> None:
+    """Normalize root @type so mlcroissant validate accepts the entry node."""
+    t = core.get("@type")
+    if t is None:
+        core["@type"] = [_SCHEMA_DATASET]
+        return
+    if isinstance(t, str):
+        if t == _SCHEMA_DATASET or t in ("Dataset", "dataset", "http://schema.org/Dataset"):
+            core["@type"] = [_SCHEMA_DATASET]
+        else:
+            core["@type"] = [_SCHEMA_DATASET, t]
+        return
+    if isinstance(t, list):
+        strs = [str(x) for x in t]
+        if _SCHEMA_DATASET in strs:
+            return
+        core["@type"] = [_SCHEMA_DATASET, *t]
+        return
+    core["@type"] = [_SCHEMA_DATASET]
+
+
 # Files published under hf_release/ that should appear in Croissant distribution.
 _DIST_REL_PATHS: tuple[str, ...] = (
     "README.md",
@@ -81,7 +107,8 @@ def _sha256_file(path: Path) -> str | None:
 def _file_object_block(rel: str) -> dict:
     path = ROOT / "hf_release" / rel
     block: dict = {
-        "@type": "cr:FileObject",
+        # mlcroissant distribution parsing expects schema.org FileObject (not only cr:).
+        "@type": "https://schema.org/FileObject",
         "@id": _file_object_id(rel),
         "name": Path(rel).name,
         "description": f"Published file `{rel}` in the Hugging Face dataset revision.",
@@ -242,11 +269,19 @@ def _augment_sparse_hub_croissant(core: dict) -> None:
     core["recordSet"] = record_sets
 
 
+def _vocab_base_with_slash(base: str) -> str:
+    """JSON-LD @vocab must end with / so terms like `name` expand to schema.org/name."""
+    b = base.strip()
+    if not b.endswith("/"):
+        return f"{b}/"
+    return b
+
+
 def _normalize_context(core: dict) -> dict:
     """HF sometimes returns @context as a bare URL string; mlcroissant requires a dict."""
     ctx = core.get("@context")
     if isinstance(ctx, str):
-        base = ctx.strip()
+        base = _vocab_base_with_slash(ctx.strip())
         core["@context"] = {
             "@vocab": base,
             "schema": "https://schema.org/",
@@ -273,6 +308,11 @@ def _normalize_context(core: dict) -> dict:
     out = core["@context"]
     if not isinstance(out, dict):
         raise SystemExit("internal error: @context is not a dict after normalization")
+    vb = out.get("@vocab")
+    if isinstance(vb, str) and vb.strip():
+        out["@vocab"] = _vocab_base_with_slash(vb)
+    # mlcroissant json_ld.recursively_populate_jsonld expects this key on the context dict.
+    out.setdefault("@language", "en")
     return out
 
 
@@ -286,8 +326,7 @@ def main() -> int:
     if not core.get("name"):
         core["name"] = REPO_ID
 
-    if core.get("@type") in (None, "Dataset", "dataset"):
-        core["@type"] = "Dataset"
+    _ensure_mlcroissant_dataset_type(core)
 
     if not core.get("conformsTo"):
         core["conformsTo"] = "http://mlcommons.org/croissant/1.1"
