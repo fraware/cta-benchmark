@@ -55,18 +55,20 @@ the reviewer-map row for whether the committed copy is the paper reference.
 
 Public dataset repo: `https://huggingface.co/datasets/fraware/cta-bench`.
 
-**Freeze tag (immutable paper commit):** from the chosen commit SHA (example
-`f6273add283c76c7930ea570642683eca4cbb8d2`):
+**Freeze tag (`neurips2026-cta-freeze`):** use the **resolved tag commit** for the paper and
+OpenReview (not an older SHA from before the tag moved). After `git fetch origin --tags --force`:
 
 ```bash
-git checkout f6273add283c76c7930ea570642683eca4cbb8d2
-git tag -a neurips2026-cta-freeze -m "CTA-Bench v0.3 NeurIPS 2026 freeze"
-git push origin refs/tags/neurips2026-cta-freeze
-git rev-parse neurips2026-cta-freeze^0   # must print the same SHA as the freeze commit
+git checkout refs/tags/neurips2026-cta-freeze
+git rev-parse 'refs/tags/neurips2026-cta-freeze^{commit}'   # cite this SHA as the freeze commit
 ```
 
-If a **branch** already exists with the same name, `git push origin neurips2026-cta-freeze` is
-ambiguous; always push the tag with `refs/tags/...` as above (or delete/rename the branch).
+Maintainers may **force-move** the tag to include HF release fixes; authors should re-run
+`git rev-parse` and cite the new SHA whenever the tag is updated.
+
+If a **branch** shares the tag name, `git push origin neurips2026-cta-freeze` is ambiguous; push
+with `git push origin refs/tags/neurips2026-cta-freeze --force` only when intentionally updating the
+tag.
 
 1. Install optional Python deps: `pip install -r requirements-hf.txt`.
 2. Authenticate once: `hf auth login` (ships with `huggingface_hub`; the legacy `huggingface-cli login`
