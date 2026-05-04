@@ -22,7 +22,7 @@
 
 `0954db1fb797130e8859db446bfd805a1424638a`
 
-Each `make hf-upload` / `make hf-upload-croissant` advances `main`. The SHA above is `HfApi().repo_info('fraware/cta-bench', repo_type='dataset').sha` immediately after the mirror cycle that published Git `6ed41dd` (freeze tag `neurips2026-cta-freeze`) to `artifact/reports/` and re-uploaded `croissant.json`. If the Hugging Face Croissant API returns a sparse core after a clean `hf_release/` rebuild, pin `croissant.json` to revision `0922551cb20e4f6f0cc51cfb2d6368c68dd72f18` (SHA256 `737e7fcb…`, Space-validated) before `make hf-upload-croissant` so `main` stays byte-identical to the checker proof.
+Each `make hf-upload` / `make hf-upload-croissant` advances `main`. The SHA above is `HfApi().repo_info('fraware/cta-bench', repo_type='dataset').sha` immediately after the mirror upload that published `hf_release/` (including `artifact/reports/croissant_validation_2026.md`) and `croissant.json` on `main`. **Operational note:** after `make hf-package`, if `python scripts/download_hf_croissant.py` warns that the Hub Croissant API has no `distribution` yet, copy the last known-good `croissant.json` from Hub revision `0922551cb20e4f6f0cc51cfb2d6368c68dd72f18` into `hf_release/croissant.json` before `make hf-upload-croissant` so `main` stays byte-identical to the Space-validated object (SHA256 `737e7fcb…`).
 
 **Byte identity (local vs Hub):** `huggingface_hub.hf_hub_download(..., filename="croissant.json", revision="main")` matches **`hf_release/croissant.json` byte-for-byte** (SHA256 above).
 
