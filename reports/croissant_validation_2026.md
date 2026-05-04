@@ -2,29 +2,31 @@
 
 ## Machine verification (repository / CI)
 
-**UTC timestamp:** 2026-05-04T14:55:38Z (recorded at report write)
+**Mirror session (UTC):** 2026-05-04T15:16:19Z (Hugging Face mirror + report archive in this session)
 
-**Subject file:** `hf_release/croissant.json` (merged Hub core + RAI + augmented `distribution` / `recordSet`).
+**Subject file:** `hf_release/croissant.json` (merged Hub Croissant API core + RAI + augmented `distribution` / `recordSet`).
 
 **`mlcroissant` CLI (local):** `mlcroissant validate --jsonld hf_release/croissant.json` — **passed** (warnings only: non-canonical `@context` shape vs MLCommons examples; optional `citeAs`, `datePublished`, `version`).
 
 **`validate_neurips_artifact.py`:** **passed** (includes the same `mlcroissant` invocation when the CLI is on `PATH`).
 
-**SHA256 (`hf_release/croissant.json`):**
+**SHA256 (`hf_release/croissant.json`) — current `main` (local and Hub):**
 
 `737e7fcb211905022303b1af1f2beb3658a51843d9bec49a410470a5b0380cad`
 
-## Hugging Face dataset repo (after upload)
+## Hugging Face dataset repo (mirrored artifact)
 
 **Dataset:** `https://huggingface.co/datasets/fraware/cta-bench`
 
-**Latest `main` commit SHA (Git on the Hub dataset repo), after the uploads in this run:**
+**Latest `main` commit SHA (Git on the Hub dataset repo), after mirror in this session:**
 
-`8c5e62a2da28e3e2fcee44d82ebd8e5c1bfc0984`
+`8e00ee4f7f124194e13de7d0c4babc94cd51adc1`
 
-**Byte identity (local vs Hub):** `huggingface_hub.hf_hub_download(..., filename="croissant.json", revision="main")` matches **`hf_release/croissant.json` byte-for-byte** (same SHA256 as above). That is the file that cleared `mlcroissant validate` before upload.
+Each `make hf-upload` / `make hf-upload-croissant` advances `main`; the SHA above is `HfApi().repo_info('fraware/cta-bench', repo_type='dataset').sha` immediately after the final mirror cycle that published this report under `artifact/reports/` and `croissant.json` on `main`.
 
-**`make hf-check-remote` output:**
+**Byte identity (local vs Hub):** `huggingface_hub.hf_hub_download(..., filename="croissant.json", revision="main")` matches **`hf_release/croissant.json` byte-for-byte** (SHA256 above).
+
+**`make hf-check-remote` output (expected):**
 
 ```text
 Remote check OK: 2421 paths; all 14 required files present.
@@ -32,28 +34,53 @@ Remote check OK: 2421 paths; all 14 required files present.
 
 **Note on URLs:** Prefer `hf_hub_download` / Hub client for byte checks. A raw `curl` of `.../resolve/main/croissant.json` can occasionally disagree with the CLI-downloaded object (encoding, CDN, or revision edge cases); the authoritative check for “what OpenReview should cite” is the object returned for `croissant.json` on `revision=main` via the Hub API / client.
 
-## Official online checker (human gate — still required for “validated” wording)
+## Official Croissant checker (JoaquinVanschoren Space) — archived proof
 
-The **hosted** Croissant checker Space is **not** executed from this repository’s automation:
+**Checker:** [https://huggingface.co/spaces/JoaquinVanschoren/croissant-checker](https://huggingface.co/spaces/JoaquinVanschoren/croissant-checker)
 
-[https://huggingface.co/spaces/JoaquinVanschoren/croissant-checker](https://huggingface.co/spaces/JoaquinVanschoren/croissant-checker)
+**Input (Space run):** `croissant.json` byte-identical to the SHA256 above (same object as Hub `resolve/main/croissant.json` after the mirror session).
 
-**Action for authors:** download `croissant.json` from `resolve/main` (or use local `hf_release/croissant.json` after `make hf-croissant`), validate that **exact** JSON in the Space, then either:
+**Records generation:** All listed record sets passed; there is **no** failure on `rs_fo_data_human_agreement_json` (that RecordSet is absent by design).
 
-- save **`reports/croissant_validation_2026.png`** (screenshot), or  
-- append the Space log / URL + timestamp under this file,
+The Space also prints a large JSON-LD appendix of the validated document; it is **not** duplicated here (see `hf_release/croissant.json` on `main` for bytes).
 
-and re-run `make hf-package` (and the usual Hub upload sequence) so the proof is mirrored under `hf_release/artifact/reports/` when present.
+### Archived checker output (validation section)
 
-Until that Space run is recorded here (or in the PNG), treat pipeline status as **“CLI + Hub bytes verified”**, not **“official Space validated”**.
+```text
+# CROISSANT VALIDATION REPORT
+================================================================================
+## VALIDATION RESULTS
+--------------------------------------------------------------------------------
+Starting validation for file: croissant.json
+### JSON Format Validation
+✓
+The file is valid JSON.
+### Croissant Schema Validation
+✓
+The dataset passes Croissant validation.
+### Responsible AI Metadata
+✓
+All required Responsible AI metadata fields are present.
+### Records Generation Test
+✓
+Record set 'rs_fo_data_instances_jsonl' passed validation.
+Record set 'rs_fo_data_semantic_units_jsonl' passed validation.
+Record set 'rs_fo_data_reference_obligations_jsonl' passed validation.
+Record set 'rs_fo_data_generated_packets_jsonl' passed validation.
+Record set 'rs_fo_data_system_cards_jsonl' passed validation.
+Record set 'rs_fo_data_prompt_templates_jsonl' passed validation.
+Record set 'rs_fo_data_strict_results_csv' passed validation.
+Record set 'rs_fo_data_expanded_results_csv' passed validation.
+Record set 'rs_fo_data_correction_overlays_csv' passed validation.
+Record set 'rs_fo_data_common_cell_instances_csv' passed validation.
+Record set 'rs_fo_data_common_cell_system_summary_csv' passed validation.
+```
 
 ## `human_agreement.json` and optional records generation
 
-`data/human_agreement.json` remains in Croissant **`distribution`** as FileObject `fo_data_human_agreement_json` (same `contentUrl` as other published files).
+`data/human_agreement.json` remains in Croissant **`distribution`** as FileObject `fo_data_human_agreement_json`.
 
-The augmented RecordSet **`rs_fo_data_human_agreement_json`** (whole-file field with `extract.fileProperty: "content"`) was **removed** from `scripts/add_rai_to_croissant.py`. That pattern triggered the official checker’s optional **Records Generation** step with `TypeError: 'str' object cannot be interpreted as an integer`. Croissant does not require every distributed file to be a RecordSet; tabular/JSONL resources keep streamable RecordSets.
-
-**Authors:** after uploading this `croissant.json`, re-run the [Croissant checker Space](https://huggingface.co/spaces/JoaquinVanschoren/croissant-checker) and confirm Records Generation no longer fails on `rs_fo_data_human_agreement_json` (that id should be absent). If the Space still reports optional generation issues for **other** non-tabular resources, paste the log lines here under a dated subheading.
+The augmented RecordSet **`rs_fo_data_human_agreement_json`** (whole-file field with `extract.fileProperty: "content"`) was **removed** from `scripts/add_rai_to_croissant.py` because it triggered the official checker’s optional **Records Generation** step with `TypeError: 'str' object cannot be interpreted as an integer`. Croissant does not require every distributed file to be a RecordSet.
 
 ## Regeneration commands
 
