@@ -2,6 +2,8 @@
 
 **Classical Algorithm Tasks (CTA)** — a research benchmark and toolkit for studying how well systems turn problem descriptions and reference code into **Lean 4** proof obligations, and how faithful those obligations are to the intended algorithm.
 
+**Status:** Public. NeurIPS 2026 E&D freeze: Git tag [`neurips2026-cta-freeze`](https://github.com/fraware/cta-benchmark/tree/neurips2026-cta-freeze).
+
 ---
 
 ## In one minute
