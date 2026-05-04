@@ -75,12 +75,16 @@ ambiguous; always push the tag with `refs/tags/...` as above (or delete/rename t
 3. From a **frozen** paper branch or tag (for example `neurips2026-cta-freeze` when you cut it),
    build the Hub folder: `python scripts/package_hf_dataset.py` (writes `hf_release/`; see
    `.gitignore`).
-4. Upload: `python scripts/upload_hf_dataset.py`.
-5. Download platform Croissant JSON-LD and merge RAI fields:
-   `python scripts/download_hf_croissant.py` then `python scripts/add_rai_to_croissant.py`.
-6. Validate: `python scripts/validate_neurips_artifact.py` (strict **274** rows, expanded **336**,
+4. Upload data and bundle files: `python scripts/upload_hf_dataset.py` (skips `croissant*.json` in
+   the tree so stale Croissant is not pushed before the merge step).
+5. Download Hub Croissant core and merge RAI: `python scripts/download_hf_croissant.py` then
+   `python scripts/add_rai_to_croissant.py`.
+6. Validate locally: `python scripts/validate_neurips_artifact.py` (strict **274** rows, expanded **336**,
    agreement JSON invariants, required Croissant keys; runs `mlcroissant validate` when the CLI is
    on `PATH`).
+7. Upload the merged Croissant: `python scripts/upload_hf_dataset.py --croissant-only`.
+8. Confirm the public repo: `python scripts/check_hf_remote_artifact.py` (optional
+   `--print-hub-croissant-sizes` prints Hub API `distribution` / `recordSet` lengths for debugging).
 
 **NeurIPS submission gate (Croissant):** the hosting page requires the **online** validator
 ([Croissant checker Space](https://huggingface.co/spaces/JoaquinVanschoren/croissant-checker)),
@@ -91,8 +95,9 @@ screenshot or pasted log under `reports/croissant_validation_2026.png` (or exten
 `hf_release/artifact/reports/` when present.
 
 Makefile shortcuts: `make hf-package`, `make hf-upload`, `make hf-croissant`, `make hf-scan-secrets`,
-`make hf-validate`, `make hf-validate-local`, `make hf-release` (full sequence in that order;
-`hf-validate` runs the secret scan over all of `hf_release/` including `artifact/`).
+`make hf-validate`, `make hf-validate-local`, `make hf-upload-croissant`, `make hf-check-remote`,
+`make hf-release` (runs, in order: package → upload → croissant merge → validate → upload Croissant →
+remote file check; `hf-validate` runs the secret scan over all of `hf_release/` including `artifact/`).
 
 **Pre-upload validation:** `make hf-validate-local` runs the same checks as `hf-validate` but allows an
 empty Hub-derived `distribution` / `recordSet` in `croissant.json` (the Hub API fills those only after
@@ -110,7 +115,7 @@ example `curl.exe -L "https://huggingface.co/api/datasets/fraware/cta-bench/croi
 | `401 Unauthorized` on upload | Run `hf auth login`, or set `HF_TOKEN` to a non-expired token with write access to the dataset. |
 | `403 Forbidden` on upload | Join org **`fraware`** on Hugging Face with permission to create/write **`fraware/cta-bench`**. |
 | `Croissant … recordSet` / `distribution` empty | Upload `hf_release/` first, then re-run `download_hf_croissant.py` and `add_rai_to_croissant.py` (the merge step adds resolve/main surfaces when the Hub omits `recordSet` for raw JSONL/CSV). Before upload, use `make hf-validate-local`. |
-| `list_repo_files` shows only 1–2 files | Upload did not complete; fix auth and re-run `upload_hf_dataset.py`. |
+| `list_repo_files` shows only 1–2 files | Data upload did not finish; fix auth and re-run `upload_hf_dataset.py`. If data is present but `croissant.json` is missing, run `upload_hf_dataset.py --croissant-only` after merge. |
 
 NeurIPS hosting guidance (dataset URL + validated Croissant for OpenReview):
 [Evaluations & Datasets Hosting 2026](https://neurips.cc/Conferences/2026/EvaluationsDatasetsHosting).

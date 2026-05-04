@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
-"""Upload hf_release/ to Hugging Face dataset fraware/cta-bench."""
+"""Upload hf_release/ to Hugging Face dataset fraware/cta-bench.
+
+Full upload sends the whole tree except Croissant sidecars (see ignore_patterns);
+run with --croissant-only after `download_hf_croissant.py` + `add_rai_to_croissant.py`
+to publish the final merged croissant.json.
+"""
 
 from __future__ import annotations
 
+import argparse
 import os
 from pathlib import Path
 
@@ -35,7 +41,64 @@ def _http_status(exc: BaseException) -> int | None:
     return getattr(resp, "status_code", None) if resp is not None else None
 
 
+_CROISSANT_IGNORE = (
+    "croissant.json",
+    "croissant_core.json",
+    "croissant_rai_patch.json",
+)
+
+
+def _upload_croissant_only() -> int:
+    croissant = FOLDER / "croissant.json"
+    if not croissant.is_file():
+        raise SystemExit(
+            f"missing {croissant} — run `python scripts/download_hf_croissant.py` and "
+            "`python scripts/add_rai_to_croissant.py` first."
+        )
+
+    token = _resolve_token()
+    if not token:
+        raise SystemExit(_AUTH_HELP)
+
+    api = HfApi(token=token)
+    try:
+        api.upload_file(
+            path_or_fileobj=str(croissant),
+            path_in_repo="croissant.json",
+            repo_id=REPO_ID,
+            repo_type="dataset",
+            commit_message="Add NeurIPS 2026 Croissant metadata with RAI fields",
+        )
+    except HfHubHTTPError as e:
+        code = _http_status(e)
+        if code == 401:
+            raise SystemExit(
+                "Hugging Face returned 401 Unauthorized when uploading croissant.json.\n"
+                "  Re-authenticate with `hf auth login`, or refresh `HF_TOKEN`.\n"
+                f"  Details: {e}"
+            ) from e
+        if code == 403:
+            raise SystemExit(
+                "Hugging Face returned 403 Forbidden when uploading croissant.json.\n"
+                f"  Details: {e}"
+            ) from e
+        raise
+
+    print(f"Uploaded {croissant.name} to https://huggingface.co/datasets/{REPO_ID}")
+    return 0
+
+
 def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument(
+        "--croissant-only",
+        action="store_true",
+        help="Upload only hf_release/croissant.json (after hf-croissant / merge).",
+    )
+    ns = ap.parse_args()
+    if ns.croissant_only:
+        return _upload_croissant_only()
+
     if not FOLDER.is_dir():
         raise SystemExit(
             f"missing folder: {FOLDER} "
@@ -59,6 +122,7 @@ def main() -> int:
             repo_id=REPO_ID,
             repo_type="dataset",
             commit_message="Release CTA-Bench v0.3 NeurIPS 2026 dataset artifact",
+            ignore_patterns=list(_CROISSANT_IGNORE),
         )
     except HfHubHTTPError as e:
         code = _http_status(e)
@@ -78,27 +142,11 @@ def main() -> int:
             ) from e
         raise
 
-    croissant = FOLDER / "croissant.json"
-    if croissant.is_file():
-        try:
-            api.upload_file(
-                path_or_fileobj=str(croissant),
-                path_in_repo="croissant.json",
-                repo_id=REPO_ID,
-                repo_type="dataset",
-                commit_message="Add NeurIPS 2026 Croissant metadata with RAI fields",
-            )
-        except HfHubHTTPError as e:
-            code = _http_status(e)
-            if code in (401, 403):
-                raise SystemExit(
-                    "Upload of `croissant.json` failed after the folder upload step.\n"
-                    "  Check `hf auth login`, `HF_TOKEN`, and org write access.\n"
-                    f"  Details: {e}"
-                ) from e
-            raise
-
-    print(f"Uploaded {FOLDER} to https://huggingface.co/datasets/{REPO_ID}")
+    print(
+        f"Uploaded {FOLDER} to https://huggingface.co/datasets/{REPO_ID}\n"
+        "  (Croissant JSON files were skipped; run "
+        "`python scripts/upload_hf_dataset.py --croissant-only` after merging RAI.)"
+    )
     return 0
 
 

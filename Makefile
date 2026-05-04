@@ -1,10 +1,13 @@
-.PHONY: hf-package hf-upload hf-croissant hf-validate hf-validate-local hf-scan-secrets hf-release
+.PHONY: hf-package hf-upload hf-upload-croissant hf-croissant hf-validate hf-validate-local hf-scan-secrets hf-check-remote hf-release
 
 hf-package:
 	python scripts/package_hf_dataset.py
 
 hf-upload:
 	python scripts/upload_hf_dataset.py
+
+hf-upload-croissant:
+	python scripts/upload_hf_dataset.py --croissant-only
 
 hf-croissant:
 	python scripts/download_hf_croissant.py
@@ -19,4 +22,7 @@ hf-validate:
 hf-validate-local:
 	python scripts/validate_neurips_artifact.py --allow-minimal-croissant
 
-hf-release: hf-package hf-upload hf-croissant hf-validate
+hf-check-remote:
+	python scripts/check_hf_remote_artifact.py
+
+hf-release: hf-package hf-upload hf-croissant hf-validate hf-upload-croissant hf-check-remote
