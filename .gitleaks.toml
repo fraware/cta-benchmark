@@ -1,0 +1,15 @@
+# Gitleaks overlay for cta-benchmark.
+# Default rules remain enabled via useDefault.
+
+title = "cta-benchmark gitleaks"
+
+[extend]
+useDefault = true
+
+# The evidence hardening manifest only records SHA256 digests of tracked files.
+# Those hex strings occasionally match the generic-api-key heuristic (false positives).
+[allowlist]
+description = "Allowlist: checksum manifest (SHA256 fields only; no live credentials)."
+paths = [
+  '''artifacts/evidence_hardening_manifest\.json''',
+]
