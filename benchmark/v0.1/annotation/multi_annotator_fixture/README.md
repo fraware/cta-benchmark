@@ -41,4 +41,4 @@ a results bundle. Automated coverage lives in
 The fixture is intentionally scoped to a single `(instance, system)`
 pair so that the files remain auditable at a glance. Adding further
 pairs requires a benchmark version bump; see
-`docs/release_process.md`.
+`CONTRIBUTING.md`.

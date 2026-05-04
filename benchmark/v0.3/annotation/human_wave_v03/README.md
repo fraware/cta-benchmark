@@ -20,4 +20,4 @@ resolved gold value per dimension.
 When real CSVs exist, set `USE_HUMAN_ANNOTATION=1` (or the experiment config
 `annotation_human_pack`) so tooling prefers `human_adjudicated/`; see
 `docs/annotation_sampling_v03.md`, `docs/annotator_calibration_v03.md`, and
-`docs/PROVENANCE.md`.
+`docs/reviewer_map.md`.

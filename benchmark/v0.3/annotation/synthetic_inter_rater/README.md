@@ -9,4 +9,4 @@ If an independent second human pass is available, place
 `python scripts/reproduce_agreement_report.py`; the wrapper prefers
 `rater_b_human.csv` automatically.
 
-See [docs/PROVENANCE.md](../../../../docs/PROVENANCE.md).
+See [docs/reviewer_map.md](../../../../docs/reviewer_map.md).
