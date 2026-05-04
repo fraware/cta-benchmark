@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Canonical v0.3 paper-readiness gate — same order as docs/PAPER_READINESS.md §2 (Bash block).
+# Canonical v0.3 paper-readiness gate — same order as REPRODUCE.md / README gate block.
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"

@@ -1075,7 +1075,7 @@ def p1_artifact_packaging() -> None:
         "configs/experiments/benchmark_v03.json",
         "REPRODUCE.md",
         "README.md",
-        "docs/PROVENANCE.md",
+        "docs/reviewer_map.md",
         "LICENSE",
     ]
     payload = {

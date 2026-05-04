@@ -1,4 +1,4 @@
-# Canonical v0.3 paper-readiness gate (ordered steps mirroring docs/PAPER_READINESS.md §2).
+# Canonical v0.3 paper-readiness gate (ordered steps; same sequence as REPRODUCE.md / README gate block).
 #
 # Usage:
 #   .\scripts\run_paper_readiness_gate.ps1

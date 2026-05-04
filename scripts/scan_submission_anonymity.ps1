@@ -3,7 +3,7 @@
 # Extracted anonymous tree (text scan, recursive):
 #   .\scripts\scan_submission_anonymity.ps1 -ScanRoot artifacts\_anon_scan
 #
-# In-repo paths (NeurIPS checklist: README, ARTIFACT_CARD, REPRODUCE, docs/*,
+# In-repo paths (NeurIPS checklist: README, REPRODUCE, docs/*,
 # configs/providers/*, experiments/run_manifests/*, results/paper_*registry*.csv):
 #   .\scripts\scan_submission_anonymity.ps1 -RepoRoot .
 #
@@ -79,7 +79,7 @@ function Scan-RepoChecklist {
     $root = (Resolve-Path -LiteralPath $root).Path
     $files = New-Object System.Collections.Generic.HashSet[string]
 
-    foreach ($rel in @("README.md", "ARTIFACT_CARD.md", "REPRODUCE.md", "CI_STATUS.md")) {
+    foreach ($rel in @("README.md", "REPRODUCE.md", "CI_STATUS.md")) {
         $p = Join-Path $root $rel
         if (Test-Path -LiteralPath $p) { [void]$files.Add((Resolve-Path -LiteralPath $p).Path) }
     }

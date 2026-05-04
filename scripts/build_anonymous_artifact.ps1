@@ -54,7 +54,19 @@ Copy-Tree "appendix"
 Copy-Tree "results"
 Copy-Tree "docs"
 
-foreach ($f in @("LICENSE", "Cargo.toml", "ARTIFACT_CARD.md", "REPRODUCE.md", "CI_STATUS.md", "README.md")) {
+# Root files referenced from README (and toolchain pins); keep bundle self-contained for blind review.
+foreach ($f in @(
+        "LICENSE",
+        "Cargo.toml",
+        "rust-toolchain.toml",
+        "REPRODUCE.md",
+        "CI_STATUS.md",
+        "README.md",
+        "CONTRIBUTING.md",
+        "CODE_OF_CONDUCT.md",
+        "SECURITY.md",
+        "CITATION.cff"
+    )) {
     $p = Join-Path $Root $f
     if (Test-Path $p) {
         Copy-Item $p (Join-Path $Dest $f) -Force
