@@ -2,7 +2,7 @@
 
 ## Machine verification (repository / CI)
 
-**Mirror session (UTC):** 2026-05-04T15:16:19Z (Hugging Face mirror + report archive in this session)
+**Mirror session (UTC):** 2026-05-04T15:45:57Z (Hugging Face mirror + report archive in this session)
 
 **Subject file:** `hf_release/croissant.json` (merged Hub Croissant API core + RAI + augmented `distribution` / `recordSet`).
 
@@ -20,7 +20,7 @@
 
 **Latest `main` commit SHA (Git on the Hub dataset repo), after mirror in this session:**
 
-`0954db1fb797130e8859db446bfd805a1424638a`
+`5423c24d91e31dcdfe3565924eca0af080bbbe95`
 
 Each `make hf-upload` / `make hf-upload-croissant` advances `main`. The SHA above is `HfApi().repo_info('fraware/cta-bench', repo_type='dataset').sha` immediately after the mirror upload that published `hf_release/` (including `artifact/reports/croissant_validation_2026.md`) and `croissant.json` on `main`. **Operational note:** after `make hf-package`, if `python scripts/download_hf_croissant.py` warns that the Hub Croissant API has no `distribution` yet, copy the last known-good `croissant.json` from Hub revision `0922551cb20e4f6f0cc51cfb2d6368c68dd72f18` into `hf_release/croissant.json` before `make hf-upload-croissant` so `main` stays byte-identical to the Space-validated object (SHA256 `737e7fcb…`).
 
