@@ -2,7 +2,7 @@
 
 ## Machine verification (repository / CI)
 
-**Mirror session (UTC):** 2026-05-04T16:05:15Z (`repo_info` refresh for Hub `main` SHA in this edit)
+**Mirror session (UTC):** 2026-05-04T16:10:45Z (`make hf-package` + Hub upload; `artifact/reports/croissant_validation_2026.md` matches Git)
 
 **Subject file:** `hf_release/croissant.json` (merged Hub Croissant API core + RAI + augmented `distribution` / `recordSet`).
 
@@ -18,11 +18,13 @@
 
 **Dataset:** `https://huggingface.co/datasets/fraware/cta-bench`
 
-**Latest `main` commit SHA (Git on the Hub dataset repo), current tip:**
+**Latest `main` commit SHA (Git on the Hub dataset repo), after full `hf_release/` sync:**
 
-`3faf80573ea9a8997cd6af9a55ce219e00c67ce1`
+`32325b05e36e8d707fc7c00b1d3244c8b24d2744`
 
-Each `make hf-upload` / `make hf-upload-croissant` advances `main`. The SHA above is `HfApi().repo_info('fraware/cta-bench', repo_type='dataset').sha` at the mirror session time above (re-query after any Hub write). **Operational note:** after `make hf-package`, if `python scripts/download_hf_croissant.py` warns that the Hub Croissant API has no `distribution` yet, copy the last known-good `croissant.json` from Hub revision `0922551cb20e4f6f0cc51cfb2d6368c68dd72f18` into `hf_release/croissant.json` before `make hf-upload-croissant` so `main` stays byte-identical to the Space-validated object (SHA256 `737e7fcb…`).
+**`repo_info` tip on `main` after the following `make hf-upload-croissant`:** `70ae9034e5fb43381af1e98aa0c3deba0e2c6fa1`
+
+Each `make hf-upload` / `make hf-upload-croissant` advances `main`. Re-run `HfApi().repo_info('fraware/cta-bench', repo_type='dataset').sha` after any Hub write. **Operational note:** after `make hf-package`, if `python scripts/download_hf_croissant.py` warns that the Hub Croissant API has no `distribution` yet, copy the last known-good `croissant.json` from Hub revision `0922551cb20e4f6f0cc51cfb2d6368c68dd72f18` into `hf_release/croissant.json` before `make hf-upload-croissant` so `main` stays byte-identical to the Space-validated object (SHA256 `737e7fcb…`).
 
 **Byte identity (local vs Hub):** `huggingface_hub.hf_hub_download(..., filename="croissant.json", revision="main")` matches **`hf_release/croissant.json` byte-for-byte** (SHA256 above).
 
