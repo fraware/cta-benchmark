@@ -1,0 +1,23 @@
+name: Benchmark / dataset content
+description: Task definition, harness, annotation pack, or schema change proposal
+labels: ["benchmark"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Benchmark **content** changes usually require a new versioned tree under
+        `benchmark/v0.x/` per CONTRIBUTING. Do not paste secrets or personal data.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should change and why? Link to instance IDs / schemas if applicable.
+    validations:
+      required: true
+  - type: checkboxes
+    id: immutability
+    attributes:
+      label: Immutability
+      options:
+        - label: I am not proposing edits that change the meaning of a frozen benchmark version (e.g. v0.1).
+          required: true
