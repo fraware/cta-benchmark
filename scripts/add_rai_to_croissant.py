@@ -107,8 +107,8 @@ def _sha256_file(path: Path) -> str | None:
 def _file_object_block(rel: str) -> dict:
     path = ROOT / "hf_release" / rel
     block: dict = {
-        # mlcroissant distribution parsing expects schema.org FileObject (not only cr:).
-        "@type": "https://schema.org/FileObject",
+        # Croissant FileObject (compact IRI) so mlcroissant indexes nodes for RecordSet refs.
+        "@type": "cr:FileObject",
         "@id": _file_object_id(rel),
         "name": Path(rel).name,
         "description": f"Published file `{rel}` in the Hugging Face dataset revision.",
