@@ -20,5 +20,5 @@
     "enabled": true,
     "output_subdir": "reports"
   },
-  "notes": "12-instance pilot. Runs each declared system once per instance with the stub provider and scores against the benchmark-local adjudicated pack under benchmark/v0.1/annotation/adjudicated_subset/pack.json. Metrics are reportable only for (instance, system) pairs present in that pack; see docs/release_process.md."
+  "notes": "12-instance pilot. Runs each declared system once per instance with the stub provider and scores against the benchmark-local adjudicated pack under benchmark/v0.1/annotation/adjudicated_subset/pack.json. Metrics are reportable only for (instance, system) pairs present in that pack; see CONTRIBUTING.md."
 }

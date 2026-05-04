@@ -13,5 +13,5 @@
   "annotation_pack": "benchmark/v0.3/annotation/adjudicated_subset/pack.json",
   "annotation_human_pack": "benchmark/v0.3/annotation/human_adjudicated/pack.json",
   "require_full_annotation_coverage": true,
-  "notes": "v0.3 eval grid (48 instances). Primary pack is pipeline-derived unless human_adjudicated/pack.json is present; see docs/PROVENANCE.md."
+  "notes": "v0.3 eval grid (48 instances). Primary pack is pipeline-derived unless human_adjudicated/pack.json is present; see docs/reviewer_map.md."
 }
