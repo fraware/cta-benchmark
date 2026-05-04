@@ -9,6 +9,8 @@ Writes `croissant.json` (core from Hub + `rai:*`, `prov:wasDerivedFrom`, `prov:w
 
 from __future__ import annotations
 
+import csv
+import hashlib
 import json
 from pathlib import Path
 
@@ -17,6 +19,227 @@ REPO_ID = "fraware/cta-bench"
 CORE = ROOT / "hf_release" / "croissant_core.json"
 OUT = ROOT / "hf_release" / "croissant.json"
 PATCH_OUT = ROOT / "hf_release" / "croissant_rai_patch.json"
+
+RESOLVE_BASE = f"https://huggingface.co/datasets/{REPO_ID}/resolve/main/"
+
+# Files published under hf_release/ that should appear in Croissant distribution.
+_DIST_REL_PATHS: tuple[str, ...] = (
+    "README.md",
+    "LICENSE",
+    "CITATION.cff",
+    "rai_statement.md",
+    "data/instances.jsonl",
+    "data/semantic_units.jsonl",
+    "data/reference_obligations.jsonl",
+    "data/generated_packets.jsonl",
+    "data/strict_results.csv",
+    "data/expanded_results.csv",
+    "data/human_agreement.json",
+    "data/correction_overlays.csv",
+    "data/system_cards.jsonl",
+    "data/prompt_templates.jsonl",
+    "data/common_cell_instances.csv",
+    "data/common_cell_system_summary.csv",
+)
+
+_ENCODING = {
+    ".jsonl": "application/jsonlines",
+    ".json": "application/json",
+    ".csv": "text/csv",
+    ".md": "text/markdown",
+    ".cff": "text/yaml",
+}
+
+_CSV_COLUMN_PRESET: dict[str, str] = {
+    "data/strict_results.csv": "instance_id",
+    "data/expanded_results.csv": "instance_id",
+    "data/common_cell_instances.csv": "instance_id",
+    "data/common_cell_system_summary.csv": "system",
+}
+
+
+def _file_object_id(rel: str) -> str:
+    safe = rel.replace("/", "_").replace(".", "_")
+    return f"fo_{safe}"
+
+
+def _encoding_format(rel: str) -> str:
+    suf = Path(rel).suffix.lower()
+    return _ENCODING.get(suf, "application/octet-stream")
+
+
+def _sha256_file(path: Path) -> str | None:
+    if not path.is_file():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _file_object_block(rel: str) -> dict:
+    path = ROOT / "hf_release" / rel
+    block: dict = {
+        "@type": "cr:FileObject",
+        "@id": _file_object_id(rel),
+        "name": Path(rel).name,
+        "description": f"Published file `{rel}` in the Hugging Face dataset revision.",
+        "contentUrl": RESOLVE_BASE + rel.replace("\\", "/"),
+        "encodingFormat": _encoding_format(rel),
+    }
+    digest = _sha256_file(path)
+    if digest:
+        block["sha256"] = digest
+    return block
+
+
+def _record_sets_empty(core: dict) -> bool:
+    rs = core.get("recordSet")
+    return rs is None or (isinstance(rs, list) and len(rs) == 0)
+
+
+def _distribution_ids(dist: object) -> set[str]:
+    if not isinstance(dist, list):
+        return set()
+    out: set[str] = set()
+    for item in dist:
+        if isinstance(item, dict) and item.get("@id"):
+            out.add(str(item["@id"]))
+    return out
+
+
+def _infer_csv_column(rel: str) -> str:
+    if rel in _CSV_COLUMN_PRESET:
+        return _CSV_COLUMN_PRESET[rel]
+    path = ROOT / "hf_release" / rel
+    if not path.is_file():
+        return "instance_id"
+    with path.open(encoding="utf-8", newline="") as handle:
+        header = next(csv.reader(handle))
+    if "instance_id" in header:
+        return "instance_id"
+    return header[0]
+
+
+def _jsonl_record_set(rel: str, rs_name: str) -> dict:
+    fid = _file_object_id(rel)
+    return {
+        "@type": "cr:RecordSet",
+        "@id": f"rs_{fid}",
+        "name": rs_name,
+        "description": f"Records from `{rel}` (one JSON object per line).",
+        "field": [
+            {
+                "@type": "cr:Field",
+                "@id": f"{fid}/line",
+                "name": "line",
+                "description": "Raw JSONL line as text.",
+                "dataType": "sc:Text",
+                "source": {
+                    "fileObject": {"@id": fid},
+                    "extract": {"fileProperty": "lines"},
+                },
+            }
+        ],
+    }
+
+
+def _csv_record_set(rel: str, rs_name: str, column: str) -> dict:
+    fid = _file_object_id(rel)
+    return {
+        "@type": "cr:RecordSet",
+        "@id": f"rs_{fid}",
+        "name": rs_name,
+        "description": f"Rows from `{rel}` (column `{column}`).",
+        "field": [
+            {
+                "@type": "cr:Field",
+                "@id": f"{fid}/{column}",
+                "name": column,
+                "dataType": "sc:Text",
+                "source": {
+                    "fileObject": {"@id": fid},
+                    "extract": {"column": column},
+                },
+            }
+        ],
+    }
+
+
+def _whole_file_text_record_set(rel: str, rs_name: str) -> dict:
+    """One logical record per file (full UTF-8 payload as text)."""
+    fid = _file_object_id(rel)
+    return {
+        "@type": "cr:RecordSet",
+        "@id": f"rs_{fid}",
+        "name": rs_name,
+        "description": f"Whole-file text view of `{rel}` (UTF-8).",
+        "field": [
+            {
+                "@type": "cr:Field",
+                "@id": f"{fid}/content",
+                "name": "content",
+                "dataType": "sc:Text",
+                "source": {
+                    "fileObject": {"@id": fid},
+                    "extract": {"fileProperty": "content"},
+                },
+            }
+        ],
+    }
+
+
+def _augment_sparse_hub_croissant(core: dict) -> None:
+    """Hub Croissant often omits `recordSet` for raw JSONL/CSV repos (only a `repo` FileObject).
+
+    NeurIPS validation requires non-empty `distribution` and `recordSet`. When the Hub
+    leaves `recordSet` empty, attach resolve/main FileObjects for published paths and
+    minimal RecordSets so local validation matches the on-disk `hf_release/` layout.
+    """
+    if not _record_sets_empty(core):
+        return
+
+    dist = core.get("distribution")
+    if not isinstance(dist, list):
+        dist = []
+        core["distribution"] = dist
+
+    have_ids = _distribution_ids(dist)
+    for rel in _DIST_REL_PATHS:
+        block = _file_object_block(rel)
+        if block["@id"] not in have_ids:
+            dist.append(block)
+            have_ids.add(block["@id"])
+
+    record_sets: list[dict] = []
+    record_sets.append(_jsonl_record_set("data/instances.jsonl", "instances"))
+    record_sets.append(_jsonl_record_set("data/semantic_units.jsonl", "semantic_units"))
+    record_sets.append(
+        _jsonl_record_set("data/reference_obligations.jsonl", "reference_obligations")
+    )
+    record_sets.append(_jsonl_record_set("data/generated_packets.jsonl", "generated_packets"))
+    record_sets.append(_jsonl_record_set("data/system_cards.jsonl", "system_cards"))
+    record_sets.append(_jsonl_record_set("data/prompt_templates.jsonl", "prompt_templates"))
+
+    record_sets.append(_csv_record_set("data/strict_results.csv", "strict_results", "instance_id"))
+    record_sets.append(_csv_record_set("data/expanded_results.csv", "expanded_results", "instance_id"))
+    col_co = _infer_csv_column("data/correction_overlays.csv")
+    record_sets.append(_csv_record_set("data/correction_overlays.csv", "correction_overlays", col_co))
+    record_sets.append(
+        _csv_record_set("data/common_cell_instances.csv", "common_cell_instances", "instance_id")
+    )
+    record_sets.append(
+        _csv_record_set(
+            "data/common_cell_system_summary.csv",
+            "common_cell_system_summary",
+            "system",
+        )
+    )
+
+    record_sets.append(_whole_file_text_record_set("data/human_agreement.json", "human_agreement"))
+
+    core["recordSet"] = record_sets
 
 
 def _normalize_context(core: dict) -> dict:
@@ -137,6 +360,8 @@ def main() -> int:
         "metrics (`annotation/human_pass_v3/`), and exported disagreement logs. Human annotators are "
         "represented with anonymized identifiers in released artifacts."
     )
+
+    _augment_sparse_hub_croissant(core)
 
     patch_obj: dict = {"@context": ctx}
     for k, v in core.items():

@@ -109,7 +109,7 @@ example `curl.exe -L "https://huggingface.co/api/datasets/fraware/cta-bench/croi
 |--------|------------|
 | `401 Unauthorized` on upload | Run `hf auth login`, or set `HF_TOKEN` to a non-expired token with write access to the dataset. |
 | `403 Forbidden` on upload | Join org **`fraware`** on Hugging Face with permission to create/write **`fraware/cta-bench`**. |
-| `Croissant … recordSet` / `distribution` empty | Upload `hf_release/` first, then re-run `download_hf_croissant.py` and `add_rai_to_croissant.py`, then strict validate; or use `make hf-validate-local` before upload. |
+| `Croissant … recordSet` / `distribution` empty | Upload `hf_release/` first, then re-run `download_hf_croissant.py` and `add_rai_to_croissant.py` (the merge step adds resolve/main surfaces when the Hub omits `recordSet` for raw JSONL/CSV). Before upload, use `make hf-validate-local`. |
 | `list_repo_files` shows only 1–2 files | Upload did not complete; fix auth and re-run `upload_hf_dataset.py`. |
 
 NeurIPS hosting guidance (dataset URL + validated Croissant for OpenReview):
